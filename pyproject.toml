@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "starrailuid"
+version = "0.1.0"
+description = ""
+authors = ["qwerdvd <2450899274@qq.com>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
