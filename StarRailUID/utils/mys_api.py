@@ -158,7 +158,7 @@ class _MysApi(BaseMysApi):
             HEADER['Referer'] = 'https://webstatic.mihoyo.com'
             HEADER.update(header)
             data = await self._mys_request(
-                url=_API['SIGN_URL'],
+                url=_API['STAR_RAIL_SIGN_URL'],
                 method='POST',
                 header=HEADER,
                 data={
