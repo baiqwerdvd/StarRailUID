@@ -1,32 +1,22 @@
 import copy
+import random
+from string import digits, ascii_letters
 from typing import Dict, Union, Literal, Optional, cast
 
-from gsuid_core.utils.api.mys import MysApi
-from gsuid_core.utils.api.mys.models import MysSign, SignInfo
+from gsuid_core.utils.api.mys.request import BaseMysApi
+from gsuid_core.utils.api.mys.models import MysSign, SignInfo, SignList
 from gsuid_core.utils.api.mys.tools import (
     random_hex,
     generate_os_ds,
     get_web_ds_token,
 )
 
-from ..utils.database import get_sqla
+from ..utils.api import get_sqla
 from ..sruid_utils.api.mys.api import _API
 from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
 
-mysVersion = '2.44.1'
-_HEADER = {
-    'x-rpc-app_version': mysVersion,
-    'User-Agent': (
-        'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) '
-        f'AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/{mysVersion}'
-    ),
-    'x-rpc-client_type': '5',
-    'Referer': 'https://webstatic.mihoyo.com/',
-    'Origin': 'https://webstatic.mihoyo.com',
-}
 
-
-class _MysApi(MysApi):
+class _MysApi(BaseMysApi):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -81,13 +71,57 @@ class _MysApi(MysApi):
         sqla = get_sqla('TEMP')
         return await sqla.get_user_stoken(uid)
 
-    async def get_sign_info(self, uid) -> Union[SignInfo, int]:
-        # server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-        is_os = self.check_os(uid)
+    async def create_qrcode_url(self) -> Union[Dict, int]:
+        device_id: str = ''.join(random.choices(ascii_letters + digits, k=64))
+        app_id: str = '8'
+        data = await self._mys_request(
+            _API['CREATE_QRCODE'],
+            'POST',
+            header={},
+            data={'app_id': app_id, 'device': device_id},
+        )
+        if isinstance(data, Dict):
+            url: str = data['data']['url']
+            ticket = url.split('ticket=')[1]
+            return {
+                'app_id': app_id,
+                'ticket': ticket,
+                'device': device_id,
+                'url': url,
+            }
+        return data
+
+    async def get_sign_list(self, uid) -> Union[SignList, int]:
+        # is_os = self.check_os(uid)
+        is_os = False
         if is_os:
             params = {
                 'act_id': 'e202304121516551',
                 'lang': 'zh-cn',
+            }
+        else:
+            params = {
+                'act_id': 'e202304121516551',
+                'lang': 'zh-cn',
+            }
+        data = await self._mys_req_get(
+            'STAR_RAIL_SIGN_LIST_URL', is_os, params
+        )
+        if isinstance(data, Dict):
+            data = cast(SignList, data['data'])
+        return data
+
+    async def get_sign_info(self, uid) -> Union[SignInfo, int]:
+        # server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+        # is_os = self.check_os(uid)
+        is_os = False
+        if is_os:
+            # TODO
+            params = {
+                'act_id': 'e202304121516551',
+                'lang': 'zh-cn',
+                'region': 'prod_gf_cn',
+                'uid': uid,
             }
             header = {
                 'DS': generate_os_ds(),
@@ -96,6 +130,8 @@ class _MysApi(MysApi):
             params = {
                 'act_id': 'e202304121516551',
                 'lang': 'zh-cn',
+                'region': 'prod_gf_cn',
+                'uid': uid,
             }
             header = {}
         data = await self._mys_req_get(
@@ -112,19 +148,14 @@ class _MysApi(MysApi):
         if ck is None:
             return -51
         if int(str(uid)[0]) < 6:
-            HEADER = copy.deepcopy(_HEADER)
+            HEADER = copy.deepcopy(self._HEADER)
             HEADER['Cookie'] = ck
             HEADER['x-rpc-device_id'] = random_hex(32)
             HEADER['x-rpc-app_version'] = '2.44.1'
             HEADER['x-rpc-client_type'] = '5'
             HEADER['X_Requested_With'] = 'com.mihoyo.hyperion'
             HEADER['DS'] = get_web_ds_token(True)
-            HEADER['Referer'] = (
-                'https://webstatic.mihoyo.com/bbs/event/signin/hkrpg'
-                '/mys_sign?act_id=e202304121516551&bbs_auth_required=true'
-                '&bbs_presentation_style=fullscreen&utm_source=share'
-                '&utm_medium=bbs&utm_campaign=app'
-            )
+            HEADER['Referer'] = 'https://webstatic.mihoyo.com'
             HEADER.update(header)
             data = await self._mys_request(
                 url=_API['SIGN_URL'],
@@ -132,6 +163,8 @@ class _MysApi(MysApi):
                 header=HEADER,
                 data={
                     'act_id': 'e202304121516551',
+                    'region': 'prod_gf_cn',
+                    'uid': uid,
                     'lang': 'zh-cn',
                 },
             )
@@ -139,6 +172,39 @@ class _MysApi(MysApi):
             pass
         if isinstance(data, Dict):
             data = cast(MysSign, data['data'])
+        return data
+
+    async def _mys_req_get(
+        self,
+        url: str,
+        is_os: bool,
+        params: Dict,
+        header: Optional[Dict] = None,
+    ) -> Union[Dict, int]:
+        if is_os:
+            _URL = _API[f'{url}_OS']
+            HEADER = copy.deepcopy(self._HEADER_OS)
+            use_proxy = True
+        else:
+            _URL = _API[url]
+            print(_URL)
+            HEADER = copy.deepcopy(self._HEADER)
+            use_proxy = False
+        if header:
+            HEADER.update(header)
+
+        if 'Cookie' not in HEADER and 'uid' in params:
+            ck = await self.get_ck(params['uid'])
+            if ck is None:
+                return -51
+            HEADER['Cookie'] = ck
+        data = await self._mys_request(
+            url=_URL,
+            method='GET',
+            header=HEADER,
+            params=params,
+            use_proxy=use_proxy,
+        )
         return data
 
 

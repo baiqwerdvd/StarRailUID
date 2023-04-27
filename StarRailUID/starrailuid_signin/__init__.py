@@ -8,7 +8,7 @@ from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
 
-from ..utils.database import get_sqla
+from ..utils.api import get_sqla
 from .sign import sign_in, daily_sign
 from ..utils.error_reply import UID_HINT
 from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
@@ -31,11 +31,11 @@ async def sign_at_night():
 async def get_sign_func(bot: Bot, ev: Event):
     await bot.logger.info('[SR签到]QQ号: {}'.format(ev.user_id))
     sqla = get_sqla(ev.bot_id)
-    uid = await sqla.get_bind_uid(ev.user_id)
-    if uid is None:
+    sr_uid = await sqla.get_bind_sruid(ev.user_id)
+    if sr_uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info('[SR签到]UID: {}'.format(uid))
-    await bot.send(await sign_in(uid))
+    await bot.logger.info('[SR签到]UID: {}'.format(sr_uid))
+    await bot.send(await sign_in(sr_uid))
 
 
 @sv_sign_config.on_fullmatch('sr全部重签')
