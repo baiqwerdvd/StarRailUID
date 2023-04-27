@@ -1,19 +1,17 @@
 import copy
 from typing import Dict, Union, Literal, Optional, cast
 
-from ..sruid_utils.api.mys.api import _API
-from ....GenshinUID.GenshinUID.utils.database import get_sqla
-from ....GenshinUID.GenshinUID.gsuid_utils.api.mys import MysApi
-from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
-from ....GenshinUID.GenshinUID.gsuid_utils.api.mys.models import (
-    MysSign,
-    SignInfo,
-)
-from ....GenshinUID.GenshinUID.gsuid_utils.api.mys.tools import (
+from gsuid_core.utils.api.mys import MysApi
+from gsuid_core.utils.api.mys.models import MysSign, SignInfo
+from gsuid_core.utils.api.mys.tools import (
     random_hex,
     generate_os_ds,
     get_web_ds_token,
 )
+
+from ..utils.database import get_sqla
+from ..sruid_utils.api.mys.api import _API
+from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
 
 mysVersion = '2.44.1'
 _HEADER = {

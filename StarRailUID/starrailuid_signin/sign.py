@@ -6,7 +6,7 @@ from gsuid_core.gss import gss
 from gsuid_core.logger import logger
 
 from ..utils.mys_api import mys_api
-from ....GenshinUID.GenshinUID.utils.database import get_sqla
+from ..utils.database import get_sqla
 from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
 
 private_msg_list = {}

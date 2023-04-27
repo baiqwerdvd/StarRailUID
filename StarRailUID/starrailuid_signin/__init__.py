@@ -8,9 +8,9 @@ from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
 
+from ..utils.database import get_sqla
 from .sign import sign_in, daily_sign
-from ....GenshinUID.GenshinUID.utils.database import get_sqla
-from ....GenshinUID.GenshinUID.utils.error_reply import UID_HINT
+from ..utils.error_reply import UID_HINT
 from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
 
 SIGN_TIME = gsconfig.get_config('SignTime').data
