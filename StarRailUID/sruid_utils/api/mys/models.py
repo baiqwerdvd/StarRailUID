@@ -1,6 +1,9 @@
 from typing import Any, List, TypedDict
 
 
+################
+# 实时便签 #
+################
 class SingleExpedition(TypedDict):
     avatars: List[str]  # 头像Url
     status: str

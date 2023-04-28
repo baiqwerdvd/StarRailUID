@@ -17,6 +17,9 @@ STAR_RAIL_AVATAR_BASIC_URL = (
 STAR_RAIL_ROLE_BASIC_INFO_URL = (
     f'{NEW_URL}/game_record/app/hkrpg/api/role/basicInfo'  # 角色基础信息接口
 )
+STAR_RAIL_AVATAR_INFO_URL = (
+    f'{NEW_URL}/game_record/app/hkrpg/api/avatar/info'  # 角色详细信息接口
+)
 
 
 # CREATE_QRCODE = f'{OLD_URL}/event/bbs_sign_reward/gen_auth_code'
