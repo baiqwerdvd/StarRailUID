@@ -7,13 +7,25 @@ from gsuid_core.utils.api.mys.request import BaseMysApi
 from gsuid_core.utils.api.mys.models import MysSign, SignInfo, SignList
 from gsuid_core.utils.api.mys.tools import (
     random_hex,
+    get_ds_token,
     generate_os_ds,
     get_web_ds_token,
 )
 
 from ..utils.api import get_sqla
 from ..sruid_utils.api.mys.api import _API
+from ..sruid_utils.api.mys.models import DailyNoteData
 from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
+
+RECOGNIZE_SERVER = {
+    '1': 'prod_gf_cn',
+    # '2': 'cn_gf01',
+    # '5': 'cn_qd01',
+    # '6': 'os_usa',
+    # '7': 'os_euro',
+    # '8': 'os_asia',
+    # '9': 'os_cht',
+}
 
 
 class _MysApi(BaseMysApi):
@@ -89,6 +101,13 @@ class _MysApi(BaseMysApi):
                 'device': device_id,
                 'url': url,
             }
+        return data
+
+    async def get_daily_data(self, uid: str) -> Union[DailyNoteData, int]:
+        data = await self.simple_mys_req('STAR_RAIL_NOTE_URL', uid)
+        print(data)
+        if isinstance(data, Dict):
+            data = cast(DailyNoteData, data['data'])
         return data
 
     async def get_sign_list(self, uid) -> Union[SignList, int]:
@@ -204,6 +223,50 @@ class _MysApi(BaseMysApi):
             header=HEADER,
             params=params,
             use_proxy=use_proxy,
+        )
+        return data
+
+    async def simple_mys_req(
+        self,
+        URL: str,
+        uid: Union[str, bool],
+        params: Dict = {},
+        header: Dict = {},
+        cookie: Optional[str] = None,
+    ) -> Union[Dict, int]:
+        if isinstance(uid, bool):
+            is_os = uid
+            server_id = 'cn_qd01' if is_os else 'prod_gf_cn'
+        else:
+            server_id = RECOGNIZE_SERVER.get(uid[0])
+            is_os = False if int(uid[0]) < 6 else True
+        ex_params = '&'.join([f'{k}={v}' for k, v in params.items()])
+        print(server_id, is_os, ex_params)
+        if is_os:
+            _URL = _API[f'{URL}_OS']
+            HEADER = copy.deepcopy(self._HEADER_OS)
+            HEADER['DS'] = generate_os_ds()
+        else:
+            _URL = _API[URL]
+            HEADER = copy.deepcopy(self._HEADER)
+            HEADER['DS'] = get_ds_token(
+                ex_params if ex_params else f'role_id={uid}&server={server_id}'
+            )
+        HEADER.update(header)
+        print(_URL)
+        if cookie is not None:
+            HEADER['Cookie'] = cookie
+        elif 'Cookie' not in HEADER and isinstance(uid, str):
+            ck = await self.get_ck(uid)
+            if ck is None:
+                return -51
+            HEADER['Cookie'] = ck
+        data = await self._mys_request(
+            url=_URL,
+            method='GET',
+            header=HEADER,
+            params=params if params else {'server': server_id, 'role_id': uid},
+            use_proxy=True if is_os else False,
         )
         return data
 

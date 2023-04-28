@@ -1,9 +1,25 @@
-################
-# 签到相关 #
-################
 from typing import Any, List, TypedDict
 
 
+class SingleExpedition(TypedDict):
+    avatars: List[str]  # 头像Url
+    status: str
+    remaining_time: int
+    name: str
+
+
+class DailyNoteData(TypedDict):
+    current_stamina: int
+    max_stamina: int
+    stamina_recover_time: int
+    accepted_expedition_num: int
+    total_expedition_num: int
+    expeditions: List[SingleExpedition]
+
+
+################
+# 签到相关 #
+################
 class MysSign(TypedDict):
     code: str
     risk_code: int
