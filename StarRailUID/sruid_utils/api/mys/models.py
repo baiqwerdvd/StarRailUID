@@ -1,5 +1,53 @@
 from typing import Any, List, TypedDict
 
+################
+# 每月札记相关 #
+################
+
+
+class DataText(TypedDict):
+    type: str
+    key: str
+    mi18n_key: str
+
+
+class DayData(TypedDict):
+    current_hcoin: int
+    current_rails_pass: int
+    last_hcoin: int
+    last_rails_pass: int
+
+
+class GroupBy(TypedDict):
+    action: str
+    num: int
+    percent: int
+    action_name: str
+
+
+class MonthData(TypedDict):
+    current_hcoin: int
+    current_rails_pass: int
+    last_hcoin: int
+    last_rails_pass: int
+    hcoin_rate: int
+    rails_rate: int
+    group_by: List[GroupBy]
+
+
+class MonthlyAward(TypedDict):
+    uid: str
+    region: str
+    login_flag: bool
+    optional_month: List[int]
+    month: str
+    data_month: str
+    month_data: MonthData
+    day_data: DayData
+    version: str
+    start_month: str
+    data_text: DataText
+
 
 ################
 # 实时便签 #

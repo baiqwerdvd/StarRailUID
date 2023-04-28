@@ -14,7 +14,7 @@ from gsuid_core.utils.api.mys.tools import (
 
 from ..utils.api import get_sqla
 from ..sruid_utils.api.mys.api import _API
-from ..sruid_utils.api.mys.models import DailyNoteData
+from ..sruid_utils.api.mys.models import MonthlyAward, DailyNoteData
 from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
 
 RECOGNIZE_SERVER = {
@@ -191,6 +191,38 @@ class _MysApi(BaseMysApi):
             pass
         if isinstance(data, Dict):
             data = cast(MysSign, data['data'])
+        return data
+
+    async def get_award(self, sr_uid) -> Union[MonthlyAward, int]:
+        server_id = RECOGNIZE_SERVER.get(str(sr_uid)[0])
+        ck = await self.get_ck(sr_uid, 'OWNER')
+        if ck is None:
+            return -51
+        if int(str(sr_uid)[0]) < 6:
+            HEADER = copy.deepcopy(self._HEADER)
+            HEADER['Cookie'] = ck
+            HEADER['DS'] = get_web_ds_token(True)
+            HEADER['x-rpc-device_id'] = random_hex(32)
+            data = await self._mys_request(
+                url=_API['STAR_RAIL_MONTH_INFO_URL'],
+                method='GET',
+                header=HEADER,
+                params={'uid': sr_uid, 'region': server_id, 'month': ''},
+            )
+        else:
+            HEADER = copy.deepcopy(self._HEADER_OS)
+            HEADER['Cookie'] = ck
+            HEADER['x-rpc-device_id'] = random_hex(32)
+            HEADER['DS'] = generate_os_ds()
+            data = await self._mys_request(
+                url=_API['STAR_RAIL_MONTH_INFO_URL'],
+                method='GET',
+                header=HEADER,
+                params={'uid': sr_uid, 'region': server_id, 'month': ''},
+                use_proxy=True,
+            )
+        if isinstance(data, Dict):
+            data = cast(MonthlyAward, data['data'])
         return data
 
     async def _mys_req_get(
