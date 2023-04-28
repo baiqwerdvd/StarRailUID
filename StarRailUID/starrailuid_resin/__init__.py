@@ -11,12 +11,12 @@ from ..utils.convert import get_uid
 # from .notice import get_notice_list
 from .resin_text import get_resin_text
 from ..utils.error_reply import UID_HINT
+from .draw_resin_card import get_resin_img
 
 # from gsuid_core.aps import scheduler
 # from gsuid_core.logger import logger
 # from gsuid_core.segment import MessageSegment
 
-# from .draw_resin_card import get_resin_img
 
 sv_get_resin = SV('sr查询体力')
 sv_get_resin_admin = SV('sr强制推送', pm=1)
@@ -67,11 +67,11 @@ async def send_daily_info(bot: Bot, ev: Event):
 #             logger.info('[推送检查] 群聊推送完成')
 
 
-# @sv_get_resin.on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))
-# async def send_daily_info_pic(bot: Bot, ev: Event):
-#     await bot.logger.info('开始执行[每日信息]')
-#     user_id = ev.at if ev.at else ev.user_id
-#     await bot.logger.info('[每日信息]QQ号: {}'.format(user_id))
-#
-#     im = await get_resin_img(bot.bot_id, user_id)
-#     await bot.send(im)
+@sv_get_resin.on_fullmatch(('sr每日', 'srmr', 'sr实时便笺', 'sr便笺', 'sr便签'))
+async def send_daily_info_pic(bot: Bot, ev: Event):
+    await bot.logger.info('开始执行[sr每日信息]')
+    user_id = ev.at if ev.at else ev.user_id
+    await bot.logger.info('[sr每日信息]QQ号: {}'.format(user_id))
+
+    im = await get_resin_img(bot.bot_id, user_id)
+    await bot.send(im)
