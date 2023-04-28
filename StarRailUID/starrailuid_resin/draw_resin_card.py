@@ -24,10 +24,8 @@ from PIL import Image
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 
-resin_fg_pic = Image.open(TEXT_PATH / 'resin_fg.png')
-yes_pic = Image.open(TEXT_PATH / 'yes.png')
-no_pic = Image.open(TEXT_PATH / 'no.png')
-warn_pic = Image.open(TEXT_PATH / 'warn.png')
+note_bg = Image.open(TEXT_PATH / 'note_bg.png')
+note_travel_bg = Image.open(TEXT_PATH / 'note_travel_bg.png')
 
 based_w = 500
 based_h = 900
