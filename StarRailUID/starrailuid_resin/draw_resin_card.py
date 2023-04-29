@@ -12,6 +12,7 @@ from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import Expedition
 from ..utils.fonts.starrail_fonts import (
+    sr_font_22,
     sr_font_24,
     sr_font_26,
     sr_font_36,
@@ -55,35 +56,44 @@ async def _draw_task_img(
     index: int,
     char: Expedition,
 ):
-    expedition_name = char['name']
-    remaining_time: str = seconds2hours(char['remaining_time'])
-    note_travel_img = note_travel_bg.copy()
-    for i in range(2):
-        avatar_url = char['avatars'][i]
-        image = await download_image(avatar_url)
-        char_pic = image.convert('RGBA').resize(
-            (40, 40), Image.Resampling.LANCZOS  # type: ignore
+    if char is not None:
+        expedition_name = char['name']
+        remaining_time: str = seconds2hours(char['remaining_time'])
+        note_travel_img = note_travel_bg.copy()
+        for i in range(2):
+            avatar_url = char['avatars'][i]
+            image = await download_image(avatar_url)
+            char_pic = image.convert('RGBA').resize(
+                (40, 40), Image.Resampling.LANCZOS  # type: ignore
+            )
+            note_travel_img.paste(char_pic, (495 + 68 * i, 20), char_pic)
+        img.paste(note_travel_img, (0, 790 + index * 80), note_travel_img)
+        if char['status'] == 'Finished':
+            status_mark = '待收取'
+        else:
+            status_mark = str(remaining_time)
+        img_draw.text(
+            (120, 830 + index * 80),
+            expedition_name,
+            font=sr_font_22,
+            fill=white_color,
+            anchor='lm',
         )
-        note_travel_img.paste(char_pic, (495 + 68 * i, 20), char_pic)
-    img.paste(note_travel_img, (0, 790 + index * 80), note_travel_img)
-    if char['status'] == 'Finished':
-        status_mark = '待收取'
+        img_draw.text(
+            (380, 830 + index * 80),
+            status_mark,
+            font=sr_font_22,
+            fill=white_color,
+            anchor='mm',
+        )
     else:
-        status_mark = str(remaining_time)
-    img_draw.text(
-        (120, 830 + index * 80),
-        expedition_name,
-        font=sr_font_24,
-        fill=white_color,
-        anchor='lm',
-    )
-    img_draw.text(
-        (365, 830 + index * 80),
-        status_mark,
-        font=sr_font_24,
-        fill=white_color,
-        anchor='mm',
-    )
+        img_draw.text(
+            (120, 830 + index * 80),
+            '等待加入探索队列...',
+            font=sr_font_22,
+            fill=white_color,
+            anchor='lm',
+        )
 
 
 async def get_resin_img(bot_id: str, user_id: str):
@@ -119,7 +129,7 @@ async def get_resin_img(bot_id: str, user_id: str):
 
 async def _draw_all_resin_img(img: Image.Image, uid: str, index: int):
     resin_img = await draw_resin_img(uid)
-    img.paste(resin_img, (500 * index, 0), resin_img)
+    img.paste(resin_img, (700 * index, 0), resin_img)
 
 
 async def seconds2hours_zhcn(seconds: int) -> str:
@@ -176,8 +186,13 @@ async def draw_resin_img(sr_uid: str) -> Image.Image:
 
     # 派遣
     task_task = []
-    for index, char in enumerate(daily_data['expeditions']):
-        task_task.append(_draw_task_img(img, img_draw, index, char))
+    for i in range(4):
+        char = (
+            daily_data['expeditions'][i]
+            if i < len(daily_data['expeditions'])
+            else None
+        )
+        task_task.append(_draw_task_img(img, img_draw, i, char))
     await asyncio.gather(*task_task)
 
     # 绘制树脂圆环
