@@ -87,6 +87,8 @@ async def _draw_task_img(
             anchor='mm',
         )
     else:
+        note_travel_img = note_travel_bg.copy()
+        img.paste(note_travel_img, (0, 790 + index * 80), note_travel_img)
         img_draw.text(
             (120, 830 + index * 80),
             '等待加入探索队列...',

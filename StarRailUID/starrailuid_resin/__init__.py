@@ -39,7 +39,7 @@ async def force_notice_job(bot: Bot, ev: Event):
 @scheduler.scheduled_job('cron', minute='*/30')
 async def notice_job():
     result = await get_notice_list()
-    logger.info('[推送检查]完成!等待消息推送中...')
+    logger.info('[sr推送检查]完成!等待消息推送中...')
     logger.debug(result)
 
     # 执行私聊推送
@@ -50,7 +50,7 @@ async def notice_job():
                 msg = result[bot_id]['direct'][user_id]
                 await bot.target_send(msg, 'direct', user_id, bot_id, '', '')
                 await asyncio.sleep(0.5)
-            logger.info('[推送检查] 私聊推送完成')
+            logger.info('[sr推送检查] 私聊推送完成')
             for gid in result[bot_id]['group']:
                 msg_list = []
                 for user_id in result[bot_id]['group'][gid]:
@@ -59,7 +59,7 @@ async def notice_job():
                     msg_list.append(MessageSegment.text(msg))
                 await bot.target_send(msg_list, 'group', gid, bot_id, '', '')
                 await asyncio.sleep(0.5)
-            logger.info('[推送检查] 群聊推送完成')
+            logger.info('[sr推送检查] 群聊推送完成')
 
 
 @sv_get_resin.on_fullmatch(('sr每日', 'srmr', 'sr实时便笺', 'sr便笺', 'sr便签'))
