@@ -14,8 +14,12 @@ from gsuid_core.utils.api.mys.tools import (
 
 from ..utils.api import get_sqla
 from ..sruid_utils.api.mys.api import _API
-from ..sruid_utils.api.mys.models import MonthlyAward, DailyNoteData
 from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
+from ..sruid_utils.api.mys.models import (
+    MonthlyAward,
+    DailyNoteData,
+    RoleBasicInfo,
+)
 
 RECOGNIZE_SERVER = {
     '1': 'prod_gf_cn',
@@ -223,6 +227,17 @@ class _MysApi(BaseMysApi):
             )
         if isinstance(data, Dict):
             data = cast(MonthlyAward, data['data'])
+        return data
+
+    async def get_role_basic_info(
+        self, sr_uid: str
+    ) -> Union[RoleBasicInfo, int]:
+        data = await self.simple_mys_req(
+            'STAR_RAIL_ROLE_BASIC_INFO_URL', sr_uid
+        )
+        print(data)
+        if isinstance(data, Dict):
+            data = cast(DailyNoteData, data['data'])
         return data
 
     async def _mys_req_get(

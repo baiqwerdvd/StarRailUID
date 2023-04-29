@@ -1,5 +1,13 @@
 from typing import Any, List, TypedDict
 
+
+class RoleBasicInfo(TypedDict):
+    avatar: str
+    nick_name: str
+    region: str
+    level: int
+
+
 ################
 # 每月札记相关 #
 ################
@@ -52,7 +60,7 @@ class MonthlyAward(TypedDict):
 ################
 # 实时便签 #
 ################
-class SingleExpedition(TypedDict):
+class Expedition(TypedDict):
     avatars: List[str]  # 头像Url
     status: str
     remaining_time: int
@@ -65,7 +73,7 @@ class DailyNoteData(TypedDict):
     stamina_recover_time: int
     accepted_expedition_num: int
     total_expedition_num: int
-    expeditions: List[SingleExpedition]
+    expeditions: List[Expedition]
 
 
 ################
