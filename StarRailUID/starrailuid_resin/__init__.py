@@ -26,7 +26,6 @@ sv_get_resin_admin = SV('sr强制推送', pm=1)
 async def send_daily_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[sr每日信息文字版]')
     uid = await get_uid(bot, ev)
-    print(uid)
     if uid is None:
         return await bot.send(UID_HINT)
     await bot.logger.info('[sr每日信息文字版]UID: {}'.format(uid))

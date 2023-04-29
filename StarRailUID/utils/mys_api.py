@@ -109,7 +109,6 @@ class _MysApi(BaseMysApi):
 
     async def get_daily_data(self, uid: str) -> Union[DailyNoteData, int]:
         data = await self.simple_mys_req('STAR_RAIL_NOTE_URL', uid)
-        print(data)
         if isinstance(data, Dict):
             data = cast(DailyNoteData, data['data'])
         return data
@@ -235,7 +234,6 @@ class _MysApi(BaseMysApi):
         data = await self.simple_mys_req(
             'STAR_RAIL_ROLE_BASIC_INFO_URL', sr_uid
         )
-        print(data)
         if isinstance(data, Dict):
             data = cast(DailyNoteData, data['data'])
         return data
@@ -253,7 +251,6 @@ class _MysApi(BaseMysApi):
             use_proxy = True
         else:
             _URL = _API[url]
-            print(_URL)
             HEADER = copy.deepcopy(self._HEADER)
             use_proxy = False
         if header:
@@ -288,7 +285,6 @@ class _MysApi(BaseMysApi):
             server_id = RECOGNIZE_SERVER.get(uid[0])
             is_os = False if int(uid[0]) < 6 else True
         ex_params = '&'.join([f'{k}={v}' for k, v in params.items()])
-        print(server_id, is_os, ex_params)
         if is_os:
             _URL = _API[f'{URL}_OS']
             HEADER = copy.deepcopy(self._HEADER_OS)
@@ -300,7 +296,6 @@ class _MysApi(BaseMysApi):
                 ex_params if ex_params else f'role_id={uid}&server={server_id}'
             )
         HEADER.update(header)
-        print(_URL)
         if cookie is not None:
             HEADER['Cookie'] = cookie
         elif 'Cookie' not in HEADER and isinstance(uid, str):

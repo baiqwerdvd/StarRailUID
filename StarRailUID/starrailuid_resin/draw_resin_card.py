@@ -87,32 +87,32 @@ async def _draw_task_img(
 
 
 async def get_resin_img(bot_id: str, user_id: str):
-    # try:
-    sqla = get_sqla(bot_id)
-    uid_list: List = await sqla.get_bind_sruid_list(user_id)
-    logger.info('[每日信息]UID: {}'.format(uid_list))
-    # 进行校验UID是否绑定CK
-    useable_uid_list = []
-    for uid in uid_list:
-        status = await sqla.get_user_cookie(uid)
-        if status is not None:
-            useable_uid_list.append(uid)
-    logger.info('[每日信息]可用UID: {}'.format(useable_uid_list))
-    if len(useable_uid_list) == 0:
-        return '请先绑定一个可用CK & UID再来查询哦~'
-    # 开始绘图任务
-    task = []
-    img = Image.new(
-        'RGBA', (based_w * len(useable_uid_list), based_h), (0, 0, 0, 0)
-    )
-    for uid_index, uid in enumerate(useable_uid_list):
-        task.append(_draw_all_resin_img(img, uid, uid_index))
-    await asyncio.gather(*task)
-    res = await convert_img(img)
-    logger.info('[查询每日信息]绘图已完成,等待发送!')
-    # except TypeError:
-    #     logger.exception('[查询每日信息]绘图失败!')
-    #     res = '你绑定过的UID中可能存在过期CK~请重新绑定一下噢~'
+    try:
+        sqla = get_sqla(bot_id)
+        uid_list: List = await sqla.get_bind_sruid_list(user_id)
+        logger.info('[每日信息]UID: {}'.format(uid_list))
+        # 进行校验UID是否绑定CK
+        useable_uid_list = []
+        for uid in uid_list:
+            status = await sqla.get_user_cookie(uid)
+            if status is not None:
+                useable_uid_list.append(uid)
+        logger.info('[每日信息]可用UID: {}'.format(useable_uid_list))
+        if len(useable_uid_list) == 0:
+            return '请先绑定一个可用CK & UID再来查询哦~'
+        # 开始绘图任务
+        task = []
+        img = Image.new(
+            'RGBA', (based_w * len(useable_uid_list), based_h), (0, 0, 0, 0)
+        )
+        for uid_index, uid in enumerate(useable_uid_list):
+            task.append(_draw_all_resin_img(img, uid, uid_index))
+        await asyncio.gather(*task)
+        res = await convert_img(img)
+        logger.info('[查询每日信息]绘图已完成,等待发送!')
+    except TypeError:
+        logger.exception('[查询每日信息]绘图失败!')
+        res = '你绑定过的UID中可能存在过期CK~请重新绑定一下噢~'
 
     return res
 
@@ -177,7 +177,6 @@ async def draw_resin_img(sr_uid: str) -> Image.Image:
     # 派遣
     task_task = []
     for index, char in enumerate(daily_data['expeditions']):
-        print(f'index: {index}, char: {char}')
         task_task.append(_draw_task_img(img, img_draw, index, char))
     await asyncio.gather(*task_task)
 
