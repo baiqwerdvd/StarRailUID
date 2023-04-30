@@ -19,6 +19,8 @@ from ..sruid_utils.api.mys.models import (
     MonthlyAward,
     DailyNoteData,
     RoleBasicInfo,
+    RoleIndex,
+    AvatarInfo
 )
 
 RECOGNIZE_SERVER = {
@@ -111,6 +113,27 @@ class _MysApi(BaseMysApi):
         data = await self.simple_mys_req('STAR_RAIL_NOTE_URL', uid)
         if isinstance(data, Dict):
             data = cast(DailyNoteData, data['data'])
+        return data
+
+    async def get_role_index(self, uid: str) -> Union[RoleIndex, int]:
+        data = await self.simple_mys_req('STAR_RAIL_INDEX_URL', uid)
+        if isinstance(data, Dict):
+            data = cast(RoleIndex, data['data'])
+        return data
+
+    async def get_avatar_info(
+        self, uid: str, avatar_id: int, need_wiki: bool = False
+    ) -> Union[AvatarInfo, int]:
+        data = await self.simple_mys_req(
+            'STAR_RAIL_AVATAR_INFO_URL',
+            uid,
+            params={
+                "id": avatar_id,
+                "need_wiki": "true" if need_wiki else "false"
+            },
+        )
+        if isinstance(data, Dict):
+            data = cast(AvatarInfo, data['data'])
         return data
 
     async def get_sign_list(self, uid) -> Union[SignList, int]:
@@ -283,7 +306,7 @@ class _MysApi(BaseMysApi):
             server_id = 'cn_qd01' if is_os else 'prod_gf_cn'
         else:
             server_id = RECOGNIZE_SERVER.get(uid[0])
-            is_os = False if int(uid[0]) < 6 else True
+            is_os = int(uid[0]) >= 6
         ex_params = '&'.join([f'{k}={v}' for k, v in params.items()])
         if is_os:
             _URL = _API[f'{URL}_OS']
@@ -292,8 +315,9 @@ class _MysApi(BaseMysApi):
         else:
             _URL = _API[URL]
             HEADER = copy.deepcopy(self._HEADER)
+            param_str = f'role_id={uid}&server={server_id}'
             HEADER['DS'] = get_ds_token(
-                ex_params if ex_params else f'role_id={uid}&server={server_id}'
+                f"{ex_params}&{param_str}" if ex_params else param_str
             )
         HEADER.update(header)
         if cookie is not None:
@@ -303,11 +327,12 @@ class _MysApi(BaseMysApi):
             if ck is None:
                 return -51
             HEADER['Cookie'] = ck
+        param_dict = {'server': server_id, 'role_id': uid}
         data = await self._mys_request(
             url=_URL,
             method='GET',
             header=HEADER,
-            params=params if params else {'server': server_id, 'role_id': uid},
+            params={**params, **param_dict} if params else param_dict,
             use_proxy=True if is_os else False,
         )
         return data

@@ -1,4 +1,4 @@
-from typing import Any, List, TypedDict
+from typing import Any, Dict, List, Optional, TypedDict
 
 
 class RoleBasicInfo(TypedDict):
@@ -119,3 +119,86 @@ class SignList(TypedDict):
     biz: str
     resign: bool
     short_extra_award: SignExtraAward
+
+
+#####################
+# 基础信息 角色信息 #
+####################
+
+
+class Stats(TypedDict):
+    active_days: int
+    avatar_num: int
+    achievement_num: int
+    chest_num: int
+    abyss_process: str
+
+
+class AvatarListItem(TypedDict):
+    id: int
+    level: int
+    name: str
+    element: str
+    icon: str
+    rarity: int
+    rank: int
+    is_chosen: bool
+
+
+class RoleIndex(TypedDict):
+    stats: Stats
+    avatar_list: List[AvatarListItem]
+
+
+################
+# 角色详细信息 #
+################
+
+
+class Equip(TypedDict):
+    id: int
+    level: int
+    rank: int
+    name: str
+    desc: str
+    icon: str
+
+
+class RelicsItem(TypedDict):
+    id: int
+    level: int
+    pos: int
+    name: str
+    desc: str
+    icon: str
+    rarity: int
+
+
+class RanksItem(TypedDict):
+    id: int
+    pos: int
+    name: str
+    icon: str
+    desc: str
+    is_unlocked: bool
+
+
+class AvatarListItemDetail(TypedDict):
+    id: int
+    level: int
+    name: str
+    element: str
+    icon: str
+    rarity: int
+    rank: int
+    image: str
+    equip: Optional[Equip]
+    relics: List[RelicsItem]
+    ornaments: List
+    ranks: List[RanksItem]
+
+
+class AvatarInfo(TypedDict):
+    avatar_list: List[AvatarListItemDetail]
+    equip_wiki: Dict[str, str]
+    relic_wiki: Dict
