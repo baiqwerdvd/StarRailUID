@@ -7,7 +7,7 @@ from .draw_roleinfo_card import get_role_img
 sv_get_info = SV('sr查询信息')
 
 
-@sv_get_info.on_command(('sr', 'sruid'))
+@sv_get_info.on_command(('sruid'))
 async def send_role_info(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     if name:
