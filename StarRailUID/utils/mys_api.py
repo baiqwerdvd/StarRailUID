@@ -11,6 +11,7 @@ from gsuid_core.utils.api.mys.tools import (
     get_web_ds_token,
 )
 
+from .api import srdbsqla
 from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
     RoleIndex,
@@ -22,7 +23,7 @@ from ..sruid_utils.api.mys.models import (
 
 RECOGNIZE_SERVER = {
     '1': 'prod_gf_cn',
-    # '2': 'cn_gf01',
+    '2': 'prod_gf_cn',
     # '5': 'cn_qd01',
     # '6': 'os_usa',
     # '7': 'os_euro',
@@ -74,8 +75,10 @@ class MysApi(_MysApi):
             'STAR_RAIL_AVATAR_INFO_URL',
             uid,
             params={
-                "id": avatar_id,
-                "need_wiki": "true" if need_wiki else "false",
+                'id': avatar_id,
+                'need_wiki': 'true' if need_wiki else 'false',
+                'role_id': uid,
+                'server': RECOGNIZE_SERVER.get(str(uid)[0], 'prod_gf_cn'),
             },
         )
         if isinstance(data, Dict):
@@ -209,3 +212,7 @@ class MysApi(_MysApi):
 
 
 mys_api = MysApi()
+mys_api.dbsqla = srdbsqla
+mys_api.MAPI.update(_API)
+mys_api.is_sr = True
+mys_api.RECOGNIZE_SERVER = RECOGNIZE_SERVER
