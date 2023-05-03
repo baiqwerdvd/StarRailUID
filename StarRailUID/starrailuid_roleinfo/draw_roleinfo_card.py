@@ -1,3 +1,4 @@
+import asyncio
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -7,6 +8,12 @@ from gsuid_core.logger import logger
 
 from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
+from ..sruid_utils.api.mys.models import (
+    RoleBasicInfo,
+    RoleIndex,
+    Stats,
+    AvatarListItem,
+)
 from .utils import get_icon, wrap_list
 from ..utils.image.convert import convert_img
 from ..utils.fonts.starrail_fonts import (
@@ -73,12 +80,9 @@ def _lv(level: int) -> str:
     return f"Lv.0{level}" if level < 10 else f"Lv.{level}"
 
 
-async def draw_role_card(sr_uid: str) -> Image.Image:
-    role_basic_info = await mys_api.get_role_basic_info(sr_uid)
-    role_index = await mys_api.get_role_index(sr_uid)
-    stats = role_index['stats']
-    avatars = role_index['avatar_list']
-
+async def _draw_card_1(
+    sr_uid: str, role_basic_info: RoleBasicInfo, stats: Stats
+) -> Image.Image:
     # 名称
     nickname = role_basic_info['nickname']
 
@@ -91,15 +95,6 @@ async def draw_role_card(sr_uid: str) -> Image.Image:
 
     # 忘却之庭
     abyss_process = stats['abyss_process']
-
-    # 角色武器
-    details = (await mys_api.get_avatar_info(sr_uid, avatars[0]['id']))[
-        'avatar_list'
-    ]
-    equips: Dict[int, Optional[str]] = {}
-    for detail in details:
-        equip = detail['equip']
-        equips[detail['id']] = equip['icon'] if equip is not None else None  # type: ignore
 
     img_bg1 = bg1.copy()
     bg1_draw = ImageDraw.Draw(img_bg1)
@@ -161,48 +156,94 @@ async def draw_role_card(sr_uid: str) -> Image.Image:
         anchor='mm',
     )
 
+    return img_bg1
+
+
+async def _draw_avatar_card(
+    avatar: AvatarListItem, equips: Dict[int, Optional[str]]
+) -> Image.Image:
+    char_bg = (char_bg_4 if avatar['rarity'] == 4 else char_bg_5).copy()
+    char_draw = ImageDraw.Draw(char_bg)
+    char_icon = await get_icon(avatar['icon'])
+    element_icon = elements[avatar['element']]
+
+    char_bg.paste(char_icon, (4, 8), mask=char_icon)
+    char_bg.paste(element_icon, (81, 10), mask=element_icon)
+
+    if equip := equips[avatar['id']]:
+        char_bg.paste(circle, (0, 0), mask=circle)
+        equip_icon = (await get_icon(equip)).resize((48, 48))
+        char_bg.paste(equip_icon, (9, 80), mask=equip_icon)
+
+    char_draw.text(
+        (60, 146),
+        _lv(avatar['level']),
+        font=sr_font_24,
+        fill=color_color,
+        anchor='mm',
+    )
+    return char_bg
+
+
+async def _draw_line(
+    avatars: List[AvatarListItem], equips: Dict[int, Optional[str]]
+) -> Image.Image:
+    line = bg2.copy()
+    x = 70
+    char_bgs: List[Image.Image] = await asyncio.gather(
+        *[_draw_avatar_card(avatar, equips) for avatar in avatars]
+    )
+    for char_bg in char_bgs:
+        line.paste(char_bg, (x, 0), mask=char_bg)
+        x += 135
+    return line
+
+
+async def _draw_card_2(
+    avatars: List[AvatarListItem], equips: Dict[int, Optional[str]]
+) -> Image.Image:
     # 角色部分 每五个一组
-    lines = []
-    for five_avatars in wrap_list(avatars, 5):
-        line = bg2.copy()
-        x = 70
-        for avatar in five_avatars:
-            char_bg = (
-                char_bg_4 if avatar['rarity'] == 4 else char_bg_5
-            ).copy()
-            char_draw = ImageDraw.Draw(char_bg)
-            char_icon = await get_icon(avatar['icon'])
-            element_icon = elements[avatar['element']]
+    lines = await asyncio.gather(
+        *[
+            _draw_line(five_avatars, equips)
+            for five_avatars in wrap_list(avatars, 5)
+        ]
+    )
+    img_card_2 = Image.new("RGBA", (800, len(lines) * 200))
 
-            char_bg.paste(char_icon, (4, 8), mask=char_icon)
-            char_bg.paste(element_icon, (81, 10), mask=element_icon)
+    y = 0
+    for line in lines:
+        img_card_2.paste(line, (0, y), mask=line)
+        y += 200
+    return img_card_2
 
-            if equip := equips[avatar['id']]:
-                char_bg.paste(circle, (0, 0), mask=circle)
-                equip_icon = (await get_icon(equip)).resize((48, 48))
-                char_bg.paste(equip_icon, (9, 80), mask=equip_icon)
 
-            char_draw.text(
-                (60, 146),
-                _lv(avatar['level']),
-                font=sr_font_24,
-                fill=color_color,
-                anchor='mm',
-            )
+async def draw_role_card(sr_uid: str) -> Image.Image:
+    role_basic_info = await mys_api.get_role_basic_info(sr_uid)
+    role_index = await mys_api.get_role_index(sr_uid)
+    stats = role_index['stats']
+    avatars = role_index['avatar_list']
 
-            line.paste(char_bg, (x, 0))
-            x += 135
-        lines.append(line)
+    # 角色武器
+    details = (await mys_api.get_avatar_info(sr_uid, avatars[0]['id']))[
+        'avatar_list'
+    ]
+    equips: Dict[int, Optional[str]] = {}
+    for detail in details:
+        equip = detail['equip']
+        equips[detail['id']] = equip['icon'] if equip is not None else None  # type: ignore
 
     # 绘制总图
-    img = Image.new("RGBA", (800, 880 + len(lines) * 200), bg_color)
-    img.paste(img_bg1, (0, 0))
-
-    y = 810
-    for line in lines:
-        img.paste(line, (0, y), mask=line)
-        y += 200
-
-    img.paste(bg3, (0, len(lines) * 200 + 810))
-
+    img1, img2 = await asyncio.gather(
+        *[
+            _draw_card_1(sr_uid, role_basic_info, stats),
+            _draw_card_2(avatars, equips),
+        ]
+    )
+    img2: Image.Image
+    height = img2.size[1]
+    img = Image.new("RGBA", (800, 880 + height), bg_color)
+    img.paste(img1, (0, 0))
+    img.paste(img2, (0, 810))
+    img.paste(bg3, (0, height + 810))
     return img
