@@ -29,6 +29,9 @@
 <details><summary>sr每月统计</summary><p>
 <img src="https://s2.loli.net/2023/04/30/MGQuacdWS9kfUpg.png"/> 
 </p></details>
+<details><summary>sr个人信息</summary><p>
+<img src="https://s2.loli.net/2023/05/03/wurJpXvQKPa2AS7.png"/> 
+</p></details>
 
 以及签到等..
 
