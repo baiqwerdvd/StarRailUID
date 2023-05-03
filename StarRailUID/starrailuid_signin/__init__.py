@@ -11,9 +11,9 @@ from gsuid_core.logger import logger
 from ..utils.api import get_sqla
 from .sign import sign_in, daily_sign
 from ..utils.error_reply import UID_HINT
-from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
+from ..starrailuid_config.sr_config import srconfig
 
-SIGN_TIME = gsconfig.get_config('SignTime').data
+SIGN_TIME = srconfig.get_config('SignTime').data
 
 sv_sign = SV('星穹铁道签到')
 sv_sign_config = SV('星穹铁道管理', pm=2)
@@ -22,7 +22,7 @@ sv_sign_config = SV('星穹铁道管理', pm=2)
 # 每日零点半执行米游社星穹铁道签到
 @scheduler.scheduled_job('cron', hour=SIGN_TIME[0], minute=SIGN_TIME[1])
 async def sign_at_night():
-    if gsconfig.get_config('SchedSignin').data:
+    if srconfig.get_config('SchedSignin').data:
         await send_daily_sign()
 
 

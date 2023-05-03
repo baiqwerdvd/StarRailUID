@@ -1,26 +1,15 @@
 import asyncio
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Union, Optional
 
 from PIL import Image, ImageDraw
+from gsuid_core.utils.error_reply import get_error
 
-from gsuid_core.logger import logger
-
-from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
-from ..sruid_utils.api.mys.models import (
-    RoleBasicInfo,
-    RoleIndex,
-    Stats,
-    AvatarListItem,
-)
 from .utils import get_icon, wrap_list
 from ..utils.image.convert import convert_img
-from ..utils.fonts.starrail_fonts import (
-    sr_font_24,
-    sr_font_30,
-    sr_font_36,
-)
+from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_36
+from ..sruid_utils.api.mys.models import Stats, RoleBasicInfo, AvatarListItem
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 
@@ -58,22 +47,9 @@ elements = {
 }
 
 
-async def get_role_img(bot_id: str, user_id: str):
-    sqla = get_sqla(bot_id)
-    uid_list: List = await sqla.get_bind_sruid_list(user_id)
-    logger.info(f'[每日信息]UID: {uid_list}')
-    # 进行校验UID是否绑定CK
-    useable_uid_list = []
-    for uid in uid_list:
-        status = await sqla.get_user_cookie(uid)
-        if status is not None:
-            useable_uid_list.append(uid)
-    uid = useable_uid_list[0]
-    res = await convert_img(await draw_role_card(uid))
-    logger.info(f'[每日信息]可用UID: {useable_uid_list}')
-    if not useable_uid_list:
-        return '请先绑定一个可用CK & UID再来查询哦~'
-    return res
+async def get_role_img(uid: str) -> Union[bytes, str]:
+    im = await draw_role_card(uid)
+    return im
 
 
 def _lv(level: int) -> str:
@@ -218,20 +194,28 @@ async def _draw_card_2(
     return img_card_2
 
 
-async def draw_role_card(sr_uid: str) -> Image.Image:
+async def draw_role_card(sr_uid: str) -> Union[bytes, str]:
     role_basic_info = await mys_api.get_role_basic_info(sr_uid)
     role_index = await mys_api.get_role_index(sr_uid)
+
+    if isinstance(role_index, int):
+        return get_error(role_index)
+    if isinstance(role_basic_info, int):
+        return get_error(role_basic_info)
+
     stats = role_index['stats']
     avatars = role_index['avatar_list']
 
+    detail = await mys_api.get_avatar_info(sr_uid, avatars[0]['id'])
+    if isinstance(detail, int):
+        return get_error(detail)
+
     # 角色武器
-    details = (await mys_api.get_avatar_info(sr_uid, avatars[0]['id']))[
-        'avatar_list'
-    ]
+    details = detail['avatar_list']
     equips: Dict[int, Optional[str]] = {}
     for detail in details:
         equip = detail['equip']
-        equips[detail['id']] = equip['icon'] if equip is not None else None  # type: ignore
+        equips[detail['id']] = equip['icon'] if equip is not None else None
 
     # 绘制总图
     img1, img2 = await asyncio.gather(
@@ -246,4 +230,4 @@ async def draw_role_card(sr_uid: str) -> Image.Image:
     img.paste(img1, (0, 0))
     img.paste(img2, (0, 810))
     img.paste(bg3, (0, height + 810))
-    return img
+    return await convert_img(img)

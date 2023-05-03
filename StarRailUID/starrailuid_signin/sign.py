@@ -4,10 +4,11 @@ from copy import deepcopy
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
+from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
 from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
-from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
+from ..starrailuid_config.sr_config import srconfig
 
 private_msg_list = {}
 group_msg_list = {}
@@ -45,7 +46,7 @@ async def sign_in(sr_uid: str) -> str:
         if 'risk_code' in sign_data:
             # 出现校验码
             if sign_data['risk_code'] == 375:
-                if gsconfig.get_config('CaptchaPass').data:
+                if core_plugins_config.get_config('CaptchaPass').data:
                     gt = sign_data['gt']
                     ch = sign_data['challenge']
                     vl, ch = await mys_api._pass(gt, ch, Header)
@@ -125,7 +126,7 @@ async def single_daily_sign(bot_id: str, sr_uid: str, gid: str, qid: str):
                 'push_message': '',
             }
         # 检查是否开启简洁签到
-        if gsconfig.get_config('SignReportSimple').data:
+        if srconfig.get_config('SignReportSimple').data:
             # 如果失败, 则添加到推送列表
             if im.startswith(('sr签到失败', '网络有点忙', 'OK', 'ok')):
                 message = f'[CQ:at,qq={qid}] {im}'

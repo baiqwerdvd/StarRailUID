@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional, TypedDict
 
 class RoleBasicInfo(TypedDict):
     avatar: str
-    nick_name: str
+    nickname: str
     region: str
     level: int
 

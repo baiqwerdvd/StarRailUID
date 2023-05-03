@@ -5,8 +5,8 @@ from gsuid_core.logger import logger
 
 from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
+from ..starrailuid_config.sr_config import srconfig
 from ..sruid_utils.api.mys.models import DailyNoteData
-from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
 
 MR_NOTICE = '\n可发送[srmr]或者[sr每日]来查看更多信息！\n'
 
@@ -50,7 +50,7 @@ async def all_check(
     for mode in NOTICE.keys():
         # 检查条件
         if push_data[f'{mode}_is_push'] == 'on':
-            if gsconfig.get_config('CrazyNotice').data:
+            if srconfig.get_config('CrazyNotice').data:
                 if not await check(mode, raw_data, push_data[f'{mode}_value']):
                     await sqla.update_push_data(
                         uid, {f'{mode}_is_push': 'off'}

@@ -1,7 +1,10 @@
+import re
+
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from utils.convert import get_uid
 from gsuid_core.models import Event
-import re
+
 from .draw_roleinfo_card import get_role_img
 
 sv_get_info = SV('sr查询信息')
@@ -13,5 +16,9 @@ async def send_role_info(bot: Bot, ev: Event):
     if name:
         return
 
+    uid = await get_uid(bot, ev)
+    if uid is None:
+        return '你还没有绑定UID噢,请使用[sr绑定uid123]完成绑定!'
+
     await bot.logger.info('开始执行[sr查询信息]')
-    await bot.send(await get_role_img(bot.bot_id, ev.user_id))
+    await bot.send(await get_role_img(uid))

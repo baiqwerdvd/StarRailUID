@@ -1,26 +1,23 @@
 import copy
 import random
+from typing import Dict, Union, cast
 from string import digits, ascii_letters
-from typing import Dict, Union, Literal, Optional, cast
 
-from gsuid_core.utils.api.mys.request import BaseMysApi
+from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.models import MysSign, SignInfo, SignList
 from gsuid_core.utils.api.mys.tools import (
     random_hex,
-    get_ds_token,
     generate_os_ds,
     get_web_ds_token,
 )
 
-from ..utils.api import get_sqla
 from ..sruid_utils.api.mys.api import _API
-from ....GenshinUID.GenshinUID.genshinuid_config.gs_config import gsconfig
 from ..sruid_utils.api.mys.models import (
+    RoleIndex,
+    AvatarInfo,
     MonthlyAward,
     DailyNoteData,
     RoleBasicInfo,
-    RoleIndex,
-    AvatarInfo
 )
 
 RECOGNIZE_SERVER = {
@@ -34,60 +31,9 @@ RECOGNIZE_SERVER = {
 }
 
 
-class _MysApi(BaseMysApi):
+class MysApi(_MysApi):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    async def _pass(self, gt: str, ch: str, header: Dict):
-        # 警告：使用该服务（例如某RR等）需要注意风险问题
-        # 本项目不以任何形式提供相关接口
-        # 代码来源：GITHUB项目MIT开源
-        _pass_api = gsconfig.get_config('_pass_API').data
-        if _pass_api:
-            data = await self._mys_request(
-                url=f'{_pass_api}&gt={gt}&challenge={ch}',
-                method='GET',
-                header=header,
-            )
-            if isinstance(data, int):
-                return None, None
-            else:
-                validate = data['data']['validate']
-                ch = data['data']['challenge']
-        else:
-            validate = None
-
-        return validate, ch
-
-    async def _upass(self, header: Dict, is_bbs: bool = False):
-        if is_bbs:
-            raw_data = await self.get_bbs_upass_link(header)
-        else:
-            raw_data = await self.get_upass_link(header)
-        if isinstance(raw_data, int):
-            return False
-        gt = raw_data['data']['gt']
-        ch = raw_data['data']['challenge']
-
-        vl, ch = await self._pass(gt, ch, header)
-
-        if vl:
-            await self.get_header_and_vl(header, ch, vl)
-        else:
-            return True
-
-    async def get_ck(
-        self, uid: str, mode: Literal['OWNER', 'RANDOM'] = 'RANDOM'
-    ) -> Optional[str]:
-        sqla = get_sqla('TEMP')
-        if mode == 'RANDOM':
-            return await sqla.get_random_cookie(uid)
-        else:
-            return await sqla.get_user_cookie(uid)
-
-    async def get_stoken(self, uid: str) -> Optional[str]:
-        sqla = get_sqla('TEMP')
-        return await sqla.get_user_stoken(uid)
 
     async def create_qrcode_url(self) -> Union[Dict, int]:
         device_id: str = ''.join(random.choices(ascii_letters + digits, k=64))
@@ -129,7 +75,7 @@ class _MysApi(BaseMysApi):
             uid,
             params={
                 "id": avatar_id,
-                "need_wiki": "true" if need_wiki else "false"
+                "need_wiki": "true" if need_wiki else "false",
             },
         )
         if isinstance(data, Dict):
@@ -261,81 +207,5 @@ class _MysApi(BaseMysApi):
             data = cast(DailyNoteData, data['data'])
         return data
 
-    async def _mys_req_get(
-        self,
-        url: str,
-        is_os: bool,
-        params: Dict,
-        header: Optional[Dict] = None,
-    ) -> Union[Dict, int]:
-        if is_os:
-            _URL = _API[f'{url}_OS']
-            HEADER = copy.deepcopy(self._HEADER_OS)
-            use_proxy = True
-        else:
-            _URL = _API[url]
-            HEADER = copy.deepcopy(self._HEADER)
-            use_proxy = False
-        if header:
-            HEADER.update(header)
 
-        if 'Cookie' not in HEADER and 'uid' in params:
-            ck = await self.get_ck(params['uid'])
-            if ck is None:
-                return -51
-            HEADER['Cookie'] = ck
-        data = await self._mys_request(
-            url=_URL,
-            method='GET',
-            header=HEADER,
-            params=params,
-            use_proxy=use_proxy,
-        )
-        return data
-
-    async def simple_mys_req(
-        self,
-        URL: str,
-        uid: Union[str, bool],
-        params: Dict = {},
-        header: Dict = {},
-        cookie: Optional[str] = None,
-    ) -> Union[Dict, int]:
-        if isinstance(uid, bool):
-            is_os = uid
-            server_id = 'cn_qd01' if is_os else 'prod_gf_cn'
-        else:
-            server_id = RECOGNIZE_SERVER.get(uid[0])
-            is_os = int(uid[0]) >= 6
-        ex_params = '&'.join([f'{k}={v}' for k, v in params.items()])
-        if is_os:
-            _URL = _API[f'{URL}_OS']
-            HEADER = copy.deepcopy(self._HEADER_OS)
-            HEADER['DS'] = generate_os_ds()
-        else:
-            _URL = _API[URL]
-            HEADER = copy.deepcopy(self._HEADER)
-            param_str = f'role_id={uid}&server={server_id}'
-            HEADER['DS'] = get_ds_token(
-                f"{ex_params}&{param_str}" if ex_params else param_str
-            )
-        HEADER.update(header)
-        if cookie is not None:
-            HEADER['Cookie'] = cookie
-        elif 'Cookie' not in HEADER and isinstance(uid, str):
-            ck = await self.get_ck(uid)
-            if ck is None:
-                return -51
-            HEADER['Cookie'] = ck
-        param_dict = {'server': server_id, 'role_id': uid}
-        data = await self._mys_request(
-            url=_URL,
-            method='GET',
-            header=HEADER,
-            params={**params, **param_dict} if params else param_dict,
-            use_proxy=True if is_os else False,
-        )
-        return data
-
-
-mys_api = _MysApi()
+mys_api = MysApi()
