@@ -163,7 +163,7 @@ class MysApi(_MysApi):
                 },
             )
         else:
-            pass
+            data = -99
         if isinstance(data, Dict):
             data = cast(MysSign, data['data'])
         return data
@@ -207,7 +207,7 @@ class MysApi(_MysApi):
             'STAR_RAIL_ROLE_BASIC_INFO_URL', sr_uid
         )
         if isinstance(data, Dict):
-            data = cast(DailyNoteData, data['data'])
+            data = cast(RoleBasicInfo, data['data'])
         return data
 
 

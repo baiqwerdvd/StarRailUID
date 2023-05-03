@@ -13,7 +13,7 @@ ROLEINFO_PATH.mkdir(parents=True, exist_ok=True)
 
 def wrap_list(lst: List[T], n: int) -> Generator[List[T], None, None]:
     for i in range(0, len(lst), n):
-        yield lst[i : i + n]
+        yield lst[i : i + n]  # noqa:E203
 
 
 async def get_icon(url: str) -> Image.Image:
