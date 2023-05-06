@@ -202,14 +202,13 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         fill=black_color,
         anchor='lm',
     )
-
+    xy = ((0, 0), (2100, 2100))
+    temp = -90
     if not data['month_data']['group_by']:
         for index, action in enumerate(COLOR_MAP):
             if action == '其他':
                 continue
     else:
-        xy = ((0, 0), (2100, 2100))
-        temp = -90
         pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         for index, i in enumerate(data['month_data']['group_by']):
@@ -230,11 +229,11 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         img.paste(result_pie, (138, 618), result_pie)
 
     if last_monthly_data:
-        xy = ((0, 0), (2100, 2100))
-        temp = -90
         pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
-        for index, i in enumerate(data['month_data']['group_by']):
+        for index, i in enumerate(
+            last_monthly_data['data']['month_data']['group_by']
+        ):
             pie_image_draw.pieslice(
                 xy,
                 temp,
@@ -243,7 +242,6 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
             )
             temp = temp + (i['percent'] / 100) * 360
     else:
-        xy = ((0, 0), (2100, 2100))
         pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         pie_image_draw.ellipse(xy, fill=(128, 128, 128))
