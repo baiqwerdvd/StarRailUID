@@ -22,19 +22,20 @@ async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
         sqla = get_sqla(bot_id)
         user_list = await sqla.get_all_push_user_list()
         for user in user_list:
-            raw_data = await mys_api.get_daily_data(user.sr_uid)
-            if isinstance(raw_data, int):
-                logger.error(f'[sr推送提醒]获取{user.sr_uid}的数据失败!')
-                continue
-            push_data = await sqla.select_push_data(user.sr_uid)
-            msg_dict = await all_check(
-                user.bot_id,
-                raw_data,
-                push_data.__dict__,
-                msg_dict,
-                user.user_id,
-                user.sr_uid,
-            )
+            if user.sr_uid is not None:
+                raw_data = await mys_api.get_daily_data(user.sr_uid)
+                if isinstance(raw_data, int):
+                    logger.error(f'[sr推送提醒]获取{user.sr_uid}的数据失败!')
+                    continue
+                push_data = await sqla.select_push_data(user.sr_uid)
+                msg_dict = await all_check(
+                    user.bot_id,
+                    raw_data,
+                    push_data.__dict__,
+                    msg_dict,
+                    user.user_id,
+                    user.sr_uid,
+                )
     return msg_dict
 
 
