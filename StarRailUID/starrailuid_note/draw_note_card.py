@@ -1,5 +1,7 @@
+import json
 from pathlib import Path
 from typing import Union
+from datetime import datetime
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
@@ -7,6 +9,7 @@ from gsuid_core.logger import logger
 from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
 from ..utils.image.convert import convert_img
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.fonts.starrail_fonts import sr_font_20, sr_font_28, sr_font_34
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
@@ -18,6 +21,7 @@ first_color = (29, 29, 29)
 second_color = (67, 61, 56)
 second_color2 = (98, 98, 98)
 black_color = (54, 54, 54)
+white_color = (213, 213, 213)
 
 COLOR_MAP = {
     '每日活跃': (248, 227, 157),
@@ -38,10 +42,46 @@ COLOR_MAP = {
 
 
 async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
+    path = PLAYER_PATH / str(sr_uid)
+    if not path.exists():
+        path.mkdir(parents=True, exist_ok=True)
+
+    # 获取当前时间
+    now = datetime.now()
+    current_year_mon = now.strftime('%Y-%m')
+
     # 获取数据
     data = await mys_api.get_award(sr_uid)
     if isinstance(data, int):
         return get_error(data)
+
+    # 保存数据
+    with open(
+        path / f'monthly_{current_year_mon}.json', 'w', encoding='utf-8'
+    ) as f:
+        save_data = json.dumps(
+            {
+                'data_time': now.strftime('%Y-%m-%d %H:%M:%S'),
+                'data': data,
+            },
+            ensure_ascii=False,
+        )
+        f.write(save_data)
+
+    # 获取上月数据
+    last_month = now.month - 1
+    last_year = now.year
+    if last_month == 0:
+        last_month = 12
+        last_year -= 1
+    last_year_mon = f'{last_year}-{last_month:02d}'
+    last_monthly_path = path / f'monthly_{last_year_mon}.json'
+    if last_monthly_path.exists():
+        with open(last_monthly_path, 'r', encoding='utf-8') as f:
+            last_monthly_data = json.load(f)
+    else:
+        last_monthly_data = None
+
     # nickname and level
     role_basic_info = await mys_api.get_role_basic_info(sr_uid)
     if isinstance(role_basic_info, int):
@@ -58,48 +98,16 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     month_hcoin = data['month_data']['current_hcoin']
     month_rails_pass = data['month_data']['current_rails_pass']
     lastmonth_hcoin = data['month_data']['last_hcoin']
-    # lastmonth_rails_pass = data['month_data']['last_rails_pass']
+    lastmonth_rails_pass = data['month_data']['last_rails_pass']
 
     day_hcoin_str = await int_carry(day_hcoin)
-    # day_rails_pass_str = await int_carry(day_rails_pass)
-    # month_hcoin_str = await int_carry(month_hcoin)
-    # month_rails_pass_str = await int_carry(month_rails_pass)
-    # lastday_stone_str = f'昨日星琼:{await int_carry(lastday_hcoin)}'
-    # lastday_mora_str = f'昨日星轨通票&星轨专票:' \
-    #                    f'{await int_carry(lastday_rails_pass)}'
-    # lastmonth_stone_str = f'上月星琼:{await int_carry(lastmonth_hcoin)}'
-    # lastmonth_mora_str = f'上月星轨通票&星轨专票:' \
-    #                      f'{await int_carry(lastmonth_rails_pass)}'
-
-    # 处理数据
-    # 今日比昨日 星琼
-    day_hcoin_percent = day_hcoin / lastday_hcoin if lastday_hcoin != 0 else 1
-    day_hcoin_percent = day_hcoin_percent if day_hcoin_percent <= 1 else 1
-    # 今日比昨日 星轨通票&星轨专票
-    day_rails_pass_percent = (
-        day_rails_pass / lastday_rails_pass if lastday_rails_pass != 0 else 1
-    )
-    day_rails_pass_percent = (
-        day_rails_pass_percent if day_rails_pass_percent <= 1 else 1
-    )
-    # 本月比上月 星琼
-    month_hcoin_percent = (
-        month_hcoin / lastmonth_hcoin if lastmonth_hcoin != 0 else 1
-    )
-    month_hcoin_percent = (
-        month_hcoin_percent if month_hcoin_percent <= 1 else 1
-    )
-    # 本月比上月 星轨通票&星轨专票
-    month_rails_pass_percent = (
-        month_rails_pass / month_rails_pass if month_rails_pass != 0 else 1
-    )
-    month_rails_pass_percent = (
-        month_rails_pass_percent if month_rails_pass_percent <= 1 else 1
-    )
-
-    # # 获取背景图片各项参数
-    # based_w = 700
-    # based_h = 1300
+    day_rails_pass_str = await int_carry(day_rails_pass)
+    month_hcoin_str = await int_carry(month_hcoin)
+    month_rails_pass_str = await int_carry(month_rails_pass)
+    lastday_hcoin_str = await int_carry(lastday_hcoin)
+    lastday_rails_pass_str = await int_carry(lastday_rails_pass)
+    lastmonth_hcoin_str = await int_carry(lastmonth_hcoin)
+    lastmonth_rails_pass_str = await int_carry(lastmonth_rails_pass)
 
     img = monthly_bg.copy()
     avatar_img = avatar_default.copy()
@@ -111,12 +119,12 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
 
     # 写Nickname
     img_draw.text(
-        (310, 183), nickname, font=sr_font_34, fill=first_color, anchor='lm'
+        (310, 184), nickname, font=sr_font_34, fill=first_color, anchor='lm'
     )
 
     # 写UID
     img_draw.text(
-        (300, 215),
+        (267, 219),
         f'UID {sr_uid}',
         font=sr_font_20,
         fill=second_color2,
@@ -125,96 +133,129 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
 
     # 写本日星琼
     img_draw.text(
-        (300, 260),
+        (283, 326),
         day_hcoin_str,
         font=sr_font_28,
-        fill=second_color2,
+        fill=white_color,
         anchor='lm',
     )
 
     # 写本月星琼
     img_draw.text(
-        (300, 260),
-        day_hcoin_str,
+        (513, 326),
+        month_hcoin_str,
         font=sr_font_28,
-        fill=second_color2,
+        fill=white_color,
         anchor='lm',
     )
 
-    # 写本日星琼
+    # 写昨日星琼
     img_draw.text(
-        (300, 260),
-        day_hcoin_str,
+        (283, 366),
+        lastday_hcoin_str,
         font=sr_font_28,
-        fill=second_color2,
+        fill=black_color,
         anchor='lm',
     )
 
-    # 写本日星琼
+    # 写上月星琼
     img_draw.text(
-        (300, 260),
-        day_hcoin_str,
+        (513, 366),
+        lastmonth_hcoin_str,
         font=sr_font_28,
-        fill=second_color2,
+        fill=black_color,
         anchor='lm',
     )
 
-    ring_pic = Image.open(TEXT_PATH / 'ring.apng')
-    ring_list = []
-    ring_list.append([int(day_hcoin_percent * 89 + 0.5), (-5, 475)])
-    ring_list.append([int(day_rails_pass_percent * 89 + 0.5), (371, 475)])
-    ring_list.append([int(month_hcoin_percent * 89 + 0.5), (-5, 948)])
-    ring_list.append([int(month_rails_pass_percent * 89 + 0.5), (371, 948)])
-    ring_list.sort(key=lambda x: -x[0], reverse=True)
-    print(ring_list)
-    for i in ring_list:
-        ring_pic.seek(i[0])
-        img.paste(ring_pic, i[1], ring_pic)
+    # 写本日铁票
+    img_draw.text(
+        (283, 431),
+        day_rails_pass_str,
+        font=sr_font_28,
+        fill=white_color,
+        anchor='lm',
+    )
 
-    # 具体数据
-    # img_draw.text((243, 718), str(day_hcoin_percent),
-    # first_color, sr_font_58, 'mm')
-    # img_draw.text((625, 718), str(day_rails_pass_percent),
-    # first_color, sr_font_58, 'mm')
-    # img_draw.text((245, 1192), str(month_hcoin_str),
-    # first_color, sr_font_58, 'mm')
-    # img_draw.text((621, 1192), str(month_rails_pass_str),
-    # first_color, sr_font_58, 'mm')
-    #
-    # img_draw.text(
-    #     (245, 923), lastday_stone_str, second_color, sr_font_26, 'mm'
-    # )
-    # img_draw.text(
-    #     (621, 923), lastday_mora_str, second_color, sr_font_26, 'mm'
-    # )
-    # img_draw.text(
-    #     (245, 1396), lastmonth_stone_str, second_color, sr_font_26, 'mm'
-    # )
-    # img_draw.text(
-    #     (621, 1396), lastmonth_mora_str, second_color, sr_font_26, 'mm'
-    # )
+    # 写本月铁票
+    img_draw.text(
+        (513, 431),
+        month_rails_pass_str,
+        font=sr_font_28,
+        fill=white_color,
+        anchor='lm',
+    )
 
-    if data['month_data']['group_by'] == []:
+    # 写昨日铁票
+    img_draw.text(
+        (283, 473),
+        lastday_rails_pass_str,
+        font=sr_font_28,
+        fill=black_color,
+        anchor='lm',
+    )
+
+    # 写上月铁票
+    img_draw.text(
+        (513, 473),
+        lastmonth_rails_pass_str,
+        font=sr_font_28,
+        fill=black_color,
+        anchor='lm',
+    )
+
+    if not data['month_data']['group_by']:
         for index, action in enumerate(COLOR_MAP):
             if action == '其他':
                 continue
     else:
-        xy = ((139, 579), (347, 787))
+        xy = ((0, 0), (2100, 2100))
         temp = -90
+        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+        pie_image_draw = ImageDraw.Draw(pie_image)
         for index, i in enumerate(data['month_data']['group_by']):
-            img_draw.pieslice(
+            pie_image_draw.pieslice(
                 xy,
                 temp,
                 temp + (i['percent'] / 100) * 360,
                 COLOR_MAP[i['action_name']],
             )
             temp = temp + (i['percent'] / 100) * 360
-            if i['action'] == '其他':
-                continue
-            img_draw.rectangle(
-                ((407, 1523 + index * 52), (453, 1548 + index * 52)),
-                fill=COLOR_MAP[i['action_name']],
+        # 绘制蒙版圆形
+        new_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+        pie_image_draw.ellipse((150, 150, 1950, 1950), fill=(255, 255, 255, 0))
+
+        position = (1050, 1050)
+        pie_image.paste(new_image, position, mask=new_image)
+        result_pie = pie_image.resize((210, 210))
+        img.paste(result_pie, (138, 618), result_pie)
+
+    if last_monthly_data:
+        xy = ((0, 0), (2100, 2100))
+        temp = -90
+        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+        pie_image_draw = ImageDraw.Draw(pie_image)
+        for index, i in enumerate(data['month_data']['group_by']):
+            pie_image_draw.pieslice(
+                xy,
+                temp,
+                temp + (i['percent'] / 100) * 360,
+                COLOR_MAP[i['action_name']],
             )
+            temp = temp + (i['percent'] / 100) * 360
+    else:
+        xy = ((0, 0), (2100, 2100))
+        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+        pie_image_draw = ImageDraw.Draw(pie_image)
+        pie_image_draw.ellipse(xy, fill=(128, 128, 128))
+
+    # 绘制蒙版圆形
+    new_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+    pie_image_draw.ellipse((150, 150, 1950, 1950), fill=(255, 255, 255, 0))
+
+    position = (1050, 1050)
+    pie_image.paste(new_image, position, mask=new_image)
+    result_pie = pie_image.resize((210, 210))
+    img.paste(result_pie, (138, 618 + 350), result_pie)
 
     img = await convert_img(img)
     logger.info('[开拓月历] 图片绘制完成!等待发送...')

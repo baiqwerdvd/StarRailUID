@@ -28,5 +28,4 @@ async def send_monthly_pic(bot: Bot, ev: Event):
     if sr_uid is None:
         return UID_HINT
     im = await draw_note_img(str(sr_uid))
-    im = 'WIP 还妹写完'
     await bot.send(im)
