@@ -217,7 +217,7 @@ async def draw_resin_img(sr_uid: str) -> Image.Image:
     )
     # 写Nickname
     img_draw.text(
-        (350, 137), nickname, font=sr_font_36, fill=white_color, anchor='mm'
+        (350, 139), nickname, font=sr_font_36, fill=white_color, anchor='mm'
     )
     # 写开拓等级
     img_draw.text(
