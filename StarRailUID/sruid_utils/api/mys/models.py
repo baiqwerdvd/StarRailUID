@@ -1,5 +1,31 @@
 from typing import Any, Dict, List, Optional, TypedDict
 
+################
+# 抽卡记录相关 #
+################
+
+
+class SingleGachaLog(TypedDict):
+    uid: str
+    gacha_id: str
+    gacha_type: str
+    item_id: str
+    count: str
+    time: str
+    name: str
+    lang: str
+    item_type: str
+    rank_type: str
+    id: str
+
+
+class GachaLog(TypedDict):
+    page: str
+    size: str
+    list: List[SingleGachaLog]
+    region: str
+    region_time_zone: int
+
 
 class RoleBasicInfo(TypedDict):
     avatar: str

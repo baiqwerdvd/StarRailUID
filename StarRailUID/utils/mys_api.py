@@ -1,4 +1,5 @@
 import copy
+import time
 import random
 from typing import Dict, Union, cast
 from string import digits, ascii_letters
@@ -14,6 +15,7 @@ from gsuid_core.utils.api.mys.tools import (
 from .api import srdbsqla
 from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
+    GachaLog,
     RoleIndex,
     AvatarInfo,
     MonthlyAward,
@@ -66,6 +68,42 @@ class MysApi(_MysApi):
         data = await self.simple_mys_req('STAR_RAIL_INDEX_URL', uid)
         if isinstance(data, Dict):
             data = cast(RoleIndex, data['data'])
+        return data
+
+    async def get_gacha_log_by_link_in_authkey(
+        self,
+        authkey: str,
+        gacha_type: str = '11',
+        page: int = 1,
+        end_id: str = '0',
+    ) -> Union[int, GachaLog]:
+        # server_id = 'cn_qd01' if
+        # uid[0] == '5' else 'cn_gf01'
+        server_id = 'prod_gf_cn'
+        data = await self._mys_request(
+            url=self.MAPI['STAR_RAIL_GACHA_LOG_URL'],
+            method='GET',
+            header=self._HEADER,
+            params={
+                'authkey_ver': '1',
+                'sign_type': '2',
+                'auth_appid': 'webview_gacha',
+                'default_gacha_type': 11,
+                'gacha_id': 'dbebc8d9fbb0d4ffa067423482ce505bc5ea',
+                'timestamp': str(int(time.time())),
+                'lang': 'zh-cn',
+                'plat_type': 'pc',
+                'region': server_id,
+                'authkey': authkey,
+                'game_biz': 'hkrpg_cn',
+                'gacha_type': gacha_type,
+                'page': page,
+                'size': '5',
+                'end_id': end_id,
+            },
+        )
+        if isinstance(data, Dict):
+            data = cast(GachaLog, data['data'])
         return data
 
     async def get_avatar_info(
