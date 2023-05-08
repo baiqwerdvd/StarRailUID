@@ -11,19 +11,21 @@ from .error_reply import VERIFY_HINT
 
 
 @overload
-async def get_uid(bot: Bot, ev: Event) -> Optional[str]:
+async def get_uid(
+    bot: Bot, ev: Event, only_uid: bool = False
+) -> Optional[str]:
     ...
 
 
 @overload
 async def get_uid(
-    bot: Bot, ev: Event, get_user_id: bool = True
+    bot: Bot, ev: Event, get_user_id: bool = True, only_uid: bool = False
 ) -> Tuple[Optional[str], str]:
     ...
 
 
 async def get_uid(
-    bot: Bot, ev: Event, get_user_id: bool = False
+    bot: Bot, ev: Event, get_user_id: bool = False, only_uid: bool = False
 ) -> Union[Optional[str], Tuple[Optional[str], str]]:
     uid_data = re.findall(r'\d{9}', ev.text)
     user_id = ev.at if ev.at else ev.user_id
@@ -32,6 +34,9 @@ async def get_uid(
         if sr_uid:
             ev.text = ev.text.replace(sr_uid, '')
     else:
+        sqla = get_sqla(ev.bot_id)
+        sr_uid = await sqla.get_bind_sruid(user_id)
+    if only_uid:
         sqla = get_sqla(ev.bot_id)
         sr_uid = await sqla.get_bind_sruid(user_id)
     if get_user_id:
