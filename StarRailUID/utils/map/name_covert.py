@@ -1,9 +1,4 @@
-from .GS_MAP_PATH import (
-    alias_data,
-    avatarId2Name,
-    avatarId2Star_data,
-    enName_to_avatarId_data,
-)
+from .SR_MAP_PATH import EquipmentID2Name, avatarId2Name
 
 
 async def avatar_id_to_name(avatar_id: str) -> str:
@@ -20,26 +15,15 @@ async def name_to_avatar_id(name: str) -> str:
     return avatar_id
 
 
-async def avatar_id_to_char_star(char_id: str) -> str:
-    char_star = avatarId2Star_data[str(char_id)]
-    return char_star
+async def weapon_id_to_name(weapon_id: str) -> str:
+    weapon_name = EquipmentID2Name[weapon_id]
+    return weapon_name
 
 
-async def alias_to_char_name(char_name: str) -> str:
-    for i in alias_data:
-        if (char_name in i) or (char_name in alias_data[i]):
-            return i
-    return char_name
-
-
-async def enName_to_avatarId(en_name: str) -> str:
-    avatar_id = enName_to_avatarId_data[en_name]
-    return avatar_id
-
-
-async def avatarId_to_enName(avatarId: str) -> str:
-    for name in enName_to_avatarId_data:
-        if enName_to_avatarId_data[name] == avatarId:
-            return name
-    else:
-        return 'Ayaka'
+async def name_to_weapon_id(name: str) -> str:
+    weapon_id = ''
+    for i in EquipmentID2Name:
+        if EquipmentID2Name[i] == name:
+            weapon_id = i
+            break
+    return weapon_id

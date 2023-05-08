@@ -5,8 +5,7 @@ from gsuid_core.models import Event
 from ..utils.convert import get_uid
 from ..utils.error_reply import UID_HINT
 from .get_gachalogs import save_gachalogs
-
-# from .draw_gachalogs import draw_gachalogs_img
+from .draw_gachalogs import draw_gachalogs_img
 
 sv_gacha_log = SV('sr抽卡记录')
 sv_get_gachalog_by_link = SV('sr导入抽卡链接', area='DIRECT')
@@ -18,8 +17,7 @@ async def send_gacha_log_card_info(bot: Bot, ev: Event):
     uid, user_id = await get_uid(bot, ev, True)
     if uid is None:
         return await bot.send(UID_HINT)
-    # im = await draw_gachalogs_img(uid, user_id)
-    im = '画个饼先，在做了在做了'
+    im = await draw_gachalogs_img(uid, user_id)
     await bot.send(im)
 
 
