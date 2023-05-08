@@ -9,7 +9,7 @@ from .get_gachalogs import save_gachalogs
 # from .draw_gachalogs import draw_gachalogs_img
 
 sv_gacha_log = SV('sr抽卡记录')
-sv_get_gachalog_by_link = SV('sr导入抽卡链接')
+sv_get_gachalog_by_link = SV('sr导入抽卡链接', area='DIRECT')
 
 
 @sv_gacha_log.on_fullmatch(('sr抽卡记录'))
