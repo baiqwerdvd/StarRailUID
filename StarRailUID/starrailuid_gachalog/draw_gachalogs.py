@@ -148,7 +148,7 @@ def check_up(name: str, _time: str) -> bool:
 
 
 async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
-    path = PLAYER_PATH / str(uid) / 'gacha_logs_test.json'
+    path = PLAYER_PATH / str(uid) / 'gacha_logs.json'
     if not path.exists():
         return '你还没有跃迁数据噢~\n请使用命令`sr导入抽卡链接`更新跃迁数据~'
     with open(path, 'r', encoding='UTF-8') as f:
