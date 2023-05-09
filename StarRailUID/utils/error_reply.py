@@ -1,6 +1,6 @@
 from typing import Union
 
-UID_HINT = '你还没有绑定过uid哦!\n请使用[绑定uid123456]命令绑定!'
+UID_HINT = '你还没有绑定过uid哦!\n请使用[sr绑定uid123456]命令绑定!'
 MYS_HINT = '你还没有绑定过mysid哦!\n请使用[绑定mys1234]命令绑定!'
 CK_HINT = """你还没有绑定过Cookie哦!发送【ck帮助】获取帮助!
 警告:绑定Cookie可能会带来未知的账号风险,请确保信任机器人管理员"""
@@ -10,7 +10,7 @@ VERIFY_HINT = '''出现验证码!
 （可使用[gs关闭推送]命令关闭体力推送以减少出现验证码风险）
 如未绑定CK: 可联系管理员使用[gs清除缓存]命令
 '''
-SK_HINT = '你还没有绑定过Stoken或者Stoken已失效~\n请加好友私聊Bot\n [扫码登陆] 或 [添加]后跟SK格式 以绑定SK'
+SK_HINT = '你还没有绑定过Stoken或者Stoken已失效~\n请群聊发送 [扫码登陆] 或加好友私聊Bot [添加]后跟SK格式 以绑定SK'
 UPDATE_HINT = '''更新失败!更多错误信息请查看控制台...
 >> 可以尝试使用
 >> [gs强制更新](危险)

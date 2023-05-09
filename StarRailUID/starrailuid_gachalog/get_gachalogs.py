@@ -5,7 +5,6 @@ from datetime import datetime
 from typing import Dict, Optional
 
 from ..utils.mys_api import mys_api
-from ..utils.error_reply import SK_HINT
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 
 gacha_type_meta_data = {
@@ -26,6 +25,8 @@ async def get_new_gachalog_by_link(
             for page in range(1, 999):
                 url = parse.urlparse(gacha_url)
                 url_parse = parse.parse_qs(url.query)
+                if 'authkey' not in url_parse:
+                    return {}
                 authkey = url_parse['authkey'][0]
                 data = await mys_api.get_gacha_log_by_link_in_authkey(
                     authkey, gacha_type, page, end_id
@@ -121,7 +122,7 @@ async def save_gachalogs(
                 raw_data[i].extend(gachalogs_history[i])
 
     if raw_data == {} or not raw_data:
-        return SK_HINT
+        return '请给出正确的抽卡记录链接或链接已失效'
 
     temp_data = {'始发跃迁': [], '群星跃迁': [], '角色跃迁': [], '光锥跃迁': []}
     for i in ['始发跃迁', '群星跃迁', '角色跃迁', '光锥跃迁']:
