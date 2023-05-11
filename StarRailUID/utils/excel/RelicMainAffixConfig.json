@@ -1,0 +1,1464 @@
+{
+  "21": {
+    "1": {
+      "GroupID": 21,
+      "AffixID": 1,
+      "Property": "HPDelta",
+      "BaseValue": {
+        "Value": 45.1583992911581
+      },
+      "LevelAdd": {
+        "Value": 15.805439752918147
+      },
+      "IsAvailable": true
+    }
+  },
+  "22": {
+    "1": {
+      "GroupID": 22,
+      "AffixID": 1,
+      "Property": "AttackDelta",
+      "BaseValue": {
+        "Value": 22.579199645695464
+      },
+      "LevelAdd": {
+        "Value": 7.902719877273981
+      },
+      "IsAvailable": true
+    }
+  },
+  "23": {
+    "1": {
+      "GroupID": 23,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.02764799984555448
+      },
+      "LevelAdd": {
+        "Value": 0.009677000191936
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 23,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.02764799984555448
+      },
+      "LevelAdd": {
+        "Value": 0.009677000191936
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 23,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.03455999998156608
+      },
+      "LevelAdd": {
+        "Value": 0.01209600041264328
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 23,
+      "AffixID": 4,
+      "Property": "CriticalChanceBase",
+      "BaseValue": {
+        "Value": 0.020736000408034798
+      },
+      "LevelAdd": {
+        "Value": 0.00725799997122872
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 23,
+      "AffixID": 5,
+      "Property": "CriticalDamageBase",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "6": {
+      "GroupID": 23,
+      "AffixID": 6,
+      "Property": "HealRatioBase",
+      "BaseValue": {
+        "Value": 0.02211799973370568
+      },
+      "LevelAdd": {
+        "Value": 0.00774100014898952
+      },
+      "IsAvailable": true
+    },
+    "7": {
+      "GroupID": 23,
+      "AffixID": 7,
+      "Property": "StatusProbabilityBase",
+      "BaseValue": {
+        "Value": 0.02764799984555448
+      },
+      "LevelAdd": {
+        "Value": 0.009677000191936
+      },
+      "IsAvailable": true
+    }
+  },
+  "24": {
+    "1": {
+      "GroupID": 24,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.02764799984555448
+      },
+      "LevelAdd": {
+        "Value": 0.009677000191936
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 24,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.02764799984555448
+      },
+      "LevelAdd": {
+        "Value": 0.009677000191936
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 24,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.03455999998156608
+      },
+      "LevelAdd": {
+        "Value": 0.01209600041264328
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 24,
+      "AffixID": 4,
+      "Property": "SpeedDelta",
+      "BaseValue": {
+        "Value": 1.6127999756238558
+      },
+      "LevelAdd": {
+        "Value": 0.9999999843067494
+      },
+      "IsAvailable": true
+    }
+  },
+  "25": {
+    "1": {
+      "GroupID": 25,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.02764799984555448
+      },
+      "LevelAdd": {
+        "Value": 0.009677000191936
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 25,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.02764799984555448
+      },
+      "LevelAdd": {
+        "Value": 0.009677000191936
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 25,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.03455999998156608
+      },
+      "LevelAdd": {
+        "Value": 0.01209600041264328
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 25,
+      "AffixID": 4,
+      "Property": "PhysicalAddedRatio",
+      "BaseValue": {
+        "Value": 0.024883000488122
+      },
+      "LevelAdd": {
+        "Value": 0.0087089998212168
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 25,
+      "AffixID": 5,
+      "Property": "FireAddedRatio",
+      "BaseValue": {
+        "Value": 0.024883000488122
+      },
+      "LevelAdd": {
+        "Value": 0.0087089998212168
+      },
+      "IsAvailable": true
+    },
+    "6": {
+      "GroupID": 25,
+      "AffixID": 6,
+      "Property": "IceAddedRatio",
+      "BaseValue": {
+        "Value": 0.024883000488122
+      },
+      "LevelAdd": {
+        "Value": 0.0087089998212168
+      },
+      "IsAvailable": true
+    },
+    "7": {
+      "GroupID": 25,
+      "AffixID": 7,
+      "Property": "ThunderAddedRatio",
+      "BaseValue": {
+        "Value": 0.024883000488122
+      },
+      "LevelAdd": {
+        "Value": 0.0087089998212168
+      },
+      "IsAvailable": true
+    },
+    "8": {
+      "GroupID": 25,
+      "AffixID": 8,
+      "Property": "WindAddedRatio",
+      "BaseValue": {
+        "Value": 0.024883000488122
+      },
+      "LevelAdd": {
+        "Value": 0.0087089998212168
+      },
+      "IsAvailable": true
+    },
+    "9": {
+      "GroupID": 25,
+      "AffixID": 9,
+      "Property": "QuantumAddedRatio",
+      "BaseValue": {
+        "Value": 0.024883000488122
+      },
+      "LevelAdd": {
+        "Value": 0.0087089998212168
+      },
+      "IsAvailable": true
+    },
+    "10": {
+      "GroupID": 25,
+      "AffixID": 10,
+      "Property": "ImaginaryAddedRatio",
+      "BaseValue": {
+        "Value": 0.024883000488122
+      },
+      "LevelAdd": {
+        "Value": 0.0087089998212168
+      },
+      "IsAvailable": true
+    }
+  },
+  "26": {
+    "1": {
+      "GroupID": 26,
+      "AffixID": 1,
+      "Property": "BreakDamageAddedRatioBase",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 26,
+      "AffixID": 2,
+      "Property": "SPRatioBase",
+      "BaseValue": {
+        "Value": 0.012442000247860399
+      },
+      "LevelAdd": {
+        "Value": 0.00435500026365376
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 26,
+      "AffixID": 3,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.02764799984555448
+      },
+      "LevelAdd": {
+        "Value": 0.009677000191936
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 26,
+      "AffixID": 4,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.02764799984555448
+      },
+      "LevelAdd": {
+        "Value": 0.009677000191936
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 26,
+      "AffixID": 5,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.03455999998156608
+      },
+      "LevelAdd": {
+        "Value": 0.01209600041264328
+      },
+      "IsAvailable": true
+    }
+  },
+  "31": {
+    "1": {
+      "GroupID": 31,
+      "AffixID": 1,
+      "Property": "HPDelta",
+      "BaseValue": {
+        "Value": 67.73759893755205
+      },
+      "LevelAdd": {
+        "Value": 23.708159628562314
+      },
+      "IsAvailable": true
+    }
+  },
+  "32": {
+    "1": {
+      "GroupID": 32,
+      "AffixID": 1,
+      "Property": "AttackDelta",
+      "BaseValue": {
+        "Value": 33.86879946924169
+      },
+      "LevelAdd": {
+        "Value": 11.854079815096064
+      },
+      "IsAvailable": true
+    }
+  },
+  "33": {
+    "1": {
+      "GroupID": 33,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 33,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 33,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.051839999972349116
+      },
+      "LevelAdd": {
+        "Value": 0.01814399957122704
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 33,
+      "AffixID": 4,
+      "Property": "CriticalChanceBase",
+      "BaseValue": {
+        "Value": 0.031103999564314318
+      },
+      "LevelAdd": {
+        "Value": 0.01088600099698216
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 33,
+      "AffixID": 5,
+      "Property": "CriticalDamageBase",
+      "BaseValue": {
+        "Value": 0.062207999128628635
+      },
+      "LevelAdd": {
+        "Value": 0.02177300060457928
+      },
+      "IsAvailable": true
+    },
+    "6": {
+      "GroupID": 33,
+      "AffixID": 6,
+      "Property": "HealRatioBase",
+      "BaseValue": {
+        "Value": 0.03317799995740328
+      },
+      "LevelAdd": {
+        "Value": 0.01161200022728368
+      },
+      "IsAvailable": true
+    },
+    "7": {
+      "GroupID": 33,
+      "AffixID": 7,
+      "Property": "StatusProbabilityBase",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    }
+  },
+  "34": {
+    "1": {
+      "GroupID": 34,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 34,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 34,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.051839999972349116
+      },
+      "LevelAdd": {
+        "Value": 0.01814399957122704
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 34,
+      "AffixID": 4,
+      "Property": "SpeedDelta",
+      "BaseValue": {
+        "Value": 2.4191999619223843
+      },
+      "LevelAdd": {
+        "Value": 0.9999999843067494
+      },
+      "IsAvailable": true
+    }
+  },
+  "35": {
+    "1": {
+      "GroupID": 35,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 35,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 35,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.051839999972349116
+      },
+      "LevelAdd": {
+        "Value": 0.01814399957122704
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 35,
+      "AffixID": 4,
+      "Property": "PhysicalAddedRatio",
+      "BaseValue": {
+        "Value": 0.037324999338998556
+      },
+      "LevelAdd": {
+        "Value": 0.01306400008487056
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 35,
+      "AffixID": 5,
+      "Property": "FireAddedRatio",
+      "BaseValue": {
+        "Value": 0.037324999338998556
+      },
+      "LevelAdd": {
+        "Value": 0.01306400008487056
+      },
+      "IsAvailable": true
+    },
+    "6": {
+      "GroupID": 35,
+      "AffixID": 6,
+      "Property": "IceAddedRatio",
+      "BaseValue": {
+        "Value": 0.037324999338998556
+      },
+      "LevelAdd": {
+        "Value": 0.01306400008487056
+      },
+      "IsAvailable": true
+    },
+    "7": {
+      "GroupID": 35,
+      "AffixID": 7,
+      "Property": "ThunderAddedRatio",
+      "BaseValue": {
+        "Value": 0.037324999338998556
+      },
+      "LevelAdd": {
+        "Value": 0.01306400008487056
+      },
+      "IsAvailable": true
+    },
+    "8": {
+      "GroupID": 35,
+      "AffixID": 8,
+      "Property": "WindAddedRatio",
+      "BaseValue": {
+        "Value": 0.037324999338998556
+      },
+      "LevelAdd": {
+        "Value": 0.01306400008487056
+      },
+      "IsAvailable": true
+    },
+    "9": {
+      "GroupID": 35,
+      "AffixID": 9,
+      "Property": "QuantumAddedRatio",
+      "BaseValue": {
+        "Value": 0.037324999338998556
+      },
+      "LevelAdd": {
+        "Value": 0.01306400008487056
+      },
+      "IsAvailable": true
+    },
+    "10": {
+      "GroupID": 35,
+      "AffixID": 10,
+      "Property": "ImaginaryAddedRatio",
+      "BaseValue": {
+        "Value": 0.037324999338998556
+      },
+      "LevelAdd": {
+        "Value": 0.01306400008487056
+      },
+      "IsAvailable": true
+    }
+  },
+  "36": {
+    "1": {
+      "GroupID": 36,
+      "AffixID": 1,
+      "Property": "BreakDamageAddedRatioBase",
+      "BaseValue": {
+        "Value": 0.062207999128628635
+      },
+      "LevelAdd": {
+        "Value": 0.02177300060457928
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 36,
+      "AffixID": 2,
+      "Property": "SPRatioBase",
+      "BaseValue": {
+        "Value": 0.01866200001494584
+      },
+      "LevelAdd": {
+        "Value": 0.00653200004243528
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 36,
+      "AffixID": 3,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 36,
+      "AffixID": 4,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 36,
+      "AffixID": 5,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.051839999972349116
+      },
+      "LevelAdd": {
+        "Value": 0.01814399957122704
+      },
+      "IsAvailable": true
+    }
+  },
+  "41": {
+    "1": {
+      "GroupID": 41,
+      "AffixID": 1,
+      "Property": "HPDelta",
+      "BaseValue": {
+        "Value": 90.31679858301469
+      },
+      "LevelAdd": {
+        "Value": 31.610879505603464
+      },
+      "IsAvailable": true
+    }
+  },
+  "42": {
+    "1": {
+      "GroupID": 42,
+      "AffixID": 1,
+      "Property": "AttackDelta",
+      "BaseValue": {
+        "Value": 45.1583992911581
+      },
+      "LevelAdd": {
+        "Value": 15.805439752918147
+      },
+      "IsAvailable": true
+    }
+  },
+  "43": {
+    "1": {
+      "GroupID": 43,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 43,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 43,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 43,
+      "AffixID": 4,
+      "Property": "CriticalChanceBase",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 43,
+      "AffixID": 5,
+      "Property": "CriticalDamageBase",
+      "BaseValue": {
+        "Value": 0.08294399953666344
+      },
+      "LevelAdd": {
+        "Value": 0.029029999171225358
+      },
+      "IsAvailable": true
+    },
+    "6": {
+      "GroupID": 43,
+      "AffixID": 6,
+      "Property": "HealRatioBase",
+      "BaseValue": {
+        "Value": 0.04423699947501016
+      },
+      "LevelAdd": {
+        "Value": 0.01548300030557784
+      },
+      "IsAvailable": true
+    },
+    "7": {
+      "GroupID": 43,
+      "AffixID": 7,
+      "Property": "StatusProbabilityBase",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    }
+  },
+  "44": {
+    "1": {
+      "GroupID": 44,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 44,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 44,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 44,
+      "AffixID": 4,
+      "Property": "SpeedDelta",
+      "BaseValue": {
+        "Value": 3.225599949617897
+      },
+      "LevelAdd": {
+        "Value": 1.0999999828305567
+      },
+      "IsAvailable": true
+    }
+  },
+  "45": {
+    "1": {
+      "GroupID": 45,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 45,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 45,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 45,
+      "AffixID": 4,
+      "Property": "PhysicalAddedRatio",
+      "BaseValue": {
+        "Value": 0.04976599957926016
+      },
+      "LevelAdd": {
+        "Value": 0.0174179996424336
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 45,
+      "AffixID": 5,
+      "Property": "FireAddedRatio",
+      "BaseValue": {
+        "Value": 0.04976599957926016
+      },
+      "LevelAdd": {
+        "Value": 0.0174179996424336
+      },
+      "IsAvailable": true
+    },
+    "6": {
+      "GroupID": 45,
+      "AffixID": 6,
+      "Property": "IceAddedRatio",
+      "BaseValue": {
+        "Value": 0.04976599957926016
+      },
+      "LevelAdd": {
+        "Value": 0.0174179996424336
+      },
+      "IsAvailable": true
+    },
+    "7": {
+      "GroupID": 45,
+      "AffixID": 7,
+      "Property": "ThunderAddedRatio",
+      "BaseValue": {
+        "Value": 0.04976599957926016
+      },
+      "LevelAdd": {
+        "Value": 0.0174179996424336
+      },
+      "IsAvailable": true
+    },
+    "8": {
+      "GroupID": 45,
+      "AffixID": 8,
+      "Property": "WindAddedRatio",
+      "BaseValue": {
+        "Value": 0.04976599957926016
+      },
+      "LevelAdd": {
+        "Value": 0.0174179996424336
+      },
+      "IsAvailable": true
+    },
+    "9": {
+      "GroupID": 45,
+      "AffixID": 9,
+      "Property": "QuantumAddedRatio",
+      "BaseValue": {
+        "Value": 0.04976599957926016
+      },
+      "LevelAdd": {
+        "Value": 0.0174179996424336
+      },
+      "IsAvailable": true
+    },
+    "10": {
+      "GroupID": 45,
+      "AffixID": 10,
+      "Property": "ImaginaryAddedRatio",
+      "BaseValue": {
+        "Value": 0.04976599957926016
+      },
+      "LevelAdd": {
+        "Value": 0.0174179996424336
+      },
+      "IsAvailable": true
+    }
+  },
+  "46": {
+    "1": {
+      "GroupID": 46,
+      "AffixID": 1,
+      "Property": "BreakDamageAddedRatioBase",
+      "BaseValue": {
+        "Value": 0.08294399953666344
+      },
+      "LevelAdd": {
+        "Value": 0.029029999171225358
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 46,
+      "AffixID": 2,
+      "Property": "SPRatioBase",
+      "BaseValue": {
+        "Value": 0.024883000488122
+      },
+      "LevelAdd": {
+        "Value": 0.0087089998212168
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 46,
+      "AffixID": 3,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 46,
+      "AffixID": 4,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 46,
+      "AffixID": 5,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    }
+  },
+  "51": {
+    "1": {
+      "GroupID": 51,
+      "AffixID": 1,
+      "Property": "HPDelta",
+      "BaseValue": {
+        "Value": 112.89599822871016
+      },
+      "LevelAdd": {
+        "Value": 39.51359938054914
+      },
+      "IsAvailable": true
+    }
+  },
+  "52": {
+    "1": {
+      "GroupID": 52,
+      "AffixID": 1,
+      "Property": "AttackDelta",
+      "BaseValue": {
+        "Value": 56.44799911400583
+      },
+      "LevelAdd": {
+        "Value": 19.75679969074023
+      },
+      "IsAvailable": true
+    }
+  },
+  "53": {
+    "1": {
+      "GroupID": 53,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 53,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 53,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.08639999855693135
+      },
+      "LevelAdd": {
+        "Value": 0.03023999998387032
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 53,
+      "AffixID": 4,
+      "Property": "CriticalChanceBase",
+      "BaseValue": {
+        "Value": 0.051839999972349116
+      },
+      "LevelAdd": {
+        "Value": 0.01814399957122704
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 53,
+      "AffixID": 5,
+      "Property": "CriticalDamageBase",
+      "BaseValue": {
+        "Value": 0.10367999924620631
+      },
+      "LevelAdd": {
+        "Value": 0.036287999840946
+      },
+      "IsAvailable": true
+    },
+    "6": {
+      "GroupID": 53,
+      "AffixID": 6,
+      "Property": "HealRatioBase",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    },
+    "7": {
+      "GroupID": 53,
+      "AffixID": 7,
+      "Property": "StatusProbabilityBase",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    }
+  },
+  "54": {
+    "1": {
+      "GroupID": 54,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 54,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 54,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.08639999855693135
+      },
+      "LevelAdd": {
+        "Value": 0.03023999998387032
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 54,
+      "AffixID": 4,
+      "Property": "SpeedDelta",
+      "BaseValue": {
+        "Value": 4.031999936614918
+      },
+      "LevelAdd": {
+        "Value": 1.399999978401978
+      },
+      "IsAvailable": true
+    }
+  },
+  "55": {
+    "1": {
+      "GroupID": 55,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 55,
+      "AffixID": 2,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 55,
+      "AffixID": 3,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.08639999855693135
+      },
+      "LevelAdd": {
+        "Value": 0.03023999998387032
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 55,
+      "AffixID": 4,
+      "Property": "PhysicalAddedRatio",
+      "BaseValue": {
+        "Value": 0.062207999128628635
+      },
+      "LevelAdd": {
+        "Value": 0.02177300060457928
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 55,
+      "AffixID": 5,
+      "Property": "FireAddedRatio",
+      "BaseValue": {
+        "Value": 0.062207999128628635
+      },
+      "LevelAdd": {
+        "Value": 0.02177300060457928
+      },
+      "IsAvailable": true
+    },
+    "6": {
+      "GroupID": 55,
+      "AffixID": 6,
+      "Property": "IceAddedRatio",
+      "BaseValue": {
+        "Value": 0.062207999128628635
+      },
+      "LevelAdd": {
+        "Value": 0.02177300060457928
+      },
+      "IsAvailable": true
+    },
+    "7": {
+      "GroupID": 55,
+      "AffixID": 7,
+      "Property": "ThunderAddedRatio",
+      "BaseValue": {
+        "Value": 0.062207999128628635
+      },
+      "LevelAdd": {
+        "Value": 0.02177300060457928
+      },
+      "IsAvailable": true
+    },
+    "8": {
+      "GroupID": 55,
+      "AffixID": 8,
+      "Property": "WindAddedRatio",
+      "BaseValue": {
+        "Value": 0.062207999128628635
+      },
+      "LevelAdd": {
+        "Value": 0.02177300060457928
+      },
+      "IsAvailable": true
+    },
+    "9": {
+      "GroupID": 55,
+      "AffixID": 9,
+      "Property": "QuantumAddedRatio",
+      "BaseValue": {
+        "Value": 0.062207999128628635
+      },
+      "LevelAdd": {
+        "Value": 0.02177300060457928
+      },
+      "IsAvailable": true
+    },
+    "10": {
+      "GroupID": 55,
+      "AffixID": 10,
+      "Property": "ImaginaryAddedRatio",
+      "BaseValue": {
+        "Value": 0.062207999128628635
+      },
+      "LevelAdd": {
+        "Value": 0.02177300060457928
+      },
+      "IsAvailable": true
+    }
+  },
+  "56": {
+    "1": {
+      "GroupID": 56,
+      "AffixID": 1,
+      "Property": "BreakDamageAddedRatioBase",
+      "BaseValue": {
+        "Value": 0.10367999924620631
+      },
+      "LevelAdd": {
+        "Value": 0.036287999840946
+      },
+      "IsAvailable": true
+    },
+    "2": {
+      "GroupID": 56,
+      "AffixID": 2,
+      "Property": "SPRatioBase",
+      "BaseValue": {
+        "Value": 0.031103999564314318
+      },
+      "LevelAdd": {
+        "Value": 0.01088600099698216
+      },
+      "IsAvailable": true
+    },
+    "3": {
+      "GroupID": 56,
+      "AffixID": 3,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "4": {
+      "GroupID": 56,
+      "AffixID": 4,
+      "Property": "AttackAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    },
+    "5": {
+      "GroupID": 56,
+      "AffixID": 5,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.08639999855693135
+      },
+      "LevelAdd": {
+        "Value": 0.03023999998387032
+      },
+      "IsAvailable": true
+    }
+  },
+  "433": {
+    "1": {
+      "GroupID": 433,
+      "AffixID": 1,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    }
+  },
+  "434": {
+    "1": {
+      "GroupID": 434,
+      "AffixID": 1,
+      "Property": "CriticalChanceBase",
+      "BaseValue": {
+        "Value": 0.04147200011757768
+      },
+      "LevelAdd": {
+        "Value": 0.014514999934858639
+      },
+      "IsAvailable": true
+    }
+  },
+  "436": {
+    "1": {
+      "GroupID": 436,
+      "AffixID": 1,
+      "Property": "HealRatioBase",
+      "BaseValue": {
+        "Value": 0.04423699947501016
+      },
+      "LevelAdd": {
+        "Value": 0.01548300030557784
+      },
+      "IsAvailable": true
+    }
+  },
+  "441": {
+    "1": {
+      "GroupID": 441,
+      "AffixID": 1,
+      "Property": "HPAddedRatio",
+      "BaseValue": {
+        "Value": 0.05529599969110896
+      },
+      "LevelAdd": {
+        "Value": 0.01935399968538008
+      },
+      "IsAvailable": true
+    }
+  },
+  "443": {
+    "1": {
+      "GroupID": 443,
+      "AffixID": 1,
+      "Property": "DefenceAddedRatio",
+      "BaseValue": {
+        "Value": 0.06911999856614832
+      },
+      "LevelAdd": {
+        "Value": 0.02419200012679464
+      },
+      "IsAvailable": true
+    }
+  }
+}

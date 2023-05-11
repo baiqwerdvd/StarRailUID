@@ -1,4 +1,4 @@
-from .SR_MAP_PATH import EquipmentID2Name, avatarId2Name
+from .SR_MAP_PATH import EquipmentID2Name, EquipmentID2EnName, avatarId2Name
 
 
 async def avatar_id_to_name(avatar_id: str) -> str:
@@ -24,6 +24,20 @@ async def name_to_weapon_id(name: str) -> str:
     weapon_id = ''
     for i in EquipmentID2Name:
         if EquipmentID2Name[i] == name:
+            weapon_id = i
+            break
+    return weapon_id
+
+
+async def weapon_id_to_en_name(weapon_id: str) -> str:
+    weapon_en_name = EquipmentID2EnName[weapon_id]
+    return weapon_en_name
+
+
+async def en_name_to_weapon_id(name: str) -> str:
+    weapon_id = ''
+    for i in EquipmentID2EnName:
+        if EquipmentID2EnName[i] == name:
             weapon_id = i
             break
     return weapon_id

@@ -9,8 +9,9 @@ CONFIG_PATH = MAIN_PATH / 'config.json'
 RESOURCE_PATH = MAIN_PATH / 'resource'
 PLAYER_PATH = MAIN_PATH / 'players'
 CU_BG_PATH = MAIN_PATH / 'bg'
+TEMP_PATH = RESOURCE_PATH / 'temp'
 CHAR_ICON_PATH = RESOURCE_PATH / 'char_icon'
-WEAPON_PATH = RESOURCE_PATH / 'weapons'
+WEAPON_PATH = RESOURCE_PATH / 'light_cone'
 TEXT2D_PATH = Path(__file__).parent / 'texture2d'
 
 
@@ -23,6 +24,7 @@ def init_dir():
         WEAPON_PATH,
         TEXT2D_PATH,
         CU_BG_PATH,
+        TEMP_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

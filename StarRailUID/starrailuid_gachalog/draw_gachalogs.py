@@ -8,7 +8,6 @@ from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 
 from ..utils.image.convert import convert_img
-from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.resource.RESOURCE_PATH import (
     PLAYER_PATH,
     WEAPON_PATH,
@@ -18,6 +17,11 @@ from ..utils.image.image_tools import (
     get_color_bg,
     get_qq_avatar,
     draw_pic_with_ring,
+)
+from ..utils.map.name_covert import (
+    name_to_avatar_id,
+    name_to_weapon_id,
+    weapon_id_to_en_name,
 )
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
@@ -92,12 +96,14 @@ async def _draw_card(
             .resize((105, 105))
         )
     else:
+        name = await name_to_weapon_id(name)
+        _id = await weapon_id_to_en_name(name)
         item_pic = (
-            Image.open(WEAPON_PATH / f'{name}.png')
+            Image.open(WEAPON_PATH / f'{_id}.png')
             .convert('RGBA')
-            .crop((0, 0, 867, 867))
+            .resize((124, 124))
         )
-        item_pic = item_pic.resize((105, 105))
+        point = (37, 24)
     card_img.paste(item_pic, point, item_pic)
     if gacha_num >= 81:
         text_color = red_color
@@ -148,7 +154,7 @@ def check_up(name: str, _time: str) -> bool:
 
 
 async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
-    path = PLAYER_PATH / str(uid) / 'gacha_logs.json'
+    path = PLAYER_PATH / str(uid) / 'gacha_logs_test.json'
     if not path.exists():
         return '你还没有跃迁数据噢~\n请使用命令`sr导入抽卡链接`更新跃迁数据~'
     with open(path, 'r', encoding='UTF-8') as f:
