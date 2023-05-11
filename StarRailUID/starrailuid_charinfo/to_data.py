@@ -225,11 +225,12 @@ async def enka_to_dict(
     char_data['equipmentInfo'] = equipment_info
 
     char_dict_list.append(char_data)
+    im = f'UID: {sr_uid} 的助战角色 {avatarName} 刷新成功'
     with open(
         path / '{}.json'.format(avatarName), 'w', encoding='UTF-8'
     ) as file:
         json.dump(char_data, file, ensure_ascii=False)
-    return char_dict_list
+    return im
 
 
 async def enka_to_data(
