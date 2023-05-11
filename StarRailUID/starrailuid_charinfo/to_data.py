@@ -95,7 +95,7 @@ async def enka_to_dict(
             char_dict, avatarName = await get_data(char, sr_data, sr_uid)
             im += f' {avatarName}'
             char_dict_list.append(char_dict)
-        im += ' 刷新成功\n'
+        im += ' 刷新成功'
 
     if not char_dict_list:
         im = f'UID: {sr_uid} 的角色展柜刷新失败！\n请检查UID是否正确或者角色展柜是否打开！'
