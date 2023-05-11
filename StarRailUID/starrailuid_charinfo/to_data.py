@@ -82,7 +82,25 @@ async def enka_to_dict(
         return f'SR_UID{sr_uid}刷新失败！未打开角色展柜!'
 
     char_dict_list = []
-    char = PlayerDetailInfo['AssistAvatar']
+    im = f'UID: {sr_uid} 的角色展柜刷新成功\n刷新角色如下: '
+    if PlayerDetailInfo['IsDisplayAvatarList']:
+        for char in PlayerDetailInfo['DisplayAvatarList']:
+            char_dict, avatarName = await get_data(char, sr_data, sr_uid)
+            im += f'{avatarName} '
+            char_dict_list.append(char_dict)
+    else:
+        char_dict, avatarName = await get_data(
+            PlayerDetailInfo['AssistAvatar'], sr_data, sr_uid
+        )
+        im += f'{avatarName} '
+        char_dict_list.append(char_dict)
+
+    return im
+
+
+async def get_data(char: dict, sr_data: dict, sr_uid: str):
+    PlayerDetailInfo = sr_data['PlayerDetailInfo']
+    path = PLAYER_PATH / str(sr_uid)
     # 处理基本信息
     char_data = {
         'uid': str(sr_uid),
@@ -224,13 +242,11 @@ async def enka_to_dict(
     equipment_info['equipmentRank'] = char['EquipmentID']['Rank']
     char_data['equipmentInfo'] = equipment_info
 
-    char_dict_list.append(char_data)
-    im = f'UID: {sr_uid} 的助战角色 {avatarName} 刷新成功'
     with open(
         path / '{}.json'.format(avatarName), 'w', encoding='UTF-8'
     ) as file:
         json.dump(char_data, file, ensure_ascii=False)
-    return im
+    return char_data, avatarName
 
 
 async def enka_to_data(
