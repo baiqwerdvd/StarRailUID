@@ -82,18 +82,22 @@ async def enka_to_dict(
         return f'SR_UID{sr_uid}刷新失败！未打开角色展柜!'
 
     char_dict_list = []
-    im = f'UID: {sr_uid} 的角色展柜刷新成功\n刷新角色如下: '
-    if PlayerDetailInfo['IsDisplayAvatarList']:
-        for char in PlayerDetailInfo['DisplayAvatarList']:
-            char_dict, avatarName = await get_data(char, sr_data, sr_uid)
-            im += f'{avatarName} '
-            char_dict_list.append(char_dict)
-    else:
+    im = f'UID: {sr_uid} 的角色展柜刷新成功\n'
+    if PlayerDetailInfo['AssistAvatar']:
         char_dict, avatarName = await get_data(
             PlayerDetailInfo['AssistAvatar'], sr_data, sr_uid
         )
-        im += f'{avatarName} '
+        im += f'支援角色{avatarName}刷新成功\n'
         char_dict_list.append(char_dict)
+    elif PlayerDetailInfo['IsDisplayAvatarList']:
+        im += '星海同行'
+        for char in PlayerDetailInfo['DisplayAvatarList']:
+            char_dict, avatarName = await get_data(char, sr_data, sr_uid)
+            im += f'{avatarName}'
+            char_dict_list.append(char_dict)
+        im += '刷新成功\n'
+    else:
+        im = '未找到角色信息'
 
     return im
 
