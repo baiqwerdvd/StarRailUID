@@ -28,7 +28,7 @@ async def get_gachalog_by_link(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     gacha_url = ev.text.strip()
-    if gacha_url and not isinstance(gacha_url, str):
+    if not gacha_url or not isinstance(gacha_url, str):
         return await bot.send('请给出正确的抽卡记录链接')
     is_force = False
     if ev.command.startswith('强制'):
