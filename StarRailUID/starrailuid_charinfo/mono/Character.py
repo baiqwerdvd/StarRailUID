@@ -17,6 +17,7 @@ class Character:
         self.char_level: int = int(card_prop['avatarLevel'])
         self.char_id: str = card_prop['avatarId']
         self.char_name: str = card_prop['avatarName']
+        self.char_rank = card_prop['rank'] if card_prop.get('rank') else 0
         self.char_element = card_prop['avatarElement']
         self.char_promotion = card_prop['avatarPromotion']
         self.char_skill = card_prop['avatarSkill']
@@ -102,10 +103,12 @@ class Character:
                 else:
                     self.add_attr[sub_property] = str(sub_value)
         # 处理套装属性
-        set_id_dict = dict(Counter(set_id_list))
-        for set_id, count in set_id_dict.items():
+        set_id_dict = Counter(set_id_list)
+        for item in set_id_dict.most_common():
             set_property = ''
-            if 2 <= count < 4:
+            set_id = item[0]
+            count = item[1]
+            if count == 2 or count == 3:
                 set_property = RelicSetSkill[str(set_id)]['2']['Property']
                 set_value = mp.mpf(RelicSetSkill[str(set_id)]['2']['Value'])
             if count == 4 and RelicSetSkill[str(set_id)]['4'] != {}:
@@ -119,8 +122,8 @@ class Character:
                 else:
                     self.add_attr[set_property] = str(set_value)
 
-        print(self.base_attributes)
-        print(self.add_attr)
+        print(json.dumps(self.base_attributes))
+        print(json.dumps(self.add_attr))
 
 
 async def p2v(power: str, power_plus: int) -> Tuple[float, float]:
