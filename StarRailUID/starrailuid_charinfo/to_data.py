@@ -22,21 +22,12 @@ from ..utils.map.SR_MAP_PATH import (
     skillId2Type,
     avatarId2Name,
     avatarId2EnName,
+    avatarId2Rarity,
     characterSkillTree,
     avatarId2DamageType,
 )
 
 mp.dps = 14
-
-PROP_ATTR_MAP = {
-    'Anemo': '44',
-    'Cryo': '46',
-    'Dendro': '43',
-    'Electro': '41',
-    'Geo': '45',
-    'Hydro': '42',
-    'Pyro': '40',
-}
 
 
 async def api_to_dict(
@@ -114,6 +105,7 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
         'avatarId': char['AvatarID'],
         'avatarName': avatarId2Name[str(char['AvatarID'])],
         'avatarElement': avatarId2DamageType[str(char['AvatarID'])],
+        'avatarRarity': avatarId2Rarity[str(char['AvatarID'])],
         'avatarPromotion': char['Promotion'],
         'avatarLevel': char['Level'],
         'avatarSkill': [],

@@ -22,6 +22,9 @@ rankId2Name_fileName = f'rankId2Name_mapping_{version}.json'
 characterSkillTree_fileName = f'characterSkillTree_mapping_{version}.json'
 avatarId2DamageType_fileName = f'avatarId2DamageType_mapping_{version}.json'
 avatarId2Rarity_fileName = f'avatarId2Rarity_mapping_{version}.json'
+EquipmentID2AbilityProperty_fileName = (
+    f'EquipmentID2AbilityProperty_mapping_{version}.json'
+)
 
 
 class TS(TypedDict):
@@ -70,3 +73,10 @@ with open(MAP / 'char_alias.json', 'r', encoding='UTF-8') as f:
 
 with open(MAP / avatarId2Rarity_fileName, 'r', encoding='UTF-8') as f:
     avatarId2Rarity = msgjson.decode(f.read(), type=Dict[str, str])
+
+with open(
+    MAP / EquipmentID2AbilityProperty_fileName, 'r', encoding='UTF-8'
+) as f:
+    EquipmentID2AbilityProperty = msgjson.decode(
+        f.read(), type=Dict[str, Dict[str, List]]
+    )
