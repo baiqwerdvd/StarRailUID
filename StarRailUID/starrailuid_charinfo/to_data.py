@@ -23,6 +23,7 @@ from ..utils.map.SR_MAP_PATH import (
     avatarId2Name,
     avatarId2EnName,
     characterSkillTree,
+    avatarId2DamageType,
 )
 
 mp.dps = 14
@@ -112,6 +113,7 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
         'nickName': PlayerDetailInfo['NickName'],
         'avatarId': char['AvatarID'],
         'avatarName': avatarId2Name[str(char['AvatarID'])],
+        'avatarElement': avatarId2DamageType[str(char['AvatarID'])],
         'avatarPromotion': char['Promotion'],
         'avatarLevel': char['Level'],
         'avatarSkill': [],
