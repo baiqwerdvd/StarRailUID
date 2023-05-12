@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 
 from ..utils.image.convert import convert_img
+from ..utils.map.name_covert import name_to_avatar_id, name_to_weapon_id
 from ..utils.resource.RESOURCE_PATH import (
     PLAYER_PATH,
     WEAPON_PATH,
@@ -17,10 +18,6 @@ from ..utils.image.image_tools import (
     get_color_bg,
     get_qq_avatar,
     draw_pic_with_ring,
-)
-from ..utils.map.name_covert import (
-    name_to_avatar_id,
-    name_to_weapon_id,
 )
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
