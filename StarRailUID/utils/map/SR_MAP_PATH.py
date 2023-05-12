@@ -25,6 +25,7 @@ avatarId2Rarity_fileName = f'avatarId2Rarity_mapping_{version}.json'
 EquipmentID2AbilityProperty_fileName = (
     f'EquipmentID2AbilityProperty_mapping_{version}.json'
 )
+RelicSetSkill_fileName = f'RelicSetSkill_mapping_{version}.json'
 
 
 class TS(TypedDict):
@@ -80,3 +81,6 @@ with open(
     EquipmentID2AbilityProperty = msgjson.decode(
         f.read(), type=Dict[str, Dict[str, List]]
     )
+
+with open(MAP / RelicSetSkill_fileName, 'r', encoding='UTF-8') as f:
+    RelicSetSkill = msgjson.decode(f.read(), type=Dict[str, dict])

@@ -19,7 +19,10 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
 
 
 async def cal_char_info(char_data: dict):
-    await Character(char_data).get_equipment_info()
+    char = Character(char_data)
+    await char.get_equipment_info()
+    await char.get_char_attribute_bonus()
+    await char.get_relic_info()
 
 
 async def get_char_data(

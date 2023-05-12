@@ -1,8 +1,10 @@
+import json
 from typing import Dict, Tuple
+from collections import Counter
 
 from mpmath import mp
 
-from ...utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty
+from ...utils.map.SR_MAP_PATH import RelicSetSkill, EquipmentID2AbilityProperty
 
 mp.dps = 14
 
@@ -62,6 +64,61 @@ class Character:
                 self.add_attr[property_type] += value
             else:
                 self.add_attr[property_type] = value
+
+    async def get_char_attribute_bonus(self):
+        attribute_bonus = self.attribute_bonus
+        for bonus in attribute_bonus:
+            status_add = bonus['statusAdd']
+            bonus_property = status_add['property']
+            value = status_add['value']
+            if bonus_property in self.add_attr:
+                self.add_attr[bonus_property] += value
+            else:
+                self.add_attr[bonus_property] = value
+
+    async def get_relic_info(self):
+        # 计算圣遗物效果
+        set_id_list = []
+        for relic in self.char_relic:
+            print(json.dumps(relic, ensure_ascii=False))
+            set_id_list.append(relic['SetId'])
+            # 处理主属性
+            relic_property = relic['MainAffix']['Property']
+            property_value = mp.mpf(relic['MainAffix']['Value'])
+            if relic_property in self.add_attr:
+                self.add_attr[relic_property] = str(
+                    mp.mpf(self.add_attr[relic_property]) + property_value
+                )
+            else:
+                self.add_attr[relic_property] = str(property_value)
+            # 处理副词条
+            for sub in relic['SubAffixList']:
+                sub_property = sub['Property']
+                sub_value = mp.mpf(sub['Value'])
+                if sub_property in self.add_attr:
+                    self.add_attr[sub_property] = str(
+                        mp.mpf(self.add_attr[sub_property]) + sub_value
+                    )
+                else:
+                    self.add_attr[sub_property] = str(sub_value)
+        # 处理套装属性
+        set_id_dict = dict(Counter(set_id_list))
+        for set_id, count in set_id_dict.items():
+            set_property = ''
+            if 2 <= count < 4:
+                set_property = RelicSetSkill[str(set_id)]['2']['Property']
+                set_value = mp.mpf(RelicSetSkill[str(set_id)]['2']['Value'])
+            if count == 4 and RelicSetSkill[str(set_id)]['4'] != {}:
+                set_property = RelicSetSkill[str(set_id)]['4']['Property']
+                set_value = mp.mpf(RelicSetSkill[str(set_id)]['4']['Value'])
+            if set_property != '':
+                if set_property in self.add_attr:
+                    self.add_attr[set_property] = str(
+                        mp.mpf(self.add_attr[set_property]) + set_value
+                    )
+                else:
+                    self.add_attr[set_property] = str(set_value)
+
         print(self.base_attributes)
         print(self.add_attr)
 
@@ -91,17 +148,3 @@ async def p2v(power: str, power_plus: int) -> Tuple[float, float]:
         power_value = float(power)
 
     return power_percent, power_value
-
-
-# async def get_artifacts_value(raw_data: Dict) -> List[str]:
-#     # 计算圣遗物效果
-#     all_effects = []
-#     for equip in raw_data['equipList']:
-#         statNmae = equip['reliquaryMainstat']['statName']
-#         statValue = equip['reliquaryMainstat']['statValue']
-#         all_effects.append(await text_to_effect(statNmae, statValue))
-#         for sub in equip['reliquarySubstats']:
-#             sub_name = sub['statName']
-#             sub_value = sub['statValue']
-#             all_effects.append(await text_to_effect(sub_name, sub_value))
-#     return all_effects
