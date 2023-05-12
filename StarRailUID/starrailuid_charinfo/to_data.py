@@ -6,12 +6,12 @@ from httpx import ReadTimeout
 from gsuid_core.utils.api.enka.models import EnkaData
 
 from ..utils.error_reply import UID_HINT
-from ..utils.excel.read_excel import AvatarPromotion
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..sruid_utils.api.lulu.requests import get_char_card_info
 
 # from gsuid_core.utils.api.minigg.request import get_weapon_info
 from .cal_value import cal_relic_sub_affix, cal_relic_main_affix
+from ..utils.excel.read_excel import AvatarPromotion, EquipmentPromotion
 from ..utils.map.SR_MAP_PATH import (
     SetId2Name,
     Property2Name,
@@ -22,6 +22,7 @@ from ..utils.map.SR_MAP_PATH import (
     skillId2Type,
     avatarId2Name,
     avatarId2EnName,
+    characterSkillTree,
 )
 
 mp.dps = 14
@@ -114,14 +115,16 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
         'avatarPromotion': char['Promotion'],
         'avatarLevel': char['Level'],
         'avatarSkill': [],
+        'avatarExtraAbility': [],
+        'avatarAttributeBonus': [],
         'RelicInfo': [],
-        'avatarFightProp': {},
     }
     avatarName = avatarId2Name[str(char['AvatarID'])]
-
+    char_data['avatarEnName'] = avatarId2EnName[str(char['AvatarID'])]
     # 处理技能
     for behavior in char['BehaviorList']:
-        if f'{char["AvatarID"]}0' in str(behavior['BehaviorID']):
+        # 处理技能
+        if f'{char["AvatarID"]}0' == str(behavior['BehaviorID'])[0:5]:
             skill_temp = {}
             skill_temp['skillId'] = (
                 char['AvatarID'] * 100 + behavior['BehaviorID'] % 10
@@ -129,12 +132,47 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
             skill_temp['skillName'] = skillId2Name[str(skill_temp['skillId'])]
             skill_temp['skillType'] = skillId2Type[str(skill_temp['skillId'])]
             skill_temp['skillLevel'] = behavior['Level']
-            #     behavior_temp['skillIcon'] = skillId2Name['Icon'][
-            #         behavior_temp['skillId']
-            #     ]
             char_data['avatarSkill'].append(skill_temp)
 
-    char_data['avatarEnName'] = avatarId2EnName[str(char['AvatarID'])]
+        # 处理技能树中的额外能力
+        if f'{char["AvatarID"]}1' == str(behavior['BehaviorID'])[0:5]:
+            extra_ability_temp = {}
+            extra_ability_temp['extraAbilityId'] = behavior['BehaviorID']
+            extra_ability_temp['extraAbilityLevel'] = behavior['Level']
+            status_add = characterSkillTree[str(char['AvatarID'])][
+                str(behavior['BehaviorID'])
+            ]['levels'][str(behavior['Level'])]['status_add']
+            extra_ability_temp['statusAdd'] = {}
+            if status_add != {}:
+                extra_ability_temp['statusAdd']['property'] = status_add[
+                    'property'
+                ]
+                extra_ability_temp['statusAdd']['name'] = Property2Name[
+                    status_add['property']
+                ]
+                extra_ability_temp['statusAdd']['value'] = status_add['value']
+            char_data['avatarExtraAbility'].append(extra_ability_temp)
+
+        # 处理技能树中的属性加成
+        if f'{char["AvatarID"]}2' == str(behavior['BehaviorID'])[0:5]:
+            attribute_bonus_temp = {}
+            attribute_bonus_temp['attributeBonusId'] = behavior['BehaviorID']
+            attribute_bonus_temp['attributeBonusLevel'] = behavior['Level']
+            status_add = characterSkillTree[str(char['AvatarID'])][
+                str(behavior['BehaviorID'])
+            ]['levels'][str(behavior['Level'])]['status_add']
+            attribute_bonus_temp['statusAdd'] = {}
+            if status_add != {}:
+                attribute_bonus_temp['statusAdd']['property'] = status_add[
+                    'property'
+                ]
+                attribute_bonus_temp['statusAdd']['name'] = Property2Name[
+                    status_add['property']
+                ]
+                attribute_bonus_temp['statusAdd']['value'] = status_add[
+                    'value'
+                ]
+            char_data['avatarAttributeBonus'].append(attribute_bonus_temp)
 
     # 处理遗器
     for relic in char['RelicList']:
@@ -229,7 +267,7 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
         mp.mpf(avatar_promotion_base["BaseAggro"]['Value'])
     )
 
-    char_data['base_attributes'] = base_attributes
+    char_data['baseAttributes'] = base_attributes
 
     # 处理武器
 
@@ -239,11 +277,35 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
     equipment_info['equipmentName'] = EquipmentID2Name[
         str(equipment_info['equipmentID'])
     ]
-    # equipment_info['EquipmentStar'] = equipment_info['flat']['rankLevel']
 
     equipment_info['equipmentLevel'] = char['EquipmentID']['Level']
     equipment_info['equipmentPromotion'] = char['EquipmentID']['Promotion']
     equipment_info['equipmentRank'] = char['EquipmentID']['Rank']
+    equipment_base_attributes = {}
+    equipment_promotion_base = EquipmentPromotion[
+        str(equipment_info['equipmentID'])
+    ][str(equipment_info['equipmentPromotion'])]
+
+    # 生命值
+    equipment_base_attributes['hp'] = str(
+        mp.mpf(equipment_promotion_base["BaseHP"]['Value'])
+        + mp.mpf(equipment_promotion_base["BaseHPAdd"]['Value'])
+        * (equipment_info['equipmentLevel'] - 1)
+    )
+    # 攻击力
+    equipment_base_attributes['attack'] = str(
+        mp.mpf(equipment_promotion_base["BaseAttack"]['Value'])
+        + mp.mpf(equipment_promotion_base["BaseAttackAdd"]['Value'])
+        * (equipment_info['equipmentLevel'] - 1)
+    )
+    # 防御力
+    equipment_base_attributes['defence'] = str(
+        mp.mpf(equipment_promotion_base["BaseDefence"]['Value'])
+        + mp.mpf(equipment_promotion_base["BaseDefenceAdd"]['Value'])
+        * (equipment_info['equipmentLevel'] - 1)
+    )
+    equipment_info['baseAttributes'] = equipment_base_attributes
+
     char_data['equipmentInfo'] = equipment_info
 
     with open(

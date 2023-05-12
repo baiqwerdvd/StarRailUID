@@ -11,3 +11,6 @@ with open(EXCEL / 'RelicSubAffixConfig.json', 'r', encoding='utf8') as f:
 
 with open(EXCEL / 'AvatarPromotionConfig.json', 'r', encoding='utf8') as f:
     AvatarPromotion = json.load(f)
+
+with open(EXCEL / 'EquipmentPromotionConfig.json', 'r', encoding='utf8') as f:
+    EquipmentPromotion = json.load(f)

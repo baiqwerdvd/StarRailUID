@@ -19,6 +19,7 @@ Property2Name_fileName = 'Property2Name.json'
 RelicId2SetId_fileName = f'RelicId2SetId_mapping_{version}.json'
 SetId2Name_fileName = f'SetId2Name_mapping_{version}.json'
 rankId2Name_fileName = f'rankId2Name_mapping_{version}.json'
+characterSkillTree_fileName = f'characterSkillTree_mapping_{version}.json'
 
 
 class TS(TypedDict):
@@ -55,3 +56,6 @@ with open(MAP / SetId2Name_fileName, 'r', encoding='UTF-8') as f:
 
 with open(MAP / rankId2Name_fileName, 'r', encoding='UTF-8') as f:
     rankId2Name = msgjson.decode(f.read(), type=Dict[str, str])
+
+with open(MAP / characterSkillTree_fileName, 'r', encoding='UTF-8') as f:
+    characterSkillTree = msgjson.decode(f.read(), type=Dict[str, dict])
