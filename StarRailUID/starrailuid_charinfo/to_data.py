@@ -39,7 +39,7 @@ PROP_ATTR_MAP = {
 }
 
 
-async def enka_to_dict(
+async def api_to_dict(
     sr_uid: str, sr_data: Optional[EnkaData] = None
 ) -> Union[List[dict], str]:
     """
@@ -317,10 +317,10 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
     return char_data, avatarName
 
 
-async def enka_to_data(
+async def api_to_data(
     uid: str, enka_data: Optional[EnkaData] = None
 ) -> Union[dict, str]:
-    raw_data = await enka_to_dict(uid, enka_data)
+    raw_data = await api_to_dict(uid, enka_data)
     if isinstance(raw_data, str):
         return raw_data
     char_name_list = []

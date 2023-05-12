@@ -7,7 +7,7 @@ from typing import Union, Optional
 from gsuid_core.utils.api.enka.models import EnkaData
 
 #
-from .to_data import enka_to_dict
+from .to_data import api_to_dict
 
 # from ..utils.image.convert import convert_img
 # from ..utils.resource.RESOURCE_PATH import CHAR_ICON_PATH
@@ -30,10 +30,10 @@ from .to_data import enka_to_dict
 #
 
 
-async def enka_to_card(
+async def api_to_card(
     uid: str, enka_data: Optional[EnkaData] = None
 ) -> Union[str, bytes]:
-    char_data_list = await enka_to_dict(uid, enka_data)
+    char_data_list = await api_to_dict(uid, enka_data)
     return char_data_list
 
 

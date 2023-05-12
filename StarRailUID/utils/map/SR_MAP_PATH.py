@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, TypedDict
+from typing import Dict, List, TypedDict
 
 from msgspec import json as msgjson
 
@@ -21,6 +21,7 @@ SetId2Name_fileName = f'SetId2Name_mapping_{version}.json'
 rankId2Name_fileName = f'rankId2Name_mapping_{version}.json'
 characterSkillTree_fileName = f'characterSkillTree_mapping_{version}.json'
 avatarId2DamageType_fileName = f'avatarId2DamageType_mapping_{version}.json'
+avatarId2Rarity_fileName = f'avatarId2Rarity_mapping_{version}.json'
 
 
 class TS(TypedDict):
@@ -63,3 +64,9 @@ with open(MAP / characterSkillTree_fileName, 'r', encoding='UTF-8') as f:
 
 with open(MAP / avatarId2DamageType_fileName, 'r', encoding='UTF-8') as f:
     avatarId2DamageType = msgjson.decode(f.read(), type=Dict[str, str])
+
+with open(MAP / 'char_alias.json', 'r', encoding='UTF-8') as f:
+    alias_data = msgjson.decode(f.read(), type=Dict[str, Dict[str, List]])
+
+with open(MAP / avatarId2Rarity_fileName, 'r', encoding='UTF-8') as f:
+    avatarId2Rarity = msgjson.decode(f.read(), type=Dict[str, str])
