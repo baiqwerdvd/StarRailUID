@@ -97,9 +97,9 @@ async def _draw_card(
         )
     else:
         name = await name_to_weapon_id(name)
-        _id = await weapon_id_to_en_name(name)
+        # _id = await weapon_id_to_en_name(name)
         item_pic = (
-            Image.open(WEAPON_PATH / f'{_id}.png')
+            Image.open(WEAPON_PATH / f'{name}.png')
             .convert('RGBA')
             .resize((124, 124))
         )
@@ -131,10 +131,10 @@ async def get_level_from_list(ast: int, lst: List) -> int:
 
     for num_index, num in enumerate(lst):
         if ast <= num:
-            level = 5 - num_index
+            level = num_index + 1
             break
     else:
-        level = 1
+        level = 6
     return level
 
 
@@ -154,7 +154,7 @@ def check_up(name: str, _time: str) -> bool:
 
 
 async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
-    path = PLAYER_PATH / str(uid) / 'gacha_logs_test.json'
+    path = PLAYER_PATH / str(uid) / 'gacha_logs.json'
     if not path.exists():
         return '你还没有跃迁数据噢~\n请使用命令`sr导入抽卡链接`更新跃迁数据~'
     with open(path, 'r', encoding='UTF-8') as f:
@@ -319,10 +319,10 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
     single_y = 150
 
     # 计算图片尺寸
-    normal_y = (1 + ((total_data['群星跃迁']['total'] - 1) // 6)) * single_y
-    begin_y = (1 + ((total_data['始发跃迁']['total'] - 1) // 6)) * single_y
-    char_y = (1 + ((total_data['角色跃迁']['total'] - 1) // 6)) * single_y
-    weapon_y = (1 + ((total_data['光锥跃迁']['total'] - 1) // 6)) * single_y
+    normal_y = (1 + ((total_data['群星跃迁']['total'] - 1) // 5)) * single_y
+    begin_y = (1 + ((total_data['始发跃迁']['total'] - 1) // 5)) * single_y
+    char_y = (1 + ((total_data['角色跃迁']['total'] - 1) // 5)) * single_y
+    weapon_y = (1 + ((total_data['光锥跃迁']['total'] - 1) // 5)) * single_y
 
     # 获取背景图片各项参数
     _id = str(user_id)
@@ -356,7 +356,7 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
             )
         elif i == '始发跃迁':
             level = await get_level_from_list(
-                total_data[i]['avg'], [62, 75, 88, 99, 111]
+                total_data[i]['avg'], [10, 20, 30, 40, 50]
             )
         else:
             if i == '光锥跃迁':
@@ -413,7 +413,7 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
             'mm',
         )
         y_extend += (
-            (1 + ((total_data[type_list[index - 1]]['total'] - 1) // 6)) * 150
+            (1 + ((total_data[type_list[index - 1]]['total'] - 1) // 5)) * 150
             if index != 0
             else 0
         )
@@ -421,8 +421,8 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
         img.paste(title, (0, y), title)
         tasks = []
         for item_index, item in enumerate(total_data[i]['list']):
-            item_x = (item_index % 6) * 138 + 45
-            item_y = (item_index // 6) * 150 + y + 355
+            item_x = (item_index % 5) * 138 + 25
+            item_y = (item_index // 5) * 150 + y + 355
             xy_point = (item_x, item_y)
             tasks.append(
                 _draw_card(
