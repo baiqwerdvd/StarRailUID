@@ -21,7 +21,6 @@ from ..utils.image.image_tools import (
 from ..utils.map.name_covert import (
     name_to_avatar_id,
     name_to_weapon_id,
-    weapon_id_to_en_name,
 )
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
