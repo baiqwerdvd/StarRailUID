@@ -100,12 +100,17 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     # 放角色名
     char_img_draw = ImageDraw.Draw(char_info)
     char_img_draw.text(
-        (665, 210), char.char_name, white_color, sr_font_38, 'mm'
+        (620, 207), char.char_name, (255, 255, 255), sr_font_38, 'lm'
     )
+    char_name_len = sr_font_38.getsize(char.char_name)[0]
 
     # 放等级
     char_img_draw.text(
-        (750, 213), f'LV.{str(char.char_level)}', white_color, sr_font_20, 'mm'
+        (620 + char_name_len + 50, 212),
+        f'LV.{str(char.char_level)}',
+        white_color,
+        sr_font_24,
+        'mm',
     )
 
     # 放星级
@@ -370,6 +375,9 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             sr_font_34,
             'lm',
         )
+        weapon_name_len = sr_font_34.getsize(char.equipment["equipmentName"])[
+            0
+        ]
         # 放阶
         rank_img = Image.open(TEXT_PATH / 'ImgNewBg.png')
         rank_img_draw = ImageDraw.Draw(rank_img)
@@ -380,7 +388,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             sr_font_28,
             'mm',
         )
-        weapon_bg.paste(rank_img, (450, 2), rank_img)
+        weapon_bg.paste(rank_img, (weapon_name_len + 300, 2), rank_img)
 
         rarity_img = Image.open(
             TEXT_PATH
