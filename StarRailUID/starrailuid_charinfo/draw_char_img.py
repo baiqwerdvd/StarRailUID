@@ -115,7 +115,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     rank_img = Image.open(TEXT_PATH / 'ImgNewBg.png')
     rank_img_draw = ImageDraw.Draw(rank_img)
     rank_img_draw.text(
-        (70, 44), f'{NUM_MAP[char.char_rank]} 命', white_color, sr_font_28, 'mm'
+        (70, 44), f'{NUM_MAP[char.char_rank]}命', white_color, sr_font_28, 'mm'
     )
     char_info.paste(rank_img, (722, 225), rank_img)
 
@@ -356,12 +356,12 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         weapon_bg = Image.open(TEXT_PATH / 'weapon_bg.png')
         weapon_id = char.equipment['equipmentID']
         weapon_img = Image.open(WEAPON_PATH / f'{weapon_id}.png').resize(
-            (260, 240)
+            (270, 240)
         )
-        weapon_bg.paste(weapon_img, (-10, 50), weapon_img)
+        weapon_bg.paste(weapon_img, (20, 50), weapon_img)
         weapon_bg_draw = ImageDraw.Draw(weapon_bg)
         weapon_bg_draw.text(
-            (310, 47),
+            (345, 47),
             f'{char.equipment["equipmentName"]}',
             white_color,
             sr_font_34,
@@ -375,20 +375,20 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         rank_img_draw = ImageDraw.Draw(rank_img)
         rank_img_draw.text(
             (70, 44),
-            f'{NUM_MAP[char.equipment["equipmentRank"]]} 阶',
+            f'{NUM_MAP[char.equipment["equipmentRank"]]}阶',
             white_color,
             sr_font_28,
             'mm',
         )
-        weapon_bg.paste(rank_img, (weapon_name_len + 300, 2), rank_img)
+        weapon_bg.paste(rank_img, (weapon_name_len + 330, 2), rank_img)
 
         rarity_img = Image.open(
             TEXT_PATH
             / f'LightCore_Rarity{char.equipment["equipmentRarity"]}.png'
         ).resize((306, 72))
-        weapon_bg.paste(rarity_img, (180, 55), rarity_img)
+        weapon_bg.paste(rarity_img, (223, 55), rarity_img)
         weapon_bg_draw.text(
-            (455, 90),
+            (498, 90),
             f'Lv.{char.equipment["equipmentLevel"]}',
             white_color,
             sr_font_28,
@@ -406,9 +406,9 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         for i in range(0, len(desc_params)):
             desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
         draw_text_by_line(
-            weapon_bg, (243, 115), desc, sr_font_24, '#F9F9F9', 372
+            weapon_bg, (286, 115), desc, sr_font_24, '#F9F9F9', 372
         )
-        char_info.paste(weapon_bg, (22, 870), weapon_bg)
+        char_info.paste(weapon_bg, (-10, 870), weapon_bg)
     else:
         char_img_draw.text(
             (525, 1005),
@@ -554,7 +554,6 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         )
 
     # 发送图片
-    # char_info.show()
     res = await convert_img(char_info)
     logger.info('[sr面板]绘图已完成,等待发送!')
     return res
