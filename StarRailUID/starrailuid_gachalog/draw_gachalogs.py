@@ -88,7 +88,6 @@ async def _draw_card(
         item_pic = (
             Image.open(CHAR_ICON_PATH / f'{_id}.png')
             .convert('RGBA')
-            .crop((0, 0, 112, 112))
             .resize((105, 105))
         )
     else:

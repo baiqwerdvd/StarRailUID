@@ -424,7 +424,8 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         char_info.paste(weapon_rank_bg, (690, 880), weapon_rank_bg)
 
         for relic in char.char_relic:
-            relic_img = Image.open(TEXT_PATH / 'yq_bg3.png')
+            rarity = RelicId2Rarity[str(relic["relicId"])]
+            relic_img = Image.open(TEXT_PATH / f'yq_bg{rarity}.png')
             if str(relic["SetId"])[0] == '3':
                 relic_piece_img = Image.open(
                     RELIC_PATH / f'{relic["SetId"]}_{relic["Type"] - 5}.png'
