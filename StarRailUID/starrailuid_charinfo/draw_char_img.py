@@ -533,16 +533,16 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             )
         if relic_score > 1:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconS.png')
-            char_info.paste(relic_value_level, (778, 963), relic_value_level)
+            char_info.paste(relic_value_level, (780, 963), relic_value_level)
         elif relic_score > 0.6:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconA.png')
-            char_info.paste(relic_value_level, (778, 963), relic_value_level)
+            char_info.paste(relic_value_level, (780, 963), relic_value_level)
         elif relic_score > 0.3:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconB.png')
-            char_info.paste(relic_value_level, (778, 963), relic_value_level)
+            char_info.paste(relic_value_level, (780, 963), relic_value_level)
         elif relic_score > 0:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconC.png')
-            char_info.paste(relic_value_level, (778, 963), relic_value_level)
+            char_info.paste(relic_value_level, (780, 963), relic_value_level)
 
     else:
         char_img_draw.text(
