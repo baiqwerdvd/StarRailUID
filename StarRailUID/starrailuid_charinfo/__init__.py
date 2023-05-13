@@ -34,6 +34,8 @@ async def send_char_info(bot: Bot, ev: Event):
         if im[1]:
             with open(TEMP_PATH / f'{ev.msg_id}.jpg', 'wb') as f:
                 f.write(im[1])
+    elif isinstance(im, Image.Image):
+        await bot.send(await convert_img(im))
     elif im is None:
         return
     else:
