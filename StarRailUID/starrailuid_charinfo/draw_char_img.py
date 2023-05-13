@@ -375,7 +375,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         rank_img_draw = ImageDraw.Draw(rank_img)
         rank_img_draw.text(
             (70, 44),
-            f'{NUM_MAP[char.equipment["equipmentRarity"]]} 阶',
+            f'{NUM_MAP[char.equipment["equipmentRank"]]} 阶',
             white_color,
             sr_font_28,
             'mm',
@@ -422,6 +422,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     if char.char_relic:
         weapon_rank_bg = Image.open(TEXT_PATH / 'rank_bg.png')
         char_info.paste(weapon_rank_bg, (690, 880), weapon_rank_bg)
+        relic_score = 0
 
         for relic in char.char_relic:
             rarity = RelicId2Rarity[str(relic["relicId"])]
@@ -496,10 +497,14 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
                 anchor='mm',
             )
 
-            # relicScore = 0
             for index, i in enumerate(relic['SubAffixList']):
                 subName: str = i['Name']
                 subValue = mp.mpf(i['Value'])
+                subProperty = i['Property']
+                if subProperty == 'CriticalDamageBase':
+                    relic_score += subValue
+                if subProperty == 'CriticalChanceBase':
+                    relic_score += subValue * 2
                 if subName in ['攻击力', '生命值', '防御力', '速度']:
                     subValueStr = nstr(subValue, 3)
                 else:
@@ -526,6 +531,19 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             char_info.paste(
                 relic_img, RELIC_POS[str(relic["Type"])], relic_img
             )
+        if relic_score > 1:
+            relic_value_level = Image.open(TEXT_PATH / 'CommonIconS.png')
+            char_info.paste(relic_value_level, (778, 963), relic_value_level)
+        elif relic_score > 0.6:
+            relic_value_level = Image.open(TEXT_PATH / 'CommonIconA.png')
+            char_info.paste(relic_value_level, (778, 963), relic_value_level)
+        elif relic_score > 0.3:
+            relic_value_level = Image.open(TEXT_PATH / 'CommonIconB.png')
+            char_info.paste(relic_value_level, (778, 963), relic_value_level)
+        elif relic_score > 0:
+            relic_value_level = Image.open(TEXT_PATH / 'CommonIconC.png')
+            char_info.paste(relic_value_level, (778, 963), relic_value_level)
+
     else:
         char_img_draw.text(
             (525, 1565),
