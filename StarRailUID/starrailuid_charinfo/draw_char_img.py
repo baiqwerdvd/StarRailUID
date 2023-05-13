@@ -385,16 +385,10 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         ).resize((200, 48))
         relic_img.paste(rarity_img, (-20, 80), rarity_img)
         relic_img_draw = ImageDraw.Draw(relic_img)
-        # if len(relic['name']) <= 5:
-        #     main_name = relic['relicName']
-        # else:
-        #     main_name = (
-        #         relic['relicName'][:2] + relic['relicName'][4:]
-        #     )
-        if len(relic['name']) <= 5:
-            main_name = relic['name']
+        if len(relic['relicName']) <= 5:
+            main_name = relic['relicName']
         else:
-            main_name = relic['name'][:2] + relic['name'][4:]
+            main_name = relic['relicName'][:2] + relic['relicName'][4:]
         relic_img_draw.text(
             (30, 70),
             main_name,
@@ -471,6 +465,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         char_info.paste(relic_img, RELIC_POS[str(relic["Type"])], relic_img)
 
     # 发送图片
+    char_info.show()
     res = await convert_img(char_info)
     logger.info('[sr面板]绘图已完成,等待发送!')
     return res

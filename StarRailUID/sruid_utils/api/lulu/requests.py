@@ -9,7 +9,7 @@ from httpx import AsyncClient
 
 async def get_char_card_info(uid: str) -> Dict:
     async with AsyncClient(
-        base_url='https://mhy.fuckmys.tk',
+        base_url='http://api.mihomo.me',
         timeout=30,
     ) as client:
         req = await client.get(f'/sr_info/{uid}')
