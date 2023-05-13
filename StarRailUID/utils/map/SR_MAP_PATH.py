@@ -30,6 +30,9 @@ skillId2AttackType_fileName = f'skillId2AttackType_mapping_{version}.json'
 EquipmentID2Rarity_fileName = f'EquipmentID2Rarity_mapping_{version}.json'
 RelicId2Rarity_fileName = f'RelicId2Rarity_mapping_{version}.json'
 ItemId2Name_fileName = f'ItemId2Name_mapping_{version}.json'
+RelicId2MainAffixGroup_fileName = (
+    f'RelicId2MainAffixGroup_mapping_{version}.json'
+)
 
 
 class TS(TypedDict):
@@ -100,3 +103,6 @@ with open(MAP / RelicId2Rarity_fileName, 'r', encoding='UTF-8') as f:
 
 with open(MAP / ItemId2Name_fileName, 'r', encoding='UTF-8') as f:
     ItemId2Name = msgjson.decode(f.read(), type=Dict[str, str])
+
+with open(MAP / RelicId2MainAffixGroup_fileName, 'r', encoding='UTF-8') as f:
+    RelicId2MainAffixGroup = msgjson.decode(f.read(), type=Dict[str, int])

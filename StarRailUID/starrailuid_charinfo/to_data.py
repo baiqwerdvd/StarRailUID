@@ -189,6 +189,7 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
         relic_temp['MainAffix']['AffixID'] = relic['MainAffixID']
         affix_property, value = await cal_relic_main_affix(
             relic_id=relic['ID'],
+            set_id=str(relic_temp['SetId']),
             affix_id=relic['MainAffixID'],
             relic_type=relic['Type'],
             relic_level=relic_temp['Level'],
