@@ -12,6 +12,7 @@ from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
 
 from .mono.Character import Character
+from ..utils.fonts.first_world import fw_font_120
 from ..utils.map.SR_MAP_PATH import RelicId2Rarity
 from ..utils.excel.read_excel import light_cone_ranks
 from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
@@ -292,7 +293,6 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     char_info.paste(attr_bg, (517, 265), attr_bg)
 
     # 命座
-    lock_img = Image.open(TEXT_PATH / 'icon_lock.png').resize((50, 50))
     for rank in range(0, 6):
         rank_bg = Image.open(TEXT_PATH / 'mz_bg.png')
         if rank < char.char_rank:
@@ -302,18 +302,23 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             rank_bg.paste(rank_img, (19, 19), rank_img)
             char_info.paste(rank_bg, (20 + rank * 80, 630), rank_bg)
         else:
-            rank_img = Image.open(
-                SKILL_PATH / f'{char.char_id}{RANK_MAP[rank + 1]}'
-            ).resize((50, 50))
+            rank_img = (
+                Image.open(SKILL_PATH / f'{char.char_id}{RANK_MAP[rank + 1]}')
+                .resize((50, 50))
+                .convert("RGBA")
+            )
+            alpha = rank_img.getchannel('A')
+            alpha = alpha.point(lambda i: i // 2)
+            rank_img.putalpha(alpha)
             rank_bg.paste(rank_img, (19, 19), rank_img)
-            rank_bg.paste(lock_img, (19, 19), lock_img)
+            # rank_bg.paste(lock_img, (19, 19), lock_img)
             char_info.paste(rank_bg, (20 + rank * 80, 630), rank_bg)
 
     # 技能
     skill_bg = Image.open(TEXT_PATH / 'skill_bg.png')
     i = 0
     for skill in char.char_skill:
-        skill_attr_img = Image.open(TEXT_PATH / 'skill_attr4.png')
+        skill_attr_img = Image.open(TEXT_PATH / f'skill_attr{i + 1}.png')
         skill_panel_img = Image.open(TEXT_PATH / 'skill_panel.png')
         skill_img = Image.open(
             SKILL_PATH / f'{char.char_id}_'
@@ -348,157 +353,182 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     char_info.paste(skill_bg, (0, 710), skill_bg)
 
     # 武器
-    weapon_bg = Image.open(TEXT_PATH / 'weapon_bg.png')
-    weapon_id = char.equipment['equipmentID']
-    weapon_img = Image.open(WEAPON_PATH / f'{weapon_id}.png').resize(
-        (240, 240)
-    )
-    weapon_bg.paste(weapon_img, (-10, 50), weapon_img)
-    weapon_bg_draw = ImageDraw.Draw(weapon_bg)
-    weapon_bg_draw.text(
-        (370, 47),
-        f'{char.equipment["equipmentName"]}',
-        white_color,
-        sr_font_34,
-        'mm',
-    )
-    weapon_bg_draw.text(
-        (536, 47),
-        f'{NUM_MAP[char.equipment["equipmentRank"]]} 阶',
-        white_color,
-        sr_font_28,
-        'mm',
-    )
-    rarity_img = Image.open(
-        TEXT_PATH / f'LightCore_Rarity{char.equipment["equipmentRarity"]}.png'
-    ).resize((306, 72))
-    weapon_bg.paste(rarity_img, (160, 55), rarity_img)
-    weapon_bg_draw.text(
-        (430, 90),
-        f'Lv.{char.equipment["equipmentLevel"]}',
-        white_color,
-        sr_font_28,
-        'mm',
-    )
-
-    # 武器技能
-    desc = light_cone_ranks[str(char.equipment['equipmentID'])]['desc']
-    desc_params = light_cone_ranks[str(char.equipment['equipmentID'])][
-        'params'
-    ][char.equipment['equipmentRank'] - 1]
-    for i in range(0, len(desc_params)):
-        temp = math.floor(desc_params[i] * 1000) / 10
-        desc = desc.replace(f'#{i + 1}[i]%', f'{str(temp)}%')
-    for i in range(0, len(desc_params)):
-        desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
-    draw_text_by_line(weapon_bg, (220, 115), desc, sr_font_24, '#F9F9F9', 372)
-    char_info.paste(weapon_bg, (22, 870), weapon_bg)
-
-    # 遗器
-    weapon_rank_bg = Image.open(TEXT_PATH / 'rank_bg.png')
-    char_info.paste(weapon_rank_bg, (690, 880), weapon_rank_bg)
-
-    for relic in char.char_relic:
-        relic_img = Image.open(TEXT_PATH / 'yq_bg3.png')
-        if str(relic["SetId"])[0] == '3':
-            relic_piece_img = Image.open(
-                RELIC_PATH / f'{relic["SetId"]}_{relic["Type"] - 5}.png'
-            )
-        else:
-            relic_piece_img = Image.open(
-                RELIC_PATH / f'{relic["SetId"]}_{relic["Type"] - 1}.png'
-            )
-        relic_piece_new_img = relic_piece_img.resize(
-            (105, 105), Image.Resampling.LANCZOS
-        ).convert("RGBA")
-        relic_img.paste(relic_piece_new_img, (200, 90), relic_piece_new_img)
+    if char.equipment != {}:
+        weapon_bg = Image.open(TEXT_PATH / 'weapon_bg.png')
+        weapon_id = char.equipment['equipmentID']
+        weapon_img = Image.open(WEAPON_PATH / f'{weapon_id}.png').resize(
+            (240, 240)
+        )
+        weapon_bg.paste(weapon_img, (-10, 50), weapon_img)
+        weapon_bg_draw = ImageDraw.Draw(weapon_bg)
+        weapon_bg_draw.text(
+            (370, 47),
+            f'{char.equipment["equipmentName"]}',
+            white_color,
+            sr_font_34,
+            'mm',
+        )
+        weapon_bg_draw.text(
+            (536, 47),
+            f'{NUM_MAP[char.equipment["equipmentRank"]]} 阶',
+            white_color,
+            sr_font_28,
+            'mm',
+        )
         rarity_img = Image.open(
             TEXT_PATH
-            / f'LightCore_Rarity{RelicId2Rarity[str(relic["relicId"])]}.png'
-        ).resize((200, 48))
-        relic_img.paste(rarity_img, (-10, 80), rarity_img)
-        relic_img_draw = ImageDraw.Draw(relic_img)
-        if len(relic['relicName']) <= 5:
-            main_name = relic['relicName']
-        else:
-            main_name = relic['relicName'][:2] + relic['relicName'][4:]
-        relic_img_draw.text(
-            (30, 70),
-            main_name,
-            (255, 255, 255),
-            sr_font_34,
-            anchor='lm',
-        )
-
-        # 主属性
-        main_value = mp.mpf(relic['MainAffix']['Value'])
-        main_name: str = relic['MainAffix']['Name']
-        main_level: int = relic['Level']
-
-        if main_name in ['攻击力', '生命值', '防御力', '速度']:
-            mainValueStr = nstr(main_value, 3)
-        else:
-            mainValueStr = str(math.floor(main_value * 1000) / 10) + '%'
-
-        mainNameNew = (
-            main_name.replace('百分比', '')
-            .replace('伤害加成', '伤加成')
-            .replace('属性伤害', '伤害')
-        )
-
-        relic_img_draw.text(
-            (35, 150),
-            mainNameNew,
-            (255, 255, 255),
+            / f'LightCore_Rarity{char.equipment["equipmentRarity"]}.png'
+        ).resize((306, 72))
+        weapon_bg.paste(rarity_img, (160, 55), rarity_img)
+        weapon_bg_draw.text(
+            (430, 90),
+            f'Lv.{char.equipment["equipmentLevel"]}',
+            white_color,
             sr_font_28,
-            anchor='lm',
-        )
-        relic_img_draw.text(
-            (35, 195),
-            '+{}'.format(mainValueStr),
-            (255, 255, 255),
-            sr_font_28,
-            anchor='lm',
-        )
-        relic_img_draw.text(
-            (180, 105),
-            '+{}'.format(str(main_level)),
-            (255, 255, 255),
-            sr_font_23,
-            anchor='mm',
+            'mm',
         )
 
-        # relicScore = 0
-        for index, i in enumerate(relic['SubAffixList']):
-            subName: str = i['Name']
-            subValue = mp.mpf(i['Value'])
-            if subName in ['攻击力', '生命值', '防御力', '速度']:
-                subValueStr = nstr(subValue, 3)
+        # 武器技能
+        desc = light_cone_ranks[str(char.equipment['equipmentID'])]['desc']
+        desc_params = light_cone_ranks[str(char.equipment['equipmentID'])][
+            'params'
+        ][char.equipment['equipmentRank'] - 1]
+        for i in range(0, len(desc_params)):
+            temp = math.floor(desc_params[i] * 1000) / 10
+            desc = desc.replace(f'#{i + 1}[i]%', f'{str(temp)}%')
+        for i in range(0, len(desc_params)):
+            desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
+        draw_text_by_line(
+            weapon_bg, (220, 115), desc, sr_font_24, '#F9F9F9', 372
+        )
+        char_info.paste(weapon_bg, (22, 870), weapon_bg)
+    else:
+        char_img_draw.text(
+            (525, 1005),
+            'No light cone!',
+            white_color,
+            fw_font_120,
+            'mm',
+        )
+
+    # 遗器
+    if char.char_relic:
+        weapon_rank_bg = Image.open(TEXT_PATH / 'rank_bg.png')
+        char_info.paste(weapon_rank_bg, (690, 880), weapon_rank_bg)
+
+        for relic in char.char_relic:
+            relic_img = Image.open(TEXT_PATH / 'yq_bg3.png')
+            if str(relic["SetId"])[0] == '3':
+                relic_piece_img = Image.open(
+                    RELIC_PATH / f'{relic["SetId"]}_{relic["Type"] - 5}.png'
+                )
             else:
-                subValueStr = nstr(subValue * 100, 3) + '%'
-            subNameStr = subName.replace('百分比', '').replace('元素', '')
-            # 副词条文字颜色
-            relic_color = (255, 255, 255)
+                relic_piece_img = Image.open(
+                    RELIC_PATH / f'{relic["SetId"]}_{relic["Type"] - 1}.png'
+                )
+            relic_piece_new_img = relic_piece_img.resize(
+                (105, 105), Image.Resampling.LANCZOS
+            ).convert("RGBA")
+            relic_img.paste(
+                relic_piece_new_img, (200, 90), relic_piece_new_img
+            )
+            rarity_img = Image.open(
+                TEXT_PATH / f'LightCore_Rarity'
+                f'{RelicId2Rarity[str(relic["relicId"])]}.png'
+            ).resize((200, 48))
+            relic_img.paste(rarity_img, (-10, 80), rarity_img)
+            relic_img_draw = ImageDraw.Draw(relic_img)
+            if len(relic['relicName']) <= 5:
+                main_name = relic['relicName']
+            else:
+                main_name = relic['relicName'][:2] + relic['relicName'][4:]
+            relic_img_draw.text(
+                (30, 70),
+                main_name,
+                (255, 255, 255),
+                sr_font_34,
+                anchor='lm',
+            )
+
+            # 主属性
+            main_value = mp.mpf(relic['MainAffix']['Value'])
+            main_name: str = relic['MainAffix']['Name']
+            main_level: int = relic['Level']
+
+            if main_name in ['攻击力', '生命值', '防御力', '速度']:
+                mainValueStr = nstr(main_value, 3)
+            else:
+                mainValueStr = str(math.floor(main_value * 1000) / 10) + '%'
+
+            mainNameNew = (
+                main_name.replace('百分比', '')
+                .replace('伤害加成', '伤加成')
+                .replace('属性伤害', '伤害')
+            )
 
             relic_img_draw.text(
-                (47, 237 + index * 47),
-                '{}'.format(subNameStr),
-                relic_color,
-                sr_font_26,
+                (35, 150),
+                mainNameNew,
+                (255, 255, 255),
+                sr_font_28,
                 anchor='lm',
             )
             relic_img_draw.text(
-                (290, 237 + index * 47),
-                '{}'.format(subValueStr),
-                relic_color,
-                sr_font_26,
-                anchor='rm',
+                (35, 195),
+                '+{}'.format(mainValueStr),
+                (255, 255, 255),
+                sr_font_28,
+                anchor='lm',
+            )
+            relic_img_draw.text(
+                (180, 105),
+                '+{}'.format(str(main_level)),
+                (255, 255, 255),
+                sr_font_23,
+                anchor='mm',
             )
 
-        char_info.paste(relic_img, RELIC_POS[str(relic["Type"])], relic_img)
+            # relicScore = 0
+            for index, i in enumerate(relic['SubAffixList']):
+                subName: str = i['Name']
+                subValue = mp.mpf(i['Value'])
+                if subName in ['攻击力', '生命值', '防御力', '速度']:
+                    subValueStr = nstr(subValue, 3)
+                else:
+                    subValueStr = nstr(subValue * 100, 3) + '%'
+                subNameStr = subName.replace('百分比', '').replace('元素', '')
+                # 副词条文字颜色
+                relic_color = (255, 255, 255)
+
+                relic_img_draw.text(
+                    (47, 237 + index * 47),
+                    '{}'.format(subNameStr),
+                    relic_color,
+                    sr_font_26,
+                    anchor='lm',
+                )
+                relic_img_draw.text(
+                    (290, 237 + index * 47),
+                    '{}'.format(subValueStr),
+                    relic_color,
+                    sr_font_26,
+                    anchor='rm',
+                )
+
+            char_info.paste(
+                relic_img, RELIC_POS[str(relic["Type"])], relic_img
+            )
+    else:
+        char_img_draw.text(
+            (525, 1565),
+            'No relic!',
+            white_color,
+            fw_font_120,
+            'mm',
+        )
 
     # 发送图片
-    # char_info.show()
+    char_info.show()
     res = await convert_img(char_info)
     logger.info('[sr面板]绘图已完成,等待发送!')
     return res

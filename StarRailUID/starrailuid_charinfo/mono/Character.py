@@ -37,35 +37,38 @@ class Character:
         self.seq_str: str = '无匹配'
 
     async def get_equipment_info(self):
-        base_attr = self.base_attributes
-        equip = self.equipment
-        ability_property = EquipmentID2AbilityProperty[
-            str(equip['equipmentID'])
-        ]
-        equip_rank = equip['equipmentRank']
+        if self.equipment == {}:
+            return
+        else:
+            base_attr = self.base_attributes
+            equip = self.equipment
+            ability_property = EquipmentID2AbilityProperty[
+                str(equip['equipmentID'])
+            ]
+            equip_rank = equip['equipmentRank']
 
-        equip_ability_property = ability_property[str(equip_rank)]
+            equip_ability_property = ability_property[str(equip_rank)]
 
-        equip_add_base_attr = equip['baseAttributes']
-        hp = mp.mpf(base_attr['hp']) + mp.mpf(equip_add_base_attr['hp'])
-        attack = mp.mpf(base_attr['attack']) + mp.mpf(
-            equip_add_base_attr['attack']
-        )
-        defence = mp.mpf(base_attr['defence']) + mp.mpf(
-            equip_add_base_attr['defence']
-        )
-        base_attr['hp'] = str(hp)
-        base_attr['attack'] = str(attack)
-        base_attr['defence'] = str(defence)
-        self.base_attributes = base_attr
+            equip_add_base_attr = equip['baseAttributes']
+            hp = mp.mpf(base_attr['hp']) + mp.mpf(equip_add_base_attr['hp'])
+            attack = mp.mpf(base_attr['attack']) + mp.mpf(
+                equip_add_base_attr['attack']
+            )
+            defence = mp.mpf(base_attr['defence']) + mp.mpf(
+                equip_add_base_attr['defence']
+            )
+            base_attr['hp'] = str(hp)
+            base_attr['attack'] = str(attack)
+            base_attr['defence'] = str(defence)
+            self.base_attributes = base_attr
 
-        for equip_ability in equip_ability_property:
-            property_type = equip_ability['PropertyType']
-            value = equip_ability['Value']['Value']
-            if property_type in self.add_attr:
-                self.add_attr[property_type] += value
-            else:
-                self.add_attr[property_type] = value
+            for equip_ability in equip_ability_property:
+                property_type = equip_ability['PropertyType']
+                value = equip_ability['Value']['Value']
+                if property_type in self.add_attr:
+                    self.add_attr[property_type] += value
+                else:
+                    self.add_attr[property_type] = value
 
     async def get_char_attribute_bonus(self):
         attribute_bonus = self.attribute_bonus
