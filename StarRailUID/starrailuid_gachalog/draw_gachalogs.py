@@ -176,7 +176,6 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
         }
         # 拿到数据列表
         data_list = gacha_data['data'][i]
-        print(data_list)
         # 初始化开关
         is_not_first = True
         # 开始初始化抽卡数
@@ -309,7 +308,6 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
         ):
             total_data[i]['type'] = '仓鼠型'
 
-    print(total_data)
     # 常量偏移数据
     single_y = 150
 
