@@ -176,48 +176,49 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
             char_data['avatarAttributeBonus'].append(attribute_bonus_temp)
 
     # 处理遗器
-    for relic in char['RelicList']:
-        relic_temp = {}
-        relic_temp['relicId'] = relic['ID']
-        relic_temp['relicName'] = ItemId2Name[str(relic['ID'])]
-        relic_temp['SetId'] = int(RelicId2SetId[str(relic['ID'])])
-        relic_temp['SetName'] = SetId2Name[str(relic_temp['SetId'])]
-        relic_temp['Level'] = relic['Level'] if 'Level' in relic else 1
-        relic_temp['Type'] = relic['Type']
+    if char.get('RelicList'):
+        for relic in char['RelicList']:
+            relic_temp = {}
+            relic_temp['relicId'] = relic['ID']
+            relic_temp['relicName'] = ItemId2Name[str(relic['ID'])]
+            relic_temp['SetId'] = int(RelicId2SetId[str(relic['ID'])])
+            relic_temp['SetName'] = SetId2Name[str(relic_temp['SetId'])]
+            relic_temp['Level'] = relic['Level'] if 'Level' in relic else 1
+            relic_temp['Type'] = relic['Type']
 
-        relic_temp['MainAffix'] = {}
-        relic_temp['MainAffix']['AffixID'] = relic['MainAffixID']
-        affix_property, value = await cal_relic_main_affix(
-            relic_id=relic['ID'],
-            set_id=str(relic_temp['SetId']),
-            affix_id=relic['MainAffixID'],
-            relic_type=relic['Type'],
-            relic_level=relic_temp['Level'],
-        )
-        relic_temp['MainAffix']['Property'] = affix_property
-        relic_temp['MainAffix']['Name'] = Property2Name[affix_property]
-        relic_temp['MainAffix']['Value'] = value
+            relic_temp['MainAffix'] = {}
+            relic_temp['MainAffix']['AffixID'] = relic['MainAffixID']
+            affix_property, value = await cal_relic_main_affix(
+                relic_id=relic['ID'],
+                set_id=str(relic_temp['SetId']),
+                affix_id=relic['MainAffixID'],
+                relic_type=relic['Type'],
+                relic_level=relic_temp['Level'],
+            )
+            relic_temp['MainAffix']['Property'] = affix_property
+            relic_temp['MainAffix']['Name'] = Property2Name[affix_property]
+            relic_temp['MainAffix']['Value'] = value
 
-        relic_temp['SubAffixList'] = []
-        if relic.get('RelicSubAffix'):
-            for sub_affix in relic['RelicSubAffix']:
-                sub_affix_temp = {}
-                sub_affix_temp['SubAffixID'] = sub_affix['SubAffixID']
-                sub_affix_property, value = await cal_relic_sub_affix(
-                    relic_id=relic['ID'],
-                    affix_id=sub_affix['SubAffixID'],
-                    cnt=sub_affix['Cnt'],
-                    step=sub_affix['Step'] if 'Step' in sub_affix else 0,
-                )
-                sub_affix_temp['Property'] = sub_affix_property
-                sub_affix_temp['Name'] = Property2Name[sub_affix_property]
-                sub_affix_temp['Cnt'] = sub_affix['Cnt']
-                sub_affix_temp['Step'] = (
-                    sub_affix['Step'] if 'Step' in sub_affix else 0
-                )
-                sub_affix_temp['Value'] = value
-                relic_temp['SubAffixList'].append(sub_affix_temp)
-        char_data['RelicInfo'].append(relic_temp)
+            relic_temp['SubAffixList'] = []
+            if relic.get('RelicSubAffix'):
+                for sub_affix in relic['RelicSubAffix']:
+                    sub_affix_temp = {}
+                    sub_affix_temp['SubAffixID'] = sub_affix['SubAffixID']
+                    sub_affix_property, value = await cal_relic_sub_affix(
+                        relic_id=relic['ID'],
+                        affix_id=sub_affix['SubAffixID'],
+                        cnt=sub_affix['Cnt'],
+                        step=sub_affix['Step'] if 'Step' in sub_affix else 0,
+                    )
+                    sub_affix_temp['Property'] = sub_affix_property
+                    sub_affix_temp['Name'] = Property2Name[sub_affix_property]
+                    sub_affix_temp['Cnt'] = sub_affix['Cnt']
+                    sub_affix_temp['Step'] = (
+                        sub_affix['Step'] if 'Step' in sub_affix else 0
+                    )
+                    sub_affix_temp['Value'] = value
+                    relic_temp['SubAffixList'].append(sub_affix_temp)
+            char_data['RelicInfo'].append(relic_temp)
 
     # 处理命座
     rank_temp = []
@@ -276,42 +277,42 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
     # 处理武器
 
     equipment_info = {}
+    if char['EquipmentID'] != {}:
+        equipment_info['equipmentID'] = char['EquipmentID']['ID']
+        equipment_info['equipmentName'] = EquipmentID2Name[
+            str(equipment_info['equipmentID'])
+        ]
 
-    equipment_info['equipmentID'] = char['EquipmentID']['ID']
-    equipment_info['equipmentName'] = EquipmentID2Name[
-        str(equipment_info['equipmentID'])
-    ]
+        equipment_info['equipmentLevel'] = char['EquipmentID']['Level']
+        equipment_info['equipmentPromotion'] = char['EquipmentID']['Promotion']
+        equipment_info['equipmentRank'] = char['EquipmentID']['Rank']
+        equipment_info['equipmentRarity'] = EquipmentID2Rarity[
+            str(equipment_info['equipmentID'])
+        ]
+        equipment_base_attributes = {}
+        equipment_promotion_base = EquipmentPromotion[
+            str(equipment_info['equipmentID'])
+        ][str(equipment_info['equipmentPromotion'])]
 
-    equipment_info['equipmentLevel'] = char['EquipmentID']['Level']
-    equipment_info['equipmentPromotion'] = char['EquipmentID']['Promotion']
-    equipment_info['equipmentRank'] = char['EquipmentID']['Rank']
-    equipment_info['equipmentRarity'] = EquipmentID2Rarity[
-        str(equipment_info['equipmentID'])
-    ]
-    equipment_base_attributes = {}
-    equipment_promotion_base = EquipmentPromotion[
-        str(equipment_info['equipmentID'])
-    ][str(equipment_info['equipmentPromotion'])]
-
-    # 生命值
-    equipment_base_attributes['hp'] = str(
-        mp.mpf(equipment_promotion_base["BaseHP"]['Value'])
-        + mp.mpf(equipment_promotion_base["BaseHPAdd"]['Value'])
-        * (equipment_info['equipmentLevel'] - 1)
-    )
-    # 攻击力
-    equipment_base_attributes['attack'] = str(
-        mp.mpf(equipment_promotion_base["BaseAttack"]['Value'])
-        + mp.mpf(equipment_promotion_base["BaseAttackAdd"]['Value'])
-        * (equipment_info['equipmentLevel'] - 1)
-    )
-    # 防御力
-    equipment_base_attributes['defence'] = str(
-        mp.mpf(equipment_promotion_base["BaseDefence"]['Value'])
-        + mp.mpf(equipment_promotion_base["BaseDefenceAdd"]['Value'])
-        * (equipment_info['equipmentLevel'] - 1)
-    )
-    equipment_info['baseAttributes'] = equipment_base_attributes
+        # 生命值
+        equipment_base_attributes['hp'] = str(
+            mp.mpf(equipment_promotion_base["BaseHP"]['Value'])
+            + mp.mpf(equipment_promotion_base["BaseHPAdd"]['Value'])
+            * (equipment_info['equipmentLevel'] - 1)
+        )
+        # 攻击力
+        equipment_base_attributes['attack'] = str(
+            mp.mpf(equipment_promotion_base["BaseAttack"]['Value'])
+            + mp.mpf(equipment_promotion_base["BaseAttackAdd"]['Value'])
+            * (equipment_info['equipmentLevel'] - 1)
+        )
+        # 防御力
+        equipment_base_attributes['defence'] = str(
+            mp.mpf(equipment_promotion_base["BaseDefence"]['Value'])
+            + mp.mpf(equipment_promotion_base["BaseDefenceAdd"]['Value'])
+            * (equipment_info['equipmentLevel'] - 1)
+        )
+        equipment_info['baseAttributes'] = equipment_base_attributes
 
     char_data['equipmentInfo'] = equipment_info
 
