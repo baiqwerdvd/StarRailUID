@@ -91,28 +91,28 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     char_img = Image.open(CHAR_PORTRAIT / f'{char.char_id}.png').resize(
         (1050, 1050)
     )
-    char_info.paste(char_img, (-140, -100), char_img)
+    char_info.paste(char_img, (-220, -130), char_img)
 
     # 放属性图标
     attr_img = Image.open(TEXT_PATH / f'IconAttribute{char.char_element}.png')
-    char_info.paste(attr_img, (580, 131), attr_img)
+    char_info.paste(attr_img, (540, 166), attr_img)
 
     # 放角色名
     char_img_draw = ImageDraw.Draw(char_info)
     char_img_draw.text(
-        (705, 175), char.char_name, white_color, sr_font_38, 'mm'
+        (665, 210), char.char_name, white_color, sr_font_38, 'mm'
     )
 
     # 放等级
     char_img_draw.text(
-        (790, 183), f'LV.{str(char.char_level)}', white_color, sr_font_20, 'mm'
+        (750, 213), f'LV.{str(char.char_level)}', white_color, sr_font_20, 'mm'
     )
 
     # 放星级
     rarity_img = Image.open(
         TEXT_PATH / f'LightCore_Rarity{char.char_rarity}.png'
     ).resize((306, 72))
-    char_info.paste(rarity_img, (540, 198), rarity_img)
+    char_info.paste(rarity_img, (490, 233), rarity_img)
 
     # 放命座
     rank_img = Image.open(TEXT_PATH / 'ImgNewBg.png')
@@ -120,12 +120,12 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     rank_img_draw.text(
         (70, 44), f'{NUM_MAP[char.char_rank]} 命', white_color, sr_font_28, 'mm'
     )
-    char_info.paste(rank_img, (772, 190), rank_img)
+    char_info.paste(rank_img, (722, 225), rank_img)
 
-    # # 放uid
-    # char_img_draw.text(
-    #     (750, 290), f'UID: {sr_uid}', white_color, sr_font_23, 'mm'
-    # )
+    # 放uid
+    char_img_draw.text(
+        (995, 715), f'UID: {sr_uid}', white_color, sr_font_28, 'rm'
+    )
 
     # 放属性列表
     attr_bg = Image.open(TEXT_PATH / 'attr_bg.png')
@@ -142,10 +142,10 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     hp = int(mp.floor(hp))
     add_hp = int(mp.floor(add_hp))
     attr_bg_draw.text(
-        (415, 31), f'{hp + add_hp}', white_color, sr_font_26, 'rm'
+        (413, 31), f'{hp + add_hp}', white_color, sr_font_26, 'rm'
     )
     attr_bg_draw.text(
-        (430, 31),
+        (428, 31),
         f'(+{str(round(add_hp))})',
         (95, 251, 80),
         sr_font_26,
@@ -163,14 +163,14 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     atk = int(mp.floor(attack))
     add_attack = int(mp.floor(add_attack))
     attr_bg_draw.text(
-        (415, 31 + 48),
+        (413, 31 + 48),
         f'{atk + add_attack}',
         white_color,
         sr_font_26,
         'rm',
     )
     attr_bg_draw.text(
-        (430, 31 + 48),
+        (428, 31 + 48),
         f'(+{str(round(add_attack))})',
         (95, 251, 80),
         sr_font_26,
@@ -190,14 +190,14 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     defence = int(mp.floor(defence))
     add_defence = int(mp.floor(add_defence))
     attr_bg_draw.text(
-        (415, 31 + 48 * 2),
+        (413, 31 + 48 * 2),
         f'{defence + add_defence}',
         white_color,
         sr_font_26,
         'rm',
     )
     attr_bg_draw.text(
-        (430, 31 + 48 * 2),
+        (428, 31 + 48 * 2),
         f'(+{str(round(add_defence))})',
         (95, 251, 80),
         sr_font_26,
@@ -211,14 +211,14 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     speed = int(mp.floor(speed))
     add_speed = int(mp.floor(add_speed))
     attr_bg_draw.text(
-        (415, 31 + 48 * 3),
+        (413, 31 + 48 * 3),
         f'{speed + add_speed}',
         white_color,
         sr_font_26,
         'rm',
     )
     attr_bg_draw.text(
-        (430, 31 + 48 * 3),
+        (428, 31 + 48 * 3),
         f'(+{str(round(add_speed))})',
         (95, 251, 80),
         sr_font_26,
@@ -290,7 +290,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         sr_font_26,
         'rm',
     )
-    char_info.paste(attr_bg, (517, 265), attr_bg)
+    char_info.paste(attr_bg, (475, 300), attr_bg)
 
     # 命座
     for rank in range(0, 6):
@@ -359,31 +359,36 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         weapon_bg = Image.open(TEXT_PATH / 'weapon_bg.png')
         weapon_id = char.equipment['equipmentID']
         weapon_img = Image.open(WEAPON_PATH / f'{weapon_id}.png').resize(
-            (240, 240)
+            (260, 240)
         )
         weapon_bg.paste(weapon_img, (-10, 50), weapon_img)
         weapon_bg_draw = ImageDraw.Draw(weapon_bg)
         weapon_bg_draw.text(
-            (370, 47),
+            (310, 47),
             f'{char.equipment["equipmentName"]}',
             white_color,
             sr_font_34,
-            'mm',
+            'lm',
         )
-        weapon_bg_draw.text(
-            (536, 47),
-            f'{NUM_MAP[char.equipment["equipmentRank"]]} 阶',
+        # 放阶
+        rank_img = Image.open(TEXT_PATH / 'ImgNewBg.png')
+        rank_img_draw = ImageDraw.Draw(rank_img)
+        rank_img_draw.text(
+            (70, 44),
+            f'{NUM_MAP[char.char_rank]} 阶',
             white_color,
             sr_font_28,
             'mm',
         )
+        weapon_bg.paste(rank_img, (450, 2), rank_img)
+
         rarity_img = Image.open(
             TEXT_PATH
             / f'LightCore_Rarity{char.equipment["equipmentRarity"]}.png'
         ).resize((306, 72))
-        weapon_bg.paste(rarity_img, (160, 55), rarity_img)
+        weapon_bg.paste(rarity_img, (180, 55), rarity_img)
         weapon_bg_draw.text(
-            (430, 90),
+            (455, 90),
             f'Lv.{char.equipment["equipmentLevel"]}',
             white_color,
             sr_font_28,
@@ -401,7 +406,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         for i in range(0, len(desc_params)):
             desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
         draw_text_by_line(
-            weapon_bg, (220, 115), desc, sr_font_24, '#F9F9F9', 372
+            weapon_bg, (243, 115), desc, sr_font_24, '#F9F9F9', 372
         )
         char_info.paste(weapon_bg, (22, 870), weapon_bg)
     else:
