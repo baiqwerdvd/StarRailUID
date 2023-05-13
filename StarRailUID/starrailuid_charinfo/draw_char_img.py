@@ -40,15 +40,7 @@ TEXT_PATH = Path(__file__).parent / 'texture2D'
 bg_img = Image.open(TEXT_PATH / "bg.png")
 white_color = (213, 213, 213)
 
-NUM_MAP = {
-    0: '零',
-    1: '一',
-    2: '二',
-    3: '三',
-    4: '四',
-    5: '五',
-    6: '六',
-}
+NUM_MAP = {0: '零', 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七'}
 
 RANK_MAP = {
     1: '_rank1.png',
@@ -383,7 +375,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         rank_img_draw = ImageDraw.Draw(rank_img)
         rank_img_draw.text(
             (70, 44),
-            f'{NUM_MAP[char.char_rank]} 阶',
+            f'{NUM_MAP[char.char_rank + 1]} 阶',
             white_color,
             sr_font_28,
             'mm',
