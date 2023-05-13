@@ -428,7 +428,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             anchor='lm',
         )
         relic_img_draw.text(
-            (230, 60),
+            (250, 60),
             '+{}'.format(str(main_level)),
             (255, 255, 255),
             sr_font_23,
