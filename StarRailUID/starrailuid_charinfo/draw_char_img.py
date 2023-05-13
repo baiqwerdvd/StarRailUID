@@ -375,7 +375,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         rank_img_draw = ImageDraw.Draw(rank_img)
         rank_img_draw.text(
             (70, 44),
-            f'{NUM_MAP[char.char_rank + 1]} 阶',
+            f'{NUM_MAP[char.equipment["equipmentRarity"]]} 阶',
             white_color,
             sr_font_28,
             'mm',
@@ -536,7 +536,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         )
 
     # 发送图片
-    # char_info.show()
+    char_info.show()
     res = await convert_img(char_info)
     logger.info('[sr面板]绘图已完成,等待发送!')
     return res
