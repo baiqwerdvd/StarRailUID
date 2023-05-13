@@ -99,12 +99,12 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     # 放角色名
     char_img_draw = ImageDraw.Draw(char_info)
     char_img_draw.text(
-        (690, 175), char.char_name, white_color, sr_font_38, 'mm'
+        (705, 175), char.char_name, white_color, sr_font_38, 'mm'
     )
 
     # 放等级
     char_img_draw.text(
-        (765, 183), f'LV.{str(char.char_level)}', white_color, sr_font_20, 'mm'
+        (790, 183), f'LV.{str(char.char_level)}', white_color, sr_font_20, 'mm'
     )
 
     # 放星级
@@ -121,6 +121,11 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     char_info.paste(rank_img, (772, 190), rank_img)
 
+    # # 放uid
+    # char_img_draw.text(
+    #     (750, 290), f'UID: {sr_uid}', white_color, sr_font_23, 'mm'
+    # )
+
     # 放属性列表
     attr_bg = Image.open(TEXT_PATH / 'attr_bg.png')
     attr_bg_draw = ImageDraw.Draw(attr_bg)
@@ -136,7 +141,14 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     hp = int(mp.floor(hp))
     add_hp = int(mp.floor(add_hp))
     attr_bg_draw.text(
-        (500, 31), f'{hp + add_hp} (+{add_hp})', white_color, sr_font_26, 'rm'
+        (415, 31), f'{hp + add_hp}', white_color, sr_font_26, 'rm'
+    )
+    attr_bg_draw.text(
+        (430, 31),
+        f'(+{str(round(add_hp))})',
+        (95, 251, 80),
+        sr_font_26,
+        anchor='lm',
     )
     # 攻击力
     attack = mp.mpf(char.base_attributes['attack'])
@@ -150,11 +162,18 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     atk = int(mp.floor(attack))
     add_attack = int(mp.floor(add_attack))
     attr_bg_draw.text(
-        (500, 31 + 48),
-        f'{atk + add_attack} (+{add_attack})',
+        (415, 31 + 48),
+        f'{atk + add_attack}',
         white_color,
         sr_font_26,
         'rm',
+    )
+    attr_bg_draw.text(
+        (430, 31 + 48),
+        f'(+{str(round(add_attack))})',
+        (95, 251, 80),
+        sr_font_26,
+        anchor='lm',
     )
     # 防御力
     defence = mp.mpf(char.base_attributes['defence'])
@@ -170,11 +189,18 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     defence = int(mp.floor(defence))
     add_defence = int(mp.floor(add_defence))
     attr_bg_draw.text(
-        (500, 31 + 48 * 2),
-        f'{defence + add_defence} (+{add_defence})',
+        (415, 31 + 48 * 2),
+        f'{defence + add_defence}',
         white_color,
         sr_font_26,
         'rm',
+    )
+    attr_bg_draw.text(
+        (430, 31 + 48 * 2),
+        f'(+{str(round(add_defence))})',
+        (95, 251, 80),
+        sr_font_26,
+        anchor='lm',
     )
     # 速度
     speed = mp.mpf(char.base_attributes['speed'])
@@ -184,11 +210,18 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     speed = int(mp.floor(speed))
     add_speed = int(mp.floor(add_speed))
     attr_bg_draw.text(
-        (500, 31 + 48 * 3),
-        f'{speed + add_speed} (+{add_speed})',
+        (415, 31 + 48 * 3),
+        f'{speed + add_speed}',
         white_color,
         sr_font_26,
         'rm',
+    )
+    attr_bg_draw.text(
+        (430, 31 + 48 * 3),
+        f'(+{str(round(add_speed))})',
+        (95, 251, 80),
+        sr_font_26,
+        anchor='lm',
     )
     # 暴击率
     critical_chance = mp.mpf(char.base_attributes['CriticalChance'])
@@ -304,11 +337,11 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             'lm',
         )
         skill_panel_img_draw.text(
-            (60, 88),
+            (75, 90),
             f'{skill["skillName"]}',
             (105, 105, 105),
             sr_font_20,
-            'lm',
+            'mm',
         )
         skill_bg.paste(skill_panel_img, (50 + 187 * i, 35), skill_panel_img)
         i += 1
@@ -383,7 +416,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             TEXT_PATH
             / f'LightCore_Rarity{RelicId2Rarity[str(relic["relicId"])]}.png'
         ).resize((200, 48))
-        relic_img.paste(rarity_img, (-20, 80), rarity_img)
+        relic_img.paste(rarity_img, (-10, 80), rarity_img)
         relic_img_draw = ImageDraw.Draw(relic_img)
         if len(relic['relicName']) <= 5:
             main_name = relic['relicName']
@@ -405,7 +438,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         if main_name in ['攻击力', '生命值', '防御力', '速度']:
             mainValueStr = nstr(main_value, 3)
         else:
-            mainValueStr = nstr(main_value * 100, 3) + '%'
+            mainValueStr = str(math.floor(main_value * 1000) / 10) + '%'
 
         mainNameNew = (
             main_name.replace('百分比', '')
@@ -428,7 +461,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             anchor='lm',
         )
         relic_img_draw.text(
-            (250, 60),
+            (180, 105),
             '+{}'.format(str(main_level)),
             (255, 255, 255),
             sr_font_23,

@@ -78,13 +78,13 @@ async def api_to_dict(
 
     char_dict_list = []
     im = f'UID: {sr_uid} 的角色展柜刷新成功\n'
-    if PlayerDetailInfo['AssistAvatar']:
+    if PlayerDetailInfo.get('AssistAvatar'):
         char_dict, avatarName = await get_data(
             PlayerDetailInfo['AssistAvatar'], sr_data, sr_uid
         )
         im += f'支援角色 {avatarName}\n'
         char_dict_list.append(char_dict)
-    if PlayerDetailInfo['IsDisplayAvatarList']:
+    if PlayerDetailInfo.get('DisplayAvatarList'):
         im += '星海同行'
         for char in PlayerDetailInfo['DisplayAvatarList']:
             char_dict, avatarName = await get_data(char, sr_data, sr_uid)
@@ -199,23 +199,24 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
         relic_temp['MainAffix']['Value'] = value
 
         relic_temp['SubAffixList'] = []
-        for sub_affix in relic['RelicSubAffix']:
-            sub_affix_temp = {}
-            sub_affix_temp['SubAffixID'] = sub_affix['SubAffixID']
-            sub_affix_property, value = await cal_relic_sub_affix(
-                relic_id=relic['ID'],
-                affix_id=sub_affix['SubAffixID'],
-                cnt=sub_affix['Cnt'],
-                step=sub_affix['Step'] if 'Step' in sub_affix else 0,
-            )
-            sub_affix_temp['Property'] = sub_affix_property
-            sub_affix_temp['Name'] = Property2Name[sub_affix_property]
-            sub_affix_temp['Cnt'] = sub_affix['Cnt']
-            sub_affix_temp['Step'] = (
-                sub_affix['Step'] if 'Step' in sub_affix else 0
-            )
-            sub_affix_temp['Value'] = value
-            relic_temp['SubAffixList'].append(sub_affix_temp)
+        if relic.get('RelicSubAffix'):
+            for sub_affix in relic['RelicSubAffix']:
+                sub_affix_temp = {}
+                sub_affix_temp['SubAffixID'] = sub_affix['SubAffixID']
+                sub_affix_property, value = await cal_relic_sub_affix(
+                    relic_id=relic['ID'],
+                    affix_id=sub_affix['SubAffixID'],
+                    cnt=sub_affix['Cnt'],
+                    step=sub_affix['Step'] if 'Step' in sub_affix else 0,
+                )
+                sub_affix_temp['Property'] = sub_affix_property
+                sub_affix_temp['Name'] = Property2Name[sub_affix_property]
+                sub_affix_temp['Cnt'] = sub_affix['Cnt']
+                sub_affix_temp['Step'] = (
+                    sub_affix['Step'] if 'Step' in sub_affix else 0
+                )
+                sub_affix_temp['Value'] = value
+                relic_temp['SubAffixList'].append(sub_affix_temp)
         char_data['RelicInfo'].append(relic_temp)
 
     # 处理命座
