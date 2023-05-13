@@ -337,7 +337,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         'mm',
     )
     rarity_img = Image.open(
-        TEXT_PATH / f'LightCore_Rarity{char.equipment["equipmentRank"]}.png'
+        TEXT_PATH / f'LightCore_Rarity{char.equipment["equipmentRarity"]}.png'
     ).resize((306, 72))
     weapon_bg.paste(rarity_img, (160, 55), rarity_img)
     weapon_bg_draw.text(
@@ -352,10 +352,10 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     desc = light_cone_ranks[str(char.equipment['equipmentID'])]['desc']
     desc_params = light_cone_ranks[str(char.equipment['equipmentID'])][
         'params'
-    ][char.equipment['equipmentRank']]
+    ][char.equipment['equipmentRank'] - 1]
     for i in range(0, len(desc_params)):
-        desc_params[i] = math.floor(desc_params[i] * 10) / 10
-        desc = desc.replace(f'#{i + 1}[i]%', f'{str(desc_params[i] * 100)}%')
+        temp = math.floor(desc_params[i] * 1000) / 10
+        desc = desc.replace(f'#{i + 1}[i]%', f'{str(temp)}%')
     for i in range(0, len(desc_params)):
         desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
     draw_text_by_line(weapon_bg, (220, 115), desc, sr_font_24, '#F9F9F9', 372)
