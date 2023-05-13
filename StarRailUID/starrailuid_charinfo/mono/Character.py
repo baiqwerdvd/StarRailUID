@@ -18,6 +18,7 @@ class Character:
         self.char_id: str = card_prop['avatarId']
         self.char_name: str = card_prop['avatarName']
         self.char_rank = card_prop['rank'] if card_prop.get('rank') else 0
+        self.char_rarity = card_prop['avatarRarity']
         self.char_element = card_prop['avatarElement']
         self.char_promotion = card_prop['avatarPromotion']
         self.char_skill = card_prop['avatarSkill']
@@ -81,7 +82,6 @@ class Character:
         # 计算圣遗物效果
         set_id_list = []
         for relic in self.char_relic:
-            print(json.dumps(relic, ensure_ascii=False))
             set_id_list.append(relic['SetId'])
             # 处理主属性
             relic_property = relic['MainAffix']['Property']

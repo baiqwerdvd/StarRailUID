@@ -14,3 +14,6 @@ with open(EXCEL / 'AvatarPromotionConfig.json', 'r', encoding='utf8') as f:
 
 with open(EXCEL / 'EquipmentPromotionConfig.json', 'r', encoding='utf8') as f:
     EquipmentPromotion = json.load(f)
+
+with open(EXCEL / 'light_cone_ranks.json', 'r', encoding='utf8') as f:
+    light_cone_ranks = json.load(f)

@@ -26,6 +26,10 @@ EquipmentID2AbilityProperty_fileName = (
     f'EquipmentID2AbilityProperty_mapping_{version}.json'
 )
 RelicSetSkill_fileName = f'RelicSetSkill_mapping_{version}.json'
+skillId2AttackType_fileName = f'skillId2AttackType_mapping_{version}.json'
+EquipmentID2Rarity_fileName = f'EquipmentID2Rarity_mapping_{version}.json'
+RelicId2Rarity_fileName = f'RelicId2Rarity_mapping_{version}.json'
+ItemId2Name_fileName = f'ItemId2Name_mapping_{version}.json'
 
 
 class TS(TypedDict):
@@ -49,7 +53,7 @@ with open(MAP / skillId2Name_fileName, 'r', encoding='UTF-8') as f:
     skillId2Name = msgjson.decode(f.read(), type=Dict[str, str])
 
 with open(MAP / skillId2Type_fileName, 'r', encoding='UTF-8') as f:
-    skillId2Type = msgjson.decode(f.read(), type=Dict[str, str])
+    skillId2Effect = msgjson.decode(f.read(), type=Dict[str, str])
 
 with open(MAP / Property2Name_fileName, 'r', encoding='UTF-8') as f:
     Property2Name = msgjson.decode(f.read(), type=Dict[str, str])
@@ -84,3 +88,15 @@ with open(
 
 with open(MAP / RelicSetSkill_fileName, 'r', encoding='UTF-8') as f:
     RelicSetSkill = msgjson.decode(f.read(), type=Dict[str, dict])
+
+with open(MAP / skillId2AttackType_fileName, 'r', encoding='UTF-8') as f:
+    skillId2AttackType = msgjson.decode(f.read(), type=Dict[str, str])
+
+with open(MAP / EquipmentID2Rarity_fileName, 'r', encoding='UTF-8') as f:
+    EquipmentID2Rarity = msgjson.decode(f.read(), type=Dict[str, int])
+
+with open(MAP / RelicId2Rarity_fileName, 'r', encoding='UTF-8') as f:
+    RelicId2Rarity = msgjson.decode(f.read(), type=Dict[str, int])
+
+with open(MAP / ItemId2Name_fileName, 'r', encoding='UTF-8') as f:
+    ItemId2Name = msgjson.decode(f.read(), type=Dict[str, str])

@@ -13,10 +13,6 @@ from ..utils.convert import get_uid
 from ..utils.error_reply import UID_HINT
 from ..utils.image.convert import convert_img
 from .draw_char_img import draw_char_info_img
-
-# from ..utils.map.GS_MAP_PATH import alias_data
-# from .draw_char_rank import draw_cahrcard_list
-# from .get_enka_img import draw_enka_img, get_full_char
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH
 
 sv_char_info_config = SV('sr面板设置', pm=2)

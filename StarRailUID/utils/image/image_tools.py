@@ -4,8 +4,8 @@ from io import BytesIO
 from pathlib import Path
 from typing import Tuple, Union, Optional
 
-from PIL import Image
 from httpx import get
+from PIL import Image, ImageDraw, ImageFont
 
 from ...starrailuid_config.sr_config import srconfig
 from ..resource.RESOURCE_PATH import CU_BG_PATH, TEXT2D_PATH
@@ -22,6 +22,51 @@ if list(CU_BG_PATH.iterdir()) != []:
     bg_path = CU_BG_PATH
 else:
     bg_path = NM_BG_PATH
+
+
+def draw_text_by_line(
+    img: Image.Image,
+    pos: Tuple[int, int],
+    text: str,
+    font: ImageFont.FreeTypeFont,
+    fill: Union[Tuple[int, int, int, int], str],
+    max_length: float,
+    center=False,
+    line_space: Optional[float] = None,
+):
+    """
+    在图片上写长段文字, 自动换行
+    max_length单行最大长度, 单位像素
+    line_space  行间距, 单位像素, 默认是字体高度的0.3倍
+    """
+    x, y = pos
+    _, h = font.getsize('X')
+    if line_space is None:
+        y_add = math.ceil(1.3 * h)
+    else:
+        y_add = math.ceil(h + line_space)
+    draw = ImageDraw.Draw(img)
+    row = ""  # 存储本行文字
+    length = 0  # 记录本行长度
+    for character in text:
+        w, h = font.getsize(character)  # 获取当前字符的宽度
+        if length + w * 2 <= max_length:
+            row += character
+            length += w
+        else:
+            row += character
+            if center:
+                font_size = font.getsize(row)
+                x = math.ceil((img.size[0] - font_size[0]) / 2)
+            draw.text((x, y), row, font=font, fill=fill)
+            row = ""
+            length = 0
+            y += y_add
+    if row != "":
+        if center:
+            font_size = font.getsize(row)
+            x = math.ceil((img.size[0] - font_size[0]) / 2)
+        draw.text((x, y), row, font=font, fill=fill)
 
 
 async def get_qq_avatar(

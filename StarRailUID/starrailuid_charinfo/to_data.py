@@ -14,16 +14,19 @@ from .cal_value import cal_relic_sub_affix, cal_relic_main_affix
 from ..utils.excel.read_excel import AvatarPromotion, EquipmentPromotion
 from ..utils.map.SR_MAP_PATH import (
     SetId2Name,
+    ItemId2Name,
     Property2Name,
     RelicId2SetId,
     EquipmentID2Name,
+    EquipmentID2Rarity,
     rankId2Name,
     skillId2Name,
-    skillId2Type,
     avatarId2Name,
+    skillId2Effect,
     avatarId2EnName,
     avatarId2Rarity,
     characterSkillTree,
+    skillId2AttackType,
     avatarId2DamageType,
 )
 
@@ -55,7 +58,6 @@ async def api_to_dict(
         return []
     if isinstance(sr_data, dict):
         if 'PlayerDetailInfo' not in sr_data:
-            print(sr_data)
             im = '服务器正在维护或者关闭中...\n检查lulu api是否可以访问\n如可以访问,尝试上报Bug!'
             return im
     elif sr_data is None:
@@ -124,7 +126,12 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
                 char['AvatarID'] * 100 + behavior['BehaviorID'] % 10
             )
             skill_temp['skillName'] = skillId2Name[str(skill_temp['skillId'])]
-            skill_temp['skillType'] = skillId2Type[str(skill_temp['skillId'])]
+            skill_temp['skillEffect'] = skillId2Effect[
+                str(skill_temp['skillId'])
+            ]
+            skill_temp['skillAttackType'] = skillId2AttackType[
+                str(skill_temp['skillId'])
+            ]
             skill_temp['skillLevel'] = behavior['Level']
             char_data['avatarSkill'].append(skill_temp)
 
@@ -172,8 +179,9 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
     for relic in char['RelicList']:
         relic_temp = {}
         relic_temp['relicId'] = relic['ID']
+        relic_temp['relicName'] = ItemId2Name[str(relic['ID'])]
         relic_temp['SetId'] = int(RelicId2SetId[str(relic['ID'])])
-        relic_temp['name'] = SetId2Name[str(relic_temp['SetId'])]
+        relic_temp['SetName'] = SetId2Name[str(relic_temp['SetId'])]
         relic_temp['Level'] = relic['Level'] if 'Level' in relic else 1
         relic_temp['Type'] = relic['Type']
 
@@ -275,6 +283,9 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
     equipment_info['equipmentLevel'] = char['EquipmentID']['Level']
     equipment_info['equipmentPromotion'] = char['EquipmentID']['Promotion']
     equipment_info['equipmentRank'] = char['EquipmentID']['Rank']
+    equipment_info['equipmentRarity'] = EquipmentID2Rarity[
+        str(equipment_info['equipmentID'])
+    ]
     equipment_base_attributes = {}
     equipment_promotion_base = EquipmentPromotion[
         str(equipment_info['equipmentID'])

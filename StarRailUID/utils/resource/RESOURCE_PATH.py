@@ -14,6 +14,7 @@ CHAR_ICON_PATH = RESOURCE_PATH / 'character'
 WEAPON_PATH = RESOURCE_PATH / 'light_cone'
 CHAR_PORTRAIT = RESOURCE_PATH / 'character_portrait'
 SKILL_PATH = RESOURCE_PATH / 'skill'
+RELIC_PATH = RESOURCE_PATH / 'relic'
 TEXT2D_PATH = Path(__file__).parent / 'texture2d'
 
 
@@ -29,6 +30,7 @@ def init_dir():
         TEMP_PATH,
         CHAR_PORTRAIT,
         SKILL_PATH,
+        RELIC_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 
