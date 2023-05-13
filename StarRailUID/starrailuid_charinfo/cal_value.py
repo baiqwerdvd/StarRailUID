@@ -17,7 +17,7 @@ async def cal_relic_main_affix(
         rarity = int(str(relic_id)[0]) - 1
         group_id = str(rarity) + str(relic_type)
     else:
-        group_id = RelicId2MainAffixGroup(str(relic_id))
+        group_id = RelicId2MainAffixGroup[str(relic_id)]
     relic_data = RelicMainAffix[group_id][str(affix_id)]
     assert relic_data['GroupID'] == int(group_id)
     assert relic_data['AffixID'] == affix_id
