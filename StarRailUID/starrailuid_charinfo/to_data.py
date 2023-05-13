@@ -108,7 +108,7 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
         'avatarName': avatarId2Name[str(char['AvatarID'])],
         'avatarElement': avatarId2DamageType[str(char['AvatarID'])],
         'avatarRarity': avatarId2Rarity[str(char['AvatarID'])],
-        'avatarPromotion': char['Promotion'],
+        'avatarPromotion': char.get('Promotion', 0),
         'avatarLevel': char['Level'],
         'avatarSkill': [],
         'avatarExtraAbility': [],
@@ -235,7 +235,7 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
     # 处理基础属性
     base_attributes = {}
     avatar_promotion_base = AvatarPromotion[str(char['AvatarID'])][
-        str(char['Promotion'])
+        str(char.get('Promotion', 0))
     ]
 
     # 攻击力
@@ -284,7 +284,9 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
         ]
 
         equipment_info['equipmentLevel'] = char['EquipmentID']['Level']
-        equipment_info['equipmentPromotion'] = char['EquipmentID']['Promotion']
+        equipment_info['equipmentPromotion'] = char['EquipmentID'].get(
+            'Promotion', 0
+        )
         equipment_info['equipmentRank'] = char['EquipmentID']['Rank']
         equipment_info['equipmentRarity'] = EquipmentID2Rarity[
             str(equipment_info['equipmentID'])
