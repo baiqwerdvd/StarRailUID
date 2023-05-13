@@ -295,6 +295,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     # 命座
     for rank in range(0, 6):
         rank_bg = Image.open(TEXT_PATH / 'mz_bg.png')
+        rank_no_bg = Image.open(TEXT_PATH / 'mz_no_bg.png')
         if rank < char.char_rank:
             rank_img = Image.open(
                 SKILL_PATH / f'{char.char_id}{RANK_MAP[rank + 1]}'
@@ -307,12 +308,13 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
                 .resize((50, 50))
                 .convert("RGBA")
             )
-            alpha = rank_img.getchannel('A')
-            alpha = alpha.point(lambda i: i // 2)
-            rank_img.putalpha(alpha)
-            rank_bg.paste(rank_img, (19, 19), rank_img)
-            # rank_bg.paste(lock_img, (19, 19), lock_img)
-            char_info.paste(rank_bg, (20 + rank * 80, 630), rank_bg)
+            rank_img.putalpha(
+                rank_img.getchannel('A').point(
+                    lambda x: round(x * 0.45) if x > 0 else 0
+                )
+            )
+            rank_no_bg.paste(rank_img, (19, 19), rank_img)
+            char_info.paste(rank_no_bg, (20 + rank * 80, 630), rank_no_bg)
 
     # 技能
     skill_bg = Image.open(TEXT_PATH / 'skill_bg.png')
@@ -528,7 +530,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         )
 
     # 发送图片
-    char_info.show()
+    # char_info.show()
     res = await convert_img(char_info)
     logger.info('[sr面板]绘图已完成,等待发送!')
     return res
