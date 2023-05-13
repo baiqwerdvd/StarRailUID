@@ -465,7 +465,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         char_info.paste(relic_img, RELIC_POS[str(relic["Type"])], relic_img)
 
     # 发送图片
-    char_info.show()
+    # char_info.show()
     res = await convert_img(char_info)
     logger.info('[sr面板]绘图已完成,等待发送!')
     return res
