@@ -1,5 +1,6 @@
 import re
 import json
+import math
 from pathlib import Path
 from typing import Dict, Union, Optional
 
@@ -353,6 +354,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         'params'
     ][char.equipment['equipmentRank']]
     for i in range(0, len(desc_params)):
+        desc_params[i] = math.floor(desc_params[i] * 10) / 10
         desc = desc.replace(f'#{i + 1}[i]%', f'{str(desc_params[i] * 100)}%')
     for i in range(0, len(desc_params)):
         desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
