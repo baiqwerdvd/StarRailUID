@@ -13,7 +13,7 @@ from gsuid_core.utils.image.image_tools import draw_text_by_line
 from .to_data import api_to_dict
 from .mono.Character import Character
 from ..utils.error_reply import CHAR_HINT
-from ..utils.fonts.first_world import fw_font_120
+from ..utils.fonts.first_world import fw_font_28
 from ..utils.map.SR_MAP_PATH import RelicId2Rarity
 from ..utils.excel.read_excel import light_cone_ranks
 from ..utils.map.name_covert import alias_to_char_name
@@ -423,7 +423,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             (525, 1005),
             'No light cone!',
             white_color,
-            fw_font_120,
+            fw_font_28,
             'mm',
         )
 
@@ -558,16 +558,16 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             (525, 1565),
             'No relic!',
             white_color,
-            fw_font_120,
+            fw_font_28,
             'mm',
         )
 
     # 写底层文字
     char_img_draw.text(
-        (525, 2020),
+        (525, 2022),
         '--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--',
         (255, 255, 255),
-        fw_font_120,
+        fw_font_28,
         'mm',
     )
 
