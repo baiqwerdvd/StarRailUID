@@ -13,10 +13,10 @@ from gsuid_core.utils.image.image_tools import draw_text_by_line
 from .to_data import api_to_dict
 from .mono.Character import Character
 from ..utils.error_reply import CHAR_HINT
+from ..utils.fonts.first_world import fw_font_120
 from ..utils.map.SR_MAP_PATH import RelicId2Rarity
 from ..utils.excel.read_excel import light_cone_ranks
 from ..utils.map.name_covert import alias_to_char_name
-from ..utils.fonts.first_world import fw_font_28, fw_font_120
 from ..utils.resource.RESOURCE_PATH import (
     RELIC_PATH,
     SKILL_PATH,
@@ -127,7 +127,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         (995, 715),
         f'uid {sr_uid}',
         white_color,
-        fw_font_28,
+        sr_font_28,
         'rm',
         stroke_width=1,
     )
@@ -561,6 +561,15 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             fw_font_120,
             'mm',
         )
+
+    # 写底层文字
+    char_img_draw.text(
+        (525, 2020),
+        '--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--',
+        (255, 255, 255),
+        fw_font_120,
+        'mm',
+    )
 
     # 发送图片
     res = await convert_img(char_info)
