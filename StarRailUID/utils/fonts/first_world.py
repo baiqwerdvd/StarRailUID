@@ -10,4 +10,5 @@ def first_word_origin(size: int) -> ImageFont.FreeTypeFont:
 
 
 fw_font_12 = first_word_origin(12)
+fw_font_28 = first_word_origin(28)
 fw_font_120 = first_word_origin(34)
