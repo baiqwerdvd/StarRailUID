@@ -121,7 +121,12 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
 
     # 放uid
     char_img_draw.text(
-        (995, 715), f'UID: {sr_uid}', white_color, fw_font_28, 'rm'
+        (995, 715),
+        f'uid {sr_uid}',
+        white_color,
+        fw_font_28,
+        'rm',
+        stroke_width=1,
     )
 
     # 放属性列表
