@@ -411,6 +411,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         for i in range(0, len(desc_params)):
             temp = math.floor(desc_params[i] * 1000) / 10
             desc = desc.replace(f'#{i + 1}[i]%', f'{str(temp)}%')
+            desc = desc.replace(f'#{i + 1}[f1]%', f'{str(temp)}%')
         for i in range(0, len(desc_params)):
             desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
         draw_text_by_line(
