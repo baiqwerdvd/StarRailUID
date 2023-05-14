@@ -14,7 +14,9 @@
 
 ## 丨安装提醒
 
-> **注意：该插件为[早柚核心](https://github.com/Genshin-bots/gsuid_core)的扩展，具体安装方式可参考[GenshinUID](https://github.com/KimigaiiWuyi/GenshinUID)**
+> **注意：该插件为[早柚核心(gsuid_core)](https://github.com/Genshin-bots/gsuid_core)的扩展，具体安装方式可参考[GenshinUID](https://github.com/KimigaiiWuyi/GenshinUID)**
+>
+> **如果已经是最新版本的`gsuid_core`, 可以直接对bot发送`core安装插件starrail`，然后重启core以应用安装**
 >
 > 支持NoneBot2 & HoshinoBot & ZeroBot的星穹铁道Bot插件
 >
@@ -22,19 +24,23 @@
 
 ## 丨功能
 
-<details><summary>sr每日</summary><p>
+<details><summary>sr每日 - 命令: srmr</summary><p>
 <img src="https://s2.loli.net/2023/04/30/DYgCOkMy8Xe4mwc.png"/> 
 </p></details>
 
-<details><summary>sr每月统计</summary><p>
+<details><summary>sr每月统计 - 命令: srzj</summary><p>
 <img src="https://s2.loli.net/2023/05/06/wuOfKsc7qWvCzVJ.png"/> 
 </p></details>
 
-<details><summary>sr个人信息</summary><p>
+<details><summary>sr个人信息 - 命令: sruid</summary><p>
 <img src="https://s2.loli.net/2023/05/03/wurJpXvQKPa2AS7.png"/> 
 </p></details>
 
-以及签到等..
+<details><summary>查询面板 - 命令: sr强制刷新 & sr查询希儿</summary><p>
+<img src="https://s2.loli.net/2023/05/14/xgmuBvAP5UVLsn4.jpg"/> 
+</p></details>
+
+以及自动签到 & 体力推送等..
 
 ## 丨其他
 
