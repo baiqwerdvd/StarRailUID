@@ -76,7 +76,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     char_name = ' '.join(re.findall('[\u4e00-\u9fa5]+', raw_mes))
 
     char_data = await get_char_data(sr_uid, char_name)
-    if isinstance(char_data,str):
+    if isinstance(char_data, str):
         return char_data
     char = await cal_char_info(char_data)
 
