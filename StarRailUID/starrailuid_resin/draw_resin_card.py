@@ -9,7 +9,6 @@ from gsuid_core.logger import logger
 
 from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
-from ..utils.error_reply import get_error
 from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import Expedition
 from ..utils.fonts.starrail_fonts import (
@@ -24,6 +23,7 @@ TEXT_PATH = Path(__file__).parent / 'texture2D'
 
 note_bg = Image.open(TEXT_PATH / 'note_bg.png')
 note_travel_bg = Image.open(TEXT_PATH / 'note_travel_bg.png')
+warn_pic = Image.open(TEXT_PATH / 'warn.png')
 
 based_w = 700
 based_h = 1200
@@ -148,7 +148,24 @@ async def draw_resin_img(sr_uid: str) -> Image.Image:
     img = note_bg.copy()
 
     if isinstance(daily_data, int):
-        return get_error(daily_data)
+        img_draw = ImageDraw.Draw(img)
+        img.paste(warn_pic, (0, 0), warn_pic)
+        # 写UID
+        img_draw.text(
+            (250, 553),
+            f'UID{sr_uid}',
+            font=sr_font_26,
+            fill=first_color,
+            anchor='mm',
+        )
+        img_draw.text(
+            (250, 518),
+            f'错误码 {daily_data}',
+            font=sr_font_26,
+            fill=red_color,
+            anchor='mm',
+        )
+        return img
 
     # nickname and level
     role_basic_info = await mys_api.get_role_basic_info(sr_uid)
