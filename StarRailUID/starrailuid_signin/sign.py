@@ -45,7 +45,7 @@ async def sign_in(sr_uid: str) -> str:
             return 'sr签到失败...请检查Cookies是否过期！'
         if 'risk_code' in sign_data:
             # 出现校验码
-            if sign_data['risk_code'] == 375:
+            if sign_data['risk_code'] == 5001:
                 if core_plugins_config.get_config('CaptchaPass').data:
                     gt = sign_data['gt']
                     ch = sign_data['challenge']
