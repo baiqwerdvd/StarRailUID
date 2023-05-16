@@ -188,6 +188,7 @@ async def draw_resin_img(sr_uid: str) -> Image.Image:
     )
 
     img.paste(note_bg, (0, 0), note_bg)
+    img_draw = ImageDraw.Draw(img)
 
     # 派遣
     task_task = []
