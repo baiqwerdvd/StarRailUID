@@ -22,7 +22,7 @@ from ..utils.resource.RESOURCE_PATH import (
     SKILL_PATH,
     PLAYER_PATH,
     WEAPON_PATH,
-    CHAR_PORTRAIT,
+    CHAR_PORTRAIT_PATH,
 )
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
@@ -83,7 +83,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
 
     # 放角色立绘
     char_info = bg_img.copy()
-    char_img = Image.open(CHAR_PORTRAIT / f'{char.char_id}.png').resize(
+    char_img = Image.open(CHAR_PORTRAIT_PATH / f'{char.char_id}.png').resize(
         (1050, 1050)
     )
     char_info.paste(char_img, (-220, -130), char_img)
