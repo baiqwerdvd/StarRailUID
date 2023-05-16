@@ -11,6 +11,7 @@ from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import Expedition
+from ..utils.image.image_tools import get_simple_bg
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_24,
@@ -145,21 +146,22 @@ async def draw_resin_img(sr_uid: str) -> Image.Image:
     # 获取数据
     daily_data = await mys_api.get_daily_data(sr_uid)
 
-    img = note_bg.copy()
+    img = await get_simple_bg(based_w, based_h)
+    img.paste(white_overlay, (0, 0), white_overlay)
 
     if isinstance(daily_data, int):
         img_draw = ImageDraw.Draw(img)
         img.paste(warn_pic, (0, 0), warn_pic)
         # 写UID
         img_draw.text(
-            (250, 553),
+            (350, 680),
             f'UID{sr_uid}',
             font=sr_font_26,
             fill=first_color,
             anchor='mm',
         )
         img_draw.text(
-            (250, 518),
+            (350, 650),
             f'错误码 {daily_data}',
             font=sr_font_26,
             fill=red_color,
@@ -185,7 +187,7 @@ async def draw_resin_img(sr_uid: str) -> Image.Image:
         daily_data['stamina_recover_time']
     )
 
-    img_draw = ImageDraw.Draw(img)
+    img.paste(note_bg, (0, 0), note_bg)
 
     # 派遣
     task_task = []

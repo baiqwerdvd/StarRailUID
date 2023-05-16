@@ -106,6 +106,23 @@ async def get_color_bg(
     return img
 
 
+async def get_simple_bg(
+    based_w: int, based_h: int, image: Union[str, None, Image.Image] = None
+) -> Image.Image:
+    if image:
+        if isinstance(image, str):
+            edit_bg = Image.open(BytesIO(get(image).content)).convert('RGBA')
+        elif isinstance(image, Image.Image):
+            edit_bg = image.convert('RGBA')
+    else:
+        bg_path = random.choice(list(NM_BG_PATH.iterdir()))
+        edit_bg = Image.open(bg_path).convert('RGBA')
+
+    # 确定图片的长宽
+    bg_img = crop_center_img(edit_bg, based_w, based_h)
+    return bg_img
+
+
 def crop_center_img(
     img: Image.Image, based_w: int, based_h: int
 ) -> Image.Image:
