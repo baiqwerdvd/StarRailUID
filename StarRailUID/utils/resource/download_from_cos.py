@@ -14,7 +14,8 @@ with open(
     Path(__file__).parent / 'resource_map.json', 'r', encoding='UTF-8'
 ) as f:
     resource_map = msgjson.decode(
-        f.read(), type=Dict[str, Dict[str, Dict[str, Union[int, str]]]]
+        f.read(),
+        type=Dict[str, Dict[str, Dict[str, Dict[str, Union[int, str]]]]],
     )
 
 
