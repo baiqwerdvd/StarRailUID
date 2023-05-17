@@ -3,9 +3,9 @@ from typing import List, Union, Optional
 
 from mpmath import mp
 from httpx import ReadTimeout
-from gsuid_core.utils.api.enka.models import EnkaData
 
 from ..utils.error_reply import UID_HINT
+from ..sruid_utils.api.mihomo import MihomoData
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..sruid_utils.api.mihomo.requests import get_char_card_info
 
@@ -34,7 +34,7 @@ mp.dps = 14
 
 
 async def api_to_dict(
-    sr_uid: str, sr_data: Optional[EnkaData] = None
+    sr_uid: str, sr_data: Optional[MihomoData] = None
 ) -> Union[List[dict], str]:
     """
     :说明:
@@ -332,9 +332,9 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
 
 
 async def api_to_data(
-    uid: str, enka_data: Optional[EnkaData] = None
+    uid: str, mihomo_data: Optional[MihomoData] = None
 ) -> Union[dict, str]:
-    raw_data = await api_to_dict(uid, enka_data)
+    raw_data = await api_to_dict(uid, mihomo_data)
     if isinstance(raw_data, str):
         return raw_data
     char_name_list = []

@@ -1,15 +1,12 @@
 from __future__ import annotations
 
-from typing import Dict
-
 from httpx import AsyncClient
 
 from ..utils import _HEADER
+from .models import MihomoData
 
-# from .models import EnkaData
 
-
-async def get_char_card_info(uid: str) -> Dict:
+async def get_char_card_info(uid: str) -> MihomoData:
     async with AsyncClient(
         base_url='http://api.mihomo.me',
         headers=_HEADER,
