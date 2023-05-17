@@ -1,5 +1,6 @@
 import copy
 import time
+import uuid
 import random
 from typing import Dict, Union, cast
 from string import digits, ascii_letters
@@ -35,6 +36,21 @@ RECOGNIZE_SERVER = {
 
 
 class MysApi(_MysApi):
+    mysVersion = '2.44.1'
+    _HEADER = {
+        'x-rpc-app_version': mysVersion,
+        'User-Agent': (
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) '
+            f'AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/{mysVersion}'
+        ),
+        'x-rpc-client_type': '5',
+        'x-rpc-device_id': uuid.uuid4().hex,
+        'x-rpc-device_fp': random_hex(16),
+        'x-rpc-page': '3.1.3_#/rpg',
+        'Referer': 'https://webstatic.mihoyo.com/',
+        'Origin': 'https://webstatic.mihoyo.com',
+    }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -59,13 +75,17 @@ class MysApi(_MysApi):
         return data
 
     async def get_daily_data(self, uid: str) -> Union[DailyNoteData, int]:
-        data = await self.simple_mys_req('STAR_RAIL_NOTE_URL', uid)
+        data = await self.simple_mys_req(
+            'STAR_RAIL_NOTE_URL', uid, header=self._HEADER
+        )
         if isinstance(data, Dict):
             data = cast(DailyNoteData, data['data'])
         return data
 
     async def get_role_index(self, uid: str) -> Union[RoleIndex, int]:
-        data = await self.simple_mys_req('STAR_RAIL_INDEX_URL', uid)
+        data = await self.simple_mys_req(
+            'STAR_RAIL_INDEX_URL', uid, header=self._HEADER
+        )
         if isinstance(data, Dict):
             data = cast(RoleIndex, data['data'])
         return data
@@ -118,6 +138,7 @@ class MysApi(_MysApi):
                 'role_id': uid,
                 'server': RECOGNIZE_SERVER.get(str(uid)[0], 'prod_gf_cn'),
             },
+            header=self._HEADER,
         )
         if isinstance(data, Dict):
             data = cast(AvatarInfo, data['data'])
@@ -165,7 +186,7 @@ class MysApi(_MysApi):
                 'region': 'prod_gf_cn',
                 'uid': uid,
             }
-            header = {}
+            header = self._HEADER
         data = await self._mys_req_get(
             'STAR_RAIL_SIGN_INFO_URL', is_os, params, header
         )
@@ -242,7 +263,7 @@ class MysApi(_MysApi):
         self, sr_uid: str
     ) -> Union[RoleBasicInfo, int]:
         data = await self.simple_mys_req(
-            'STAR_RAIL_ROLE_BASIC_INFO_URL', sr_uid
+            'STAR_RAIL_ROLE_BASIC_INFO_URL', sr_uid, header=self._HEADER
         )
         if isinstance(data, Dict):
             data = cast(RoleBasicInfo, data['data'])
