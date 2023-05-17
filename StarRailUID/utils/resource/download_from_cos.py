@@ -8,7 +8,7 @@ from gsuid_core.logger import logger
 from aiohttp.client import ClientSession
 
 from .download_url import download_file
-from .RESOURCE_PATH import RESOURCE_PATH
+from .RESOURCE_PATH import WIKI_PATH, RESOURCE_PATH
 
 with open(
     Path(__file__).parent / 'resource_map.json', 'r', encoding='UTF-8'
@@ -60,7 +60,10 @@ async def download_all_file_from_cos():
                     name = file_name
                     size = file_info['size']
                     url = file_info['url']
-                    path = Path(RESOURCE_PATH / resource_type / name)
+                    if res_type == 'resource':
+                        path = Path(RESOURCE_PATH / resource_type / name)
+                    else:
+                        path = Path(WIKI_PATH / resource_type / name)
                     if path.exists():
                         is_diff = size == str(os.stat(path).st_size)
                     else:
