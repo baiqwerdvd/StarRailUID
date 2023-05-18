@@ -197,6 +197,8 @@ class MysApi(_MysApi):
             'CHALLENGE_INFO_URL',
             uid,
             params={
+                'isPrev': 'true',
+                'need_all': 'true',
                 'role_id': uid,
                 'schedule_type': schedule_type,
                 'server': server_id,
@@ -204,7 +206,7 @@ class MysApi(_MysApi):
             cookie=ck,
             header=self._HEADER,
         )
-        print(data)
+        # print(data)
         if isinstance(data, Dict):
             data = cast(AbyssData, data['data'])
         return data
