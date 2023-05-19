@@ -18,6 +18,8 @@
 >
 > **如果已经是最新版本的`gsuid_core`, 可以直接对bot发送`core安装插件starrail`，然后重启core以应用安装**
 >
+> 如使用命令缺失素材可尝试使用命令`sr下载全部资源`
+>
 > 支持NoneBot2 & HoshinoBot & ZeroBot的星穹铁道Bot插件
 >
 > 🚧插件目前还在施工中，可以使用，功能快速迭代中...🚧
@@ -40,7 +42,11 @@
 <img src="https://s2.loli.net/2023/05/14/xgmuBvAP5UVLsn4.jpg"/> 
 </p></details>
 
-以及自动签到 & 体力推送等..
+<details><summary>查询深渊 - 命令: sr查询深渊 & sr深渊</summary><p>
+<img src="https://s2.loli.net/2023/05/19/54OPsvHibgeu9YB.jpg"/> 
+</p></details>
+
+以及自动签到 & 体力推送 & WIKI & 攻略图等..
 
 ## 丨其他
 
