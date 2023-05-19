@@ -20,7 +20,7 @@
 >
 > 如使用命令缺失素材可尝试使用命令`sr下载全部资源`
 >
-> 支持NoneBot2 & HoshinoBot & ZeroBot的星穹铁道Bot插件
+> 支持NoneBot2 & HoshinoBot & ZeroBot & YunzaiBot的星穹铁道Bot插件
 >
 > 🚧插件目前还在施工中，可以使用，功能快速迭代中...🚧
 
