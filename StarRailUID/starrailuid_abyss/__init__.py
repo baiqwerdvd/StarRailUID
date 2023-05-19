@@ -31,11 +31,17 @@ async def send_srabyss_info(bot: Bot, ev: Event):
         schedule_type = '1'
     await bot.logger.info('[sr查询深渊信息]深渊期数: {}'.format(schedule_type))
 
-    if ev.text in ['九', '十', '十一', '十二']:
+    if ev.text in ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']:
         floor = (
-            ev.text.replace('九', '9')
-            .replace('十一', '11')
-            .replace('十二', '12')
+            ev.text.replace('一', '1')
+            .replace('二', '2')
+            .replace('三', '3')
+            .replace('四', '4')
+            .replace('五', '5')
+            .replace('六', '6')
+            .replace('七', '7')
+            .replace('八', '8')
+            .replace('九', '9')
             .replace('十', '10')
         )
     else:
@@ -44,10 +50,10 @@ async def send_srabyss_info(bot: Bot, ev: Event):
         floor = int(floor)
     else:
         floor = None
-
+    # print(floor)
     await bot.logger.info('[sr查询深渊信息]深渊层数: {}'.format(floor))
     # data = GsCookie()
     # raw_abyss_data = await data.get_spiral_abyss_data(uid, schedule_type)
     # print(raw_abyss_data)
-    im = await draw_abyss_img(ev.user_id, uid, schedule_type)
+    im = await draw_abyss_img(ev.user_id, uid, floor, schedule_type)
     await bot.send(im)
