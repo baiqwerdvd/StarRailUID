@@ -43,6 +43,7 @@ class MysApi(_MysApi):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._HEADER = copy.deepcopy(self._HEADER)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
