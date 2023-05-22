@@ -10,6 +10,7 @@ from gsuid_core.models import Event
 
 from .to_card import api_to_card
 from ..utils.convert import get_uid
+from ..utils.sr_prefix import PREFIX
 from ..utils.error_reply import UID_HINT
 from ..utils.image.convert import convert_img
 from .draw_char_img import draw_char_info_img
@@ -20,7 +21,7 @@ sv_get_char_info = SV('sr面板查询', priority=10)
 sv_get_sr_original_pic = SV('sr查看面板原图', priority=5)
 
 
-@sv_get_char_info.on_prefix('sr查询')
+@sv_get_char_info.on_prefix(f'{PREFIX}查询')
 async def send_char_info(bot: Bot, ev: Event):
     im = await _get_char_info(bot, ev, ev.text)
     if isinstance(im, str):
@@ -60,7 +61,7 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
     return im
 
 
-@sv_get_char_info.on_command('sr强制刷新')
+@sv_get_char_info.on_command(f'{PREFIX}强制刷新')
 async def send_card_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:

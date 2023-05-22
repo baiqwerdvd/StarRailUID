@@ -6,13 +6,22 @@ from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
+from ..utils.sr_prefix import PREFIX
 from .draw_abyss_card import draw_abyss_img
 
 sv_srabyss = SV('sr查询深渊')
 
 
 @sv_srabyss.on_command(
-    ('sr查询深渊', 'srsy', 'sr查询上期深渊', 'srsqsy', 'sr上期深渊', 'sr深渊'), block=True
+    (
+        f'{PREFIX}查询深渊',
+        f'{PREFIX}sy',
+        f'{PREFIX}查询上期深渊',
+        f'{PREFIX}sqsy',
+        f'{PREFIX}上期深渊',
+        f'{PREFIX}深渊',
+    ),
+    block=True,
 )
 async def send_srabyss_info(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))

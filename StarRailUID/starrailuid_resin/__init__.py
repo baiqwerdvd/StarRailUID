@@ -10,6 +10,7 @@ from gsuid_core.segment import MessageSegment
 
 from ..utils.convert import get_uid
 from .notice import get_notice_list
+from ..utils.sr_prefix import PREFIX
 from .resin_text import get_resin_text
 from ..utils.error_reply import UID_HINT
 from .draw_resin_card import get_resin_img
@@ -18,7 +19,7 @@ sv_get_resin = SV('sr查询体力')
 sv_get_resin_admin = SV('sr强制推送', pm=1)
 
 
-@sv_get_resin.on_fullmatch(('sr当前状态'))
+@sv_get_resin.on_fullmatch((f'{PREFIX}当前状态'))
 async def send_daily_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[sr每日信息文字版]')
     uid = await get_uid(bot, ev)
@@ -30,7 +31,7 @@ async def send_daily_info(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@sv_get_resin_admin.on_fullmatch(('sr强制推送体力提醒'))
+@sv_get_resin_admin.on_fullmatch((f'{PREFIX}强制推送体力提醒'))
 async def force_notice_job(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[sr强制推送体力信息]')
     await sr_notice_job()
@@ -62,7 +63,15 @@ async def sr_notice_job():
             logger.info('[sr推送检查] 群聊推送完成')
 
 
-@sv_get_resin.on_fullmatch(('sr每日', 'srmr', 'sr实时便笺', 'sr便笺', 'sr便签'))
+@sv_get_resin.on_fullmatch(
+    (
+        f'{PREFIX}每日',
+        f'{PREFIX}mr',
+        f'{PREFIX}实时便笺',
+        f'{PREFIX}便笺',
+        f'{PREFIX}便签',
+    )
+)
 async def send_daily_info_pic(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[sr每日信息]')
     user_id = ev.at if ev.at else ev.user_id

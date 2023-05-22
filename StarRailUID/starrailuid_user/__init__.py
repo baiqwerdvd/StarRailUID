@@ -5,6 +5,7 @@ from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 
 from ..utils.api import get_sqla
+from ..utils.sr_prefix import PREFIX
 from ..utils.message import send_diff_msg
 from .draw_user_card import get_user_card
 
@@ -14,7 +15,7 @@ sv_user_info = SV('sr用户信息')
 # sv_user_help = SV('sr绑定帮助')
 
 
-@sv_user_info.on_fullmatch(('sr绑定信息'))
+@sv_user_info.on_fullmatch((f'{PREFIX}绑定信息'))
 async def send_bind_card(bot: Bot, ev: Event):
     await bot.logger.info('sr开始执行[查询用户绑定状态]')
     uid_list = await get_user_card(ev.bot_id, ev.user_id)
@@ -22,7 +23,9 @@ async def send_bind_card(bot: Bot, ev: Event):
     await bot.send(uid_list)
 
 
-@sv_user_info.on_command(('sr绑定uid', 'sr切换uid', 'sr删除uid', 'sr解绑uid'))
+@sv_user_info.on_command(
+    (f'{PREFIX}绑定uid', f'{PREFIX}切换uid', f'{PREFIX}删除uid', f'{PREFIX}解绑uid')
+)
 async def send_link_uid_msg(bot: Bot, ev: Event):
     await bot.logger.info('sr开始执行[绑定/解绑用户信息]')
     qid = ev.user_id
@@ -33,9 +36,8 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     if sr_uid and not sr_uid.isdigit():
         return await bot.send('你输入了错误的格式!')
 
-    if ev.command.startswith('sr绑定'):
+    if '绑定' in ev.command:
         data = await sqla.insert_bind_data(qid, sr_uid=sr_uid)
-        print(data)
         return await send_diff_msg(
             bot,
             data,
@@ -46,7 +48,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
                 -3: '你输入了错误的格式!',
             },
         )
-    elif ev.command.startswith('sr切换'):
+    elif '切换' in ev.command:
         data = await sqla.switch_uid(qid, uid=sr_uid)
         if isinstance(data, List):
             return await bot.send(f'切换SR_UID{sr_uid}成功！')

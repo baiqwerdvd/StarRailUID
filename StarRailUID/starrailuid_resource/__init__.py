@@ -3,12 +3,13 @@ from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
 
+from ..utils.sr_prefix import PREFIX
 from ..utils.resource.download_all_resource import download_all_resource
 
 sv_sr_download_config = SV('sr下载资源')
 
 
-@sv_sr_download_config.on_fullmatch(('sr下载全部资源'))
+@sv_sr_download_config.on_fullmatch((f'{PREFIX}下载全部资源'))
 async def send_download_resource_msg(bot: Bot, ev: Event):
     await bot.send('sr正在开始下载~可能需要较久的时间!')
     im = await download_all_resource()

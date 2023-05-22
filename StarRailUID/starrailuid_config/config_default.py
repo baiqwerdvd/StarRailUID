@@ -2,6 +2,7 @@ from typing import Dict
 
 from gsuid_core.utils.plugins_config.models import (
     GSC,
+    GsStrConfig,
     GsBoolConfig,
     GsListStrConfig,
 )
@@ -22,5 +23,15 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '催命模式',
         '开启后当达到推送阈值将会一直推送',
         False,
+    ),
+    'CrazyNotice': GsBoolConfig(
+        '催命模式',
+        '开启后当达到推送阈值将会一直推送',
+        False,
+    ),
+    'StarRailPrefix': GsStrConfig(
+        '插件命令前缀(确认无冲突再修改)',
+        '用于本插件的前缀设定',
+        'sr',
     ),
 }

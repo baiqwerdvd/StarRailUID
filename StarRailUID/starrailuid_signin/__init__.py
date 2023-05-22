@@ -9,6 +9,7 @@ from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
 
 from ..utils.api import get_sqla
+from ..utils.sr_prefix import PREFIX
 from .sign import sign_in, daily_sign
 from ..utils.error_reply import UID_HINT
 from ..starrailuid_config.sr_config import srconfig
@@ -27,7 +28,7 @@ async def sr_sign_at_night():
 
 
 # 群聊内 签到 功能
-@sv_sign.on_fullmatch('sr签到')
+@sv_sign.on_fullmatch(f'{PREFIX}签到')
 async def get_sign_func(bot: Bot, ev: Event):
     await bot.logger.info('[SR签到]QQ号: {}'.format(ev.user_id))
     sqla = get_sqla(ev.bot_id)
@@ -38,7 +39,7 @@ async def get_sign_func(bot: Bot, ev: Event):
     await bot.send(await sign_in(sr_uid))
 
 
-@sv_sign_config.on_fullmatch('sr全部重签')
+@sv_sign_config.on_fullmatch(f'{PREFIX}全部重签')
 async def recheck(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[SR全部重签]')
     await bot.send('已开始执行')
