@@ -6,7 +6,7 @@ from gsuid_core.logger import logger
 from ..utils.sr_prefix import PREFIX
 from ..utils.resource.download_all_resource import download_all_resource
 
-sv_sr_download_config = SV('sr下载资源')
+sv_sr_download_config = SV('sr下载资源', pm=1)
 
 
 @sv_sr_download_config.on_fullmatch((f'{PREFIX}下载全部资源'))
