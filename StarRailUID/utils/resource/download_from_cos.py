@@ -36,6 +36,7 @@ async def download_all_file_from_cos():
                 resource_type_list = [
                     'character',
                     'character_portrait',
+                    'character_preview',
                     'consumable',
                     'element',
                     'light_cone',
