@@ -31,7 +31,7 @@ async def get_new_gachalog_by_link(
                 data = await mys_api.get_gacha_log_by_link_in_authkey(
                     authkey, gacha_type, page, end_id
                 )
-                await asyncio.sleep(0.9)
+                await asyncio.sleep(0.45)
                 if isinstance(data, int):
                     return {}
                 data = data['list']
@@ -54,7 +54,7 @@ async def get_new_gachalog_by_link(
                         full_data[gacha_name][0:0] = data
                 else:
                     full_data[gacha_name].extend(data)
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.25)
     return full_data
 
 

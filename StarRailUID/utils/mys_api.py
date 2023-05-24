@@ -99,7 +99,7 @@ class MysApi(_MysApi):
                 'game_biz': 'hkrpg_cn',
                 'gacha_type': gacha_type,
                 'page': page,
-                'size': '5',
+                'size': '20',
                 'end_id': end_id,
             },
         )
