@@ -65,4 +65,6 @@ class RelicSet:
 
     async def get_attribute(self):
         for relic in self.__dict__:
+            if relic == 'set_id_counter':
+                break
             await self.__dict__[relic].get_attribute_()

@@ -17,6 +17,7 @@ async def cal(char_data: Dict):
     raw_data['avatar']['level'] = char.char_level
     raw_data['avatar']['rank'] = char.char_rank
     raw_data['avatar']['promotion'] = char.char_promotion
+    raw_data['avatar']['attribute_bonus'] = char.attribute_bonus
 
     raw_data['weapon']['id'] = char.equipment['equipmentID']
     raw_data['weapon']['level'] = char.equipment['equipmentLevel']
@@ -28,4 +29,5 @@ async def cal(char_data: Dict):
     role = RoleInstance(raw_data)
     await role.cal_role_base_attr()
     await role.cal_relic_attr_add()
+    await role.cal_avatar_attr_add()
     return '还没写完呢'

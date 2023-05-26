@@ -37,6 +37,7 @@ class BaseAvatar:
         self.avatar_rank = char['rank']
         self.avatar_promotion = char['promotion']
         self.avatar_attribute = {}
+        self.avatar_attribute_bonus = char['attribute_bonus']
 
     async def get_attribute(self):
         promotion = AvatarPromotion[str(self.avatar_id)][
