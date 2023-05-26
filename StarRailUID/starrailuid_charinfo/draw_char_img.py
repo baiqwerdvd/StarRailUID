@@ -138,12 +138,8 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     attr_bg_draw = ImageDraw.Draw(attr_bg)
     # 生命值
     hp = mp.mpf(char.base_attributes.get('hp'))
-    add_hp = mp.mpf(
-        char.add_attr['HPDelta'] if char.add_attr.get('HPDelta') else 0
-    ) + hp * mp.mpf(
-        char.add_attr['HPAddedRatio']
-        if char.add_attr.get('HPAddedRatio')
-        else 0
+    add_hp = mp.mpf(char.add_attr.get('HPDelta', 0)) + hp * mp.mpf(
+        char.add_attr.get('HPAddedRatio', 0)
     )
     hp = int(mp.floor(hp))
     add_hp = int(mp.floor(add_hp))
@@ -159,12 +155,8 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     # 攻击力
     attack = mp.mpf(char.base_attributes['attack'])
-    add_attack = mp.mpf(
-        char.add_attr['AttackDelta'] if char.add_attr.get('AttackDelta') else 0
-    ) + attack * mp.mpf(
-        char.add_attr['AttackAddedRatio']
-        if char.add_attr.get('AttackAddedRatio')
-        else 0
+    add_attack = mp.mpf(char.add_attr.get('AttackDelta', 0)) + attack * mp.mpf(
+        char.add_attr.get('AttackAddedRatio', 0)
     )
     atk = int(mp.floor(attack))
     add_attack = int(mp.floor(add_attack))
@@ -185,14 +177,8 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     # 防御力
     defence = mp.mpf(char.base_attributes['defence'])
     add_defence = mp.mpf(
-        char.add_attr.get('DefenceDelta')
-        if char.add_attr.get('DefenceDelta')
-        else 0
-    ) + defence * mp.mpf(
-        char.add_attr.get('DefenceAddedRatio')
-        if char.add_attr.get('DefenceAddedRatio')
-        else 0
-    )
+        char.add_attr.get('DefenceDelta', 0)
+    ) + defence * mp.mpf(char.add_attr.get('DefenceAddedRatio', 0))
     defence = int(mp.floor(defence))
     add_defence = int(mp.floor(add_defence))
     attr_bg_draw.text(
@@ -211,9 +197,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     # 速度
     speed = mp.mpf(char.base_attributes['speed'])
-    add_speed = mp.mpf(
-        char.add_attr['SpeedDelta'] if char.add_attr.get('SpeedDelta') else 0
-    )
+    add_speed = mp.mpf(char.add_attr.get('SpeedDelta', 0))
     speed = int(mp.floor(speed))
     add_speed = int(mp.floor(add_speed))
     attr_bg_draw.text(
@@ -232,11 +216,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     # 暴击率
     critical_chance = mp.mpf(char.base_attributes['CriticalChance'])
-    critical_chance_base = mp.mpf(
-        char.add_attr['CriticalChanceBase']
-        if char.add_attr.get('CriticalChanceBase')
-        else 0
-    )
+    critical_chance_base = mp.mpf(char.add_attr.get('CriticalChanceBase', 0))
     critical_chance = (critical_chance + critical_chance_base) * 100
     critical_chance = nstr(critical_chance, 3)
     attr_bg_draw.text(
@@ -248,11 +228,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     # 暴击伤害
     critical_damage = mp.mpf(char.base_attributes['CriticalDamage'])
-    critical_damage_base = mp.mpf(
-        char.add_attr['CriticalDamageBase']
-        if char.add_attr.get('CriticalDamageBase')
-        else 0
-    )
+    critical_damage_base = mp.mpf(char.add_attr.get('CriticalDamageBase', 0))
     critical_damage = (critical_damage + critical_damage_base) * 100
     critical_damage = nstr(critical_damage, 4)
     attr_bg_draw.text(
@@ -264,12 +240,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     # 效果命中
     status_probability_base = (
-        mp.mpf(
-            char.add_attr.get('StatusProbabilityBase')
-            if char.add_attr.get('StatusProbabilityBase')
-            else 0
-        )
-        * 100
+        mp.mpf(char.add_attr.get('StatusProbabilityBase', 0)) * 100
     )
     status_probability = nstr(status_probability_base, 3)
     attr_bg_draw.text(
@@ -281,12 +252,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     # 效果抵抗
     status_resistance_base = (
-        mp.mpf(
-            char.add_attr['StatusResistanceBase']
-            if char.add_attr.get('StatusResistanceBase')
-            else 0
-        )
-        * 100
+        mp.mpf(char.add_attr.get('StatusResistanceBase', 0)) * 100
     )
     status_resistance = nstr(status_resistance_base, 3)
     attr_bg_draw.text(
@@ -578,8 +544,8 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     return res
 
 
-async def cal_char_info(char_data: dict):
-    char = Character(char_data)
+async def cal_char_info(char_data: Dict):
+    char: Character = Character(char_data)
     await char.get_equipment_info()
     await char.get_char_attribute_bonus()
     await char.get_relic_info()

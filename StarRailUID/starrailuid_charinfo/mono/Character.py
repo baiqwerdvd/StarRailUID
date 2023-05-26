@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Tuple
+from typing import Dict
 from collections import Counter
 
 from mpmath import mp
@@ -29,6 +29,14 @@ class Character:
         self.add_attr = {}
         self.equipment = card_prop['equipmentInfo']
         self.rarity = card_prop['avatarRarity']
+
+        # 伤害计算
+        self.def_ignore = 0
+        self.q_dmg = 0
+        self.q_crit_dmg = 0
+        self.e_dmg = 0
+        self.a_dmg = 0
+        self.a3_dmg = 0
 
         # 角色的圣遗物总分
         self.artifacts_all_score: float = 0
@@ -127,30 +135,3 @@ class Character:
 
         print(json.dumps(self.base_attributes))
         print(json.dumps(self.add_attr))
-
-
-async def p2v(power: str, power_plus: int) -> Tuple[float, float]:
-    """
-    将power转换为value
-    """
-    # 如果存在123%+123%形式的
-    if '+' in power:
-        power_percent = (
-            float(power.split('+')[0].replace('%', '')) / 100
-        ) * power_plus
-        power_value = power.split('+')[1]
-        if '%' in power_value:
-            power_percent += (
-                float(power_value.replace('%', '')) / 100 * power_plus
-            )
-            power_value = 0
-        else:
-            power_value = float(power_value)
-    elif '%' in power:
-        power_percent = float(power.replace('%', '')) / 100 * power_plus
-        power_value = 0
-    else:
-        power_percent = 0
-        power_value = float(power)
-
-    return power_percent, power_value
