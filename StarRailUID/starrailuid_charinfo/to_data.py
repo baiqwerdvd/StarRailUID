@@ -189,7 +189,7 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
             relic_temp['relicName'] = ItemId2Name[str(relic['ID'])]
             relic_temp['SetId'] = int(RelicId2SetId[str(relic['ID'])])
             relic_temp['SetName'] = SetId2Name[str(relic_temp['SetId'])]
-            relic_temp['Level'] = relic['Level'] if 'Level' in relic else 1
+            relic_temp['Level'] = relic['Level'] if 'Level' in relic else 0
             relic_temp['Type'] = relic['Type']
 
             relic_temp['MainAffix'] = {}
