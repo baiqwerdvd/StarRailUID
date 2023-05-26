@@ -1,4 +1,5 @@
 from typing import Dict, List
+from abc import abstractmethod
 from collections import Counter
 
 from mpmath import mp
@@ -32,6 +33,48 @@ class SingleRelic:
                     self.relic_attribute_bonus[sub_affix_property] = value
 
 
+class BaseRelicSetSkill:
+    @abstractmethod
+    async def check(self):
+        ...
+
+    @abstractmethod
+    async def set_skill_ability(self, char):
+        '''
+        战斗加成属性, 与 set_skill_property() 互斥
+        '''
+        ...
+
+    @abstractmethod
+    async def set_skill_property_ability(self, char):
+        '''
+        面板加成属性, 与 set_skill_ability_param() 互斥
+        '''
+        ...
+
+
+class Relic108(BaseRelicSetSkill):
+    async def check(self):
+        pass
+
+    async def set_skill_ability(self, char):
+        pass
+
+    async def set_skill_property_ability(self, char):
+        pass
+
+
+class Relic306(BaseRelicSetSkill):
+    async def check(self):
+        pass
+
+    async def set_skill_ability(self, char):
+        pass
+
+    async def set_skill_property_ability(self, char):
+        pass
+
+
 class RelicSet:
     HEAD: SingleRelic
     HAND: SingleRelic
@@ -40,6 +83,9 @@ class RelicSet:
     NECK: SingleRelic
     OBJECT: SingleRelic
     Unknow: SingleRelic
+
+    set_id_counter: List
+    SetSkill: List = []
 
     def __init__(self, relic_list: List):
         set_id_list = []
@@ -64,7 +110,18 @@ class RelicSet:
         self.set_id_counter: List = Counter(set_id_list).most_common()
 
     async def get_attribute(self):
-        for relic in self.__dict__:
-            if relic == 'set_id_counter':
+        for item in self.__dict__:
+            if type(self.__dict__[item]) != SingleRelic:
                 break
-            await self.__dict__[relic].get_attribute_()
+            await self.__dict__[item].get_attribute_()
+
+    async def check_set(self):
+        for item in self.set_id_counter:
+            set_id = item[0]
+            count = item[1]
+            if count == 1:
+                break
+            if set_id == 108:
+                self.SetSkill.append(Relic108())
+            if set_id == 306:
+                self.SetSkill.append(Relic306())
