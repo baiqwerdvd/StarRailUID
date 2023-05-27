@@ -29,6 +29,9 @@ class Character:
         self.add_attr = {}
         self.equipment = card_prop['equipmentInfo']
         self.rarity = card_prop['avatarRarity']
+        self.eidolons = (
+            card_prop['rankList'] if card_prop.get('rankList') else []
+        )
 
         # 伤害计算
         self.def_ignore = 0

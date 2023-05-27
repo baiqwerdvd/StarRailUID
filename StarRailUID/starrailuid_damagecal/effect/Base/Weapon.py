@@ -21,31 +21,37 @@ class IntheNight(BaseWeapon):
     async def check(self):
         pass
 
-    async def weapon_ability(self, char):
-        char = await self.weapon_property_ability(char)
-        char_speed = mp.mpf(char.base_attributes['speed'])
+    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+        char_speed = mp.mpf(base_attr.get('speed', 0))
         count_ = min(6, int(mp.floor((char_speed - 100) / 10)))
-        char.a_dmg += (
-            mp.mpf(weapon_effect['23001']['Param']['a_dmg'][self.weapon_rank])
-            * count_
-        )
-        char.e_dmg += (
-            mp.mpf(weapon_effect['23001']['Param']['e_dmg'][self.weapon_rank])
-            * count_
-        )
-        char.q_crit_dmg += (
+        normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
+        attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
             mp.mpf(
-                weapon_effect['23001']['Param']['q_crit_dmg'][self.weapon_rank]
+                weapon_effect['23001']['Param']['a_dmg'][self.weapon_rank - 1]
             )
             * count_
         )
-        return char
-
-    async def weapon_property_ability(self, char):
-        char.CriticalChanceBase += mp.mpf(
-            weapon_effect['23001']['AbilityProperty'][self.weapon_rank]
+        bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
+        attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
+            mp.mpf(
+                weapon_effect['23001']['Param']['e_dmg'][self.weapon_rank - 1]
+            )
+            * count_
         )
-        return char
+        ultra_critical_chance_base = attribute_bonus.get(
+            'Ultra_CriticalChanceBase', 0
+        )
+        attribute_bonus[
+            'Ultra_CriticalChanceBase'
+        ] = ultra_critical_chance_base + (
+            mp.mpf(
+                weapon_effect['23001']['Param']['q_crit_dmg'][
+                    self.weapon_rank - 1
+                ]
+            )
+            * count_
+        )
+        return attribute_bonus
 
 
 class CruisingintheStellarSea(BaseWeapon):
@@ -57,26 +63,23 @@ class CruisingintheStellarSea(BaseWeapon):
         # 装备者消灭敌方目标
         return True
 
-    async def weapon_ability(self, char):
-        char = await self.weapon_property_ability(char)
-        if self.check():
-            char.CriticalChanceBase += mp.mpf(
+    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+        if await self.check():
+            critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
+            attribute_bonus[
+                'CriticalChanceBase'
+            ] = critical_chance_base + mp.mpf(
                 weapon_effect['24001']['Param']['CriticalChance'][
-                    self.weapon_rank
+                    self.weapon_rank - 1
                 ]
             )
-            char.AttackAddedRatio += mp.mpf(
+            attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
                 weapon_effect['24001']['Param']['AttackAddedRatio'][
-                    self.weapon_rank
+                    self.weapon_rank - 1
                 ]
             )
-        return char
-
-    async def weapon_property_ability(self, char):
-        char.CriticalChanceBase += mp.mpf(
-            weapon_effect['24001']['AbilityProperty'][self.weapon_rank]
-        )
-        return char
+        return attribute_bonus
 
 
 class HuntWeapon:

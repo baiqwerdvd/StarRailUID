@@ -66,7 +66,7 @@ async def download_all_file_from_cos():
                     else:
                         path = Path(WIKI_PATH / resource_type / name)
                     if path.exists():
-                        is_diff = size == str(os.stat(path).st_size)
+                        is_diff = size == os.stat(path).st_size
                     else:
                         is_diff = True
                     if (
