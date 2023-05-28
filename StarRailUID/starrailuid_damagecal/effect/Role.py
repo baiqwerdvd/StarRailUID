@@ -3,10 +3,10 @@ from typing import Dict
 from mpmath import mp
 from gsuid_core.logger import logger
 
-from .Avatar import Avatar
-from .Weapon import Weapon
+from .Avatar.Avatar import Avatar
+from .Weapon.Weapon import Weapon
 from .utils import merge_attribute
-from .Relic import RelicSet, SingleRelic
+from .Relic.Relic import RelicSet, SingleRelic
 
 mp.dps = 14
 
@@ -29,7 +29,9 @@ class RoleInstance:
         self.cal_weapon_attr_add()
 
     def cal_role_base_attr(self):
+        print('cal_role_base_attr')
         avatar_attribute = self.avatar.__dict__['avatar_attribute']
+        print(avatar_attribute)
         for attribute in avatar_attribute:
             if attribute in self.base_attr:
                 self.base_attr[attribute] += avatar_attribute[attribute]
@@ -125,6 +127,8 @@ class RoleInstance:
             self.attribute_bonus = await set_skill.set_skill_ability(
                 self.base_attr, self.attribute_bonus
             )
+        print('merge_attribute')
+        print(self.base_attr)
         merged_attr = await merge_attribute(
             self.base_attr, self.attribute_bonus
         )
@@ -195,10 +199,13 @@ class RoleInstance:
                         f'有 {merged_attr[attr]} 伤害加成'
                     )
                     injury_area += merged_attr[attr]
+        injury_area += 1
         logger.info(f'增伤区: {injury_area}')
 
         # 爆伤区
-        critical_damage = merged_attr['CriticalDamage']
+        logger.info('检查是否有爆伤加成')
+        logger.info(f'{merged_attr}')
+        critical_damage_base = merged_attr['CriticalDamageBase']
         # 检查是否有对特定技能的爆伤加成
         # Ultra_CriticalChance
         for attr in merged_attr:
@@ -208,7 +215,8 @@ class RoleInstance:
                     logger.info(
                         f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 爆伤加成'
                     )
-                    critical_damage += merged_attr[attr]
+                    critical_damage_base += merged_attr[attr]
+        critical_damage = critical_damage_base + 1
         logger.info(f'暴伤: {critical_damage}')
 
         damage = (

@@ -6,8 +6,8 @@ from mpmath import mp
 
 from ..Base.WeaponBase import BaseWeapon
 
-path = Path(__file__).parent
-with open(path / 'weapon_effect.json', 'r', encoding='utf-8') as f:
+path = Path(__file__).parent.parent
+with open(path / 'Excel' / 'weapon_effect.json', 'r', encoding='utf-8') as f:
     weapon_effect = json.load(f)
 
 
@@ -73,6 +73,7 @@ class CruisingintheStellarSea(BaseWeapon):
                     self.weapon_rank - 1
                 ]
             )
+        if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
                 weapon_effect['24001']['Param']['AttackAddedRatio'][

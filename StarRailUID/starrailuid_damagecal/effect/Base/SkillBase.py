@@ -7,8 +7,8 @@ from mpmath import mp
 mp.dps = 14
 
 
-path = Path(__file__).parent
-with open(path / 'seele.json', 'r', encoding='utf-8') as f:
+path = Path(__file__).parent.parent
+with open(path / 'Excel' / 'seele.json', 'r', encoding='utf-8') as f:
     skill_dict = json.load(f)
 
 
@@ -42,7 +42,3 @@ class BaseSkills:
                 raise ValueError(
                     f'Unknown skillAttackType: {skill_attack_type}'
                 )
-
-
-# class SeeleSkill(BaseSkills):
-#     pass

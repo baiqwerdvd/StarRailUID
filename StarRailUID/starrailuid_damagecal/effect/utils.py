@@ -24,9 +24,8 @@ async def merge_attribute(base_attr: Dict, attribute_bonus: Dict) -> Dict:
             else:
                 raise Exception(f'attribute error {attribute}')
         elif attribute.__contains__('Base'):
-            attr = attribute.split('Base')[0]
-            attr_value = base_attr.get(attr, 0)
-            merged_attr[attr] = attr_value + attribute_bonus[attribute]
+            attr_value = base_attr.get(attribute, 0)
+            merged_attr[attribute] = attr_value + attribute_bonus[attribute]
         elif attribute.__contains__('AddedRatio'):
             # attr = attribute.split('AddedRatio')[0]
             attr_value = base_attr.get(attribute, 0)

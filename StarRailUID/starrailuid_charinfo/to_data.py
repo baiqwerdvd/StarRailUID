@@ -266,11 +266,11 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
         mp.mpf(avatar_promotion_base["SpeedBase"]['Value'])
     )
     # 暴击率
-    base_attributes['CriticalChance'] = str(
+    base_attributes['CriticalChanceBase'] = str(
         mp.mpf(avatar_promotion_base["CriticalChance"]['Value'])
     )
     # 暴击伤害
-    base_attributes['CriticalDamage'] = str(
+    base_attributes['CriticalDamageBase'] = str(
         mp.mpf(avatar_promotion_base["CriticalDamage"]['Value'])
     )
     # 嘲讽

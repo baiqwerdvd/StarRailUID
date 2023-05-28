@@ -215,7 +215,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         anchor='lm',
     )
     # 暴击率
-    critical_chance = mp.mpf(char.base_attributes['CriticalChance'])
+    critical_chance = mp.mpf(char.base_attributes['CriticalChanceBase'])
     critical_chance_base = mp.mpf(char.add_attr.get('CriticalChanceBase', 0))
     critical_chance = (critical_chance + critical_chance_base) * 100
     critical_chance = nstr(critical_chance, 3)
@@ -227,7 +227,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         'rm',
     )
     # 暴击伤害
-    critical_damage = mp.mpf(char.base_attributes['CriticalDamage'])
+    critical_damage = mp.mpf(char.base_attributes['CriticalDamageBase'])
     critical_damage_base = mp.mpf(char.add_attr.get('CriticalDamageBase', 0))
     critical_damage = (critical_damage + critical_damage_base) * 100
     critical_damage = nstr(critical_damage, 4)

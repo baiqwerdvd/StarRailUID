@@ -5,11 +5,11 @@ from abc import abstractmethod
 
 from mpmath import mp
 
-from .Skill import BaseSkills
+from .SkillBase import BaseSkills
 from ....utils.excel.read_excel import AvatarPromotion
 
-path = Path(__file__).parent
-with open(path / 'seele.json', 'r', encoding='utf-8') as f:
+path = Path(__file__).parent.parent
+with open(path / 'Excel' / 'seele.json', 'r', encoding='utf-8') as f:
     skill_dict = json.load(f)
 
 mp.dps = 14
@@ -71,11 +71,11 @@ class BaseAvatar:
             promotion["SpeedBase"]['Value']
         )
         # 暴击率
-        self.avatar_attribute['CriticalChance'] = mp.mpf(
+        self.avatar_attribute['CriticalChanceBase'] = mp.mpf(
             promotion["CriticalChance"]['Value']
         )
         # 暴击伤害
-        self.avatar_attribute['CriticalDamage'] = mp.mpf(
+        self.avatar_attribute['CriticalDamageBase'] = mp.mpf(
             promotion["CriticalDamage"]['Value']
         )
         # 嘲讽
@@ -113,37 +113,3 @@ class BaseAvatar:
         return mp.mpf(
             skill_dict[str(self.avatar_id)][''][self.Skill.Talent_.level - 1]
         )
-
-
-class Seele(BaseAvatar):
-    Buff: BaseAvatarBuff
-
-    def __init__(self, char: Dict, skills: List):
-        super().__init__(char=char, skills=skills)
-        self.Buff = BaseAvatarBuff(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
-        self.eidolons()
-        self.extra_ability()
-
-    def Technique(self):
-        pass
-
-    def eidolons(self):
-        if self.avatar_rank >= 1:
-            self.eidolon_attribute['CriticalDamageBase'] = mp.mpf(0.15)
-        if self.avatar_rank >= 2:
-            self.eidolon_attribute['SpeedAddedRatio'] = mp.mpf(0.5)
-
-    def extra_ability(self):
-        # 额外能力 割裂 抗性穿透提高20
-        if 1102102 in self.Buff.extra_ability_id:
-            self.extra_ability_attribute[
-                'QuantumResistancePenetration'
-            ] = mp.mpf(0.2)
-
-
-class Avatar:
-    def __new__(cls, char: Dict, skills: List):
-        if char['id'] == 1102:
-            return Seele(char, skills)

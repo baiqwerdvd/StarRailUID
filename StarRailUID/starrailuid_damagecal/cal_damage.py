@@ -2,7 +2,7 @@ from typing import Dict
 
 from mpmath import mp
 
-from .effect.Base.Role import RoleInstance
+from .effect.Role import RoleInstance
 from ..starrailuid_charinfo.mono.Character import Character
 from ..starrailuid_charinfo.draw_char_img import cal_char_info
 
