@@ -1,0 +1,155 @@
+{
+  "基础服务": {
+    "desc": "需要先绑定uid",
+    "data": [
+      {
+        "name": "sr绑定uid",
+        "desc": "绑定你的星铁UID",
+        "eg": "sr绑定uid123456",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr删除uid",
+        "desc": "删除你的星铁UID",
+        "eg": "sr删除uid123456",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr切换uid",
+        "desc": "切换你的星铁UID",
+        "eg": "sr切换uid123456",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "查询服务": {
+    "desc": "查询一些基本信息",
+    "data": [
+      {
+        "name": "sruid",
+        "desc": "角色信息一览,后可跟UID",
+        "eg": "sruid100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr深渊",
+        "desc": "查询星铁深渊信息",
+        "eg": "sr深渊100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "srmr",
+        "desc": "查询自己的体力派遣",
+        "eg": "sr每日",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr札记",
+        "desc": "查询自己的每月收入",
+        "eg": "srzj",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr签到",
+        "desc": "米游社签到",
+        "eg": "sr签到",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr抽卡记录",
+        "desc": "查询自己的抽卡记录",
+        "eg": "sr抽卡记录",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr每月统计",
+        "desc": "srzj的文字版",
+        "eg": "sr每月统计",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr当前状态",
+        "desc": "srmr的文字版",
+        "eg": "sr当前状态",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "面板服务": {
+    "desc": "数据源由Mihomo提供",
+    "data": [
+      {
+        "name": "sr强制刷新",
+        "desc": "刷新自己游戏内面板数据",
+        "eg": "sr强制刷新",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr查询xx",
+        "desc": "查询游戏内面板数据",
+        "eg": "sr查询希儿",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "私人服务": {
+    "desc": "一些仅供私聊调用的服务",
+    "data": [
+      {
+        "name": "sr导入抽卡链接",
+        "desc": "后跟抽卡记录连接以导入",
+        "eg": "sr导入抽卡链接",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "管理员服务": {
+    "desc": "一些仅供管理员调用的服务",
+    "data": [
+      {
+        "name": "sr下载全部资源",
+        "desc": "下载一些机器人必须的资源",
+        "eg": "sr下载全部资源",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      },
+      {
+        "name": "sr强制推送体力提醒",
+        "desc": "强制推送一次体力提醒",
+        "eg": "sr强制推送体力提醒",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      }
+    ]
+  }
+}
