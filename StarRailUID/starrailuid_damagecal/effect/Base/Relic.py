@@ -170,12 +170,12 @@ class RelicSet:
 
         self.set_id_counter: List = Counter(set_id_list).most_common()
         self.check_set()
+        self.get_attribute()
 
     def get_attribute(self):
         for item in self.__dict__:
-            if type(self.__dict__[item]) != SingleRelic:
-                break
-            self.__dict__[item].get_attribute_()
+            if type(self.__dict__[item]) == SingleRelic:
+                self.__dict__[item].get_attribute_()
 
     def check_set(self):
         for item in self.set_id_counter:

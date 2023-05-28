@@ -17,6 +17,7 @@ class BaseWeapon:
         self.weapon_promotion = weapon['promotion']
         self.weapon_base_attribute = {}
         self.weapon_attribute = {}
+        self.get_attribute()
         self.weapon_property_ability()
 
     @abstractmethod

@@ -47,6 +47,7 @@ class BaseAvatar:
         self.avatar_attribute_bonus = char['attribute_bonus']
         self.avatar_extra_ability = char['extra_ability']
         self.avatar_attribute = {}
+        self.get_attribute()
 
     def get_attribute(self):
         promotion = AvatarPromotion[str(self.avatar_id)][

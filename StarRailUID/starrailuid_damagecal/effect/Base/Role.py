@@ -29,7 +29,6 @@ class RoleInstance:
         self.cal_weapon_attr_add()
 
     def cal_role_base_attr(self):
-        self.avatar.get_attribute()
         avatar_attribute = self.avatar.__dict__['avatar_attribute']
         for attribute in avatar_attribute:
             if attribute in self.base_attr:
@@ -37,7 +36,6 @@ class RoleInstance:
             else:
                 self.base_attr[attribute] = avatar_attribute[attribute]
 
-        self.weapon.get_attribute()
         weapon_attribute = self.weapon.__dict__['weapon_base_attribute']
         for attribute in weapon_attribute:
             if attribute in self.base_attr:
@@ -47,20 +45,18 @@ class RoleInstance:
 
     def cal_relic_attr_add(self):
         # 单件属性
-        self.relic_set.get_attribute()
         for relic_type in self.relic_set.__dict__:
-            if type(self.relic_set.__dict__[relic_type]) != SingleRelic:
-                break
-            relic: SingleRelic = self.relic_set.__dict__[relic_type]
-            for attribute in relic.relic_attribute_bonus:
-                if attribute in self.attribute_bonus:
-                    self.attribute_bonus[
-                        attribute
-                    ] += relic.relic_attribute_bonus[attribute]
-                else:
-                    self.attribute_bonus[
-                        attribute
-                    ] = relic.relic_attribute_bonus[attribute]
+            if type(self.relic_set.__dict__[relic_type]) == SingleRelic:
+                relic: SingleRelic = self.relic_set.__dict__[relic_type]
+                for attribute in relic.relic_attribute_bonus:
+                    if attribute in self.attribute_bonus:
+                        self.attribute_bonus[
+                            attribute
+                        ] += relic.relic_attribute_bonus[attribute]
+                    else:
+                        self.attribute_bonus[
+                            attribute
+                        ] = relic.relic_attribute_bonus[attribute]
 
         # 套装面板加成属性
         for set_skill in self.relic_set.SetSkill:
