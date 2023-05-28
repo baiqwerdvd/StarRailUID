@@ -36,9 +36,11 @@ class BaseAvatarBuff:
 
 class BaseAvatar:
     Skill: BaseSkills
+    Buff: BaseAvatarBuff
 
     def __init__(self, char: Dict, skills: List):
         self.Skill = BaseSkills(char=char, skills=skills)
+        self.Buff = BaseAvatarBuff(char=char, skills=skills)
         self.avatar_id = char['id']
         self.avatar_level = char['level']
         self.avatar_rank = char['rank']

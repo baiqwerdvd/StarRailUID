@@ -12,7 +12,6 @@ class Seele(BaseAvatar):
 
     def __init__(self, char: Dict, skills: List):
         super().__init__(char=char, skills=skills)
-        self.Buff = BaseAvatarBuff(char=char, skills=skills)
         self.eidolon_attribute = {}
         self.extra_ability_attribute = {}
         self.eidolons()
