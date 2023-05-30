@@ -228,4 +228,6 @@ class RoleInstance:
             * damage_reduction
             * critical_damage
         )
+        im = f'{skill_type} 伤害: {damage}'
         logger.info(f'{skill_type} 伤害: {damage}')
+        return im

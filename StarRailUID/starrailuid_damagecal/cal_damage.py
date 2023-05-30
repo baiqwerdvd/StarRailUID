@@ -30,8 +30,11 @@ async def cal(char_data: Dict):
 
     raw_data['skill'] = char.char_skill
 
+    im = []
+
     for skill_type in ['Normal', 'BPSkill', 'Ultra']:
         role = RoleInstance(raw_data)
         print(role)
-        await role.cal_damage(skill_type)
-    return '还没写完呢'
+        im_tmp = await role.cal_damage(skill_type)
+        im.append(im_tmp)
+    return im
