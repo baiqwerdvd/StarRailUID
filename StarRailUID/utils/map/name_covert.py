@@ -30,7 +30,7 @@ async def alias_to_char_name(char_name: str) -> str:
     for i in alias_data['characters']:
         if char_name in alias_data['characters'][i]:
             return alias_data['characters'][i][0]
-    return False
+    return char_name
 
 
 async def weapon_id_to_name(weapon_id: str) -> str:
