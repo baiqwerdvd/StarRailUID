@@ -118,6 +118,43 @@
       }
     ]
   },
+  "攻略帮助": {
+    "desc": "提供 WIKI 查询",
+    "data": [
+      {
+        "name": "sr角色攻略",
+        "desc": "获取角色攻略",
+        "eg": "sr角色攻略 希儿",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr遗器",
+        "desc": "获取遗器图鉴",
+        "eg": "sr遗器 星体差分机",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr突破材料",
+        "desc": "获取角色突破材料图鉴",
+        "eg": "sr突破材料 希儿",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "sr武器",
+        "desc": "查询武器图鉴",
+        "eg": "sr武器 于夜色中",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
   "私人服务": {
     "desc": "一些仅供私聊调用的服务",
     "data": [
