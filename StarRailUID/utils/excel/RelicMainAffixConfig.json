@@ -5,10 +5,10 @@
       "AffixID": 1,
       "Property": "HPDelta",
       "BaseValue": {
-        "Value": 45.1583992911581
+        "Value": 45.158399999840185
       },
       "LevelAdd": {
-        "Value": 15.805439752918147
+        "Value": 15.805440000956878
       },
       "IsAvailable": true
     }
@@ -19,10 +19,10 @@
       "AffixID": 1,
       "Property": "AttackDelta",
       "BaseValue": {
-        "Value": 22.579199645695464
+        "Value": 22.579200000036508
       },
       "LevelAdd": {
-        "Value": 7.902719877273981
+        "Value": 7.902720001293346
       },
       "IsAvailable": true
     }
@@ -33,10 +33,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.02764799984555448
+        "Value": 0.027648000279441476
       },
       "LevelAdd": {
-        "Value": 0.009677000191936
+        "Value": 0.009677000343799591
       },
       "IsAvailable": true
     },
@@ -45,10 +45,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.02764799984555448
+        "Value": 0.027648000279441476
       },
       "LevelAdd": {
-        "Value": 0.009677000191936
+        "Value": 0.009677000343799591
       },
       "IsAvailable": true
     },
@@ -57,10 +57,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.03455999998156608
+        "Value": 0.03456000052392483
       },
       "LevelAdd": {
-        "Value": 0.01209600041264328
+        "Value": 0.012096000602468848
       },
       "IsAvailable": true
     },
@@ -69,10 +69,10 @@
       "AffixID": 4,
       "Property": "CriticalChanceBase",
       "BaseValue": {
-        "Value": 0.020736000408034798
+        "Value": 0.020736000733450055
       },
       "LevelAdd": {
-        "Value": 0.00725799997122872
+        "Value": 0.007258000085130334
       },
       "IsAvailable": true
     },
@@ -81,10 +81,10 @@
       "AffixID": 5,
       "Property": "CriticalDamageBase",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -93,10 +93,10 @@
       "AffixID": 6,
       "Property": "HealRatioBase",
       "BaseValue": {
-        "Value": 0.02211799973370568
+        "Value": 0.022118000080808997
       },
       "LevelAdd": {
-        "Value": 0.00774100014898952
+        "Value": 0.007741000270470977
       },
       "IsAvailable": true
     },
@@ -105,10 +105,10 @@
       "AffixID": 7,
       "Property": "StatusProbabilityBase",
       "BaseValue": {
-        "Value": 0.02764799984555448
+        "Value": 0.027648000279441476
       },
       "LevelAdd": {
-        "Value": 0.009677000191936
+        "Value": 0.009677000343799591
       },
       "IsAvailable": true
     }
@@ -119,10 +119,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.02764799984555448
+        "Value": 0.027648000279441476
       },
       "LevelAdd": {
-        "Value": 0.009677000191936
+        "Value": 0.009677000343799591
       },
       "IsAvailable": true
     },
@@ -131,10 +131,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.02764799984555448
+        "Value": 0.027648000279441476
       },
       "LevelAdd": {
-        "Value": 0.009677000191936
+        "Value": 0.009677000343799591
       },
       "IsAvailable": true
     },
@@ -143,10 +143,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.03455999998156608
+        "Value": 0.03456000052392483
       },
       "LevelAdd": {
-        "Value": 0.01209600041264328
+        "Value": 0.012096000602468848
       },
       "IsAvailable": true
     },
@@ -155,10 +155,10 @@
       "AffixID": 4,
       "Property": "SpeedDelta",
       "BaseValue": {
-        "Value": 1.6127999756238558
+        "Value": 1.6128000009339303
       },
       "LevelAdd": {
-        "Value": 0.9999999843067494
+        "Value": 1
       },
       "IsAvailable": true
     }
@@ -169,10 +169,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.02764799984555448
+        "Value": 0.027648000279441476
       },
       "LevelAdd": {
-        "Value": 0.009677000191936
+        "Value": 0.009677000343799591
       },
       "IsAvailable": true
     },
@@ -181,10 +181,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.02764799984555448
+        "Value": 0.027648000279441476
       },
       "LevelAdd": {
-        "Value": 0.009677000191936
+        "Value": 0.009677000343799591
       },
       "IsAvailable": true
     },
@@ -193,10 +193,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.03455999998156608
+        "Value": 0.03456000052392483
       },
       "LevelAdd": {
-        "Value": 0.01209600041264328
+        "Value": 0.012096000602468848
       },
       "IsAvailable": true
     },
@@ -205,10 +205,10 @@
       "AffixID": 4,
       "Property": "PhysicalAddedRatio",
       "BaseValue": {
-        "Value": 0.024883000488122
+        "Value": 0.024883000878617167
       },
       "LevelAdd": {
-        "Value": 0.0087089998212168
+        "Value": 0.008708999957889318
       },
       "IsAvailable": true
     },
@@ -217,10 +217,10 @@
       "AffixID": 5,
       "Property": "FireAddedRatio",
       "BaseValue": {
-        "Value": 0.024883000488122
+        "Value": 0.024883000878617167
       },
       "LevelAdd": {
-        "Value": 0.0087089998212168
+        "Value": 0.008708999957889318
       },
       "IsAvailable": true
     },
@@ -229,10 +229,10 @@
       "AffixID": 6,
       "Property": "IceAddedRatio",
       "BaseValue": {
-        "Value": 0.024883000488122
+        "Value": 0.024883000878617167
       },
       "LevelAdd": {
-        "Value": 0.0087089998212168
+        "Value": 0.008708999957889318
       },
       "IsAvailable": true
     },
@@ -241,10 +241,10 @@
       "AffixID": 7,
       "Property": "ThunderAddedRatio",
       "BaseValue": {
-        "Value": 0.024883000488122
+        "Value": 0.024883000878617167
       },
       "LevelAdd": {
-        "Value": 0.0087089998212168
+        "Value": 0.008708999957889318
       },
       "IsAvailable": true
     },
@@ -253,10 +253,10 @@
       "AffixID": 8,
       "Property": "WindAddedRatio",
       "BaseValue": {
-        "Value": 0.024883000488122
+        "Value": 0.024883000878617167
       },
       "LevelAdd": {
-        "Value": 0.0087089998212168
+        "Value": 0.008708999957889318
       },
       "IsAvailable": true
     },
@@ -265,10 +265,10 @@
       "AffixID": 9,
       "Property": "QuantumAddedRatio",
       "BaseValue": {
-        "Value": 0.024883000488122
+        "Value": 0.024883000878617167
       },
       "LevelAdd": {
-        "Value": 0.0087089998212168
+        "Value": 0.008708999957889318
       },
       "IsAvailable": true
     },
@@ -277,10 +277,10 @@
       "AffixID": 10,
       "Property": "ImaginaryAddedRatio",
       "BaseValue": {
-        "Value": 0.024883000488122
+        "Value": 0.024883000878617167
       },
       "LevelAdd": {
-        "Value": 0.0087089998212168
+        "Value": 0.008708999957889318
       },
       "IsAvailable": true
     }
@@ -291,10 +291,10 @@
       "AffixID": 1,
       "Property": "BreakDamageAddedRatioBase",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -303,10 +303,10 @@
       "AffixID": 2,
       "Property": "SPRatioBase",
       "BaseValue": {
-        "Value": 0.012442000247860399
+        "Value": 0.01244200044311583
       },
       "LevelAdd": {
-        "Value": 0.00435500026365376
+        "Value": 0.004355000331997871
       },
       "IsAvailable": true
     },
@@ -315,10 +315,10 @@
       "AffixID": 3,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.02764799984555448
+        "Value": 0.027648000279441476
       },
       "LevelAdd": {
-        "Value": 0.009677000191936
+        "Value": 0.009677000343799591
       },
       "IsAvailable": true
     },
@@ -327,10 +327,10 @@
       "AffixID": 4,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.02764799984555448
+        "Value": 0.027648000279441476
       },
       "LevelAdd": {
-        "Value": 0.009677000191936
+        "Value": 0.009677000343799591
       },
       "IsAvailable": true
     },
@@ -339,10 +339,10 @@
       "AffixID": 5,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.03455999998156608
+        "Value": 0.03456000052392483
       },
       "LevelAdd": {
-        "Value": 0.01209600041264328
+        "Value": 0.012096000602468848
       },
       "IsAvailable": true
     }
@@ -353,10 +353,10 @@
       "AffixID": 1,
       "Property": "HPDelta",
       "BaseValue": {
-        "Value": 67.73759893755205
+        "Value": 67.73760000057518
       },
       "LevelAdd": {
-        "Value": 23.708159628562314
+        "Value": 23.70816000062041
       },
       "IsAvailable": true
     }
@@ -367,10 +367,10 @@
       "AffixID": 1,
       "Property": "AttackDelta",
       "BaseValue": {
-        "Value": 33.86879946924169
+        "Value": 33.868800000753254
       },
       "LevelAdd": {
-        "Value": 11.854079815096064
+        "Value": 11.854080001125112
       },
       "IsAvailable": true
     }
@@ -381,10 +381,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -393,10 +393,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -405,10 +405,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.051839999972349116
+        "Value": 0.05184000078588724
       },
       "LevelAdd": {
-        "Value": 0.01814399957122704
+        "Value": 0.018143999855965376
       },
       "IsAvailable": true
     },
@@ -417,10 +417,10 @@
       "AffixID": 4,
       "Property": "CriticalChanceBase",
       "BaseValue": {
-        "Value": 0.031103999564314318
+        "Value": 0.031104000052437186
       },
       "LevelAdd": {
-        "Value": 0.01088600099698216
+        "Value": 0.010886001167818904
       },
       "IsAvailable": true
     },
@@ -429,10 +429,10 @@
       "AffixID": 5,
       "Property": "CriticalDamageBase",
       "BaseValue": {
-        "Value": 0.062207999128628635
+        "Value": 0.06220800010487437
       },
       "LevelAdd": {
-        "Value": 0.02177300060457928
+        "Value": 0.02177300094626844
       },
       "IsAvailable": true
     },
@@ -441,10 +441,10 @@
       "AffixID": 6,
       "Property": "HealRatioBase",
       "BaseValue": {
-        "Value": 0.03317799995740328
+        "Value": 0.033178000478073955
       },
       "LevelAdd": {
-        "Value": 0.01161200022728368
+        "Value": 0.011612000409513712
       },
       "IsAvailable": true
     },
@@ -453,10 +453,10 @@
       "AffixID": 7,
       "Property": "StatusProbabilityBase",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     }
@@ -467,10 +467,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -479,10 +479,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -491,10 +491,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.051839999972349116
+        "Value": 0.05184000078588724
       },
       "LevelAdd": {
-        "Value": 0.01814399957122704
+        "Value": 0.018143999855965376
       },
       "IsAvailable": true
     },
@@ -503,10 +503,10 @@
       "AffixID": 4,
       "Property": "SpeedDelta",
       "BaseValue": {
-        "Value": 2.4191999619223843
+        "Value": 2.4191999998874962
       },
       "LevelAdd": {
-        "Value": 0.9999999843067494
+        "Value": 1
       },
       "IsAvailable": true
     }
@@ -517,10 +517,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -529,10 +529,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -541,10 +541,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.051839999972349116
+        "Value": 0.05184000078588724
       },
       "LevelAdd": {
-        "Value": 0.01814399957122704
+        "Value": 0.018143999855965376
       },
       "IsAvailable": true
     },
@@ -553,10 +553,10 @@
       "AffixID": 4,
       "Property": "PhysicalAddedRatio",
       "BaseValue": {
-        "Value": 0.037324999338998556
+        "Value": 0.037324999924749136
       },
       "LevelAdd": {
-        "Value": 0.01306400008487056
+        "Value": 0.01306400028988719
       },
       "IsAvailable": true
     },
@@ -565,10 +565,10 @@
       "AffixID": 5,
       "Property": "FireAddedRatio",
       "BaseValue": {
-        "Value": 0.037324999338998556
+        "Value": 0.037324999924749136
       },
       "LevelAdd": {
-        "Value": 0.01306400008487056
+        "Value": 0.01306400028988719
       },
       "IsAvailable": true
     },
@@ -577,10 +577,10 @@
       "AffixID": 6,
       "Property": "IceAddedRatio",
       "BaseValue": {
-        "Value": 0.037324999338998556
+        "Value": 0.037324999924749136
       },
       "LevelAdd": {
-        "Value": 0.01306400008487056
+        "Value": 0.01306400028988719
       },
       "IsAvailable": true
     },
@@ -589,10 +589,10 @@
       "AffixID": 7,
       "Property": "ThunderAddedRatio",
       "BaseValue": {
-        "Value": 0.037324999338998556
+        "Value": 0.037324999924749136
       },
       "LevelAdd": {
-        "Value": 0.01306400008487056
+        "Value": 0.01306400028988719
       },
       "IsAvailable": true
     },
@@ -601,10 +601,10 @@
       "AffixID": 8,
       "Property": "WindAddedRatio",
       "BaseValue": {
-        "Value": 0.037324999338998556
+        "Value": 0.037324999924749136
       },
       "LevelAdd": {
-        "Value": 0.01306400008487056
+        "Value": 0.01306400028988719
       },
       "IsAvailable": true
     },
@@ -613,10 +613,10 @@
       "AffixID": 9,
       "Property": "QuantumAddedRatio",
       "BaseValue": {
-        "Value": 0.037324999338998556
+        "Value": 0.037324999924749136
       },
       "LevelAdd": {
-        "Value": 0.01306400008487056
+        "Value": 0.01306400028988719
       },
       "IsAvailable": true
     },
@@ -625,10 +625,10 @@
       "AffixID": 10,
       "Property": "ImaginaryAddedRatio",
       "BaseValue": {
-        "Value": 0.037324999338998556
+        "Value": 0.037324999924749136
       },
       "LevelAdd": {
-        "Value": 0.01306400008487056
+        "Value": 0.01306400028988719
       },
       "IsAvailable": true
     }
@@ -639,10 +639,10 @@
       "AffixID": 1,
       "Property": "BreakDamageAddedRatioBase",
       "BaseValue": {
-        "Value": 0.062207999128628635
+        "Value": 0.06220800010487437
       },
       "LevelAdd": {
-        "Value": 0.02177300060457928
+        "Value": 0.02177300094626844
       },
       "IsAvailable": true
     },
@@ -651,10 +651,10 @@
       "AffixID": 2,
       "Property": "SPRatioBase",
       "BaseValue": {
-        "Value": 0.01866200001494584
+        "Value": 0.018662000307813287
       },
       "LevelAdd": {
-        "Value": 0.00653200004243528
+        "Value": 0.006532000144943595
       },
       "IsAvailable": true
     },
@@ -663,10 +663,10 @@
       "AffixID": 3,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -675,10 +675,10 @@
       "AffixID": 4,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -687,10 +687,10 @@
       "AffixID": 5,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.051839999972349116
+        "Value": 0.05184000078588724
       },
       "LevelAdd": {
-        "Value": 0.01814399957122704
+        "Value": 0.018143999855965376
       },
       "IsAvailable": true
     }
@@ -701,10 +701,10 @@
       "AffixID": 1,
       "Property": "HPDelta",
       "BaseValue": {
-        "Value": 90.31679858301469
+        "Value": 90.31680000037886
       },
       "LevelAdd": {
-        "Value": 31.610879505603464
+        "Value": 31.610880001680925
       },
       "IsAvailable": true
     }
@@ -715,10 +715,10 @@
       "AffixID": 1,
       "Property": "AttackDelta",
       "BaseValue": {
-        "Value": 45.1583992911581
+        "Value": 45.158399999840185
       },
       "LevelAdd": {
-        "Value": 15.805439752918147
+        "Value": 15.805440000956878
       },
       "IsAvailable": true
     }
@@ -729,10 +729,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     },
@@ -741,10 +741,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     },
@@ -753,10 +753,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -765,10 +765,10 @@
       "AffixID": 4,
       "Property": "CriticalChanceBase",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     },
@@ -777,10 +777,10 @@
       "AffixID": 5,
       "Property": "CriticalDamageBase",
       "BaseValue": {
-        "Value": 0.08294399953666344
+        "Value": 0.08294400083832443
       },
       "LevelAdd": {
-        "Value": 0.029029999171225358
+        "Value": 0.029029999626800418
       },
       "IsAvailable": true
     },
@@ -789,10 +789,10 @@
       "AffixID": 6,
       "Property": "HealRatioBase",
       "BaseValue": {
-        "Value": 0.04423699947501016
+        "Value": 0.04423700016923249
       },
       "LevelAdd": {
-        "Value": 0.01548300030557784
+        "Value": 0.015483000548556447
       },
       "IsAvailable": true
     },
@@ -801,10 +801,10 @@
       "AffixID": 7,
       "Property": "StatusProbabilityBase",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     }
@@ -815,10 +815,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     },
@@ -827,10 +827,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     },
@@ -839,10 +839,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -851,10 +851,10 @@
       "AffixID": 4,
       "Property": "SpeedDelta",
       "BaseValue": {
-        "Value": 3.225599949617897
+        "Value": 3.225600000238046
       },
       "LevelAdd": {
-        "Value": 1.0999999828305567
+        "Value": 1.1000000000931323
       },
       "IsAvailable": true
     }
@@ -865,10 +865,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     },
@@ -877,10 +877,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     },
@@ -889,10 +889,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -901,10 +901,10 @@
       "AffixID": 4,
       "Property": "PhysicalAddedRatio",
       "BaseValue": {
-        "Value": 0.04976599957926016
+        "Value": 0.04976600036025047
       },
       "LevelAdd": {
-        "Value": 0.0174179996424336
+        "Value": 0.017417999915778637
       },
       "IsAvailable": true
     },
@@ -913,10 +913,10 @@
       "AffixID": 5,
       "Property": "FireAddedRatio",
       "BaseValue": {
-        "Value": 0.04976599957926016
+        "Value": 0.04976600036025047
       },
       "LevelAdd": {
-        "Value": 0.0174179996424336
+        "Value": 0.017417999915778637
       },
       "IsAvailable": true
     },
@@ -925,10 +925,10 @@
       "AffixID": 6,
       "Property": "IceAddedRatio",
       "BaseValue": {
-        "Value": 0.04976599957926016
+        "Value": 0.04976600036025047
       },
       "LevelAdd": {
-        "Value": 0.0174179996424336
+        "Value": 0.017417999915778637
       },
       "IsAvailable": true
     },
@@ -937,10 +937,10 @@
       "AffixID": 7,
       "Property": "ThunderAddedRatio",
       "BaseValue": {
-        "Value": 0.04976599957926016
+        "Value": 0.04976600036025047
       },
       "LevelAdd": {
-        "Value": 0.0174179996424336
+        "Value": 0.017417999915778637
       },
       "IsAvailable": true
     },
@@ -949,10 +949,10 @@
       "AffixID": 8,
       "Property": "WindAddedRatio",
       "BaseValue": {
-        "Value": 0.04976599957926016
+        "Value": 0.04976600036025047
       },
       "LevelAdd": {
-        "Value": 0.0174179996424336
+        "Value": 0.017417999915778637
       },
       "IsAvailable": true
     },
@@ -961,10 +961,10 @@
       "AffixID": 9,
       "Property": "QuantumAddedRatio",
       "BaseValue": {
-        "Value": 0.04976599957926016
+        "Value": 0.04976600036025047
       },
       "LevelAdd": {
-        "Value": 0.0174179996424336
+        "Value": 0.017417999915778637
       },
       "IsAvailable": true
     },
@@ -973,10 +973,10 @@
       "AffixID": 10,
       "Property": "ImaginaryAddedRatio",
       "BaseValue": {
-        "Value": 0.04976599957926016
+        "Value": 0.04976600036025047
       },
       "LevelAdd": {
-        "Value": 0.0174179996424336
+        "Value": 0.017417999915778637
       },
       "IsAvailable": true
     }
@@ -987,10 +987,10 @@
       "AffixID": 1,
       "Property": "BreakDamageAddedRatioBase",
       "BaseValue": {
-        "Value": 0.08294399953666344
+        "Value": 0.08294400083832443
       },
       "LevelAdd": {
-        "Value": 0.029029999171225358
+        "Value": 0.029029999626800418
       },
       "IsAvailable": true
     },
@@ -999,10 +999,10 @@
       "AffixID": 2,
       "Property": "SPRatioBase",
       "BaseValue": {
-        "Value": 0.024883000488122
+        "Value": 0.024883000878617167
       },
       "LevelAdd": {
-        "Value": 0.0087089998212168
+        "Value": 0.008708999957889318
       },
       "IsAvailable": true
     },
@@ -1011,10 +1011,10 @@
       "AffixID": 3,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     },
@@ -1023,10 +1023,10 @@
       "AffixID": 4,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     },
@@ -1035,10 +1035,10 @@
       "AffixID": 5,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     }
@@ -1049,10 +1049,10 @@
       "AffixID": 1,
       "Property": "HPDelta",
       "BaseValue": {
-        "Value": 112.89599822871016
+        "Value": 112.89600000041537
       },
       "LevelAdd": {
-        "Value": 39.51359938054914
+        "Value": 39.513600000645965
       },
       "IsAvailable": true
     }
@@ -1063,10 +1063,10 @@
       "AffixID": 1,
       "Property": "AttackDelta",
       "BaseValue": {
-        "Value": 56.44799911400583
+        "Value": 56.44799999985844
       },
       "LevelAdd": {
-        "Value": 19.75679969074023
+        "Value": 19.756800000788644
       },
       "IsAvailable": true
     }
@@ -1077,10 +1077,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -1089,10 +1089,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -1101,10 +1101,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.08639999855693135
+        "Value": 0.08639999991282821
       },
       "LevelAdd": {
-        "Value": 0.03023999998387032
+        "Value": 0.030240000458434224
       },
       "IsAvailable": true
     },
@@ -1113,10 +1113,10 @@
       "AffixID": 4,
       "Property": "CriticalChanceBase",
       "BaseValue": {
-        "Value": 0.051839999972349116
+        "Value": 0.05184000078588724
       },
       "LevelAdd": {
-        "Value": 0.01814399957122704
+        "Value": 0.018143999855965376
       },
       "IsAvailable": true
     },
@@ -1125,10 +1125,10 @@
       "AffixID": 5,
       "Property": "CriticalDamageBase",
       "BaseValue": {
-        "Value": 0.10367999924620631
+        "Value": 0.10368000087328255
       },
       "LevelAdd": {
-        "Value": 0.036287999840946
+        "Value": 0.03628800041042268
       },
       "IsAvailable": true
     },
@@ -1137,10 +1137,10 @@
       "AffixID": 6,
       "Property": "HealRatioBase",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     },
@@ -1149,10 +1149,10 @@
       "AffixID": 7,
       "Property": "StatusProbabilityBase",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     }
@@ -1163,10 +1163,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -1175,10 +1175,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -1187,10 +1187,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.08639999855693135
+        "Value": 0.08639999991282821
       },
       "LevelAdd": {
-        "Value": 0.03023999998387032
+        "Value": 0.030240000458434224
       },
       "IsAvailable": true
     },
@@ -1199,10 +1199,10 @@
       "AffixID": 4,
       "Property": "SpeedDelta",
       "BaseValue": {
-        "Value": 4.031999936614918
+        "Value": 4.031999999890104
       },
       "LevelAdd": {
-        "Value": 1.399999978401978
+        "Value": 1.400000000372529
       },
       "IsAvailable": true
     }
@@ -1213,10 +1213,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -1225,10 +1225,10 @@
       "AffixID": 2,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -1237,10 +1237,10 @@
       "AffixID": 3,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.08639999855693135
+        "Value": 0.08639999991282821
       },
       "LevelAdd": {
-        "Value": 0.03023999998387032
+        "Value": 0.030240000458434224
       },
       "IsAvailable": true
     },
@@ -1249,10 +1249,10 @@
       "AffixID": 4,
       "Property": "PhysicalAddedRatio",
       "BaseValue": {
-        "Value": 0.062207999128628635
+        "Value": 0.06220800010487437
       },
       "LevelAdd": {
-        "Value": 0.02177300060457928
+        "Value": 0.02177300094626844
       },
       "IsAvailable": true
     },
@@ -1261,10 +1261,10 @@
       "AffixID": 5,
       "Property": "FireAddedRatio",
       "BaseValue": {
-        "Value": 0.062207999128628635
+        "Value": 0.06220800010487437
       },
       "LevelAdd": {
-        "Value": 0.02177300060457928
+        "Value": 0.02177300094626844
       },
       "IsAvailable": true
     },
@@ -1273,10 +1273,10 @@
       "AffixID": 6,
       "Property": "IceAddedRatio",
       "BaseValue": {
-        "Value": 0.062207999128628635
+        "Value": 0.06220800010487437
       },
       "LevelAdd": {
-        "Value": 0.02177300060457928
+        "Value": 0.02177300094626844
       },
       "IsAvailable": true
     },
@@ -1285,10 +1285,10 @@
       "AffixID": 7,
       "Property": "ThunderAddedRatio",
       "BaseValue": {
-        "Value": 0.062207999128628635
+        "Value": 0.06220800010487437
       },
       "LevelAdd": {
-        "Value": 0.02177300060457928
+        "Value": 0.02177300094626844
       },
       "IsAvailable": true
     },
@@ -1297,10 +1297,10 @@
       "AffixID": 8,
       "Property": "WindAddedRatio",
       "BaseValue": {
-        "Value": 0.062207999128628635
+        "Value": 0.06220800010487437
       },
       "LevelAdd": {
-        "Value": 0.02177300060457928
+        "Value": 0.02177300094626844
       },
       "IsAvailable": true
     },
@@ -1309,10 +1309,10 @@
       "AffixID": 9,
       "Property": "QuantumAddedRatio",
       "BaseValue": {
-        "Value": 0.062207999128628635
+        "Value": 0.06220800010487437
       },
       "LevelAdd": {
-        "Value": 0.02177300060457928
+        "Value": 0.02177300094626844
       },
       "IsAvailable": true
     },
@@ -1321,10 +1321,10 @@
       "AffixID": 10,
       "Property": "ImaginaryAddedRatio",
       "BaseValue": {
-        "Value": 0.062207999128628635
+        "Value": 0.06220800010487437
       },
       "LevelAdd": {
-        "Value": 0.02177300060457928
+        "Value": 0.02177300094626844
       },
       "IsAvailable": true
     }
@@ -1335,10 +1335,10 @@
       "AffixID": 1,
       "Property": "BreakDamageAddedRatioBase",
       "BaseValue": {
-        "Value": 0.10367999924620631
+        "Value": 0.10368000087328255
       },
       "LevelAdd": {
-        "Value": 0.036287999840946
+        "Value": 0.03628800041042268
       },
       "IsAvailable": true
     },
@@ -1347,10 +1347,10 @@
       "AffixID": 2,
       "Property": "SPRatioBase",
       "BaseValue": {
-        "Value": 0.031103999564314318
+        "Value": 0.031104000052437186
       },
       "LevelAdd": {
-        "Value": 0.01088600099698216
+        "Value": 0.010886001167818904
       },
       "IsAvailable": true
     },
@@ -1359,10 +1359,10 @@
       "AffixID": 3,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -1371,10 +1371,10 @@
       "AffixID": 4,
       "Property": "AttackAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     },
@@ -1383,10 +1383,10 @@
       "AffixID": 5,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.08639999855693135
+        "Value": 0.08639999991282821
       },
       "LevelAdd": {
-        "Value": 0.03023999998387032
+        "Value": 0.030240000458434224
       },
       "IsAvailable": true
     }
@@ -1397,10 +1397,10 @@
       "AffixID": 1,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     }
@@ -1411,10 +1411,10 @@
       "AffixID": 1,
       "Property": "CriticalChanceBase",
       "BaseValue": {
-        "Value": 0.04147200011757768
+        "Value": 0.04147200076840818
       },
       "LevelAdd": {
-        "Value": 0.014514999934858639
+        "Value": 0.014515000162646174
       },
       "IsAvailable": true
     }
@@ -1425,10 +1425,10 @@
       "AffixID": 1,
       "Property": "HealRatioBase",
       "BaseValue": {
-        "Value": 0.04423699947501016
+        "Value": 0.04423700016923249
       },
       "LevelAdd": {
-        "Value": 0.01548300030557784
+        "Value": 0.015483000548556447
       },
       "IsAvailable": true
     }
@@ -1439,10 +1439,10 @@
       "AffixID": 1,
       "Property": "HPAddedRatio",
       "BaseValue": {
-        "Value": 0.05529599969110896
+        "Value": 0.05529600055888295
       },
       "LevelAdd": {
-        "Value": 0.01935399968538008
+        "Value": 0.01935399998910725
       },
       "IsAvailable": true
     }
@@ -1453,10 +1453,10 @@
       "AffixID": 1,
       "Property": "DefenceAddedRatio",
       "BaseValue": {
-        "Value": 0.06911999856614832
+        "Value": 0.0691199996508658
       },
       "LevelAdd": {
-        "Value": 0.02419200012679464
+        "Value": 0.024192000506445765
       },
       "IsAvailable": true
     }
