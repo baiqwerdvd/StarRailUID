@@ -154,17 +154,20 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
             extra_ability_temp['extraAbilityLevel'] = behavior['level']
             status_add = characterSkillTree[str(char['avatarId'])][
                 str(behavior['pointId'])
-            ]['levels'][str(behavior['level'])]['status_add']
+            ]['levels'][behavior['level'] - 1]['properties']
             extra_ability_temp['statusAdd'] = {}
-            if status_add != {}:
-                extra_ability_temp['statusAdd']['property'] = status_add[
-                    'property'
-                ]
-                extra_ability_temp['statusAdd']['name'] = Property2Name[
-                    status_add['property']
-                ]
-                extra_ability_temp['statusAdd']['value'] = status_add['value']
-            char_data['avatarExtraAbility'].append(extra_ability_temp)
+            if status_add:
+                for property_ in status_add:
+                    extra_ability_temp['statusAdd']['property'] = property_[
+                        'type'
+                    ]
+                    extra_ability_temp['statusAdd']['name'] = Property2Name[
+                        property_['type']
+                    ]
+                    extra_ability_temp['statusAdd']['value'] = property_[
+                        'value'
+                    ]
+                    char_data['avatarExtraAbility'].append(extra_ability_temp)
 
         # 处理技能树中的属性加成
         if f'{char["avatarId"]}2' == str(behavior['pointId'])[0:5]:
@@ -173,19 +176,22 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
             attribute_bonus_temp['attributeBonusLevel'] = behavior['level']
             status_add = characterSkillTree[str(char['avatarId'])][
                 str(behavior['pointId'])
-            ]['levels'][str(behavior['level'])]['status_add']
+            ]['levels'][behavior['level'] - 1]['properties']
             attribute_bonus_temp['statusAdd'] = {}
-            if status_add != {}:
-                attribute_bonus_temp['statusAdd']['property'] = status_add[
-                    'property'
-                ]
-                attribute_bonus_temp['statusAdd']['name'] = Property2Name[
-                    status_add['property']
-                ]
-                attribute_bonus_temp['statusAdd']['value'] = status_add[
-                    'value'
-                ]
-            char_data['avatarAttributeBonus'].append(attribute_bonus_temp)
+            if status_add:
+                for property_ in status_add:
+                    attribute_bonus_temp['statusAdd']['property'] = property_[
+                        'type'
+                    ]
+                    attribute_bonus_temp['statusAdd']['name'] = Property2Name[
+                        property_['type']
+                    ]
+                    attribute_bonus_temp['statusAdd']['value'] = property_[
+                        'value'
+                    ]
+                    char_data['avatarAttributeBonus'].append(
+                        attribute_bonus_temp
+                    )
 
     # 处理遗器
     if char.get('relicList'):
