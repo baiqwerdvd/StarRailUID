@@ -4,63 +4,64 @@ from typing import List, Optional, TypedDict
 
 
 class MihomoData(TypedDict):
-    PlayerDetailInfo: PlayerDetailInfo
+    detailInfo: PlayerDetailInfo
 
 
 class Behavior(TypedDict):
-    BehaviorID: int
-    Level: int
+    pointId: int
+    level: int
 
 
 class Equipment(TypedDict):
-    Level: int
-    ID: int
-    Promotion: Optional[int]
-    Rank: Optional[int]
+    level: int
+    tid: int
+    promotion: Optional[int]
+    rank: Optional[int]
 
 
 class Relic(TypedDict):
-    RelicSubAffix: List[RelicSubAffix]
-    ID: int
-    MainAffixID: int
-    Type: int
+    subAffixList: List[subAffixList]
+    tid: int
+    mainAffixId: int
+    type: int
 
 
 class Avatar(TypedDict):
-    BehaviorList: List[Behavior]
-    Rank: Optional[int]
-    Pos: Optional[int]
-    AvatarID: int
-    Level: int
-    EquipmentID: Optional[Equipment]
-    RelicList: List[Relic]
-    Promotion: int
+    skillTreeList: List[Behavior]
+    rank: Optional[int]
+    pos: Optional[int]
+    avatarId: int
+    level: int
+    equipment: Optional[Equipment]
+    relicList: List[Relic]
+    promotion: int
 
 
 class Challenge(TypedDict):
-    PreMazeGroupIndex: int
+    scheduleMaxLevel: int
     MazeGroupIndex: Optional[int]
     PreMazeGroupIndex: Optional[int]
 
 
 class PlayerSpaceInfo(TypedDict):
-    ChallengeData: Challenge
-    PassAreaProgress: int
-    LightConeCount: int
-    AvatarCount: int
-    AchievementCount: int
+    challengeInfo: Challenge
+    maxRogueChallengeScore: int
+    equipmentCount: int
+    avatarCount: int
+    achievementCount: int
 
 
 class PlayerDetailInfo(TypedDict):
-    AssistAvatar: Avatar
-    IsDisplayAvatarList: bool
-    DisplayAvatarList: Optional[List[Avatar]]
-    UID: int
-    CurFriendCount: int
-    WorldLevel: int
-    NickName: str
+    assistAvatarDetail: Avatar
+    platform: str
+    isDisplayAvatar: bool
+    avatarDetailList: Optional[List[Avatar]]
+    uid: int
+    friendCount: int
+    worldLevel: int
+    nickname: str
     Birthday: Optional[int]
-    Level: int
-    PlayerSpaceInfo: Optional[PlayerSpaceInfo]
-    HeadIconID: int
-    Signature: Optional[str]
+    level: int
+    recordInfo: Optional[PlayerSpaceInfo]
+    headIcon: int
+    signature: Optional[str]

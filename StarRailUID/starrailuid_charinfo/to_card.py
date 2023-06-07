@@ -31,6 +31,7 @@ async def api_to_card(
     uid: str, enka_data: Optional[EnkaData] = None
 ) -> Union[str, bytes]:
     char_data_list = await api_to_dict(uid, enka_data)
+    print(char_data_list)
     if isinstance(char_data_list, str):
         if ('服务器正在维护或者关闭中' in char_data_list) or ('网络不太稳定' in char_data_list):
             return await convert_img(pic_500)
