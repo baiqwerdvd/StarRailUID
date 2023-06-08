@@ -13,6 +13,7 @@ from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
     GachaLog,
     AbyssData,
+    RogueData,
     RoleIndex,
     AvatarInfo,
     MonthlyAward,
@@ -279,7 +280,31 @@ class MysApi(_MysApi):
         if isinstance(data, Dict):
             data = cast(AbyssData, data['data'])
         return data
-
+    
+    async def get_rogue_info(
+        self,
+        uid: str,
+        schedule_type='3',
+        ck: Optional[str] = None,
+    ) -> Union[RogueData, int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0])
+        data = await self.simple_mys_req(
+            'ROGUE_INFO_URL',
+            uid,
+            params={
+                'need_detail': 'true',
+                'role_id': uid,
+                'schedule_type': schedule_type,
+                'server': server_id,
+            },
+            cookie=ck,
+            header=self._HEADER,
+        )
+        # print(data)
+        if isinstance(data, Dict):
+            data = cast(RogueData, data['data'])
+        return data
+    
     async def mys_sign(
         self, uid, header={}, server_id='cn_gf01'
     ) -> Union[MysSign, int]:

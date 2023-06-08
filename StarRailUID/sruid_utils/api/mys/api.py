@@ -41,6 +41,8 @@ STAR_RAIL_AVATAR_INFO_URL_OS = (
 CHALLENGE_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge'
 CHALLENGE_INFO_URL_OS = f'{OS_INFO_URL}/game_record/hkrpg/api/challenge'
 
+ROGUE_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/rogue'  # 角色模拟宇宙信息接口
+
 STAR_RAIL_GACHA_LOG_URL = f'{OLD_URL}/common/gacha_record/api/getGachaLog'
 STAR_RAIL_GACHA_LOG_URL_OS = (
     f'{OS_OLD_URL}/common/gacha_record/api/getGachaLog'
