@@ -18,7 +18,6 @@ from ..sruid_utils.api.mys.models import (
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
-    sr_font_30,
     sr_font_34,
     sr_font_42,
 )
@@ -109,12 +108,12 @@ async def _draw_rogue_buff(
     need_middle = math.ceil(buff_num / 3)
     draw_height = draw_height + need_middle * 55
     zb_list = []
-    for l in range(need_middle):
-        for i in range(3):
-            zb_list.append([l, i])
+    for m in range(need_middle):
+        for n in range(3):
+            zb_list.append([m, n])
     jishu = 0
     for item in buffs:
-        if item['is_evoluted'] == True:
+        if item['is_evoluted'] is True:
             is_evoluted = 1
         else:
             is_evoluted = 0
@@ -144,9 +143,9 @@ async def _draw_rogue_miracles(
     miracles_num = len(miracles)
     need_middle = math.ceil(miracles_num / 8)
     zb_list = []
-    for l in range(need_middle):
-        for i in range(8):
-            zb_list.append([l, i])
+    for m in range(need_middle):
+        for n in range(8):
+            zb_list.append([m, n])
     jishu = 0
     for miracle in miracles:
         miracles_icon = (await get_icon(miracle['icon'])).resize((80, 80))
@@ -219,8 +218,7 @@ async def draw_rogue_img(
 
     # 计算背景图尺寸
     rogue_detail = raw_rogue_data['current_record']['records']
-    # 宇宙数量
-    detail_num = len(rogue_detail)
+
     # 记录打的宇宙列表
     detail_list = []
     based_h = 657
@@ -260,7 +258,6 @@ async def draw_rogue_img(
     print(based_h)
     # 获取查询者数据
     if floor:
-        floor_num = 1
         if floor > 6:
             return '世界不能大于第六世界!'
         if floor not in detail_list:
