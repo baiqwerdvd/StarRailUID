@@ -80,7 +80,7 @@ class GsCookie:
             self.uid, schedule_type, self.cookie
         )
         return data
-    
+
     async def get_rogue_data(
         self, uid: str, schedule_type: str = '3'
     ) -> Union[RogueData, int]:
@@ -90,7 +90,7 @@ class GsCookie:
             self.uid, schedule_type, self.cookie
         )
         return data
-    
+
     async def check_cookies_useable(self):
         if isinstance(self.raw_data, int) and self.cookie:
             retcode = self.raw_data

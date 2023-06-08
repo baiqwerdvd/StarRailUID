@@ -280,7 +280,7 @@ class MysApi(_MysApi):
         if isinstance(data, Dict):
             data = cast(AbyssData, data['data'])
         return data
-    
+
     async def get_rogue_info(
         self,
         uid: str,
@@ -304,7 +304,7 @@ class MysApi(_MysApi):
         if isinstance(data, Dict):
             data = cast(RogueData, data['data'])
         return data
-    
+
     async def mys_sign(
         self, uid, header={}, server_id='cn_gf01'
     ) -> Union[MysSign, int]:

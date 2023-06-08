@@ -38,6 +38,7 @@ class RoleBasicInfo(TypedDict):
 # 模拟宇宙相关 #
 ################
 
+
 class RogueTime(TypedDict):
     year: int
     month: int
@@ -46,6 +47,7 @@ class RogueTime(TypedDict):
     minute: int
     second: int
 
+
 class RogueAvatar(TypedDict):
     id: int
     icon: str
@@ -53,10 +55,12 @@ class RogueAvatar(TypedDict):
     rarity: int
     element: str
 
+
 class RogueBaseType(TypedDict):
     id: int
     name: str
     cnt: int
+
 
 class RogueBuffitems(TypedDict):
     id: int
@@ -64,14 +68,17 @@ class RogueBuffitems(TypedDict):
     is_evoluted: str
     rank: int
 
+
 class RogueMiracles(TypedDict):
     id: int
     name: str
     icon: str
 
+
 class RogueBuffs(TypedDict):
     base_type: RogueBaseType
     items: List[RogueBuffitems]
+
 
 class RogueRecordInfo(TypedDict):
     name: str
@@ -85,30 +92,36 @@ class RogueRecordInfo(TypedDict):
     difficulty: int
     progress: int
 
+
 class RogueBasic(TypedDict):
     id: int
     finish_cnt: int
     schedule_begin: RogueTime
     schedule_end: RogueTime
 
+
 class RogueRecord(TypedDict):
     basic: RogueBasic
     records: List[RogueRecordInfo]
+
 
 class RogueBasicInfo(TypedDict):
     unlocked_buff_num: int
     unlocked_miracle_num: int
     unlocked_skill_points: int
 
+
 class RoleInfo(TypedDict):
     server: str
     nickname: str
     level: int
 
+
 class RogueData(TypedDict):
     role: RoleInfo
     basic_info: RogueBasicInfo
     current_record: RogueRecord
+
 
 ################
 #   深渊相关   #
