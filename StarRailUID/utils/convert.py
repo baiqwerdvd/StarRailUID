@@ -8,7 +8,7 @@ from gsuid_core.utils.api.mys.models import IndexData
 from .api import get_sqla
 from .mys_api import mys_api
 from .error_reply import VERIFY_HINT
-from ..sruid_utils.api.mys.models import AbyssData
+from ..sruid_utils.api.mys.models import AbyssData, RogueData
 
 
 @overload
@@ -77,6 +77,16 @@ class GsCookie:
         self.uid = uid
         self.cookie = await self.sqla.get_random_cookie(uid)
         data = await mys_api.get_srspiral_abyss_info(
+            self.uid, schedule_type, self.cookie
+        )
+        return data
+
+    async def get_rogue_data(
+        self, uid: str, schedule_type: str = '3'
+    ) -> Union[RogueData, int]:
+        self.uid = uid
+        self.cookie = await self.sqla.get_random_cookie(uid)
+        data = await mys_api.get_rogue_info(
             self.uid, schedule_type, self.cookie
         )
         return data
