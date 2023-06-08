@@ -46,6 +46,10 @@
 <img src="https://s2.loli.net/2023/05/19/54OPsvHibgeu9YB.jpg"/> 
 </p></details>
 
+<details><summary>查询模拟宇宙 - 命令: sr查询模拟宇宙</summary><p>
+<img src="https://s2.loli.net/2023/06/08/eCnmu74rWKPf9Fp.png"/> 
+</p></details>
+
 以及自动签到 & 体力推送 & WIKI & 攻略图等..
 
 ## 丨其他

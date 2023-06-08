@@ -94,6 +94,14 @@
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "sr查询模拟宇宙",
+        "desc": "查询模拟宇宙的信息",
+        "eg": "sr查询宇宙",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },
