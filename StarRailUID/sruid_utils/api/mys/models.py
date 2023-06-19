@@ -237,6 +237,23 @@ class DailyNoteData(TypedDict):
     expeditions: List[Expedition]
 
 
+class WidgetStamina(TypedDict):
+    current_stamina: int
+    max_stamina: int
+    stamina_recover_time: int
+    accepted_expedition_num: int
+    total_expedition_num: int
+    expeditions: List[Expedition]
+    current_train_score: int
+    max_train_score: int
+    current_rogue_score: int
+    max_rogue_score: int
+    has_signed: bool
+    sign_url: str
+    home_url: str
+    note_url: str
+
+
 ################
 # 签到相关 #
 ################

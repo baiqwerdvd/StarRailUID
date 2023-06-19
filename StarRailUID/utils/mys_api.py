@@ -2,11 +2,15 @@ import copy
 import time
 import random
 from string import digits, ascii_letters
-from typing import Dict, Union, Optional, cast
+from typing import Any, Dict, Union, Optional, cast
 
 from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.models import MysSign, SignInfo, SignList
-from gsuid_core.utils.api.mys.tools import generate_os_ds, get_web_ds_token
+from gsuid_core.utils.api.mys.tools import (
+    _random_int_ds,
+    generate_os_ds,
+    get_web_ds_token,
+)
 
 from .api import srdbsqla
 from ..sruid_utils.api.mys.api import _API
@@ -19,6 +23,7 @@ from ..sruid_utils.api.mys.models import (
     MonthlyAward,
     DailyNoteData,
     RoleBasicInfo,
+    WidgetStamina,
 )
 
 RECOGNIZE_SERVER = {
@@ -30,6 +35,14 @@ RECOGNIZE_SERVER = {
     '8': 'prod_official_asia',
     '9': 'prod_official_cht',
 }
+
+
+def get_ds_token2(
+    q: str = '',
+    b: Optional[Dict[str, Any]] = None,
+):
+    salt = 't0qEgfub6cvueAPgR5m9aQWWVciEer7v'
+    return _random_int_ds(salt, q, b)
 
 
 class MysApi(_MysApi):
@@ -81,6 +94,32 @@ class MysApi(_MysApi):
             )
         if isinstance(data, Dict):
             data = cast(DailyNoteData, data['data'])
+        return data
+
+    async def get_widget_stamina_data(
+        self, uid: str
+    ) -> Union[WidgetStamina, int]:
+        header = copy.deepcopy(self._HEADER)
+        sk = await self.get_stoken(uid)
+        if sk is None:
+            return -51
+        header['Cookie'] = sk
+        header['x-rpc-channel'] = 'beta'
+        header['x-rpc-device_id'] = await self.get_user_device_id(uid)
+        header['x-rpc-app_version'] = '2.53.0'
+        header['x-rpc-device_model'] = 'Mi 10'
+        header['x-rpc-device_fp'] = await self.get_user_fp(uid)
+        header['x-rpc-client_type'] = '2'
+        header['DS'] = get_ds_token2()
+        header['Referer'] = 'https://app.mihoyo.com'
+        del header['Origin']
+        header['x-rpc-sys_version'] = '12'
+        header['User-Agent'] = 'okhttp/4.8.0'
+        data = await self._mys_request(
+            _API['STAR_RAIL_WIDGRT_URL'], 'GET', header
+        )
+        if isinstance(data, Dict):
+            data = cast(WidgetStamina, data['data'])
         return data
 
     async def get_role_index(self, uid: str) -> Union[RoleIndex, int]:

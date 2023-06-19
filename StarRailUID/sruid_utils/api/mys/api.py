@@ -52,4 +52,6 @@ GET_FP_URL = 'https://public-data-api.mihoyo.com/device-fp/api/getFp'
 GET_FP_URL_OS = 'https://sg-public-data-api.hoyoverse.com/device-fp/api/getFp'
 # CREATE_QRCODE = f'{OLD_URL}/event/bbs_sign_reward/gen_auth_code'
 
+STAR_RAIL_WIDGRT_URL = f'{NEW_URL}/game_record/app/hkrpg/aapi/widget'
+
 _API = locals()

@@ -11,6 +11,7 @@ from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import Expedition
+from ..starrailuid_config.sr_config import srconfig
 from ..utils.image.image_tools import get_simple_bg
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
@@ -19,6 +20,8 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_36,
     sr_font_50,
 )
+
+use_widget = srconfig.get_config('WidgetResin').data
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 
@@ -100,7 +103,7 @@ async def _draw_task_img(
         )
 
 
-async def get_resin_img(bot_id: str, user_id: str):
+async def get_stamina_img(bot_id: str, user_id: str):
     try:
         sqla = get_sqla(bot_id)
         uid_list: List = await sqla.get_bind_sruid_list(user_id)
@@ -120,7 +123,7 @@ async def get_resin_img(bot_id: str, user_id: str):
             'RGBA', (based_w * len(useable_uid_list), based_h), (0, 0, 0, 0)
         )
         for uid_index, uid in enumerate(useable_uid_list):
-            task.append(_draw_all_resin_img(img, uid, uid_index))
+            task.append(_draw_all_stamina_img(img, uid, uid_index))
         await asyncio.gather(*task)
         res = await convert_img(img)
         logger.info('[查询每日信息]绘图已完成,等待发送!')
@@ -131,9 +134,30 @@ async def get_resin_img(bot_id: str, user_id: str):
     return res
 
 
-async def _draw_all_resin_img(img: Image.Image, uid: str, index: int):
-    resin_img = await draw_resin_img(uid)
-    img.paste(resin_img, (700 * index, 0), resin_img)
+async def _draw_all_stamina_img(img: Image.Image, uid: str, index: int):
+    stamina_img = await draw_stamina_img(uid)
+    img.paste(stamina_img, (700 * index, 0), stamina_img)
+
+
+def get_error(img: Image.Image, uid: str, daily_data: int):
+    img_draw = ImageDraw.Draw(img)
+    img.paste(warn_pic, (0, 0), warn_pic)
+    # 写UID
+    img_draw.text(
+        (350, 680),
+        f'UID{uid}',
+        font=sr_font_26,
+        fill=first_color,
+        anchor='mm',
+    )
+    img_draw.text(
+        (350, 650),
+        f'错误码 {daily_data}',
+        font=sr_font_26,
+        fill=red_color,
+        anchor='mm',
+    )
+    return img
 
 
 async def seconds2hours_zhcn(seconds: int) -> str:
@@ -142,32 +166,19 @@ async def seconds2hours_zhcn(seconds: int) -> str:
     return '%02d小时%02d分' % (h, m)
 
 
-async def draw_resin_img(sr_uid: str) -> Image.Image:
-    # 获取数据
-    daily_data = await mys_api.get_daily_data(sr_uid)
-
+async def draw_stamina_img(sr_uid: str) -> Image.Image:
     img = await get_simple_bg(based_w, based_h)
     img.paste(white_overlay, (0, 0), white_overlay)
 
-    if isinstance(daily_data, int):
-        img_draw = ImageDraw.Draw(img)
-        img.paste(warn_pic, (0, 0), warn_pic)
-        # 写UID
-        img_draw.text(
-            (350, 680),
-            f'UID{sr_uid}',
-            font=sr_font_26,
-            fill=first_color,
-            anchor='mm',
-        )
-        img_draw.text(
-            (350, 650),
-            f'错误码 {daily_data}',
-            font=sr_font_26,
-            fill=red_color,
-            anchor='mm',
-        )
-        return img
+    # 获取数据
+    if use_widget and int(str(sr_uid)[0]) <= 5:
+        _daily_data = await mys_api.get_widget_stamina_data(sr_uid)
+        if isinstance(_daily_data, int):
+            return get_error(img, sr_uid, _daily_data)
+        # daily_data = transform_fake_resin(_daily_data)
+        daily_data = _daily_data
+    else:
+        daily_data = await mys_api.get_daily_data(sr_uid)
 
     # nickname and level
     # deal with hoyolab with no nickname and level api

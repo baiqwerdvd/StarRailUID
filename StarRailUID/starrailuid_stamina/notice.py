@@ -11,7 +11,7 @@ from ..sruid_utils.api.mys.models import DailyNoteData
 MR_NOTICE = '\n可发送[srmr]或者[sr每日]来查看更多信息！\n'
 
 NOTICE = {
-    'resin': f'你的开拓力快满啦！{MR_NOTICE}',
+    'stamina': f'你的开拓力快满啦！{MR_NOTICE}',
     'go': f'你有派遣信息即将可收取！{MR_NOTICE}',
 }
 

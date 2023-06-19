@@ -19,7 +19,7 @@ def seconds2hours(seconds: int) -> str:
     return '%02d:%02d:%02d' % (h, m, s)
 
 
-async def get_resin_text(uid: str) -> str:
+async def get_stamina_text(uid: str) -> str:
     try:
         dailydata = await mys_api.get_daily_data(uid)
         if isinstance(dailydata, int):

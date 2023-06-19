@@ -29,4 +29,9 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '用于本插件的前缀设定',
         'sr',
     ),
+    'WidgetResin': GsBoolConfig(
+        '体力使用组件API',
+        '开启后mr功能将转为调用组件API, 可能缺失数据、数据不准',
+        True,
+    ),
 }
