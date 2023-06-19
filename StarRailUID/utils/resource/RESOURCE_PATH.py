@@ -11,6 +11,7 @@ CONFIG_PATH = MAIN_PATH / 'config.json'
 PLAYER_PATH = MAIN_PATH / 'players'
 RESOURCE_PATH = MAIN_PATH / 'resource'
 WIKI_PATH = MAIN_PATH / 'wiki'
+GUIDE_PATH = MAIN_PATH / 'guide'
 
 CHAR_ICON_PATH = RESOURCE_PATH / 'character'
 CHAR_PORTRAIT_PATH = RESOURCE_PATH / 'character_portrait'
@@ -27,6 +28,9 @@ WIKI_MATERIAL_FOR_ROLE = WIKI_PATH / 'material for role'
 WIKI_RELIC_PATH = WIKI_PATH / 'relic'
 WIKI_ROLE_PATH = WIKI_PATH / 'role'
 
+GUIDE_LIGHT_CONE_PATH = GUIDE_PATH / 'lightcone'
+GUIDE_CHARACTER_PATH = GUIDE_PATH / 'character'
+
 TEXT2D_PATH = Path(__file__).parent / 'texture2d'
 
 
@@ -37,6 +41,7 @@ def init_dir():
         PLAYER_PATH,
         RESOURCE_PATH,
         WIKI_PATH,
+        GUIDE_PATH,
         CHAR_ICON_PATH,
         CHAR_PORTRAIT_PATH,
         CHAR_PREVIEW_PATH,
@@ -51,6 +56,8 @@ def init_dir():
         WIKI_MATERIAL_FOR_ROLE,
         WIKI_RELIC_PATH,
         WIKI_ROLE_PATH,
+        GUIDE_LIGHT_CONE_PATH,
+        GUIDE_CHARACTER_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 
