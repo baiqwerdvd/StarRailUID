@@ -15,8 +15,13 @@ from .mono.Character import Character
 from ..utils.error_reply import CHAR_HINT
 from ..utils.fonts.first_world import fw_font_28
 from ..utils.excel.read_excel import light_cone_ranks
-from ..utils.map.SR_MAP_PATH import RelicId2Rarity, avatarId2Name
 from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
+from ..utils.map.SR_MAP_PATH import (
+    RelicId2Rarity,
+    AvatarRelicScore,
+    avatarId2Name,
+    avatarId2DamageType,
+)
 from ..utils.resource.RESOURCE_PATH import (
     RELIC_PATH,
     SKILL_PATH,
@@ -60,7 +65,6 @@ skill_type_map = {
     'MazeNormal': 'dev_连携',
     'Maze': ('秘技', 'technique'),
 }
-
 
 RELIC_POS = {
     '1': (26, 1162),
@@ -265,7 +269,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     char_info.paste(attr_bg, (475, 300), attr_bg)
 
     # 命座
-    for rank in range(0, 6):
+    for rank in range(6):
         rank_bg = Image.open(TEXT_PATH / 'mz_bg.png')
         rank_no_bg = Image.open(TEXT_PATH / 'mz_no_bg.png')
         if rank < char.char_rank:
@@ -401,6 +405,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         relic_score = 0
 
         for relic in char.char_relic:
+            print(relic)
             rarity = RelicId2Rarity[str(relic["relicId"])]
             relic_img = Image.open(TEXT_PATH / f'yq_bg{rarity}.png')
             if str(relic["SetId"])[0] == '3':
@@ -438,6 +443,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             # 主属性
             main_value = mp.mpf(relic['MainAffix']['Value'])
             main_name: str = relic['MainAffix']['Name']
+            main_property: str = relic['MainAffix']['Property']
             main_level: int = relic['Level']
 
             if main_name in ['攻击力', '生命值', '防御力', '速度']:
@@ -473,14 +479,35 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
                 anchor='mm',
             )
 
+            single_relic_score = 0
+            main_value_score = await get_relic_score(
+                relic['MainAffix']['Property'], main_value, char_name, True
+            )
+            if main_property.__contains__('AddedRatio') and relic['Type'] == 5:
+                attr_name = main_property.split('AddedRatio')[0]
+                if attr_name == avatarId2DamageType[str(char.char_id)]:
+                    for item in AvatarRelicScore:
+                        if item['role'] == char_name:
+                            weight_dict = item
+                    add_value = (
+                        (main_value + 1)
+                        * 1
+                        * weight_dict['AttributeAddedRatio']
+                        * 10
+                    )
+                    single_relic_score += add_value
+            print(f'main_value_score: {main_value_score}')
+            single_relic_score += main_value_score
             for index, i in enumerate(relic['SubAffixList']):
                 subName: str = i['Name']
                 subValue = mp.mpf(i['Value'])
                 subProperty = i['Property']
-                if subProperty == 'CriticalDamageBase':
-                    relic_score += subValue
-                if subProperty == 'CriticalChanceBase':
-                    relic_score += subValue * 2
+
+                tmp_score = await get_relic_score(
+                    subProperty, subValue, char_name, False
+                )
+                single_relic_score += tmp_score
+
                 if subName in ['攻击力', '生命值', '防御力', '速度']:
                     subValueStr = nstr(subValue, 3)
                 else:
@@ -503,17 +530,26 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
                     sr_font_26,
                     anchor='rm',
                 )
+            relic_img_draw.text(
+                (210, 195),
+                '{}分'.format(int(single_relic_score)),
+                (255, 255, 255),
+                sr_font_28,
+                anchor='rm',
+            )
 
             char_info.paste(
                 relic_img, RELIC_POS[str(relic["Type"])], relic_img
             )
-        if relic_score > 1:
+            relic_score += single_relic_score
+        print(relic_score)
+        if relic_score > 200:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconS.png')
             char_info.paste(relic_value_level, (780, 963), relic_value_level)
-        elif relic_score > 0.6:
+        elif relic_score > 150:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconA.png')
             char_info.paste(relic_value_level, (780, 963), relic_value_level)
-        elif relic_score > 0.3:
+        elif relic_score > 100:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconB.png')
             char_info.paste(relic_value_level, (780, 963), relic_value_level)
         elif relic_score > 0:
@@ -590,3 +626,64 @@ async def get_char_data(
     with open(path, 'r', encoding='utf8') as fp:
         char_data = json.load(fp)
     return char_data
+
+
+async def get_relic_score(
+    subProperty: str, subValue, char_name: str, is_main: bool
+) -> float:
+    relic_score = 0
+    weight_dict = {}
+    for item in AvatarRelicScore:
+        if item['role'] == char_name:
+            weight_dict = item
+    if weight_dict == {}:
+        return 0
+    if subProperty == 'CriticalDamageBase':
+        add_value = (subValue + 1) * 1 * weight_dict['CriticalDamageBase'] * 10
+        relic_score += add_value
+    if subProperty == 'CriticalChanceBase':
+        add_value = (subValue + 1) * 2 * weight_dict['CriticalChanceBase'] * 10
+        relic_score += add_value
+    if subProperty == 'AttackDelta' and not is_main:
+        add_value = subValue * 0.3 * 0.5 * weight_dict['AttackDelta'] * 0.1
+        relic_score += add_value
+    if subProperty == 'DefenceDelta' and not is_main:
+        add_value = subValue * 0.3 * 0.5 * weight_dict['DefenceDelta'] * 0.1
+        relic_score += add_value
+    if subProperty == 'HPDelta' and not is_main:
+        add_value = subValue * 0.3 * 0.5 * weight_dict['HPDelta'] * 0.1
+        relic_score += add_value
+    if subProperty == 'AttackAddedRatio':
+        add_value = (subValue + 1) * 1.5 * weight_dict['AttackAddedRatio'] * 10
+        relic_score += add_value
+    if subProperty == 'DefenceAddedRatio':
+        add_value = (
+            (subValue + 1) * 1.19 * weight_dict['DefenceAddedRatio'] * 10
+        )
+        relic_score += add_value
+    if subProperty == 'HPAddedRatio':
+        add_value = (subValue + 1) * 1.5 * weight_dict['HPAddedRatio'] * 10
+        relic_score += add_value
+    if subProperty == 'SpeedDelta':
+        add_value = subValue * 2.53 * weight_dict['SpeedDelta']
+        relic_score += add_value
+    if subProperty == 'BreakDamageAddedRatioBase':
+        add_value = (
+            (subValue + 1)
+            * 1.0
+            * weight_dict['BreakDamageAddedRatioBase']
+            * 10
+        )
+        relic_score += add_value
+    if subProperty == 'StatusProbabilityBase':
+        add_value = (
+            (subValue + 1) * 1.49 * weight_dict['StatusProbabilityBase'] * 10
+        )
+        relic_score += add_value
+    if subProperty == 'StatusResistanceBase':
+        add_value = (
+            (subValue + 1) * 1.49 * weight_dict['StatusResistanceBase'] * 10
+        )
+        relic_score += add_value
+    print(f'{subProperty} : {relic_score}')
+    return relic_score

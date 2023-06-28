@@ -33,17 +33,14 @@ async def api_to_card(
 ) -> Union[str, bytes]:
     char_data_list = await api_to_dict(uid, enka_data)
     print(char_data_list)
-    if isinstance(char_data_list, str):
-        if ('服务器正在维护或者关闭中' in char_data_list) or ('网络不太稳定' in char_data_list):
-            return await convert_img(pic_500)
-        else:
-            return await convert_img(pic_500)
-    else:
-        if char_data_list == []:
-            return await convert_img(pic_500)
+    if (
+        not isinstance(char_data_list, str)
+        and char_data_list == []
+        or isinstance(char_data_list, str)
+    ):
+        return await convert_img(pic_500)
 
-    img = await draw_enka_card(uid=uid, char_list=char_data_list, showfrom=1)
-    return img
+    return await draw_enka_card(uid=uid, char_list=char_data_list, showfrom=1)
 
 
 async def draw_enka_card(
@@ -60,13 +57,10 @@ async def draw_enka_card(
         )
     if showfrom == 0:
         line1 = f'展柜内有 {len(char_data_list)} 个角色!'
+    elif char_data_list is None:
+        return await convert_img(Image.new('RGBA', (0, 1), (255, 255, 255)))
     else:
-        if char_data_list is None:
-            return await convert_img(
-                Image.new('RGBA', (0, 1), (255, 255, 255))
-            )
-        else:
-            line1 = f'UID {str(uid)} 刷新成功'
+        line1 = f'UID {uid} 刷新成功'
     # print(char_list)
     line2 = f'可以使用 sr查询{char_data_list[0]["avatarName"]} 查询详情角色面板'
     char_num = len(char_data_list)
@@ -163,10 +157,11 @@ async def draw_enka_char(index: int, img: Image.Image, char_data: dict):
     char_temp.paste(char_img, (8, 8), char_img)
     char_card.paste(char_temp, (0, 0), char_mask)
     if index <= 7:
-        if img.size[0] <= 1100:
-            x = 60 + (index % 4) * 220
-        else:
-            x = 160 + (index % 4) * 220
+        x = (
+            60 + (index % 4) * 220
+            if img.size[0] <= 1100
+            else 160 + (index % 4) * 220
+        )
         img.paste(
             char_card,
             (x, 187 + (index // 4) * 220),

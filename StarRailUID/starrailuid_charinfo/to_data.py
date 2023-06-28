@@ -47,9 +47,7 @@ async def api_to_dict(
     """
     if '未找到绑定的UID' in sr_uid:
         return UID_HINT
-    if sr_data:
-        pass
-    else:
+    if not sr_data:
         try:
             sr_data = await get_char_card_info(sr_uid)
         except ReadTimeout:
