@@ -5,11 +5,12 @@ from gsuid_core.logger import logger
 from aiohttp.client import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError
 
-from .RESOURCE_PATH import WIKI_PATH, RESOURCE_PATH
+from .RESOURCE_PATH import WIKI_PATH, GUIDE_PATH, RESOURCE_PATH
 
 PATHDICT = {
     'resource': RESOURCE_PATH,
     'wiki': WIKI_PATH,
+    'guide': GUIDE_PATH,
 }
 
 
