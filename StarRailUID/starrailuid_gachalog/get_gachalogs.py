@@ -1,5 +1,4 @@
 import json
-import asyncio
 from urllib import parse
 from datetime import datetime
 from typing import Dict, Optional
@@ -31,11 +30,10 @@ async def get_new_gachalog_by_link(
                 data = await mys_api.get_gacha_log_by_link_in_authkey(
                     uid, authkey, gacha_type, page, end_id
                 )
-                await asyncio.sleep(0.45)
                 if isinstance(data, int):
                     return {}
                 data = data['list']
-                if data == []:
+                if not data:
                     break
                 end_id = data[-1]['id']
                 if data[-1] in full_data[gacha_name] and not is_force:
@@ -54,7 +52,6 @@ async def get_new_gachalog_by_link(
                         full_data[gacha_name][0:0] = data
                 else:
                     full_data[gacha_name].extend(data)
-                await asyncio.sleep(0.25)
     return full_data
 
 
