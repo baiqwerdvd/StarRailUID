@@ -8,7 +8,7 @@ from gsuid_core.logger import logger
 from aiohttp.client import ClientSession
 
 from .download_url import download_file
-from .RESOURCE_PATH import WIKI_PATH, RESOURCE_PATH
+from .RESOURCE_PATH import WIKI_PATH, GUIDE_PATH, RESOURCE_PATH
 
 with open(
     Path(__file__).parent / 'resource_map.json', 'r', encoding='UTF-8'
@@ -30,7 +30,7 @@ async def download_all_file_from_cos():
     failed_list: List[Tuple[str, str, str, str]] = []
     TASKS = []
     async with ClientSession() as sess:
-        for res_type in ['resource', 'wiki']:
+        for res_type in ['resource', 'wiki', 'guide']:
             if res_type == 'resource':
                 logger.info('[cos]开始下载资源文件...')
                 resource_type_list = [
@@ -43,13 +43,19 @@ async def download_all_file_from_cos():
                     'relic',
                     'skill',
                 ]
-            else:
+            elif res_type == 'wiki':
                 logger.info('[cos]开始下载wiki文件...')
                 resource_type_list = [
                     'lightcone',
                     'material for role',
                     'relic',
                     'role',
+                ]
+            else:
+                logger.info('[cos]开始下载guide文件...')
+                resource_type_list = [
+                    'lightcone',
+                    'character',
                 ]
             for resource_type in resource_type_list:
                 file_dict = resource_map[res_type][resource_type]
@@ -63,8 +69,10 @@ async def download_all_file_from_cos():
                     url = file_info['url']
                     if res_type == 'resource':
                         path = Path(RESOURCE_PATH / resource_type / name)
-                    else:
+                    elif res_type == 'wiki':
                         path = Path(WIKI_PATH / resource_type / name)
+                    else:
+                        path = Path(GUIDE_PATH / resource_type / name)
                     if path.exists():
                         is_diff = size == os.stat(path).st_size
                     else:
