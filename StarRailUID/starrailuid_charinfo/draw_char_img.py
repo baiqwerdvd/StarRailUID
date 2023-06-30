@@ -664,8 +664,11 @@ async def get_relic_score(
     if subProperty == 'HPAddedRatio':
         add_value = (subValue + 1) * 1.5 * weight_dict['HPAddedRatio'] * 10
         relic_score += add_value
-    if subProperty == 'SpeedDelta':
+    if subProperty == 'SpeedDelta' and not is_main:
         add_value = subValue * 2.53 * weight_dict['SpeedDelta']
+        relic_score += add_value
+    elif subProperty == 'SpeedDelta' and is_main:
+        add_value = subValue * 2.53 * weight_dict['SpeedDelta'] * 0.1
         relic_score += add_value
     if subProperty == 'BreakDamageAddedRatioBase':
         add_value = (
