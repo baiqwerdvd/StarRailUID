@@ -492,7 +492,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
                     add_value = (
                         (main_value + 1)
                         * 1
-                        * weight_dict['AttributeAddedRatio']
+                        * weight_dict.get('AttributeAddedRatio', 0)
                         * 10
                     )
                     single_relic_score += add_value
