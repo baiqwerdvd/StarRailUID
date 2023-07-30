@@ -1,34 +1,18 @@
-import re
 import json
 import math
+import re
 from pathlib import Path
-from typing import Dict, Union, Optional
+from typing import Dict, Optional, Union
 
-from mpmath import mp, nstr
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
+from mpmath import mp, nstr
+from PIL import Image, ImageDraw
 
-from .to_data import api_to_dict
-from .mono.Character import Character
 from ..utils.error_reply import CHAR_HINT
-from ..utils.fonts.first_world import fw_font_28
 from ..utils.excel.read_excel import light_cone_ranks
-from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
-from ..utils.map.SR_MAP_PATH import (
-    RelicId2Rarity,
-    AvatarRelicScore,
-    avatarId2Name,
-    avatarId2DamageType,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    RELIC_PATH,
-    SKILL_PATH,
-    PLAYER_PATH,
-    WEAPON_PATH,
-    CHAR_PORTRAIT_PATH,
-)
+from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_23,
@@ -38,6 +22,22 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
+from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
+from ..utils.map.SR_MAP_PATH import (
+    AvatarRelicScore,
+    RelicId2Rarity,
+    avatarId2DamageType,
+    avatarId2Name,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    CHAR_PORTRAIT_PATH,
+    PLAYER_PATH,
+    RELIC_PATH,
+    SKILL_PATH,
+    WEAPON_PATH,
+)
+from .mono.Character import Character
+from .to_data import api_to_dict
 
 mp.dps = 14
 
@@ -486,6 +486,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             if main_property.__contains__('AddedRatio') and relic['Type'] == 5:
                 attr_name = main_property.split('AddedRatio')[0]
                 if attr_name == avatarId2DamageType[str(char.char_id)]:
+                    weight_dict = {}
                     for item in AvatarRelicScore:
                         if item['role'] == char_name:
                             weight_dict = item
