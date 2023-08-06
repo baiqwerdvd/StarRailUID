@@ -6,6 +6,11 @@ from typing import List, Tuple, Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
+from gsuid_core.utils.image.image_tools import (
+    get_color_bg,
+    get_qq_avatar,
+    draw_pic_with_ring,
+)
 
 from ..utils.image.convert import convert_img
 from ..utils.map.name_covert import name_to_avatar_id, name_to_weapon_id
@@ -13,11 +18,6 @@ from ..utils.resource.RESOURCE_PATH import (
     PLAYER_PATH,
     WEAPON_PATH,
     CHAR_ICON_PATH,
-)
-from ..utils.image.image_tools import (
-    get_color_bg,
-    get_qq_avatar,
-    draw_pic_with_ring,
 )
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
@@ -324,7 +324,7 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
         char_pic = await get_qq_avatar(avatar_url=_id)
     else:
         char_pic = await get_qq_avatar(qid=user_id)
-    char_pic = await draw_pic_with_ring(char_pic, 206)
+    char_pic = await draw_pic_with_ring(char_pic, 206, None, False)
 
     # 获取背景图片各项参数
     img = Abg3_img.copy()

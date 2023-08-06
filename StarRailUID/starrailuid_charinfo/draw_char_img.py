@@ -1,18 +1,34 @@
+import re
 import json
 import math
-import re
 from pathlib import Path
-from typing import Dict, Optional, Union
+from typing import Dict, Union, Optional
 
+from mpmath import mp, nstr
+from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
-from mpmath import mp, nstr
-from PIL import Image, ImageDraw
 
+from .to_data import api_to_dict
+from .mono.Character import Character
 from ..utils.error_reply import CHAR_HINT
-from ..utils.excel.read_excel import light_cone_ranks
 from ..utils.fonts.first_world import fw_font_28
+from ..utils.excel.read_excel import light_cone_ranks
+from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
+from ..utils.map.SR_MAP_PATH import (
+    RelicId2Rarity,
+    AvatarRelicScore,
+    avatarId2Name,
+    avatarId2DamageType,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    RELIC_PATH,
+    SKILL_PATH,
+    PLAYER_PATH,
+    WEAPON_PATH,
+    CHAR_PORTRAIT_PATH,
+)
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_23,
@@ -22,22 +38,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
-from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
-from ..utils.map.SR_MAP_PATH import (
-    AvatarRelicScore,
-    RelicId2Rarity,
-    avatarId2DamageType,
-    avatarId2Name,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_PORTRAIT_PATH,
-    PLAYER_PATH,
-    RELIC_PATH,
-    SKILL_PATH,
-    WEAPON_PATH,
-)
-from .mono.Character import Character
-from .to_data import api_to_dict
 
 mp.dps = 14
 
@@ -103,7 +103,11 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     char_img_draw.text(
         (620, 207), char.char_name, (255, 255, 255), sr_font_38, 'lm'
     )
-    char_name_len = sr_font_38.getsize(char.char_name)[0]
+    if hasattr(sr_font_38, 'getsize'):
+        char_name_len = sr_font_38.getsize(char.char_name)[0]
+    else:
+        bbox = sr_font_38.getbbox(char.char_name)
+        char_name_len = bbox[2] - bbox[0]
 
     # 放等级
     char_img_draw.text(
@@ -346,9 +350,13 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             sr_font_34,
             'lm',
         )
-        weapon_name_len = sr_font_34.getsize(char.equipment["equipmentName"])[
-            0
-        ]
+        if hasattr(sr_font_34, 'getsize'):
+            weapon_name_len = sr_font_34.getsize(
+                char.equipment["equipmentName"]
+            )[0]
+        else:
+            bbox = sr_font_34.getbbox(char.equipment["equipmentName"])
+            weapon_name_len = bbox[2] - bbox[0]
         # 放阶
         rank_img = Image.open(TEXT_PATH / 'ImgNewBg.png')
         rank_img_draw = ImageDraw.Draw(rank_img)

@@ -4,12 +4,15 @@ from typing import Union, Optional
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.image.image_tools import (
+    get_qq_avatar,
+    draw_pic_with_ring,
+)
 
 from .utils import get_icon
 from ..utils.convert import GsCookie
 from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import AbyssAvatar
-from ..utils.image.image_tools import get_qq_avatar, draw_pic_with_ring
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
@@ -190,7 +193,7 @@ async def draw_abyss_img(
         char_pic = await get_qq_avatar(avatar_url=_id)
     else:
         char_pic = await get_qq_avatar(qid=qid)
-    char_pic = await draw_pic_with_ring(char_pic, 250)
+    char_pic = await draw_pic_with_ring(char_pic, 250, None, False)
 
     img.paste(char_pic, (325, 132), char_pic)
 

@@ -5,11 +5,14 @@ from typing import List, Union, Optional
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.image.image_tools import (
+    get_qq_avatar,
+    draw_pic_with_ring,
+)
 
 from .utils import get_icon
 from ..utils.convert import GsCookie
 from ..utils.image.convert import convert_img
-from ..utils.image.image_tools import get_qq_avatar, draw_pic_with_ring
 from ..sruid_utils.api.mys.models import (
     RogueAvatar,
     RogueMiracles,
@@ -283,7 +286,7 @@ async def draw_rogue_img(
         char_pic = await get_qq_avatar(avatar_url=_id)
     else:
         char_pic = await get_qq_avatar(qid=qid)
-    char_pic = await draw_pic_with_ring(char_pic, 250)
+    char_pic = await draw_pic_with_ring(char_pic, 250, None, False)
 
     img.paste(char_pic, (325, 132), char_pic)
 

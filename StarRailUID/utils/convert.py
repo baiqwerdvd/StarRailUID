@@ -13,7 +13,7 @@ from ..sruid_utils.api.mys.models import AbyssData, RogueData
 
 @overload
 async def get_uid(
-    bot: Bot, ev: Event, only_uid: bool = False
+    bot: Bot, ev: Event, get_user_id: bool = False, only_uid: bool = False
 ) -> Optional[str]:
     ...
 

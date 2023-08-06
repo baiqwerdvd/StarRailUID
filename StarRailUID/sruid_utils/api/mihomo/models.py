@@ -20,10 +20,16 @@ class Equipment(TypedDict):
 
 
 class Relic(TypedDict):
-    subAffixList: List[subAffixList]
+    subAffixList: List[SubAffix]
     tid: int
     mainAffixId: int
     type: int
+
+
+class SubAffix(TypedDict):
+    affixID: int
+    cnt: int
+    step: int
 
 
 class Avatar(TypedDict):

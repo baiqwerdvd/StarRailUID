@@ -76,7 +76,10 @@ class MysApi(_MysApi):
         is_os = self.check_os(uid)
         if is_os:
             HEADER = copy.deepcopy(self._HEADER_OS)
-            HEADER['Cookie'] = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_ck(uid, 'OWNER')
+            if ck is None:
+                return -51
+            HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
             data = await self.simple_mys_req(
@@ -105,10 +108,14 @@ class MysApi(_MysApi):
             return -51
         header['Cookie'] = sk
         header['x-rpc-channel'] = 'beta'
-        header['x-rpc-device_id'] = await self.get_user_device_id(uid)
+        device_id = await self.get_user_device_id(uid)
+        header['x-rpc-device_id'] = (
+            '233333' if device_id is None else device_id
+        )
         header['x-rpc-app_version'] = '2.53.0'
         header['x-rpc-device_model'] = 'Mi 10'
-        header['x-rpc-device_fp'] = await self.get_user_fp(uid)
+        fp = await self.get_user_fp(uid)
+        header['x-rpc-device_fp'] = 'Asmr489' if fp is None else fp
         header['x-rpc-client_type'] = '2'
         header['DS'] = get_ds_token2()
         header['Referer'] = 'https://app.mihoyo.com'
@@ -126,7 +133,10 @@ class MysApi(_MysApi):
         is_os = self.check_os(uid)
         if is_os:
             HEADER = copy.deepcopy(self._HEADER_OS)
-            HEADER['Cookie'] = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_ck(uid, 'OWNER')
+            if ck is None:
+                return -51
+            HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
             data = await self.simple_mys_req(
@@ -159,7 +169,10 @@ class MysApi(_MysApi):
         server_id = RECOGNIZE_SERVER.get(str(uid)[0])
         if self.check_os(uid):
             HEADER = copy.deepcopy(self._HEADER_OS)
-            HEADER['Cookie'] = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_ck(uid, 'OWNER')
+            if ck is None:
+                return -51
+            HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
             url = self.MAPI['STAR_RAIL_GACHA_LOG_URL_OS']
@@ -200,7 +213,10 @@ class MysApi(_MysApi):
         is_os = self.check_os(uid)
         if is_os:
             HEADER = copy.deepcopy(self._HEADER_OS)
-            HEADER['Cookie'] = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_ck(uid, 'OWNER')
+            if ck is None:
+                return -51
+            HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
             data = await self.simple_mys_req(
@@ -259,7 +275,10 @@ class MysApi(_MysApi):
                 'lang': 'zh-cn',
             }
             HEADER = copy.deepcopy(self._HEADER_OS)
-            HEADER['Cookie'] = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_ck(uid, 'OWNER')
+            if ck is None:
+                return -51
+            HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
         else:
@@ -287,7 +306,10 @@ class MysApi(_MysApi):
         is_os = self.check_os(uid)
         if is_os:
             HEADER = copy.deepcopy(self._HEADER_OS)
-            HEADER['Cookie'] = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_ck(uid, 'OWNER')
+            if ck is None:
+                return -51
+            HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
             data = await self.simple_mys_req(
