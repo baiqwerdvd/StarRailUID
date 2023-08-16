@@ -1,4 +1,5 @@
 import json
+import asyncio
 from urllib import parse
 from datetime import datetime
 from typing import Dict, Optional
@@ -52,6 +53,7 @@ async def get_new_gachalog_by_link(
                         full_data[gacha_name][0:0] = data
                 else:
                     full_data[gacha_name].extend(data)
+            await asyncio.sleep(0.25)
     return full_data
 
 
