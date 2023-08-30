@@ -1,30 +1,30 @@
-import json
 import asyncio
 import datetime
+import json
 from pathlib import Path
 from typing import List, Tuple, Union
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.image_tools import (
+    draw_pic_with_ring,
     get_color_bg,
     get_qq_avatar,
-    draw_pic_with_ring,
 )
+from PIL import Image, ImageDraw
 
-from ..utils.image.convert import convert_img
-from ..utils.map.name_covert import name_to_avatar_id, name_to_weapon_id
-from ..utils.resource.RESOURCE_PATH import (
-    PLAYER_PATH,
-    WEAPON_PATH,
-    CHAR_ICON_PATH,
-)
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_24,
     sr_font_28,
     sr_font_38,
     sr_font_40,
+)
+from ..utils.image.convert import convert_img
+from ..utils.map.name_covert import name_to_avatar_id, name_to_weapon_id
+from ..utils.resource.RESOURCE_PATH import (
+    CHAR_ICON_PATH,
+    PLAYER_PATH,
+    WEAPON_PATH,
 )
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
@@ -339,7 +339,7 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
 
     # 处理title
     # {'total': 0, 'avg': 0, 'remain': 0, 'list': []}
-    type_list = ['群星跃迁', '始发跃迁', '角色跃迁', '光锥跃迁']
+    type_list = ['角色跃迁', '光锥跃迁''群星跃迁', '始发跃迁']
     y_extend = 0
     level = 3
     for index, i in enumerate(type_list):
