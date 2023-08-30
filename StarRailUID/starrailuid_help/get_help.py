@@ -20,6 +20,7 @@ async def get_help_data() -> Optional[Dict[str, PluginHelp]]:
             return msgjson.decode(
                 await file.read(), type=Dict[str, PluginHelp]
             )
+    return None
 
 
 async def get_core_help() -> Union[bytes, str]:
@@ -27,9 +28,9 @@ async def get_core_help() -> Union[bytes, str]:
     if help_data is None:
         return '暂未找到帮助数据...'
 
-    img = await get_help(
+    return await get_help(
         'StarRailUID',
-        f'版本号：{StarRail_version}',
+        f'版本号:{StarRail_version}',
         help_data,
         Image.open(TEXT_PATH / 'bg.jpg'),
         Image.open(TEXT_PATH / 'ICON.png'),
@@ -38,4 +39,3 @@ async def get_core_help() -> Union[bytes, str]:
         Image.open(TEXT_PATH / 'button.png'),
         starrail_font_origin,
     )
-    return img

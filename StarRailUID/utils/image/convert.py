@@ -1,6 +1,6 @@
+from base64 import b64encode
 from io import BytesIO
 from pathlib import Path
-from base64 import b64encode
 from typing import Union, overload
 
 import aiofiles
@@ -29,7 +29,7 @@ async def convert_img(img: Path, is_base64: bool = False) -> str:
 
 async def convert_img(
     img: Union[Image.Image, str, Path, bytes], is_base64: bool = False
-):
+) -> str | bytes:
     """
     :说明:
       将PIL.Image对象转换为bytes或者base64格式。
@@ -47,7 +47,7 @@ async def convert_img(
         if is_base64:
             res = 'base64://' + b64encode(res).decode()
         return res
-    elif isinstance(img, bytes):
+    if isinstance(img, bytes):
         pass
     else:
         async with aiofiles.open(img, 'rb') as fp:
@@ -95,12 +95,14 @@ def get_str_size(
             continue
 
         line += i
-        size, _ = font.getsize(line)
+        if hasattr(font, 'getsize'):
+            size, _ = font.getsize(line) # type: ignore
+        else:
+            size, _, _, _ = font.getbbox(line)
         if size >= limit:
             result += f'{line}\n'
             line = ''
-    else:
-        result += line
+    result += line
     return result
 
 

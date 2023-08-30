@@ -1,14 +1,14 @@
 import re
-from typing import Tuple, Union, Optional, overload
+from typing import Optional, Tuple, Union, overload
 
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.utils.api.mys.models import IndexData
 
-from .api import get_sqla
-from .mys_api import mys_api
-from .error_reply import VERIFY_HINT
 from ..sruid_utils.api.mys.models import AbyssData, RogueData
+from .api import get_sqla
+from .error_reply import VERIFY_HINT
+from .mys_api import mys_api
 
 
 @overload
@@ -62,8 +62,7 @@ class GsCookie:
             msg = await self.check_cookies_useable()
             if isinstance(msg, str):
                 return msg
-            elif msg:
-                return ''
+            return ''
 
     async def get_uid_data(self) -> Union[int, IndexData]:
         data = await mys_api.get_info(self.uid, self.cookie)
@@ -76,20 +75,18 @@ class GsCookie:
     ) -> Union[AbyssData, int]:
         self.uid = uid
         self.cookie = await self.sqla.get_random_cookie(uid)
-        data = await mys_api.get_srspiral_abyss_info(
+        return await mys_api.get_srspiral_abyss_info(
             self.uid, schedule_type, self.cookie
         )
-        return data
 
     async def get_rogue_data(
         self, uid: str, schedule_type: str = '3'
     ) -> Union[RogueData, int]:
         self.uid = uid
         self.cookie = await self.sqla.get_random_cookie(uid)
-        data = await mys_api.get_rogue_info(
+        return await mys_api.get_rogue_info(
             self.uid, schedule_type, self.cookie
         )
-        return data
 
     async def check_cookies_useable(self):
         if isinstance(self.raw_data, int) and self.cookie:
@@ -98,15 +95,13 @@ class GsCookie:
                 await self.sqla.mark_invalid(self.cookie, 'error')
                 return False
                 # return '您的cookie已经失效, 请重新获取!'
-            elif retcode == 10101:
+            if retcode == 10101:
                 await self.sqla.mark_invalid(self.cookie, 'limit30')
                 return False
                 # return '当前查询CK已超过每日30次上限!'
-            elif retcode == 10102:
+            if retcode == 10102:
                 return '当前查询id已经设置了隐私, 无法查询!'
-            elif retcode == 1034:
+            if retcode == 1034:
                 return VERIFY_HINT
-            else:
-                return f'API报错, 错误码为{retcode}!'
-        else:
-            return True
+            return f'API报错, 错误码为{retcode}!'
+        return True

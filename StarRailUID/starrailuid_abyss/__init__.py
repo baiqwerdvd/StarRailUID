@@ -1,8 +1,8 @@
 import re
 
-from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.sv import SV
 from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
@@ -26,19 +26,22 @@ sv_srabyss = SV('sr查询深渊')
 async def send_srabyss_info(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     if name:
-        return
+        return None
 
     await bot.logger.info('开始执行[sr查询深渊信息]')
-    uid, user_id = await get_uid(bot, ev, True)
+    get_uid_ = await get_uid(bot, ev, True)
+    if get_uid_ is None:
+        return await bot.send(UID_HINT)
+    uid, user_id = get_uid_
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info('[sr查询深渊信息]uid: {}'.format(uid))
+    await bot.logger.info(f'[sr查询深渊信息]uid: {uid}')
 
     if 'sq' in ev.command or '上期' in ev.command:
         schedule_type = '2'
     else:
         schedule_type = '1'
-    await bot.logger.info('[sr查询深渊信息]深渊期数: {}'.format(schedule_type))
+    await bot.logger.info(f'[sr查询深渊信息]深渊期数: {schedule_type}')
 
     if ev.text in ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']:
         floor = (
@@ -60,9 +63,10 @@ async def send_srabyss_info(bot: Bot, ev: Event):
     else:
         floor = None
     # print(floor)
-    await bot.logger.info('[sr查询深渊信息]深渊层数: {}'.format(floor))
+    await bot.logger.info(f'[sr查询深渊信息]深渊层数: {floor}')
     # data = GsCookie()
     # raw_abyss_data = await data.get_spiral_abyss_data(uid, schedule_type)
     # print(raw_abyss_data)
     im = await draw_abyss_img(user_id, uid, floor, schedule_type)
     await bot.send(im)
+    return None

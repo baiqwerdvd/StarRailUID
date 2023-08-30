@@ -1,29 +1,30 @@
 import math
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 
 from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.image_tools import (
-    get_qq_avatar,
     draw_pic_with_ring,
+    get_qq_avatar,
 )
 
-from .utils import get_icon
-from ..utils.convert import GsCookie
-from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import (
     RogueAvatar,
-    RogueMiracles,
     RogueBuffitems,
+    RogueMiracles,
 )
+from ..utils.convert import GsCookie
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
     sr_font_34,
     sr_font_42,
 )
+from ..utils.image.convert import convert_img
+from .utils import get_icon
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 white_color = (255, 255, 255)
@@ -63,11 +64,11 @@ progresslist = {
 }
 
 difficultylist = {
-    1: 'Ⅰ',
+    1: 'I',
     2: 'Ⅱ',
     3: 'Ⅲ',
     4: 'Ⅳ',
-    5: 'Ⅴ',
+    5: 'V',
     6: 'Ⅵ',
 }
 
@@ -83,8 +84,7 @@ bufflist = {
 
 
 async def get_abyss_star_pic(star: int) -> Image.Image:
-    star_pic = Image.open(TEXT_PATH / f'star{star}.png')
-    return star_pic
+    return Image.open(TEXT_PATH / f'star{star}.png')
 
 
 async def _draw_rogue_buff(
@@ -257,20 +257,18 @@ async def draw_rogue_img(
         rogue_detail[index_floor]['start_h'] = based_h
         if floor:
             if progress == floor:
-                detail_h = detail_h
+                pass
             else:
                 detail_h = 0
         based_h = based_h + detail_h
-    print(based_h)
     # 获取查询者数据
     if floor:
         if floor > 6:
             return '世界不能大于第六世界!'
         if floor not in detail_list:
             return '你还没有挑战该模拟宇宙!'
-    else:
-        if raw_rogue_data['current_record']['basic']['finish_cnt'] == 0:
-            return '你还没有挑战本期模拟宇宙!\n可以使用[sr上期模拟宇宙]命令查询上期~'
+    elif raw_rogue_data['current_record']['basic']['finish_cnt'] == 0:
+        return '你还没有挑战本期模拟宇宙!\n可以使用[sr上期模拟宇宙]命令查询上期~'
 
     # 获取背景图片各项参数
     based_w = 900
@@ -353,6 +351,9 @@ async def draw_rogue_img(
             else:
                 continue
 
+        if detail['detail_h'] is None:
+            continue
+
         floor_pic = Image.open(TEXT_PATH / 'detail_bg.png').convert("RGBA")
         floor_pic = floor_pic.resize((900, detail['detail_h']))
 
@@ -393,14 +394,14 @@ async def draw_rogue_img(
         )
         floor_pic_draw.text(
             (93, 120),
-            f'挑战时间：{time_str}',
+            f'挑战时间:{time_str}',
             gray_color,
             sr_font_22,
             'lm',
         )
         floor_pic_draw.text(
             (800, 120),
-            f'当前积分：{detail["score"]}',
+            f'当前积分:{detail["score"]}',
             gray_color,
             sr_font_22,
             'rm',
@@ -467,6 +468,9 @@ async def draw_rogue_img(
                 floor_pic,
                 buff_height,
             )
+
+        if detail['start_h'] is None:
+            continue
 
         img.paste(floor_pic, (0, detail['start_h']), floor_pic)
         # await _draw_floor_card(

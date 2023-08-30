@@ -1,10 +1,11 @@
 import json
-from typing import Dict
 from collections import Counter
+from typing import Dict
 
+from loguru import logger
 from mpmath import mp
 
-from ...utils.map.SR_MAP_PATH import RelicSetSkill, EquipmentID2AbilityProperty
+from ...utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty, RelicSetSkill
 
 mp.dps = 14
 
@@ -50,36 +51,35 @@ class Character:
     async def get_equipment_info(self):
         if self.equipment == {}:
             return
-        else:
-            base_attr = self.base_attributes
-            equip = self.equipment
-            ability_property = EquipmentID2AbilityProperty[
-                str(equip['equipmentID'])
-            ]
-            equip_rank = equip['equipmentRank']
+        base_attr = self.base_attributes
+        equip = self.equipment
+        ability_property = EquipmentID2AbilityProperty[
+            str(equip['equipmentID'])
+        ]
+        equip_rank = equip['equipmentRank']
 
-            equip_ability_property = ability_property[str(equip_rank)]
+        equip_ability_property = ability_property[str(equip_rank)]
 
-            equip_add_base_attr = equip['baseAttributes']
-            hp = mp.mpf(base_attr['hp']) + mp.mpf(equip_add_base_attr['hp'])
-            attack = mp.mpf(base_attr['attack']) + mp.mpf(
-                equip_add_base_attr['attack']
-            )
-            defence = mp.mpf(base_attr['defence']) + mp.mpf(
-                equip_add_base_attr['defence']
-            )
-            base_attr['hp'] = str(hp)
-            base_attr['attack'] = str(attack)
-            base_attr['defence'] = str(defence)
-            self.base_attributes = base_attr
+        equip_add_base_attr = equip['baseAttributes']
+        hp = mp.mpf(base_attr['hp']) + mp.mpf(equip_add_base_attr['hp'])
+        attack = mp.mpf(base_attr['attack']) + mp.mpf(
+            equip_add_base_attr['attack']
+        )
+        defence = mp.mpf(base_attr['defence']) + mp.mpf(
+            equip_add_base_attr['defence']
+        )
+        base_attr['hp'] = str(hp)
+        base_attr['attack'] = str(attack)
+        base_attr['defence'] = str(defence)
+        self.base_attributes = base_attr
 
-            for equip_ability in equip_ability_property:
-                property_type = equip_ability['PropertyType']
-                value = equip_ability['Value']['Value']
-                if property_type in self.add_attr:
-                    self.add_attr[property_type] += value
-                else:
-                    self.add_attr[property_type] = value
+        for equip_ability in equip_ability_property:
+            property_type = equip_ability['PropertyType']
+            value = equip_ability['Value']['Value']
+            if property_type in self.add_attr:
+                self.add_attr[property_type] += value
+            else:
+                self.add_attr[property_type] = value
 
     async def get_char_attribute_bonus(self):
         attribute_bonus = self.attribute_bonus
@@ -122,6 +122,7 @@ class Character:
             set_property = ''
             set_id = item[0]
             count = item[1]
+            set_value = 0
             if count >= 2 and RelicSetSkill[str(set_id)]['2'] != {}:
                 set_property = RelicSetSkill[str(set_id)]['2']['Property']
                 set_value = mp.mpf(RelicSetSkill[str(set_id)]['2']['Value'])
@@ -136,5 +137,5 @@ class Character:
                 else:
                     self.add_attr[set_property] = str(set_value)
 
-        print(json.dumps(self.base_attributes))
-        print(json.dumps(self.add_attr))
+        logger.info(json.dumps(self.base_attributes))
+        logger.info(json.dumps(self.add_attr))

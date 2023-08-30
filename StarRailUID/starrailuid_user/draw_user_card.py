@@ -1,5 +1,5 @@
 # from pathlib import Path
-from typing import List, Tuple, Optional
+from typing import Optional, Tuple
 
 from PIL import Image
 
@@ -25,7 +25,7 @@ from ..utils.api import get_sqla
 async def get_user_card(bot_id: str, user_id: str):
     pass
     sqla = get_sqla(bot_id)
-    uid_list: List = await sqla.get_bind_uid_list(user_id)
+    return await sqla.get_bind_uid_list(user_id)
     # w, h = 750, len(uid_list) * 750 + 470
     #
     # # 获取背景图片各项参数
@@ -97,7 +97,6 @@ async def get_user_card(bot_id: str, user_id: str):
     #     img.paste(user_card, (0, 500 + index * 690), user_card)
 
     # return await convert_img(img)
-    return uid_list
 
 
 def paste_switch(

@@ -1,8 +1,10 @@
 from io import BytesIO
+from pathlib import Path
 from typing import TypeVar
 
-from PIL import Image
 from aiohttp import ClientSession
+from PIL import Image
+
 from gsuid_core.data_store import get_res_path
 
 T = TypeVar("T")
@@ -20,6 +22,6 @@ async def get_icon(url: str) -> Image.Image:
         async with ClientSession() as client:
             async with client.get(url) as resp:
                 content = await resp.read()
-                with open(path, "wb") as f:
+                with Path.open(path, "wb") as f:
                     f.write(content)
     return Image.open(BytesIO(content)).convert("RGBA")

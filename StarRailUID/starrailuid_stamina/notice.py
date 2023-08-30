@@ -3,16 +3,16 @@ from typing import Dict
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
 
+from ..sruid_utils.api.mys.models import DailyNoteData
+from ..starrailuid_config.sr_config import srconfig
 from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
-from ..starrailuid_config.sr_config import srconfig
-from ..sruid_utils.api.mys.models import DailyNoteData
 
-MR_NOTICE = '\n可发送[srmr]或者[sr每日]来查看更多信息！\n'
+MR_NOTICE = '\n可发送[srmr]或者[sr每日]来查看更多信息!\n'
 
 NOTICE = {
-    'stamina': f'你的开拓力快满啦！{MR_NOTICE}',
-    'go': f'你有派遣信息即将可收取！{MR_NOTICE}',
+    'stamina': f'你的开拓力快满啦!{MR_NOTICE}',
+    'go': f'你有派遣信息即将可收取!{MR_NOTICE}',
 }
 
 
@@ -93,10 +93,9 @@ async def check(mode: str, data: DailyNoteData, limit: int) -> bool:
     if mode == 'resin':
         if data['current_stamina'] >= limit:
             return True
-        elif data['current_stamina'] >= data['max_stamina']:
+        if data['current_stamina'] >= data['max_stamina']:
             return True
-        else:
-            return False
+        return False
     if mode == 'go':
         for i in data['expeditions']:
             if i['status'] == 'Ongoing':
@@ -105,3 +104,4 @@ async def check(mode: str, data: DailyNoteData, limit: int) -> bool:
             else:
                 return True
         return False
+    return False

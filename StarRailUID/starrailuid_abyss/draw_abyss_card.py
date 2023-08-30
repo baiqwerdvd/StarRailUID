@@ -1,18 +1,17 @@
 from pathlib import Path
-from typing import Union, Optional
+from typing import Optional, Union
 
 from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.image_tools import (
-    get_qq_avatar,
     draw_pic_with_ring,
+    get_qq_avatar,
 )
 
-from .utils import get_icon
-from ..utils.convert import GsCookie
-from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import AbyssAvatar
+from ..utils.convert import GsCookie
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
@@ -20,6 +19,8 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_42,
 )
+from ..utils.image.convert import convert_img
+from .utils import get_icon
 
 abyss_list = {
     '1': '琥珀恩赐其一',
@@ -65,8 +66,7 @@ elements = {
 
 
 async def get_abyss_star_pic(star: int) -> Image.Image:
-    star_pic = Image.open(TEXT_PATH / f'star{star}.png')
-    return star_pic
+    return Image.open(TEXT_PATH / f'star{star}.png')
 
 
 async def _draw_abyss_card(
@@ -239,9 +239,8 @@ async def draw_abyss_img(
                 index_floor = 0
             else:
                 continue
-        else:
-            if index_floor >= 3:
-                break
+        elif index_floor >= 3:
+            break
         floor_pic = Image.open(TEXT_PATH / 'floor_bg.png')
         level_star = level['star_num']
         floor_name = level['name']

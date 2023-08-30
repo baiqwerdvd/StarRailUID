@@ -1,15 +1,15 @@
 import json
+from abc import abstractmethod
 from pathlib import Path
 from typing import Dict, List
-from abc import abstractmethod
 
 from mpmath import mp
 
-from .SkillBase import BaseSkills
 from ....utils.excel.read_excel import AvatarPromotion
+from .SkillBase import BaseSkills
 
 path = Path(__file__).parent.parent
-with open(path / 'Excel' / 'seele.json', 'r', encoding='utf-8') as f:
+with Path.open(path / 'Excel' / 'seele.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
 
 mp.dps = 14

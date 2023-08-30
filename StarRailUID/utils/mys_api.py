@@ -367,8 +367,10 @@ class MysApi(_MysApi):
         return data
 
     async def mys_sign(
-        self, uid, header={}, server_id='cn_gf01'
+        self, uid, header=None, server_id='cn_gf01'
     ) -> Union[MysSign, int]:
+        if header is None:
+            header = {}
         ck = await self.get_ck(uid, 'OWNER')
         if ck is None:
             return -51

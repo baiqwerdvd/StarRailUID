@@ -91,6 +91,8 @@ class RogueRecordInfo(TypedDict):
     miracles: List[RogueMiracles]
     difficulty: int
     progress: int
+    detail_h: Optional[int]
+    start_h: Optional[int]
 
 
 class RogueBasic(TypedDict):

@@ -8,7 +8,7 @@ mp.dps = 14
 
 
 path = Path(__file__).parent.parent
-with open(path / 'Excel' / 'seele.json', 'r', encoding='utf-8') as f:
+with Path.open(path / 'Excel' / 'seele.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
 
 

@@ -4,13 +4,14 @@ import json
 from pathlib import Path
 from typing import List, Tuple, Union
 
+from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.image_tools import (
     draw_pic_with_ring,
     get_color_bg,
     get_qq_avatar,
 )
-from PIL import Image, ImageDraw
 
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
@@ -75,7 +76,7 @@ UP_LIST = {
 async def _draw_card(
     img: Image.Image,
     xy_point: Tuple[int, int],
-    type: str,
+    card_type: str,
     name: str,
     gacha_num: int,
     is_up: bool,
@@ -84,7 +85,7 @@ async def _draw_card(
     card_img_draw = ImageDraw.Draw(card_img)
     point = (47, 31)
     text_point = (100, 165)
-    if type == '角色':
+    if card_type == '角色':
         _id = await name_to_avatar_id(name)
         item_pic = (
             Image.open(CHAR_ICON_PATH / f'{_id}.png')
@@ -111,7 +112,7 @@ async def _draw_card(
         text_point, f'{gacha_num}抽', text_color, sr_font_24, 'mm'
     )
     if is_up:
-        print(f'up: {name}')
+        logger.info(f'up: {name}')
         # card_img.paste(up_tag, (47, -2), up_tag)
     img.paste(card_img, xy_point, card_img)
 
@@ -143,17 +144,15 @@ def check_up(name: str, _time: str) -> bool:
             gacha_time = datetime.datetime.strptime(_time, '%Y-%m-%d %H:%M:%S')
             if gacha_time < s_time or gacha_time > e_time:
                 return False
-            else:
-                return True
-    else:
-        return False
+            return True
+    return False
 
 
 async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
     path = PLAYER_PATH / str(uid) / 'gacha_logs.json'
     if not path.exists():
         return '你还没有跃迁数据噢~\n请使用命令`sr导入抽卡链接`更新跃迁数据~'
-    with open(path, 'r', encoding='UTF-8') as f:
+    with Path.open(path, encoding='UTF-8') as f:
         gacha_data = json.load(f)
 
     # 数据初始化
@@ -339,7 +338,7 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
 
     # 处理title
     # {'total': 0, 'avg': 0, 'remain': 0, 'list': []}
-    type_list = ['角色跃迁', '光锥跃迁''群星跃迁', '始发跃迁']
+    type_list = ['角色跃迁', '光锥跃迁', '群星跃迁', '始发跃迁']
     y_extend = 0
     level = 3
     for index, i in enumerate(type_list):
@@ -352,15 +351,14 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
             level = await get_level_from_list(
                 total_data[i]['avg'], [10, 20, 30, 40, 50]
             )
+        elif i == '光锥跃迁':
+            level = await get_level_from_list(
+                total_data[i]['avg_up'], [62, 75, 88, 99, 111]
+            )
         else:
-            if i == '光锥跃迁':
-                level = await get_level_from_list(
-                    total_data[i]['avg_up'], [62, 75, 88, 99, 111]
-                )
-            else:
-                level = await get_level_from_list(
-                    total_data[i]['avg_up'], [74, 87, 99, 105, 120]
-                )
+            level = await get_level_from_list(
+                total_data[i]['avg_up'], [74, 87, 99, 105, 120]
+            )
 
         emo_pic = await random_emo_pic(level)
         emo_pic = emo_pic.resize((195, 195))

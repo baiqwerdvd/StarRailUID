@@ -12,11 +12,11 @@ from .draw_roleinfo_card import get_role_img
 sv_get_info = SV('sr查询信息')
 
 
-@sv_get_info.on_command((f'{PREFIX}uid'))
+@sv_get_info.on_command(f'{PREFIX}uid')
 async def send_role_info(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     if name:
-        return
+        return None
 
     uid = await get_uid(bot, ev)
     if uid is None:
@@ -25,3 +25,4 @@ async def send_role_info(bot: Bot, ev: Event):
     logger.info(f'[sr查询信息]UID: {uid}')
     await bot.logger.info('开始执行[sr查询信息]')
     await bot.send(await get_role_img(uid))
+    return None

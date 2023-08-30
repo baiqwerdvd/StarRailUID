@@ -8,8 +8,7 @@ from .SR_MAP_PATH import (
 
 
 async def avatar_id_to_name(avatar_id: str) -> str:
-    char_name = avatarId2Name[avatar_id]
-    return char_name
+    return avatarId2Name[avatar_id]
 
 
 async def name_to_avatar_id(name: str) -> str:
@@ -22,8 +21,7 @@ async def name_to_avatar_id(name: str) -> str:
 
 
 async def avatar_id_to_char_star(char_id: str) -> str:
-    char_star = avatarId2Rarity[str(char_id)]
-    return char_star
+    return avatarId2Rarity[str(char_id)]
 
 
 async def alias_to_char_name(char_name: str) -> str:
@@ -34,8 +32,7 @@ async def alias_to_char_name(char_name: str) -> str:
 
 
 async def weapon_id_to_name(weapon_id: str) -> str:
-    weapon_name = EquipmentID2Name[weapon_id]
-    return weapon_name
+    return EquipmentID2Name[weapon_id]
 
 
 async def name_to_weapon_id(name: str) -> str:
@@ -48,8 +45,7 @@ async def name_to_weapon_id(name: str) -> str:
 
 
 async def weapon_id_to_en_name(weapon_id: str) -> str:
-    weapon_en_name = EquipmentID2EnName[weapon_id]
-    return weapon_en_name
+    return EquipmentID2EnName[weapon_id]
 
 
 async def en_name_to_weapon_id(name: str) -> str:

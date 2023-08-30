@@ -34,7 +34,8 @@ class Seele(BaseAvatar):
             ] = mp.mpf(0.2)
 
 
-class Avatar:
-    def __new__(cls, char: Dict, skills: List):
+class Avatar(Seele):
+    def __init__(self, char: Dict, skills: List):
         if char['id'] == 1102:
             return Seele(char, skills)
+        return None

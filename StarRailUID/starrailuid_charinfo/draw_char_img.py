@@ -1,34 +1,19 @@
-import re
 import json
 import math
+import re
 from pathlib import Path
-from typing import Dict, Union, Optional
+from typing import Dict, Union
 
 from mpmath import mp, nstr
 from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
 
-from .to_data import api_to_dict
-from .mono.Character import Character
 from ..utils.error_reply import CHAR_HINT
-from ..utils.fonts.first_world import fw_font_28
 from ..utils.excel.read_excel import light_cone_ranks
-from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
-from ..utils.map.SR_MAP_PATH import (
-    RelicId2Rarity,
-    AvatarRelicScore,
-    avatarId2Name,
-    avatarId2DamageType,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    RELIC_PATH,
-    SKILL_PATH,
-    PLAYER_PATH,
-    WEAPON_PATH,
-    CHAR_PORTRAIT_PATH,
-)
+from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_23,
@@ -38,6 +23,22 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
+from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
+from ..utils.map.SR_MAP_PATH import (
+    AvatarRelicScore,
+    RelicId2Rarity,
+    avatarId2DamageType,
+    avatarId2Name,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    CHAR_PORTRAIT_PATH,
+    PLAYER_PATH,
+    RELIC_PATH,
+    SKILL_PATH,
+    WEAPON_PATH,
+)
+from .mono.Character import Character
+from .to_data import api_to_dict
 
 mp.dps = 14
 
@@ -76,7 +77,7 @@ RELIC_POS = {
 }
 
 
-async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
+async def draw_char_info_img(raw_mes: str, sr_uid: str):
     # 获取角色名
     char_name = ' '.join(re.findall('[\u4e00-\u9fa5]+', raw_mes))
 
@@ -104,7 +105,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         (620, 207), char.char_name, (255, 255, 255), sr_font_38, 'lm'
     )
     if hasattr(sr_font_38, 'getsize'):
-        char_name_len = sr_font_38.getsize(char.char_name)[0]
+        char_name_len = sr_font_38.getsize(char.char_name)[0] # type: ignore
     else:
         bbox = sr_font_38.getbbox(char.char_name)
         char_name_len = bbox[2] - bbox[0]
@@ -112,7 +113,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     # 放等级
     char_img_draw.text(
         (620 + char_name_len + 50, 212),
-        f'LV.{str(char.char_level)}',
+        f'LV.{char.char_level!s}',
         white_color,
         sr_font_24,
         'mm',
@@ -156,7 +157,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     attr_bg_draw.text(
         (428, 31),
-        f'(+{str(round(add_hp))})',
+        f'(+{round(add_hp)!s})',
         (95, 251, 80),
         sr_font_26,
         anchor='lm',
@@ -177,7 +178,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     attr_bg_draw.text(
         (428, 31 + 48),
-        f'(+{str(round(add_attack))})',
+        f'(+{round(add_attack)!s})',
         (95, 251, 80),
         sr_font_26,
         anchor='lm',
@@ -198,7 +199,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     attr_bg_draw.text(
         (428, 31 + 48 * 2),
-        f'(+{str(round(add_defence))})',
+        f'(+{round(add_defence)!s})',
         (95, 251, 80),
         sr_font_26,
         anchor='lm',
@@ -217,7 +218,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
     )
     attr_bg_draw.text(
         (428, 31 + 48 * 3),
-        f'(+{str(round(add_speed))})',
+        f'(+{round(add_speed)!s})',
         (95, 251, 80),
         sr_font_26,
         anchor='lm',
@@ -351,7 +352,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             'lm',
         )
         if hasattr(sr_font_34, 'getsize'):
-            weapon_name_len = sr_font_34.getsize(
+            weapon_name_len = sr_font_34.getsize( # type: ignore
                 char.equipment["equipmentName"]
             )[0]
         else:
@@ -387,11 +388,11 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         desc_params = light_cone_ranks[str(char.equipment['equipmentID'])][
             'params'
         ][char.equipment['equipmentRank'] - 1]
-        for i in range(0, len(desc_params)):
+        for i in range(len(desc_params)):
             temp = math.floor(desc_params[i] * 1000) / 10
-            desc = desc.replace(f'#{i + 1}[i]%', f'{str(temp)}%')
-            desc = desc.replace(f'#{i + 1}[f1]%', f'{str(temp)}%')
-        for i in range(0, len(desc_params)):
+            desc = desc.replace(f'#{i + 1}[i]%', f'{temp!s}%')
+            desc = desc.replace(f'#{i + 1}[f1]%', f'{temp!s}%')
+        for i in range(len(desc_params)):
             desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
         draw_text_by_line(
             weapon_bg, (286, 115), desc, sr_font_24, '#F9F9F9', 372
@@ -413,7 +414,6 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
         relic_score = 0
 
         for relic in char.char_relic:
-            print(relic)
             rarity = RelicId2Rarity[str(relic["relicId"])]
             relic_img = Image.open(TEXT_PATH / f'yq_bg{rarity}.png')
             if str(relic["SetId"])[0] == '3':
@@ -474,14 +474,14 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
             )
             relic_img_draw.text(
                 (35, 195),
-                '+{}'.format(mainValueStr),
+                f'+{mainValueStr}',
                 (255, 255, 255),
                 sr_font_28,
                 anchor='lm',
             )
             relic_img_draw.text(
                 (180, 105),
-                '+{}'.format(str(main_level)),
+                f'+{main_level!s}',
                 (255, 255, 255),
                 sr_font_23,
                 anchor='mm',
@@ -505,7 +505,6 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
                         * 10
                     )
                     single_relic_score += add_value
-            print(f'main_value_score: {main_value_score}')
             single_relic_score += main_value_score
             for index, i in enumerate(relic['SubAffixList']):
                 subName: str = i['Name']
@@ -520,28 +519,28 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
                 if subName in ['攻击力', '生命值', '防御力', '速度']:
                     subValueStr = nstr(subValue, 3)
                 else:
-                    subValueStr = nstr(subValue * 100, 3) + '%'
+                    subValueStr = nstr(subValue * 100, 3) + '%' # type: ignore
                 subNameStr = subName.replace('百分比', '').replace('元素', '')
                 # 副词条文字颜色
                 relic_color = (255, 255, 255)
 
                 relic_img_draw.text(
                     (47, 237 + index * 47),
-                    '{}'.format(subNameStr),
+                    f'{subNameStr}',
                     relic_color,
                     sr_font_26,
                     anchor='lm',
                 )
                 relic_img_draw.text(
                     (290, 237 + index * 47),
-                    '{}'.format(subValueStr),
+                    f'{subValueStr}',
                     relic_color,
                     sr_font_26,
                     anchor='rm',
                 )
             relic_img_draw.text(
                 (210, 195),
-                '{}分'.format(int(single_relic_score)),
+                f'{int(single_relic_score)}分',
                 (255, 255, 255),
                 sr_font_28,
                 anchor='rm',
@@ -551,7 +550,6 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str, url: Optional[str]):
                 relic_img, RELIC_POS[str(relic["Type"])], relic_img
             )
             relic_score += single_relic_score
-        print(relic_score)
         if relic_score > 200:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconS.png')
             char_info.paste(relic_value_level, (780, 963), relic_value_level)
@@ -611,6 +609,7 @@ async def get_char_data(
         return "请输入正确的角色名"
     char_path = player_path / f'{char_name}.json'
     char_self_path = SELF_PATH / f'{char_name}.json'
+    path = Path()
     if char_path.exists():
         path = char_path
     elif enable_self and char_self_path.exists():
@@ -620,10 +619,9 @@ async def get_char_data(
         charname_list = []
         if isinstance(char_data_list, str):
             return char_data_list
-        else:
-            for char in char_data_list:
-                charname = avatarId2Name[str(char)]
-                charname_list.append(charname)
+        for char in char_data_list:
+            charname = avatarId2Name[str(char)]
+            charname_list.append(charname)
         if str(char_name) in charname_list:
             if char_path.exists():
                 path = char_path
@@ -632,9 +630,8 @@ async def get_char_data(
         else:
             return CHAR_HINT.format(char_name, char_name)
 
-    with open(path, 'r', encoding='utf8') as fp:
-        char_data = json.load(fp)
-    return char_data
+    with Path.open(path, encoding='utf8') as fp:
+        return json.load(fp)
 
 
 async def get_relic_score(
@@ -697,5 +694,4 @@ async def get_relic_score(
             (subValue + 1) * 1.49 * weight_dict['StatusResistanceBase'] * 10
         )
         relic_score += add_value
-    print(f'{subProperty} : {relic_score}')
     return relic_score

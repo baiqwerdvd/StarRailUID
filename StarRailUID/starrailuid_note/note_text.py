@@ -1,27 +1,30 @@
-from ..utils.mys_api import mys_api
+from datetime import datetime
+
 from ..utils.error_reply import get_error
+from ..utils.mys_api import mys_api
 
 month_im = """==============
-SR_UID：{}
+SR_UID:{}
 ==============
-本日获取星琼：{}
-本日获取星轨通票&星轨专票：{}
+本日获取星琼:{}
+本日获取星轨通票&星轨专票:{}
 ==============
-昨日获取星琼：{}
-昨日获取星轨通票&星轨专票：{}
+昨日获取星琼:{}
+昨日获取星轨通票&星轨专票:{}
 ==============
-本月获取星琼：{}
-本月获取星轨通票&星轨专票：{}
+本月获取星琼:{}
+本月获取星轨通票&星轨专票:{}
 ==============
-上月获取星琼：{}
-上月获取星轨通票&星轨专票：{}
+上月获取星琼:{}
+上月获取星轨通票&星轨专票:{}
 ==============
-星琼收入组成：
+星琼收入组成:
 {}=============="""
 
 
 async def award(uid) -> str:
-    data = await mys_api.get_award(uid)
+    # 获取当前的月份
+    data = await mys_api.get_award(uid, datetime.now().month)
     if isinstance(data, int):
         return get_error(data)
     day_hcoin = data['day_data']['current_hcoin']
@@ -40,15 +43,15 @@ async def award(uid) -> str:
         group_str = (
             group_str
             + i['action_name']
-            + '：'
+            + ':'
             + str(i['num'])
-            + '（'
+            + '('
             + str(i['percent'])
-            + '%）'
+            + '%)'
             + '\n'
         )
 
-    im = month_im.format(
+    return month_im.format(
         uid,
         day_hcoin,
         day_rails_pass,
@@ -60,4 +63,3 @@ async def award(uid) -> str:
         lastmonth_rails_pass,
         group_str,
     )
-    return im

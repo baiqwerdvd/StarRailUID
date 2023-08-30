@@ -1,12 +1,13 @@
 from typing import Dict
 
 from mpmath import mp
+
 from gsuid_core.logger import logger
 
 from .Avatar.Avatar import Avatar
-from .Weapon.Weapon import Weapon
-from .utils import merge_attribute
 from .Relic.Relic import RelicSet, SingleRelic
+from .utils import merge_attribute
+from .Weapon.Weapon import Weapon
 
 mp.dps = 14
 
@@ -29,9 +30,9 @@ class RoleInstance:
         self.cal_weapon_attr_add()
 
     def cal_role_base_attr(self):
-        print('cal_role_base_attr')
+        logger.info('cal_role_base_attr')
         avatar_attribute = self.avatar.__dict__['avatar_attribute']
-        print(avatar_attribute)
+        logger.info(avatar_attribute)
         for attribute in avatar_attribute:
             if attribute in self.base_attr:
                 self.base_attr[attribute] += avatar_attribute[attribute]
@@ -115,8 +116,8 @@ class RoleInstance:
                 ]
 
     async def cal_damage(self, skill_type):
-        print(self.base_attr)
-        print(self.attribute_bonus)
+        logger.info(self.base_attr)
+        logger.info(self.attribute_bonus)
         # 检查武器战斗生效的buff
         logger.info('检查武器战斗生效的buff')
         self.attribute_bonus = await self.weapon.weapon_ability(
@@ -127,12 +128,12 @@ class RoleInstance:
             self.attribute_bonus = await set_skill.set_skill_ability(
                 self.base_attr, self.attribute_bonus
             )
-        print('merge_attribute')
-        print(self.base_attr)
+        logger.info('merge_attribute')
+        logger.info(self.base_attr)
         merged_attr = await merge_attribute(
             self.base_attr, self.attribute_bonus
         )
-        print(merged_attr)
+        logger.info(merged_attr)
         attack = merged_attr['attack']
         logger.info(f'攻击力: {attack}')
         # 模拟 同属性弱点 同等级 的怪物
@@ -176,7 +177,7 @@ class RoleInstance:
         logger.info(f'技能区: {skill_multiplier}')
 
         # 增伤区
-        # TODO: 这里计算只考虑了希儿，需要重写 injury_area = self.avatar.Talent()
+        # TODO: 这里计算只考虑了希儿,需要重写 injury_area = self.avatar.Talent()
         injury_area = self.avatar.Talent()
         # 检查是否有对某一个技能的伤害加成
         logger.info('检查是否有对某一个技能的伤害加成')

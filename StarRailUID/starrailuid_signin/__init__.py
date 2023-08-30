@@ -30,13 +30,14 @@ async def sr_sign_at_night():
 # 群聊内 签到 功能
 @sv_sign.on_fullmatch(f'{PREFIX}签到')
 async def get_sign_func(bot: Bot, ev: Event):
-    await bot.logger.info('[SR签到]QQ号: {}'.format(ev.user_id))
+    await bot.logger.info(f'[SR签到]QQ号: {ev.user_id}')
     sqla = get_sqla(ev.bot_id)
     sr_uid = await sqla.get_bind_sruid(ev.user_id)
     if sr_uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info('[SR签到]UID: {}'.format(sr_uid))
+    await bot.logger.info(f'[SR签到]UID: {sr_uid}')
     await bot.send(await sign_in(sr_uid))
+    return None
 
 
 @sv_sign_config.on_fullmatch(f'{PREFIX}全部重签')
@@ -73,11 +74,11 @@ async def send_daily_sign():
         # 根据succee数判断是否为简洁推送
         if group_msg_list[gid]['success'] >= 0:
             report = (
-                '以下为签到失败报告：{}'.format(group_msg_list[gid]['push_message'])
+                '以下为签到失败报告:{}'.format(group_msg_list[gid]['push_message'])
                 if group_msg_list[gid]['push_message'] != ''
                 else ''
             )
-            msg_title = '星穹铁道今日自动签到已完成！\n本群共签到成功{}人，共签到失败{}人。{}'.format(
+            msg_title = '星穹铁道今日自动签到已完成!\n本群共签到成功{}人,共签到失败{}人。{}'.format(
                 group_msg_list[gid]['success'],
                 group_msg_list[gid]['failed'],
                 report,

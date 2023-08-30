@@ -1,11 +1,12 @@
-from typing import Dict, List
 from collections import Counter
+from typing import Dict, List
 
 from mpmath import mp
+
 from gsuid_core.logger import logger
 
+from ..Base.RelicBase import BaseRelicSetSkill, SingleRelic
 from ..utils import merge_attribute
-from ..Base.RelicBase import SingleRelic, BaseRelicSetSkill
 
 
 class Relic101(BaseRelicSetSkill):
@@ -48,7 +49,7 @@ class Relic103(BaseRelicSetSkill):
 
     async def check(self, base_attr: Dict, attribute_bonus: Dict):
         '''
-        战斗中生效：装备者提供的护盾量提高
+        战斗中生效:装备者提供的护盾量提高
         '''
         logger.info('Relic103 check success')
         return True
@@ -267,6 +268,7 @@ class Relic301(BaseRelicSetSkill):
         if merged_attr['speed'] >= mp.mpf(120):
             logger.info('Relic306 check success')
             return True
+        return None
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
@@ -289,6 +291,7 @@ class Relic302(BaseRelicSetSkill):
         if merged_attr['speed'] >= mp.mpf(120):
             logger.info('Relic306 check success')
             return True
+        return None
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
@@ -312,7 +315,7 @@ class Relic303(BaseRelicSetSkill):
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             merged_attr = await merge_attribute(base_attr, attribute_bonus)
             status_probability = merged_attr.get('StatusProbability', 0)
-            # 提高装备者等同于当前效果命中25%的攻击力，最多提高25%
+            # 提高装备者等同于当前效果命中25%的攻击力,最多提高25%
             attribute_bonus['AttackAddedRatio'] = attack_added_ratio + min(
                 mp.mpf(0.25000000023283064), status_probability / mp.mpf(0.25)
             )
@@ -331,6 +334,7 @@ class Relic304(BaseRelicSetSkill):
         if merged_attr['StatusProbability'] >= mp.mpf(0.5000000004656613):
             logger.info('Relic306 check success')
             return True
+        return None
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
@@ -353,6 +357,7 @@ class Relic305(BaseRelicSetSkill):
         if merged_attr['CriticalDamageBase'] >= mp.mpf(1.2000000001862645):
             logger.info('Relic306 check success')
             return True
+        return None
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
@@ -375,6 +380,7 @@ class Relic306(BaseRelicSetSkill):
         if merged_attr['CriticalChanceBase'] >= mp.mpf(0.5):
             logger.info('Relic306 check success')
             return True
+        return None
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
@@ -399,6 +405,7 @@ class Relic307(BaseRelicSetSkill):
         if merged_attr['speed'] >= mp.mpf(145):
             logger.info('Relic306 check success')
             return True
+        return None
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
@@ -423,6 +430,7 @@ class Relic308(BaseRelicSetSkill):
         if merged_attr['speed'] >= mp.mpf(120):
             logger.info('Relic306 check success')
             return True
+        return None
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
@@ -519,4 +527,4 @@ class RelicSet:
             elif set_id == 308:
                 self.SetSkill.append(Relic308(set_id, count))
             else:
-                raise Exception('Unknow SetId: {}'.format(set_id))
+                raise Exception(f'Unknow SetId: {set_id}')

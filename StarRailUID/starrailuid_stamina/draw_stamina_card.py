@@ -1,18 +1,16 @@
 import asyncio
 from io import BytesIO
-from typing import List
 from pathlib import Path
+from typing import Optional
 
 import aiohttp
 from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 
-from ..utils.api import get_sqla
-from ..utils.mys_api import mys_api
-from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import Expedition
 from ..starrailuid_config.sr_config import srconfig
-from ..utils.image.image_tools import get_simple_bg
+from ..utils.api import get_sqla
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_24,
@@ -20,6 +18,9 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_36,
     sr_font_50,
 )
+from ..utils.image.convert import convert_img
+from ..utils.image.image_tools import get_simple_bg
+from ..utils.mys_api import mys_api
 
 use_widget = srconfig.get_config('WidgetResin').data
 
@@ -51,15 +52,14 @@ async def download_image(url: str) -> Image.Image:
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             img_data = await response.read()
-            img = Image.open(BytesIO(img_data))
-            return img
+            return Image.open(BytesIO(img_data))
 
 
 async def _draw_task_img(
     img: Image.Image,
     img_draw: ImageDraw.ImageDraw,
     index: int,
-    char: Expedition,
+    char: Optional[Expedition],
 ):
     if char is not None:
         expedition_name = char['name']
@@ -106,15 +106,17 @@ async def _draw_task_img(
 async def get_stamina_img(bot_id: str, user_id: str):
     try:
         sqla = get_sqla(bot_id)
-        uid_list: List = await sqla.get_bind_sruid_list(user_id)
-        logger.info('[每日信息]UID: {}'.format(uid_list))
+        uid_list = await sqla.get_bind_sruid_list(user_id)
+        logger.info(f'[每日信息]UID: {uid_list}')
+        if uid_list is None:
+            return '请先绑定一个UID再来查询哦~'
         # 进行校验UID是否绑定CK
         useable_uid_list = []
         for uid in uid_list:
             status = await sqla.get_user_cookie(uid)
             if status is not None:
                 useable_uid_list.append(uid)
-        logger.info('[每日信息]可用UID: {}'.format(useable_uid_list))
+        logger.info(f'[每日信息]可用UID: {useable_uid_list}')
         if len(useable_uid_list) == 0:
             return '请先绑定一个可用CK & UID再来查询哦~'
         # 开始绘图任务
@@ -179,11 +181,15 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
         daily_data = _daily_data
     else:
         daily_data = await mys_api.get_daily_data(sr_uid)
+        if isinstance(daily_data, int):
+            return get_error(img, sr_uid, daily_data)
 
     # nickname and level
     # deal with hoyolab with no nickname and level api
     if int(str(sr_uid)[0]) < 6:
         role_basic_info = await mys_api.get_role_basic_info(sr_uid)
+        if isinstance(role_basic_info, int):
+            return get_error(img, sr_uid, role_basic_info)
         nickname = role_basic_info['nickname']
         level = role_basic_info['level']
     else:

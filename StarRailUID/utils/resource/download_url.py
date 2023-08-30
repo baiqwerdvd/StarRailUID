@@ -1,11 +1,12 @@
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 import aiofiles
-from gsuid_core.logger import logger
 from aiohttp.client import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError
 
-from .RESOURCE_PATH import WIKI_PATH, GUIDE_PATH, RESOURCE_PATH
+from gsuid_core.logger import logger
+
+from .RESOURCE_PATH import GUIDE_PATH, RESOURCE_PATH, WIKI_PATH
 
 PATHDICT = {
     'resource': RESOURCE_PATH,
@@ -19,7 +20,7 @@ async def download(
     res_type: str,
     resource_type: str,
     name: str,
-) -> Optional[Tuple[str, int, str]]:
+) -> Optional[Tuple[str, str, str]]:
     """
     :说明:
       下载URL保存入目录
@@ -27,7 +28,7 @@ async def download(
       * url: `str`
             资源下载地址。
       * res_type: `str`
-            资源类型，`resource`或`wiki`。
+            资源类型,`resource`或`wiki`。
       * resource_type: `str`
             资源文件夹名
       * name: `str`
@@ -60,3 +61,4 @@ async def download_file(
         PATHDICT[res_type] / resource_type / name, "wb"
     ) as f:
         await f.write(content)
+        return None

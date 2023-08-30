@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional, TypedDict
+from typing import TypedDict
 
 
 class MihomoData(TypedDict):
@@ -15,12 +15,12 @@ class Behavior(TypedDict):
 class Equipment(TypedDict):
     level: int
     tid: int
-    promotion: Optional[int]
-    rank: Optional[int]
+    promotion: int | None
+    rank: int | None
 
 
 class Relic(TypedDict):
-    subAffixList: List[SubAffix]
+    subAffixList: list[SubAffix]
     tid: int
     mainAffixId: int
     type: int
@@ -33,20 +33,20 @@ class SubAffix(TypedDict):
 
 
 class Avatar(TypedDict):
-    skillTreeList: List[Behavior]
-    rank: Optional[int]
-    pos: Optional[int]
+    skillTreeList: list[Behavior]
+    rank: int | None
+    pos: int | None
     avatarId: int
     level: int
-    equipment: Optional[Equipment]
-    relicList: List[Relic]
+    equipment: Equipment | None
+    relicList: list[Relic]
     promotion: int
 
 
 class Challenge(TypedDict):
     scheduleMaxLevel: int
-    MazeGroupIndex: Optional[int]
-    PreMazeGroupIndex: Optional[int]
+    MazeGroupIndex: int | None
+    PreMazeGroupIndex: int | None
 
 
 class PlayerSpaceInfo(TypedDict):
@@ -61,13 +61,13 @@ class PlayerDetailInfo(TypedDict):
     assistAvatarDetail: Avatar
     platform: str
     isDisplayAvatar: bool
-    avatarDetailList: Optional[List[Avatar]]
+    avatarDetailList: list[Avatar] | None
     uid: int
     friendCount: int
     worldLevel: int
     nickname: str
-    Birthday: Optional[int]
+    Birthday: int | None
     level: int
-    recordInfo: Optional[PlayerSpaceInfo]
+    recordInfo: PlayerSpaceInfo | None
     headIcon: int
-    signature: Optional[str]
+    signature: str | None

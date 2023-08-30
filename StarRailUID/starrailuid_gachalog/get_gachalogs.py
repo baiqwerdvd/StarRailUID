@@ -1,8 +1,9 @@
-import json
 import asyncio
-from urllib import parse
+import json
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, Optional
+from urllib import parse
 
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
@@ -86,7 +87,7 @@ async def save_gachalogs(
         old_weapon_gacha_num,
     ) = (0, 0, 0, 0)
     if gachalogs_path.exists():
-        with open(gachalogs_path, "r", encoding='UTF-8') as f:
+        with Path.open(gachalogs_path, encoding='UTF-8') as f:
             gachalogs_history: Dict = json.load(f)
         gachalogs_history = gachalogs_history['data']
         old_normal_gacha_num = len(gachalogs_history['群星跃迁'])
@@ -149,7 +150,7 @@ async def save_gachalogs(
     all_add = normal_add + char_add + weapon_add + begin_gacha_add
 
     # 保存文件
-    with open(gachalogs_path, 'w', encoding='UTF-8') as file:
+    with Path.open(gachalogs_path, 'w', encoding='UTF-8') as file:
         json.dump(result, file, ensure_ascii=False)
 
     # 回复文字
@@ -157,9 +158,9 @@ async def save_gachalogs(
         im = f'UID{uid}没有新增祈愿数据!'
     else:
         im = (
-            f'UID{uid}数据更新成功！'
+            f'UID{uid}数据更新成功!'
             f'本次更新{all_add}个数据\n'
             f'群星跃迁{normal_add}个\n始发跃迁{begin_gacha_add}\n'
-            f'角色跃迁{char_add}个\n光锥跃迁{weapon_add}个！'
+            f'角色跃迁{char_add}个\n光锥跃迁{weapon_add}个!'
         )
     return im

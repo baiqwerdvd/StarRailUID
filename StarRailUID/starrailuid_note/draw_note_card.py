@@ -1,16 +1,17 @@
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Union
-from datetime import datetime
 
 from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 
-from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
-from ..utils.image.convert import convert_img
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.fonts.starrail_fonts import sr_font_20, sr_font_28, sr_font_34
+from ..utils.image.convert import convert_img
+from ..utils.mys_api import mys_api
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 
@@ -53,14 +54,13 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     if int(now.month) < 10:
         add_month = '0'
     now_month = str(now.year) + str(add_month) + str(now.month)
-    print(now_month)
     # 获取数据
     data = await mys_api.get_award(sr_uid, now_month)
     if isinstance(data, int):
         return get_error(data)
 
     # 保存数据
-    with open(
+    with Path.open(
         path / f'monthly_{current_year_mon}.json', 'w', encoding='utf-8'
     ) as f:
         save_data = json.dumps(
@@ -81,7 +81,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     last_year_mon = f'{last_year}-{last_month:02d}'
     last_monthly_path = path / f'monthly_{last_year_mon}.json'
     if last_monthly_path.exists():
-        with open(last_monthly_path, 'r', encoding='utf-8') as f:
+        with Path.open(last_monthly_path, encoding='utf-8') as f:
             last_monthly_data = json.load(f)
             last_monthly_data = last_monthly_data['data']
     else:
@@ -89,8 +89,9 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         if int(last_month) < 10:
             add_month = '0'
         find_last_month = str(last_year) + str(add_month) + str(last_month)
-        print(find_last_month)
         last_monthly_data = await mys_api.get_award(sr_uid, find_last_month)
+        if isinstance(last_monthly_data, int):
+            return get_error(last_monthly_data)
 
     # nickname and level
     role_basic_info = await mys_api.get_role_basic_info(sr_uid)
@@ -221,7 +222,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     else:
         pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
-        for index, i in enumerate(data['month_data']['group_by']):
+        for _index, i in enumerate(data['month_data']['group_by']):
             pie_image_draw.pieslice(
                 xy,
                 temp,
@@ -241,7 +242,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     if last_monthly_data:
         pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
-        for index, i in enumerate(last_monthly_data['month_data']['group_by']):
+        for _index, i in enumerate(last_monthly_data['month_data']['group_by']):
             pie_image_draw.pieslice(
                 xy,
                 temp,
@@ -270,7 +271,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
 
 async def int_carry(i: int) -> str:
     if i >= 100000:
-        i_str = '{:.1f}W'.format(i / 10000)
+        i_str = f'{i / 10000:.1f}W'
     else:
         i_str = str(i)
     return i_str

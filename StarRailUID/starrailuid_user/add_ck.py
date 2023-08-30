@@ -1,10 +1,10 @@
+from http.cookies import SimpleCookie
 from pathlib import Path
 from typing import Dict, List
-from http.cookies import SimpleCookie
 
 from ..utils.api import get_sqla
-from ..utils.mys_api import mys_api
 from ..utils.error_reply import UID_HINT
+from ..utils.mys_api import mys_api
 
 pic_path = Path(__file__).parent / 'pic'
 id_list = [
@@ -35,19 +35,19 @@ async def get_ck_by_all_stoken(bot_id: str):
         user_data = await sqla.select_user_data(uid)
         if user_data:
             uid_dict[uid] = user_data.user_id
-    im = await refresh_ck_by_uid_list(bot_id, uid_dict)
-    return im
+    return await refresh_ck_by_uid_list(bot_id, uid_dict)
 
 
 async def get_ck_by_stoken(bot_id: str, user_id: str):
     sqla = get_sqla(bot_id)
-    uid_list: List = await sqla.get_bind_uid_list(user_id)
+    uid_list = await sqla.get_bind_uid_list(user_id)
+    if uid_list is None:
+        return '请先绑定一个UID噢~'
     uid_dict = {uid: user_id for uid in uid_list}
-    im = await refresh_ck_by_uid_list(bot_id, uid_dict)
-    return im
+    return await refresh_ck_by_uid_list(bot_id, uid_dict)
 
 
-async def refresh_ck_by_uid_list(bot_id: str, uid_dict: Dict):
+async def refresh_ck_by_uid_list(bot_id: str, uid_dict: Dict) -> str:
     sqla = get_sqla(bot_id)
     uid_num = len(uid_dict)
     if uid_num == 0:
@@ -61,25 +61,23 @@ async def refresh_ck_by_uid_list(bot_id: str, uid_dict: Dict):
             skip_num += 1
             error_num += 1
             continue
-        else:
-            qid = uid_dict[uid]
-            try:
-                mes = await _deal_ck(bot_id, stoken, qid)
-            except TypeError:
-                error_list[uid] = 'SK或CK已过期！'
-                error_num += 1
-                continue
-            ok_num = mes.count('成功')
-            if ok_num < 2:
-                error_list[uid] = '可能是SK已过期~'
-                error_num += 1
-                continue
+        qid = uid_dict[uid]
+        try:
+            mes = await _deal_ck(bot_id, stoken, qid)
+        except TypeError:
+            error_list[uid] = 'SK或CK已过期!'
+            error_num += 1
+            continue
+        ok_num = mes.count('成功')
+        if ok_num < 2:
+            error_list[uid] = '可能是SK已过期~'
+            error_num += 1
+            continue
 
-    s_im = f'执行完成~成功刷新CK{uid_num - error_num}个！跳过{skip_num}个!'
+    s_im = f'执行完成~成功刷新CK{uid_num - error_num}个!跳过{skip_num}个!'
     f_im = '\n'.join([f'UID{u}:{error_list[u]}' for u in error_list])
-    im = f'{s_im}\n{f_im}' if f_im else s_im
+    return f'{s_im}\n{f_im}' if f_im else s_im
 
-    return im
 
 
 async def deal_ck(bot_id: str, mes: str, user_id: str, mode: str = 'PIC'):
@@ -97,9 +95,8 @@ async def _deal_ck_to_pic(im: str) -> bytes:
         status_pic = pic_path / 'ck_ok.png'
     else:
         status_pic = pic_path / 'all_ok.png'
-    with open(status_pic, 'rb') as f:
-        img = f.read()
-    return img
+    with Path.open(status_pic, 'rb') as f:
+        return f.read()
 
 
 async def get_account_id(simp_dict: SimpleCookie) -> str:
@@ -121,7 +118,7 @@ async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
     if uid is None and sr_uid is None:
         if uid is None:
             return UID_HINT
-        elif sr_uid is None:
+        if sr_uid is None:
             return '请绑定星穹铁道UID...'
 
     im_list = []
@@ -154,8 +151,7 @@ async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
                     is_add_stoken = True
                     status = False
                     break
-                else:
-                    return '返回值错误...'
+                return '返回值错误...'
     if status:
         for lt in lt_list:
             if lt in simp_dict:
@@ -218,12 +214,13 @@ async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
                     break
             else:
                 if not (uid or sr_uid):
-                    return f'你的米游社账号{account_id}尚未绑定原神/星铁账号,请前往米游社操作！'
+                    return f'你的米游社账号{account_id}尚未绑定原神/星铁账号,\
+                            请前往米游社操作!'
     except Exception:
         pass
 
     if not uid:
-        return f'你的米游社账号{account_id}尚未绑定原神/星铁账号,请前往米游社操作！'
+        return f'你的米游社账号{account_id}尚未绑定原神/星铁账号,请前往米游社操作!'
 
     await sqla.refresh_cache(uid)
     if is_add_stoken:
@@ -236,14 +233,13 @@ async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
         f'添加Cookies成功,account_id={account_id},cookie_token={cookie_token}'
     )
     im_list.append(
-        'Cookies和Stoken属于个人重要信息,如果你是在不知情的情况下添加,请马上修改米游社账户密码,保护个人隐私！'
+        'Cookies和Stoken属于个人重要信息,如果你是在不知情的情况下添加,请马上修改米游社账户密码,保护个人隐私!'
     )
     im_list.append(
-        (
+
             '如果需要【sr开启自动签到】和【sr开启推送】还需要在【群聊中】使用命令“绑定uid”绑定你的uid。'
-            '\n例如：绑定uid123456789。'
-        )
+            '\n例如:绑定uid123456789。'
+
     )
-    im_list.append('你可以使用命令【sr绑定信息】检查你的账号绑定情况！')
-    im = '\n'.join(im_list)
-    return im
+    im_list.append('你可以使用命令【sr绑定信息】检查你的账号绑定情况!')
+    return '\n'.join(im_list)

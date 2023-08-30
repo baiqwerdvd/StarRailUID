@@ -19,19 +19,20 @@ sv_get_stamina = SV('sr查询体力')
 sv_get_stamina_admin = SV('sr强制推送', pm=1)
 
 
-@sv_get_stamina.on_fullmatch((f'{PREFIX}当前状态'))
+@sv_get_stamina.on_fullmatch(f'{PREFIX}当前状态')
 async def send_daily_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[sr每日信息文字版]')
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info('[sr每日信息文字版]UID: {}'.format(uid))
+    await bot.logger.info(f'[sr每日信息文字版]UID: {uid}')
 
     im = await get_stamina_text(uid)
     await bot.send(im)
+    return None
 
 
-@sv_get_stamina_admin.on_fullmatch((f'{PREFIX}强制推送体力提醒'))
+@sv_get_stamina_admin.on_fullmatch(f'{PREFIX}强制推送体力提醒')
 async def force_notice_job(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[sr强制推送体力信息]')
     await sr_notice_job()
@@ -75,7 +76,7 @@ async def sr_notice_job():
 async def send_daily_info_pic(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[sr每日信息]')
     user_id = ev.at if ev.at else ev.user_id
-    await bot.logger.info('[sr每日信息]QQ号: {}'.format(user_id))
+    await bot.logger.info(f'[sr每日信息]QQ号: {user_id}')
 
     im = await get_stamina_img(bot.bot_id, user_id)
     await bot.send(im)

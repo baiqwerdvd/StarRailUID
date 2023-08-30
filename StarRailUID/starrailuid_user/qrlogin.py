@@ -1,15 +1,16 @@
+import asyncio
+import base64
 import io
 import json
-import base64
-import asyncio
 from http.cookies import SimpleCookie
-from typing import Any, List, Tuple, Union, Literal
+from typing import Any, List, Literal, Tuple, Union
 
 import qrcode
-from gsuid_core.bot import Bot
-from gsuid_core.models import Event
-from gsuid_core.logger import logger
 from qrcode.constants import ERROR_CORRECT_L
+
+from gsuid_core.bot import Bot
+from gsuid_core.logger import logger
+from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
 
 from ..utils.api import get_sqla
@@ -24,7 +25,7 @@ disnote = '''免责声明:您将通过扫码完成获取米游社sk以及ck。
 
 
 def get_qrcode_base64(url):
-    qr = qrcode.QRCode(
+    qr = qrcode.QRCode( # type: ignore
         version=1,
         error_correction=ERROR_CORRECT_L,
         box_size=10,
@@ -74,7 +75,7 @@ async def qrcode_login(bot: Bot, ev: Event, user_id: str) -> str:
         return await send_msg('链接创建失败...')
     try:
         im = []
-        im.append(MessageSegment.text('请使用米游社扫描下方二维码登录：'))
+        im.append(MessageSegment.text('请使用米游社扫描下方二维码登录:'))
         im.append(
             MessageSegment.image(
                 f'base64://{get_qrcode_base64(code_data["url"])}'
@@ -124,7 +125,7 @@ async def qrcode_login(bot: Bot, ev: Event, user_id: str) -> str:
                     uid_check = i['game_role_id']
                     break
             else:
-                im = f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
+                im = f'你的米游社账号{account_id}尚未绑定原神账号,请前往米游社操作!'
                 return await send_msg(im)
         else:
             im = '请求失败, 请稍后再试...'
@@ -134,7 +135,8 @@ async def qrcode_login(bot: Bot, ev: Event, user_id: str) -> str:
         # 没有在gsuid绑定uid的情况
         if not uid_bind:
             logger.warning('game_token获取失败')
-            im = '你还没有绑定uid, 请输入[绑定uid123456]绑定你的uid, 再发送[扫码登录]进行绑定'
+            im = '你还没有绑定uid, \
+                  请输入[绑定uid123456]绑定你的uid, 再发送[扫码登录]进行绑定'
             return await send_msg(im)
         if isinstance(cookie_token, int):
             return await send_msg('获取CK失败...')
@@ -148,12 +150,11 @@ async def qrcode_login(bot: Bot, ev: Event, user_id: str) -> str:
                     'cookie_token': cookie_token['cookie_token'],
                 }
             ).output(header='', sep=';')
-        else:
-            logger.warning('game_token获取失败')
-            im = (
-                f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同, '
-                'gametoken获取失败, 请重新发送[扫码登录]进行登录！'
-            )
+        logger.warning('game_token获取失败')
+        im = (
+            f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同, '
+            'gametoken获取失败, 请重新发送[扫码登录]进行登录!'
+        )
     else:
         logger.warning('game_token获取失败')
         im = 'game_token获取失败: 二维码已过期'

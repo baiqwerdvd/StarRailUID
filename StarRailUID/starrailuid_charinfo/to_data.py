@@ -1,34 +1,39 @@
 import json
-from typing import List, Union, Optional
+from pathlib import Path
+from typing import List, Optional, Union
 
-from mpmath import mp
 from httpx import ReadTimeout
+from mpmath import mp
 
-from ..utils.error_reply import UID_HINT
+from gsuid_core.plugins.StarRailUID.StarRailUID.sruid_utils.api.mihomo.models import (
+    Avatar,
+)
+
 from ..sruid_utils.api.mihomo import MihomoData
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..sruid_utils.api.mihomo.requests import get_char_card_info
-
-# from gsuid_core.utils.api.minigg.request import get_weapon_info
-from .cal_value import cal_relic_sub_affix, cal_relic_main_affix
+from ..utils.error_reply import UID_HINT
 from ..utils.excel.read_excel import AvatarPromotion, EquipmentPromotion
 from ..utils.map.SR_MAP_PATH import (
-    SetId2Name,
+    EquipmentID2Name,
+    EquipmentID2Rarity,
     ItemId2Name,
     Property2Name,
     RelicId2SetId,
-    EquipmentID2Name,
-    EquipmentID2Rarity,
-    rankId2Name,
-    skillId2Name,
-    avatarId2Name,
-    skillId2Effect,
+    SetId2Name,
+    avatarId2DamageType,
     avatarId2EnName,
+    avatarId2Name,
     avatarId2Rarity,
     characterSkillTree,
+    rankId2Name,
     skillId2AttackType,
-    avatarId2DamageType,
+    skillId2Effect,
+    skillId2Name,
 )
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+
+# from gsuid_core.utils.api.minigg.request import get_weapon_info
+from .cal_value import cal_relic_main_affix, cal_relic_sub_affix
 
 mp.dps = 14
 
@@ -55,25 +60,23 @@ async def api_to_dict(
     if isinstance(sr_data, str):
         return []
     if isinstance(sr_data, dict):
-        print(sr_data)
         if 'detailInfo' not in sr_data:
-            im = '服务器正在维护或者关闭中...\n检查Mihomo.me是否可以访问\n如可以访问,尝试上报Bug!'
-            return im
+            return '服务器正在维护或者关闭中...\n检查Mihomo.me是否可以访问\n如可以访问,尝试上报Bug!'
     elif sr_data is None:
         return []
 
     PlayerDetailInfo = sr_data['detailInfo']
     path = PLAYER_PATH / str(sr_uid)
     path.mkdir(parents=True, exist_ok=True)
-    with open(
-        path / '{}.json'.format(str(sr_uid)), 'w', encoding='UTF-8'
+    with Path.open(
+        path / f'{sr_uid!s}.json', 'w', encoding='UTF-8'
     ) as file:
         json.dump(PlayerDetailInfo, file, ensure_ascii=False)
-    with open(path / 'rawData.json', 'w', encoding='UTF-8') as file:
+    with Path.open(path / 'rawData.json', 'w', encoding='UTF-8') as file:
         json.dump(sr_data, file, ensure_ascii=False)
 
     if 'detailInfo' not in sr_data:
-        return f'SR_UID{sr_uid}刷新失败！未打开角色展柜!'
+        return f'SR_UID{sr_uid}刷新失败!未打开角色展柜!'
 
     char_name_list = []
     char_id_list = []
@@ -93,21 +96,21 @@ async def api_to_dict(
             )
     if PlayerDetailInfo.get('avatarDetailList'):
         im += '星海同行'
-        for char in PlayerDetailInfo['avatarDetailList']:
-            if char['avatarId'] not in char_id_list:
-                char_dict, avatarName = await get_data(char, sr_data, sr_uid)
-                im += f' {avatarName}'
-                char_name_list.append(avatarName)
-                char_id_list.append(char['avatarId'])
+        if PlayerDetailInfo['avatarDetailList'] is not None:
+            for char in PlayerDetailInfo['avatarDetailList']:
+                if char['avatarId'] not in char_id_list:
+                    _, avatarName = await get_data(char, sr_data, sr_uid)
+                    im += f' {avatarName}'
+                    char_name_list.append(avatarName)
+                    char_id_list.append(char['avatarId'])
 
     if not char_name_list:
-        im = f'UID: {sr_uid} 的角色展柜刷新失败！\n请检查UID是否正确或者角色展柜是否打开！'
-        return im
+        return f'UID: {sr_uid} 的角色展柜刷新失败!\n请检查UID是否正确或者角色展柜是否打开!'
 
     return char_id_list
 
 
-async def get_data(char: dict, sr_data: dict, sr_uid: str):
+async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
     PlayerDetailInfo = sr_data['detailInfo']
     path = PLAYER_PATH / str(sr_uid)
     # 处理基本信息
@@ -219,10 +222,10 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
             if relic.get('subAffixList'):
                 for sub_affix in relic['subAffixList']:
                     sub_affix_temp = {}
-                    sub_affix_temp['SubAffixID'] = sub_affix['affixId']
+                    sub_affix_temp['SubAffixID'] = sub_affix['affixID']
                     sub_affix_property, value = await cal_relic_sub_affix(
                         relic_id=relic['tid'],
-                        affix_id=sub_affix['affixId'],
+                        affix_id=sub_affix['affixID'],
                         cnt=sub_affix['cnt'],
                         step=sub_affix['step'] if 'step' in sub_affix else 0,
                     )
@@ -238,7 +241,7 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
 
     # 处理命座
     rank_temp = []
-    if 'rank' in char:
+    if char.get('rank') and char['rank'] is not None:
         char_data['rank'] = char['rank']
         for index in range(char['rank']):
             rankTemp = {}
@@ -293,7 +296,7 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
     # 处理武器
 
     equipment_info = {}
-    if char.get('equipment'):
+    if char.get('equipment') and char['equipment'] is not None:
         equipment_info['equipmentID'] = char['equipment']['tid']
         equipment_info['equipmentName'] = EquipmentID2Name[
             str(char['equipment']['tid'])
@@ -334,8 +337,8 @@ async def get_data(char: dict, sr_data: dict, sr_uid: str):
 
     char_data['equipmentInfo'] = equipment_info
 
-    with open(
-        path / '{}.json'.format(avatarName), 'w', encoding='UTF-8'
+    with Path.open(
+        path / f'{avatarName}.json', 'w', encoding='UTF-8'
     ) as file:
         json.dump(char_data, file, ensure_ascii=False)
     return char_data, avatarName
@@ -352,4 +355,4 @@ async def api_to_data(
     for char_data in raw_data:
         char_name_list.append(char_data['avatarName'])
     char_name_list_str = ','.join(char_name_list)
-    return f'UID{uid}刷新完成！\n本次缓存：{char_name_list_str}'
+    return f'UID{uid}刷新完成!\n本次缓存:{char_name_list_str}'

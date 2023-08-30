@@ -2,14 +2,14 @@ from typing import List
 
 from gsuid_core.logger import logger
 
-from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
+from ..utils.mys_api import mys_api
 
-daily_im = """*数据刷新可能存在一定延迟，请以当前游戏实际数据为准
+daily_im = """*数据刷新可能存在一定延迟,请以当前游戏实际数据为准
 ==============
-开拓力：{}/{}{}
-委托执行：
-总数/完成/上限：{}/{}/{}
+开拓力:{}/{}{}
+委托执行:
+总数/完成/上限:{}/{}/{}
 {}"""
 
 
@@ -42,7 +42,7 @@ async def get_stamina_text(uid: str) -> str:
             )
             rec_time = f' ({next_stamina_rec_time}/{stamina_recover_time})'
 
-        accepted_epedition_num = dailydata['accepted_epedition_num']
+        accepted_epedition_num = dailydata['accepted_expedition_num']
         total_expedition_num = dailydata['total_expedition_num']
         finished_expedition_num = 0
         expedition_info: List[str] = []
@@ -61,8 +61,7 @@ async def get_stamina_text(uid: str) -> str:
                 )
 
         expedition_data = '\n'.join(expedition_info)
-        print(expedition_data)
-        send_mes = daily_im.format(
+        return daily_im.format(
             current_stamina,
             max_stamina,
             rec_time,
@@ -71,7 +70,6 @@ async def get_stamina_text(uid: str) -> str:
             total_expedition_num,
             expedition_data,
         )
-        return send_mes
     except TypeError:
         logger.exception('[查询当前状态]查询失败!')
         return '你绑定过的UID中可能存在过期CK~请重新绑定一下噢~'

@@ -2,9 +2,9 @@ from typing import Dict
 
 from mpmath import mp
 
-from .effect.Role import RoleInstance
-from ..starrailuid_charinfo.mono.Character import Character
 from ..starrailuid_charinfo.draw_char_img import cal_char_info
+from ..starrailuid_charinfo.mono.Character import Character
+from .effect.Role import RoleInstance
 
 mp.dps = 14
 
@@ -34,7 +34,6 @@ async def cal(char_data: Dict):
 
     for skill_type in ['Normal', 'BPSkill', 'Ultra']:
         role = RoleInstance(raw_data)
-        print(role)
         im_tmp = await role.cal_damage(skill_type)
         im.append(im_tmp)
     return im

@@ -1,17 +1,16 @@
 import asyncio
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Union
 
 from PIL import Image, ImageDraw
-from gsuid_core.utils.api.enka.models import EnkaData
 
-from .to_data import api_to_dict
-from ..utils.image.convert import convert_img
 from ..utils.fonts.first_world import fw_font_28
-from ..utils.map.SR_MAP_PATH import avatarId2Name
-from ..utils.map.name_covert import avatar_id_to_char_star
 from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
+from ..utils.image.convert import convert_img
+from ..utils.map.name_covert import avatar_id_to_char_star
+from ..utils.map.SR_MAP_PATH import avatarId2Name
 from ..utils.resource.RESOURCE_PATH import CHAR_ICON_PATH, CHAR_PREVIEW_PATH
+from .to_data import api_to_dict
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
@@ -28,11 +27,8 @@ footbar = Image.open(TEXT_PATH / 'footbar.png')
 pic_500 = Image.open(TEXT_PATH / '500.png')
 
 
-async def api_to_card(
-    uid: str, enka_data: Optional[EnkaData] = None
-) -> Union[str, bytes]:
-    char_data_list = await api_to_dict(uid, enka_data)
-    print(char_data_list)
+async def api_to_card(uid: str) -> Union[str, bytes]:
+    char_data_list = await api_to_dict(uid)
     if (
         not isinstance(char_data_list, str)
         and char_data_list == []
@@ -44,7 +40,7 @@ async def api_to_card(
 
 
 async def draw_enka_card(
-    uid: str, char_list: Optional[List] = None, showfrom: int = 0
+    uid: str, char_list: List, showfrom: int = 0
 ):
     char_data_list = []
     if 1102 in char_list:
@@ -108,8 +104,7 @@ async def draw_enka_card(
         else:
             tasks.append(draw_mihomo_char(index, img, char_data))
     await asyncio.gather(*tasks)
-    img = await convert_img(img)
-    return img
+    return await convert_img(img)
 
 
 async def draw_mihomo_char(index: int, img: Image.Image, char_data: dict):

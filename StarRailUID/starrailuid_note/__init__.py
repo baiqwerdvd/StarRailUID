@@ -13,13 +13,14 @@ sv_get_monthly_data = SV('sr查询月历')
 
 
 # 群聊内 每月统计 功能
-@sv_get_monthly_data.on_fullmatch((f'{PREFIX}每月统计'))
+@sv_get_monthly_data.on_fullmatch(f'{PREFIX}每月统计')
 async def send_monthly_data(bot: Bot, ev: Event):
     sqla = get_sqla(ev.bot_id)
     sr_uid = await sqla.get_bind_sruid(ev.user_id)
     if sr_uid is None:
         return UID_HINT
     await bot.send(await award(sr_uid))
+    return None
 
 
 @sv_get_monthly_data.on_fullmatch(
@@ -32,3 +33,4 @@ async def send_monthly_pic(bot: Bot, ev: Event):
         return UID_HINT
     im = await draw_note_img(str(sr_uid))
     await bot.send(im)
+    return None

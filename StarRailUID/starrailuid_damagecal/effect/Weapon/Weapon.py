@@ -1,13 +1,13 @@
 import json
-from typing import Dict
 from pathlib import Path
+from typing import Dict
 
 from mpmath import mp
 
 from ..Base.WeaponBase import BaseWeapon
 
 path = Path(__file__).parent.parent
-with open(path / 'Excel' / 'weapon_effect.json', 'r', encoding='utf-8') as f:
+with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:
     weapon_effect = json.load(f)
 
 
@@ -106,6 +106,7 @@ class Adversarial(BaseWeapon):
                 ]
             )
             return attribute_bonus
+        return None
 
 
 class SubscribeforMore(BaseWeapon):
@@ -137,6 +138,7 @@ class SubscribeforMore(BaseWeapon):
                 * 2
             )
             return attribute_bonus
+        return None
 
 
 class RiverFlowsinSpring(BaseWeapon):
@@ -144,8 +146,8 @@ class RiverFlowsinSpring(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 进入战斗后，使装备者速度提高8%，造成的伤害提高12%。
-        # 当装备者受到伤害后该效果失效，下个回合结束时该效果恢复。
+        # 进入战斗后,使装备者速度提高8%,造成的伤害提高12%。
+        # 当装备者受到伤害后该效果失效,下个回合结束时该效果恢复。
         return True
 
     async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
@@ -167,6 +169,7 @@ class RiverFlowsinSpring(BaseWeapon):
                 ]
             )
             return attribute_bonus
+        return None
 
 
 class SleepLiketheDead(BaseWeapon):
@@ -174,13 +177,14 @@ class SleepLiketheDead(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者的普攻或战技伤害未造成暴击时，使自身暴击率提高36%，持续1回合。
+        # 当装备者的普攻或战技伤害未造成暴击时,使自身暴击率提高36%,持续1回合。
         # 该效果每3回合可以触发1次。
         return True
 
     async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             return attribute_bonus
+        return None
 
 
 class OnlySilenceRemains(BaseWeapon):
@@ -202,6 +206,7 @@ class OnlySilenceRemains(BaseWeapon):
                 ]
             )
             return attribute_bonus
+        return None
 
 
 class IntheNight(BaseWeapon):
@@ -273,35 +278,38 @@ class CruisingintheStellarSea(BaseWeapon):
         return attribute_bonus
 
 
-class HuntWeapon:
-    def __new__(cls, weapon: Dict):
+class HuntWeapon(
+    CruisingintheStellarSea, IntheNight, OnlySilenceRemains, SleepLiketheDead,
+    SubscribeforMore, Swordplay, DartingArrow, Adversarial,
+    RiverFlowsinSpring, Arrows, ReturntoDarkness
+):
+    def __init__(self, weapon: Dict):
         if weapon['id'] == 24001:
             return CruisingintheStellarSea(weapon)
-        elif weapon['id'] == 23001:
+        if weapon['id'] == 23001:
             return IntheNight(weapon)
-        elif weapon['id'] == 21003:
+        if weapon['id'] == 21003:
             return OnlySilenceRemains(weapon)
-        elif weapon['id'] == 21024:
+        if weapon['id'] == 21024:
             return RiverFlowsinSpring(weapon)
-        elif weapon['id'] == 20014:
+        if weapon['id'] == 20014:
             return Adversarial(weapon)
-        elif weapon['id'] == 20007:
+        if weapon['id'] == 20007:
             return DartingArrow(weapon)
-        elif weapon['id'] == 21010:
+        if weapon['id'] == 21010:
             return Swordplay(weapon)
-        elif weapon['id'] == 21031:
+        if weapon['id'] == 21031:
             return ReturntoDarkness(weapon)
-        elif weapon['id'] == 20000:
+        if weapon['id'] == 20000:
             return Arrows(weapon)
-        else:
-            raise ValueError(f'未知武器id: {weapon["id"]}')
+        raise ValueError(f'未知武器id: {weapon["id"]}')
 
     async def check_ability(self):
         pass
 
 
-class Weapon:
-    def __new__(cls, weapon: Dict):
+class Weapon(HuntWeapon):
+    def __init__(self, weapon: Dict):
         if weapon['id'] in [
             23001,
             21003,
