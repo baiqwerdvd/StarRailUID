@@ -3,7 +3,7 @@ from .SR_MAP_PATH import (
     EquipmentID2EnName,
     alias_data,
     avatarId2Name,
-    avatarId2Star_data,
+    avatarId2Rarity,
 )
 
 
@@ -22,7 +22,7 @@ async def name_to_avatar_id(name: str) -> str:
 
 
 async def avatar_id_to_char_star(char_id: str) -> str:
-    char_star = avatarId2Star_data[str(char_id)]
+    char_star = avatarId2Rarity[str(char_id)]
     return char_star
 
 
