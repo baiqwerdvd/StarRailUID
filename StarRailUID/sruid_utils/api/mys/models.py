@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, TypedDict
+from typing import Any, Dict, List, TypedDict, Union
 
 ################
 # 抽卡记录相关 #
@@ -91,8 +91,8 @@ class RogueRecordInfo(TypedDict):
     miracles: List[RogueMiracles]
     difficulty: int
     progress: int
-    detail_h: Optional[int]
-    start_h: Optional[int]
+    detail_h: Union[int, None]
+    start_h: Union[int, None]
 
 
 class RogueBasic(TypedDict):
@@ -373,7 +373,7 @@ class AvatarListItemDetail(TypedDict):
     rarity: int
     rank: int
     image: str
-    equip: Optional[Equip]
+    equip: Union[Equip, None]
     relics: List[RelicsItem]
     ornaments: List
     ranks: List[RanksItem]

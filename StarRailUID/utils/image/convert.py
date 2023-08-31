@@ -29,7 +29,7 @@ async def convert_img(img: Path, is_base64: bool = False) -> str:
 
 async def convert_img(
     img: Union[Image.Image, str, Path, bytes], is_base64: bool = False
-) -> str | bytes:
+) -> Union[str, bytes]:
     """
     :说明:
       将PIL.Image对象转换为bytes或者base64格式。

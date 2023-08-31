@@ -1,6 +1,6 @@
 import asyncio
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 
 from aiohttp.client import ClientSession
 from msgspec import json as msgjson
@@ -15,7 +15,7 @@ with Path.open(
 ) as f:
     resource_map = msgjson.decode(
         f.read(),
-        type=Dict[str, Dict[str, Dict[str, Dict[str, str | int]]]],
+        type=Dict[str, Dict[str, Dict[str, Dict[str, Union[str, int]]]]],
     )
 
 
