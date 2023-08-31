@@ -222,10 +222,10 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
             if relic.get('subAffixList'):
                 for sub_affix in relic['subAffixList']:
                     sub_affix_temp = {}
-                    sub_affix_temp['SubAffixID'] = sub_affix['affixID']
+                    sub_affix_temp['SubAffixID'] = sub_affix['affixId']
                     sub_affix_property, value = await cal_relic_sub_affix(
                         relic_id=relic['tid'],
-                        affix_id=sub_affix['affixID'],
+                        affix_id=sub_affix['affixId'],
                         cnt=sub_affix['cnt'],
                         step=sub_affix['step'] if 'step' in sub_affix else 0,
                     )

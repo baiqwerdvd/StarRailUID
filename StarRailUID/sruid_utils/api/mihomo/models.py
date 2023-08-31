@@ -27,7 +27,7 @@ class Relic(TypedDict):
 
 
 class SubAffix(TypedDict):
-    affixID: int
+    affixId: int
     cnt: int
     step: int
 
