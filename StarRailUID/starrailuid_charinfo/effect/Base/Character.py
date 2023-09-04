@@ -5,10 +5,9 @@ from typing import Dict
 from loguru import logger
 from mpmath import mp
 
-from ...utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty, RelicSetSkill
+from ....utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty, RelicSetSkill
 
 mp.dps = 14
-
 
 class Character:
     def __init__(self, card_prop: Dict):

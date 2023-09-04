@@ -1,20 +1,21 @@
-from typing import Dict
 from abc import abstractmethod
+from typing import Dict
 
 from mpmath import mp
 
 from ....utils.excel.read_excel import EquipmentPromotion
 from ....utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty
+from .model import DamageInstanceWeapon
 
 mp.dps = 14
 
 
 class BaseWeapon:
-    def __init__(self, weapon: Dict):
-        self.weapon_id = weapon['id']
-        self.weapon_level = weapon['level']
-        self.weapon_rank = weapon['rank']
-        self.weapon_promotion = weapon['promotion']
+    def __init__(self, weapon: DamageInstanceWeapon):
+        self.weapon_id = weapon.id_
+        self.weapon_level = weapon.level
+        self.weapon_rank = weapon.rank
+        self.weapon_promotion = weapon.promotion
         self.weapon_base_attribute = {}
         self.weapon_attribute = {}
         self.get_attribute()

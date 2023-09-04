@@ -1,42 +1,44 @@
-from typing import Dict
 from abc import abstractmethod
+from typing import Dict
 
 from mpmath import mp
+
 from gsuid_core.logger import logger
 
 from ....utils.map.SR_MAP_PATH import RelicSetSkill
+from .model import DamageInstanceRelic
 
 mp.dps = 14
 
 
 class SingleRelic:
-    def __init__(self, relic: Dict):
+    def __init__(self, relic: DamageInstanceRelic):
         self.raw_relic = relic
-        self.relic_id = relic['relicId']
-        self.set_id = relic['SetId']
-        self.relic_type = relic['Type']
-        self.relic_level = relic.get('Level', 0)
+        self.relic_id = relic.relicId
+        self.set_id = relic.SetId
+        self.relic_type = relic.Type
+        self.relic_level = relic.Level
         self.relic_attribute_bonus = {}
 
     def get_attribute_(self):
         # MainAffix
         if (
-            self.raw_relic['MainAffix']['Property']
+            self.raw_relic.MainAffix.Property
             in self.relic_attribute_bonus
         ):
             self.relic_attribute_bonus[
-                self.raw_relic['MainAffix']['Property']
-            ] += mp.mpf(self.raw_relic['MainAffix']['Value'])
+                self.raw_relic.MainAffix.Property
+            ] += mp.mpf(self.raw_relic.MainAffix.Value)
         else:
             self.relic_attribute_bonus[
-                self.raw_relic['MainAffix']['Property']
-            ] = mp.mpf(self.raw_relic['MainAffix']['Value'])
+                self.raw_relic.MainAffix.Property
+            ] = mp.mpf(self.raw_relic.MainAffix.Value)
 
         # SubAffix
-        if self.raw_relic.get('SubAffixList'):
-            for sub_affix in self.raw_relic['SubAffixList']:
-                sub_affix_property = sub_affix['Property']
-                value = mp.mpf(sub_affix['Value'])
+        if self.raw_relic.SubAffixList:
+            for sub_affix in self.raw_relic.SubAffixList:
+                sub_affix_property = sub_affix.Property
+                value = mp.mpf(sub_affix.Value)
                 if sub_affix_property in self.relic_attribute_bonus:
                     self.relic_attribute_bonus[sub_affix_property] += value
                 else:

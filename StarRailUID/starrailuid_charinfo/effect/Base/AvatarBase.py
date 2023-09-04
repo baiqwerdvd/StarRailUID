@@ -1,11 +1,12 @@
 import json
 from abc import abstractmethod
 from pathlib import Path
-from typing import Dict, List
+from typing import List
 
 from mpmath import mp
 
 from ....utils.excel.read_excel import AvatarPromotion
+from .model import DamageInstanceAvatar, DamageInstanceSkill
 from .SkillBase import BaseSkills
 
 path = Path(__file__).parent.parent
@@ -16,10 +17,13 @@ mp.dps = 14
 
 
 class BaseAvatarBuff:
-    def __init__(self, char: Dict, skills: List):
-        self.extra_ability_id = []
-        for extra_ability in char['extra_ability']:
-            self.extra_ability_id.append(extra_ability['extraAbilityId'])
+    @classmethod
+    def create(cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]):
+        cls.extra_ability_id = []
+        if char.extra_ability:
+            for extra_ability in char.extra_ability:
+                cls.extra_ability_id.append(extra_ability['extraAbilityId'])
+        return cls
 
     @abstractmethod
     async def Technique(self):
@@ -35,19 +39,16 @@ class BaseAvatarBuff:
 
 
 class BaseAvatar:
-    Skill: BaseSkills
-    Buff: BaseAvatarBuff
-
-    def __init__(self, char: Dict, skills: List):
-        self.Skill = BaseSkills(char=char, skills=skills)
-        self.Buff = BaseAvatarBuff(char=char, skills=skills)
-        self.avatar_id = char['id']
-        self.avatar_level = char['level']
-        self.avatar_rank = char['rank']
-        self.avatar_element = char['element']
-        self.avatar_promotion = char['promotion']
-        self.avatar_attribute_bonus = char['attribute_bonus']
-        self.avatar_extra_ability = char['extra_ability']
+    def __init__(self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]):
+        self.Skill = BaseSkills.create(char=char, skills=skills)
+        self.Buff = BaseAvatarBuff.create(char=char, skills=skills)
+        self.avatar_id = char.id_
+        self.avatar_level = char.level
+        self.avatar_rank = char.rank
+        self.avatar_element = char.element
+        self.avatar_promotion = char.promotion
+        self.avatar_attribute_bonus = char.attribute_bonus
+        self.avatar_extra_ability = char.extra_ability
         self.avatar_attribute = {}
         self.get_attribute()
 

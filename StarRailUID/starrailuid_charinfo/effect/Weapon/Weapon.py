@@ -4,6 +4,7 @@ from typing import Dict
 
 from mpmath import mp
 
+from ..Base.model import DamageInstanceWeapon
 from ..Base.WeaponBase import BaseWeapon
 
 path = Path(__file__).parent.parent
@@ -15,7 +16,8 @@ mp.dps = 14
 
 
 class Arrows(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -34,7 +36,8 @@ class Arrows(BaseWeapon):
 
 
 class ReturntoDarkness(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -48,7 +51,8 @@ class ReturntoDarkness(BaseWeapon):
 
 
 class Swordplay(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -71,7 +75,8 @@ class Swordplay(BaseWeapon):
 
 
 class DartingArrow(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -90,7 +95,8 @@ class DartingArrow(BaseWeapon):
 
 
 class Adversarial(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -110,7 +116,8 @@ class Adversarial(BaseWeapon):
 
 
 class SubscribeforMore(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -142,7 +149,8 @@ class SubscribeforMore(BaseWeapon):
 
 
 class RiverFlowsinSpring(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -173,7 +181,8 @@ class RiverFlowsinSpring(BaseWeapon):
 
 
 class SleepLiketheDead(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -188,7 +197,8 @@ class SleepLiketheDead(BaseWeapon):
 
 
 class OnlySilenceRemains(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -210,7 +220,8 @@ class OnlySilenceRemains(BaseWeapon):
 
 
 class IntheNight(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -250,7 +261,8 @@ class IntheNight(BaseWeapon):
 
 
 class CruisingintheStellarSea(BaseWeapon):
-    def __init__(self, weapon: Dict):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
         super().__init__(weapon)
 
     async def check(self):
@@ -278,39 +290,45 @@ class CruisingintheStellarSea(BaseWeapon):
         return attribute_bonus
 
 
-class HuntWeapon(
-    CruisingintheStellarSea, IntheNight, OnlySilenceRemains, SleepLiketheDead,
+# class HuntWeapon(
+#     IntheNight, OnlySilenceRemains, SleepLiketheDead,
+#     SubscribeforMore, Swordplay, DartingArrow, Adversarial,
+#     RiverFlowsinSpring, Arrows, ReturntoDarkness
+# ):
+#     @classmethod
+#     def create(cls, weapon: DamageInstanceWeapon):
+#         if weapon.id_ == 24001:
+#             return SleepLiketheDead(weapon)
+#         if weapon.id_ == 23001:
+#             return IntheNight(weapon)
+#         if weapon.id_ == 21003:
+#             return OnlySilenceRemains(weapon)
+#         if weapon.id_ == 21024:
+#             return RiverFlowsinSpring(weapon)
+#         if weapon.id_ == 20014:
+#             return Adversarial(weapon)
+#         if weapon.id_ == 20007:
+#             return DartingArrow(weapon)
+#         if weapon.id_ == 21010:
+#             return Swordplay(weapon)
+#         if weapon.id_ == 21031:
+#             return ReturntoDarkness(weapon)
+#         if weapon.id_ == 20000:
+#             return Arrows(weapon)
+#         raise ValueError(f'未知武器id: {weapon.id_}')
+
+#     async def check_ability(self):
+#         pass
+
+
+class Weapon(
+    IntheNight, OnlySilenceRemains, SleepLiketheDead,
     SubscribeforMore, Swordplay, DartingArrow, Adversarial,
     RiverFlowsinSpring, Arrows, ReturntoDarkness
 ):
-    def __init__(self, weapon: Dict):
-        if weapon['id'] == 24001:
-            return CruisingintheStellarSea(weapon)
-        if weapon['id'] == 23001:
-            return IntheNight(weapon)
-        if weapon['id'] == 21003:
-            return OnlySilenceRemains(weapon)
-        if weapon['id'] == 21024:
-            return RiverFlowsinSpring(weapon)
-        if weapon['id'] == 20014:
-            return Adversarial(weapon)
-        if weapon['id'] == 20007:
-            return DartingArrow(weapon)
-        if weapon['id'] == 21010:
-            return Swordplay(weapon)
-        if weapon['id'] == 21031:
-            return ReturntoDarkness(weapon)
-        if weapon['id'] == 20000:
-            return Arrows(weapon)
-        raise ValueError(f'未知武器id: {weapon["id"]}')
-
-    async def check_ability(self):
-        pass
-
-
-class Weapon(HuntWeapon):
-    def __init__(self, weapon: Dict):
-        if weapon['id'] in [
+    @classmethod
+    def create(cls, weapon: DamageInstanceWeapon):
+        if weapon.id_ in [
             23001,
             21003,
             23012,
@@ -323,6 +341,24 @@ class Weapon(HuntWeapon):
             21031,
             20000,
         ]:
-            return HuntWeapon(weapon)
+            if weapon.id_ == 24001:
+                return SleepLiketheDead(weapon)
+            if weapon.id_ == 23001:
+                return IntheNight(weapon)
+            if weapon.id_ == 21003:
+                return OnlySilenceRemains(weapon)
+            if weapon.id_ == 21024:
+                return RiverFlowsinSpring(weapon)
+            if weapon.id_ == 20014:
+                return Adversarial(weapon)
+            if weapon.id_ == 20007:
+                return DartingArrow(weapon)
+            if weapon.id_ == 21010:
+                return Swordplay(weapon)
+            if weapon.id_ == 21031:
+                return ReturntoDarkness(weapon)
+            if weapon.id_ == 20000:
+                return Arrows(weapon)
+            raise ValueError(f'未知武器id: {weapon.id_}')
         else:
-            raise ValueError(f'不支持的武器种类: {weapon["id"]}')
+            raise ValueError(f'不支持的武器种类: {weapon.id_}')

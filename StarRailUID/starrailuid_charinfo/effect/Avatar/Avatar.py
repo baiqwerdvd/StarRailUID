@@ -1,8 +1,12 @@
-from typing import Dict, List
+from typing import List
 
 from mpmath import mp
 
 from ..Base.AvatarBase import BaseAvatar, BaseAvatarBuff
+from ..Base.model import (
+    DamageInstanceAvatar,
+    DamageInstanceSkill,
+)
 
 mp.dps = 14
 
@@ -10,7 +14,7 @@ mp.dps = 14
 class Seele(BaseAvatar):
     Buff: BaseAvatarBuff
 
-    def __init__(self, char: Dict, skills: List):
+    def __init__(self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]):
         super().__init__(char=char, skills=skills)
         self.eidolon_attribute = {}
         self.extra_ability_attribute = {}
@@ -35,7 +39,8 @@ class Seele(BaseAvatar):
 
 
 class Avatar(Seele):
-    def __init__(self, char: Dict, skills: List):
-        if char['id'] == 1102:
+    @classmethod
+    def create(cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]):
+        if char.id_ == 1102:
             return Seele(char, skills)
-        return None
+        raise Exception('角色不存在')

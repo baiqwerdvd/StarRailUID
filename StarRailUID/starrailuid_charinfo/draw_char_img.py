@@ -37,7 +37,7 @@ from ..utils.resource.RESOURCE_PATH import (
     SKILL_PATH,
     WEAPON_PATH,
 )
-from .mono.Character import Character
+from .effect.Base.Character import Character
 from .to_data import api_to_dict
 
 mp.dps = 14

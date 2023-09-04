@@ -5,6 +5,7 @@ from mpmath import mp
 
 from gsuid_core.logger import logger
 
+from ..Base.model import DamageInstanceRelic
 from ..Base.RelicBase import BaseRelicSetSkill, SingleRelic
 from ..utils import merge_attribute
 
@@ -450,81 +451,86 @@ class RelicSet:
     set_id_counter: List = []
     SetSkill: List
 
-    def __init__(self, relic_list: List):
-        self.SetSkill = []
+    @classmethod
+    def create(cls, relic_list: List[DamageInstanceRelic]):
+        cls.SetSkill = []
         set_id_list = []
         for relic in relic_list:
-            set_id_list.append(relic['SetId'])
+            set_id_list.append(relic.SetId)
 
-            if relic['Type'] == 1:
-                self.HEAD = SingleRelic(relic)
-            elif relic['Type'] == 2:
-                self.HAND = SingleRelic(relic)
-            elif relic['Type'] == 3:
-                self.BODY = SingleRelic(relic)
-            elif relic['Type'] == 4:
-                self.FOOT = SingleRelic(relic)
-            elif relic['Type'] == 5:
-                self.NECK = SingleRelic(relic)
-            elif relic['Type'] == 6:
-                self.OBJECT = SingleRelic(relic)
+            if relic.Type == 1:
+                cls.HEAD = SingleRelic(relic)
+            elif relic.Type == 2:
+                cls.HAND = SingleRelic(relic)
+            elif relic.Type == 3:
+                cls.BODY = SingleRelic(relic)
+            elif relic.Type == 4:
+                cls.FOOT = SingleRelic(relic)
+            elif relic.Type == 5:
+                cls.NECK = SingleRelic(relic)
+            elif relic.Type == 6:
+                cls.OBJECT = SingleRelic(relic)
             else:
-                self.Unknow = SingleRelic(relic)
+                cls.Unknow = SingleRelic(relic)
 
-        self.set_id_counter: List = Counter(set_id_list).most_common()
-        self.check_set()
-        self.get_attribute()
+        cls.set_id_counter: List = Counter(set_id_list).most_common()
+        cls.check_set()
+        cls.get_attribute()
+        return cls
 
-    def get_attribute(self):
-        for item in self.__dict__:
-            if type(self.__dict__[item]) == SingleRelic:
-                self.__dict__[item].get_attribute_()
+    @classmethod
+    def get_attribute(cls):
+        for item in cls.__dict__:
+            if type(cls.__dict__[item]) == SingleRelic:
+                itme__: SingleRelic = cls.__dict__[item]
+                itme__.get_attribute_()
 
-    def check_set(self):
-        for item in self.set_id_counter:
+    @classmethod
+    def check_set(cls):
+        for item in cls.set_id_counter:
             set_id = item[0]
             count = item[1]
             # if count == 1:
             #     break
             if set_id == 101:
-                self.SetSkill.append(Relic101(set_id, count))
+                cls.SetSkill.append(Relic101(set_id, count))
             elif set_id == 102:
-                self.SetSkill.append(Relic102(set_id, count))
+                cls.SetSkill.append(Relic102(set_id, count))
             elif set_id == 103:
-                self.SetSkill.append(Relic103(set_id, count))
+                cls.SetSkill.append(Relic103(set_id, count))
             elif set_id == 104:
-                self.SetSkill.append(Relic104(set_id, count))
+                cls.SetSkill.append(Relic104(set_id, count))
             elif set_id == 105:
-                self.SetSkill.append(Relic105(set_id, count))
+                cls.SetSkill.append(Relic105(set_id, count))
             elif set_id == 106:
-                self.SetSkill.append(Relic106(set_id, count))
+                cls.SetSkill.append(Relic106(set_id, count))
             elif set_id == 107:
-                self.SetSkill.append(Relic107(set_id, count))
+                cls.SetSkill.append(Relic107(set_id, count))
             elif set_id == 108:
-                self.SetSkill.append(Relic108(set_id, count))
+                cls.SetSkill.append(Relic108(set_id, count))
             elif set_id == 109:
-                self.SetSkill.append(Relic109(set_id, count))
+                cls.SetSkill.append(Relic109(set_id, count))
             elif set_id == 110:
-                self.SetSkill.append(Relic110(set_id, count))
+                cls.SetSkill.append(Relic110(set_id, count))
             elif set_id == 111:
-                self.SetSkill.append(Relic111(set_id, count))
+                cls.SetSkill.append(Relic111(set_id, count))
             elif set_id == 112:
-                self.SetSkill.append(Relic112(set_id, count))
+                cls.SetSkill.append(Relic112(set_id, count))
             elif set_id == 301:
-                self.SetSkill.append(Relic301(set_id, count))
+                cls.SetSkill.append(Relic301(set_id, count))
             elif set_id == 302:
-                self.SetSkill.append(Relic302(set_id, count))
+                cls.SetSkill.append(Relic302(set_id, count))
             elif set_id == 303:
-                self.SetSkill.append(Relic303(set_id, count))
+                cls.SetSkill.append(Relic303(set_id, count))
             elif set_id == 304:
-                self.SetSkill.append(Relic304(set_id, count))
+                cls.SetSkill.append(Relic304(set_id, count))
             elif set_id == 305:
-                self.SetSkill.append(Relic305(set_id, count))
+                cls.SetSkill.append(Relic305(set_id, count))
             elif set_id == 306:
-                self.SetSkill.append(Relic306(set_id, count))
+                cls.SetSkill.append(Relic306(set_id, count))
             elif set_id == 307:
-                self.SetSkill.append(Relic307(set_id, count))
+                cls.SetSkill.append(Relic307(set_id, count))
             elif set_id == 308:
-                self.SetSkill.append(Relic308(set_id, count))
+                cls.SetSkill.append(Relic308(set_id, count))
             else:
                 raise Exception(f'Unknow SetId: {set_id}')

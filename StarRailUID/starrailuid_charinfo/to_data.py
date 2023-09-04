@@ -5,11 +5,8 @@ from typing import List, Optional, Union
 from httpx import ReadTimeout
 from mpmath import mp
 
-from gsuid_core.plugins.StarRailUID.StarRailUID.sruid_utils.api.mihomo.models import (
-    Avatar,
-)
-
 from ..sruid_utils.api.mihomo import MihomoData
+from ..sruid_utils.api.mihomo.models import Avatar
 from ..sruid_utils.api.mihomo.requests import get_char_card_info
 from ..utils.error_reply import UID_HINT
 from ..utils.excel.read_excel import AvatarPromotion, EquipmentPromotion
