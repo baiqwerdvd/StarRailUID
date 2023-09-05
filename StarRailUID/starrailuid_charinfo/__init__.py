@@ -1,7 +1,5 @@
 import re
 from pathlib import Path
-
-# import json
 from typing import Tuple, cast
 
 from PIL import Image
@@ -15,17 +13,38 @@ from ..utils.error_reply import UID_HINT
 from ..utils.image.convert import convert_img
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH
 from ..utils.sr_prefix import PREFIX
-from .cal_damage import cal
-from .draw_char_img import (
-    draw_char_info_img,
-    get_char_data,
-)
+from .draw_char_img import cal, draw_char_info_img, get_char_data
 from .to_card import api_to_card
 
 sv_char_info_config = SV('sr面板设置', pm=2)
 sv_get_char_info = SV('sr面板查询', priority=10)
 sv_get_sr_original_pic = SV('sr查看面板原图', priority=5)
 sv_char_damage_cal = SV('sr伤害计算')
+
+@sv_char_damage_cal.on_prefix(f'{PREFIX}伤害计算')
+async def send_damage_msg(bot: Bot, ev: Event):
+    msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', ev.text))
+    if not msg:
+        return None
+    await bot.logger.info('开始执行[角色伤害计算]')
+    # 获取uid
+    sr_uid = await get_uid(bot, ev)
+    if sr_uid is None:
+        return await bot.send(UID_HINT)
+    await bot.logger.info(f'[角色伤害计算]uid: {sr_uid}')
+    char_name = ' '.join(re.findall('[\u4e00-\u9fa5]+', msg))
+
+    char_data = await get_char_data(sr_uid, char_name)
+    if isinstance(char_data, str):
+        return await bot.send(char_data)
+    im_list = []
+    im = await cal(char_data)
+    for info_im in im:
+        con = f'{info_im[0]} 暴击伤害: {info_im[1]}'
+        con = f'{con} 期望伤害{info_im[2]} 满配辅助末日兽伤害{info_im[3]}'
+        im_list.append(con)
+    await bot.send(im_list)
+    return None
 
 
 @sv_get_char_info.on_prefix(f'{PREFIX}查询')
@@ -75,27 +94,5 @@ async def send_card_info(bot: Bot, ev: Event):
     await bot.logger.info(f'[sr强制刷新]uid: {uid}')
     im = await api_to_card(uid)
     await bot.logger.info(f'UID{uid}获取角色数据成功!')
-    await bot.send(im)
-    return None
-
-
-@sv_char_damage_cal.on_prefix(f'{PREFIX}伤害计算')
-async def send_damage_msg(bot: Bot, ev: Event):
-    msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', ev.text))
-    if not msg:
-        return None
-    await bot.logger.info('开始执行[角色伤害计算]')
-    # 获取uid
-    sr_uid = await get_uid(bot, ev)
-    if sr_uid is None:
-        return await bot.send(UID_HINT)
-    await bot.logger.info(f'[角色伤害计算]uid: {sr_uid}')
-    char_name = ' '.join(re.findall('[\u4e00-\u9fa5]+', msg))
-
-    char_data = await get_char_data(sr_uid, char_name)
-    if isinstance(char_data, str):
-        return await bot.send(char_data)
-
-    im = await cal(char_data)
     await bot.send(im)
     return None

@@ -37,8 +37,13 @@ from ..utils.resource.RESOURCE_PATH import (
     SKILL_PATH,
     WEAPON_PATH,
 )
-from .effect.Base.Character import Character
+from .effect.Role import RoleInstance
+from .mono.Character import Character
 from .to_data import api_to_dict
+
+Excel_path = Path(__file__).parent / 'effect'
+with Path.open(Excel_path / 'Excel' / 'seele.json', encoding='utf-8') as f:
+    skill_dict = json.load(f)
 
 mp.dps = 14
 
@@ -46,7 +51,7 @@ TEXT_PATH = Path(__file__).parent / 'texture2D'
 
 bg_img = Image.open(TEXT_PATH / "bg.png")
 white_color = (213, 213, 213)
-
+yellow_color = (255, 255, 0)
 NUM_MAP = {0: '零', 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七'}
 
 RANK_MAP = {
@@ -85,9 +90,17 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
     if isinstance(char_data, str):
         return char_data
     char = await cal_char_info(char_data)
-
+    damage_len = 0
+    if char.char_id in [1102, 1204, 1107, 1213, 1006]:
+        skill_list = skill_dict[str(char.char_id)]['skilllist']
+        damage_len = len(skill_list)
+    # print(damage_len)
+    bg_height = 0
+    if damage_len > 0:
+        bg_height = 48 * (1 + damage_len) + 48
     # 放角色立绘
     char_info = bg_img.copy()
+    char_info = char_info.resize((1050, 2050 + bg_height))
     char_img = (
         Image.open(CHAR_PORTRAIT_PATH / f'{char.char_id}.png')
         .resize((1050, 1050))
@@ -571,10 +584,79 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
             fw_font_28,
             'mm',
         )
-
+    
+    if damage_len > 0:
+        damage_list = await cal(char_data)
+        # 写伤害
+        char_img_draw.text(
+            (55, 2048),
+            '角色动作',
+            yellow_color,
+            sr_font_26,
+            'lm',
+        )
+        
+        char_img_draw.text(
+            (370, 2048),
+            '暴击值',
+            yellow_color,
+            sr_font_26,
+            'lm',
+        )
+        
+        char_img_draw.text(
+            (560, 2048),
+            '期望值',
+            yellow_color,
+            sr_font_26,
+            'lm',
+        )
+        
+        char_img_draw.text(
+            (750, 2048),
+            '满配辅助末日兽',
+            yellow_color,
+            sr_font_26,
+            'lm',
+        )
+        damage_num = 0
+        for damage_info in damage_list:
+            damage_num = damage_num + 1
+            char_img_draw.text(
+                (55, 2048 + damage_num * 48),
+                f'{damage_info[0]}',
+                white_color,
+                sr_font_26,
+                'lm',
+            )
+            damage1 = math.floor(damage_info[1])  # type: ignore
+            char_img_draw.text(
+                (370, 2048 + damage_num * 48),
+                f'{damage1}',
+                white_color,
+                sr_font_26,
+                'lm',
+            )
+            damage2 = math.floor(damage_info[2])  # type: ignore
+            char_img_draw.text(
+                (560, 2048 + damage_num * 48),
+                f'{damage2}',
+                white_color,
+                sr_font_26,
+                'lm',
+            )
+            damage3 = math.floor(damage_info[3])  # type: ignore
+            char_img_draw.text(
+                (750, 2048 + damage_num * 48),
+                f'{damage3}',
+                white_color,
+                sr_font_26,
+                'lm',
+            )
+    
     # 写底层文字
     char_img_draw.text(
-        (525, 2022),
+        (525, 2022 + bg_height),
         '--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--',
         (255, 255, 255),
         fw_font_28,
@@ -632,6 +714,30 @@ async def get_char_data(
 
     with Path.open(path, encoding='utf8') as fp:
         return json.load(fp)
+
+
+async def cal(char_data: Dict):
+    char = await cal_char_info(char_data)
+
+    skill_info_list = []
+    if char.char_id in [1102, 1204, 1107, 1213, 1006]:
+        if char.char_id == 1213:
+            for skill_type in ['Normal', 'Normal1', 'Normal2', 'Normal3', 'Ultra']:
+                role = RoleInstance(char)
+                im_tmp = await role.cal_damage(skill_type)
+                skill_info_list.append(im_tmp)
+        else:
+            for skill_type in ['Normal', 'BPSkill', 'Ultra']:
+                role = RoleInstance(char)
+                im_tmp = await role.cal_damage(skill_type)
+                skill_info_list.append(im_tmp)
+        if char.char_id in [1204, 1107]:
+            role = RoleInstance(char)
+            im_tmp = await role.cal_damage('Talent')
+            skill_info_list.append(im_tmp)
+        return skill_info_list
+    else:
+        return '角色伤害计算未完成'
 
 
 async def get_relic_score(

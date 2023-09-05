@@ -1,9 +1,8 @@
 from collections import Counter
 from typing import Dict, List
 
-from mpmath import mp
-
 from gsuid_core.logger import logger
+from mpmath import mp
 
 from ..Base.model import DamageInstanceRelic
 from ..Base.RelicBase import BaseRelicSetSkill, SingleRelic
@@ -40,7 +39,10 @@ class Relic102(BaseRelicSetSkill):
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
-            pass
+            a_dmg = attribute_bonus.get('NormalDmgAdd', 0)
+            attribute_bonus['NormalDmgAdd'] = a_dmg + mp.mpf(
+                0.10000000018626451
+            )
         return attribute_bonus
 
 
@@ -164,12 +166,12 @@ class Relic108(BaseRelicSetSkill):
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
+            logger.info(attribute_bonus)
             ignore_defence = attribute_bonus.get('ignore_defence', 0)
             attribute_bonus['ignore_defence'] = (
                 ignore_defence + mp.mpf(0.10000000009313226) * 2
             )
         return attribute_bonus
-
 
 class Relic109(BaseRelicSetSkill):
     def __init__(self, set_id: int, count: int):
@@ -184,12 +186,12 @@ class Relic109(BaseRelicSetSkill):
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
+            logger.info(attribute_bonus)
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
                 0.20000000018626451
             )
         return attribute_bonus
-
 
 class Relic110(BaseRelicSetSkill):
     def __init__(self, set_id: int, count: int):
@@ -308,14 +310,14 @@ class Relic303(BaseRelicSetSkill):
         super().__init__(set_id, count)
 
     async def check(self, base_attr: Dict, attribute_bonus: Dict):
-        pass
+        # 提高装备者等同于当前效果命中25%的攻击力,最多提高25%
         return True
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             merged_attr = await merge_attribute(base_attr, attribute_bonus)
-            status_probability = merged_attr.get('StatusProbability', 0)
+            status_probability = merged_attr.get('StatusProbabilityBase', 0)
             # 提高装备者等同于当前效果命中25%的攻击力,最多提高25%
             attribute_bonus['AttackAddedRatio'] = attack_added_ratio + min(
                 mp.mpf(0.25000000023283064), status_probability / mp.mpf(0.25)
@@ -387,8 +389,8 @@ class Relic306(BaseRelicSetSkill):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
             q_dmg = attribute_bonus.get('UltraDmgAdd', 0)
             attribute_bonus['UltraDmgAdd'] = q_dmg + mp.mpf(0.1500000001396984)
-            a3_dmg = attribute_bonus.get('Follow-UpAttackDmgAdd', 0)
-            attribute_bonus['Follow-UpDmgAdd'] = a3_dmg + mp.mpf(
+            a3_dmg = attribute_bonus.get('TalentDmgAdd', 0)
+            attribute_bonus['TalentDmgAdd'] = a3_dmg + mp.mpf(
                 0.1500000001396984
             )
         return attribute_bonus
@@ -438,6 +440,31 @@ class Relic308(BaseRelicSetSkill):
             logger.info('ModifyActionDelay')
         return attribute_bonus
 
+class Relic309(BaseRelicSetSkill):
+    def __init__(self, set_id: int, count: int):
+        super().__init__(set_id, count)
+
+    async def check(self, base_attr: Dict, attribute_bonus: Dict):
+        '''
+        当装备者的当前暴击率大于等于70%时，普攻和战技造成的伤害提高20%。
+        '''
+        merged_attr = await merge_attribute(base_attr, attribute_bonus)
+        if merged_attr['CriticalChanceBase'] >= mp.mpf(0.7):
+            logger.info('Relic309 check success')
+            return True
+        return None
+
+    async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
+        if self.pieces2 and await self.check(base_attr, attribute_bonus):
+            a_dmg = attribute_bonus.get('NormalDmgAdd', 0)
+            attribute_bonus['NormalDmgAdd'] = a_dmg + mp.mpf(
+                0.20000000018626451
+            )
+            a2_dmg = attribute_bonus.get('BPSkillDmgAdd', 0)
+            attribute_bonus['BPSkillDmgAdd'] = a2_dmg + mp.mpf(
+                0.20000000018626451
+            )
+        return attribute_bonus
 
 class RelicSet:
     HEAD: SingleRelic
@@ -532,5 +559,7 @@ class RelicSet:
                 cls.SetSkill.append(Relic307(set_id, count))
             elif set_id == 308:
                 cls.SetSkill.append(Relic308(set_id, count))
+            elif set_id == 309:
+                cls.SetSkill.append(Relic309(set_id, count))
             else:
                 raise Exception(f'Unknow SetId: {set_id}')

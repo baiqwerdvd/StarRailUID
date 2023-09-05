@@ -1,7 +1,7 @@
+from gsuid_core.logger import logger
 from mpmath import mp
 
-from gsuid_core.logger import logger
-
+from ..mono.Character import Character
 from .Avatar.Avatar import Avatar
 from .Base.model import DamageInstance
 from .Relic.Relic import RelicSet, SingleRelic
@@ -12,7 +12,7 @@ mp.dps = 14
 
 
 class RoleInstance:
-    def __init__(self, raw_data):
+    def __init__(self, raw_data: Character):
         self.raw_data = DamageInstance(raw_data)
 
         self.avatar = Avatar.create(self.raw_data.avatar, self.raw_data.skill)
@@ -30,7 +30,7 @@ class RoleInstance:
 
     def cal_role_base_attr(self):
         logger.info('cal_role_base_attr')
-        avatar_attribute = self.avatar.avatar_attribute
+        avatar_attribute = self.avatar.__dict__['avatar_attribute']
         logger.info(avatar_attribute)
         for attribute in avatar_attribute:
             if attribute in self.base_attr:
@@ -38,7 +38,7 @@ class RoleInstance:
             else:
                 self.base_attr[attribute] = avatar_attribute[attribute]
 
-        weapon_attribute = self.weapon.weapon_base_attributes
+        weapon_attribute = self.weapon.__dict__['weapon_base_attribute']
         for attribute in weapon_attribute:
             if attribute in self.base_attr:
                 self.base_attr[attribute] += weapon_attribute[attribute]
@@ -113,134 +113,275 @@ class RoleInstance:
     def cal_weapon_attr_add(self):
         if self.attribute_bonus is None:
             raise Exception('attribute_bonus is None')
-        for attribute in self.weapon.weapon_attribute:
+        for attribute in self.weapon.__dict__['weapon_attribute']:
             if attribute in self.attribute_bonus:
                 self.attribute_bonus[
                     attribute
-                ] += self.weapon.weapon_attribute[attribute]
+                ] += self.weapon.__dict__['weapon_attribute'][attribute]
             else:
-                self.attribute_bonus[attribute] = self.weapon.weapon_attribute[
+                self.attribute_bonus[
                     attribute
-                ]
+                ] = self.weapon.__dict__['weapon_attribute'][attribute]
 
     async def cal_damage(self, skill_type):
+        logger.info('base_attr')
         logger.info(self.base_attr)
+        logger.info('attribute_bonus')
         logger.info(self.attribute_bonus)
         # 检查武器战斗生效的buff
         logger.info('检查武器战斗生效的buff')
+        Ultra_Use = self.avatar.Ultra_Use()
+        logger.info('Ultra_Use')
+        logger.info(Ultra_Use)
         if self.attribute_bonus is None:
             raise Exception('attribute_bonus is None')
         self.attribute_bonus = await self.weapon.weapon_ability(
-            self.base_attr, self.attribute_bonus
+            Ultra_Use, self.base_attr, self.attribute_bonus
         )
+        logger.info(self.attribute_bonus)
         logger.info('检查遗器套装战斗生效的buff')
         for set_skill in self.relic_set.SetSkill:
             self.attribute_bonus = await set_skill.set_skill_ability(
                 self.base_attr, self.attribute_bonus
             )
-        logger.info('merge_attribute')
-        logger.info(self.base_attr)
         if self.attribute_bonus is None:
             raise Exception('attribute_bonus is None')
         merged_attr = await merge_attribute(
             self.base_attr, self.attribute_bonus
         )
-        logger.info(merged_attr)
-        attack = merged_attr['attack']
-        logger.info(f'攻击力: {attack}')
-        # 模拟 同属性弱点 同等级 的怪物
-        # 韧性条减伤
-        enemy_damage_reduction = 0.1
-        damage_reduction = 1 - enemy_damage_reduction
-        logger.info(f'韧性区: {damage_reduction}')
-        # 抗性区
-        enemy_status_resistance = 0
-        for attr in merged_attr:
-            if attr.__contains__('ResistancePenetration'):
-                # 先默认触发
-                enemy_status_resistance = merged_attr[attr]
-        resistance_area = 1 - (0 - enemy_status_resistance)
-        logger.info(f'抗性区: {resistance_area}')
-
-        # 防御区
-        # 检查是否有 ignore_defence
-        logger.info('检查是否有 ignore_defence')
-        ignore_defence = 1
-        for attr in merged_attr:
-            if attr == 'ignore_defence':
-                ignore_defence = 1 - merged_attr[attr]
-                break
-        logger.info(f'ignore_defence {ignore_defence}')
-        enemy_defence = (self.avatar.avatar_level * 10 + 200) * ignore_defence
-        defence_multiplier = (self.avatar.avatar_level * 10 + 200) / (
-            self.avatar.avatar_level * 10 + 200 + enemy_defence
-        )
-        logger.info(f'防御区: {defence_multiplier}')
-
+        
+        skill_info = self.avatar.Skill_Info(skill_type)
+        
         # 技能区
         if skill_type == 'Normal':
             skill_multiplier = self.avatar.Normal()
         elif skill_type == 'BPSkill':
             skill_multiplier = self.avatar.BPSkill()
         elif skill_type == 'Ultra':
-            skill_multiplier = self.avatar.Ultra()
+            if self.raw_data.avatar.id_ == 1107:
+                skill_multiplier = self.avatar.Talent() + self.avatar.Ultra()
+            elif self.raw_data.avatar.id_ == 1006 and self.raw_data.avatar.rank >= 4:
+                skill_multiplier = self.avatar.Ultra() + 1
+            else:
+                skill_multiplier = self.avatar.Ultra()
+        elif skill_type == 'Talent':
+            skill_multiplier = self.avatar.Talent()
         else:
-            raise Exception('skill type error')
-        logger.info(f'技能区: {skill_multiplier}')
-
-        # 增伤区
-        # TODO: 这里计算只考虑了希儿,需要重写 injury_area = self.avatar.Talent()
-        injury_area = self.avatar.Talent()
-        # 检查是否有对某一个技能的伤害加成
-        logger.info('检查是否有对某一个技能的伤害加成')
-        for attr in merged_attr:
-            if attr.__contains__('DmgAdd'):
-                attr_name = attr.split('DmgAdd')[0]
-                if attr_name == skill_type:
-                    logger.info(
-                        f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 伤害加成'
+            if self.raw_data.avatar.id_ == 1213:
+                skill_multiplier = self.avatar.Normalnum(skill_type)
+                skill_type = 'Normal'
+            else:
+                raise Exception('skill type error')
+        
+        logger.info(f'技能区总: {skill_multiplier}')
+        
+        skill_info_list = []
+        #技能类型为攻击
+        if skill_info[0] == 'attack':
+            skill_multiplier = skill_multiplier/skill_info[2]
+            logger.info(f'技能区单段: {skill_multiplier}')
+            attack = merged_attr['attack']
+            logger.info(f'攻击力: {attack}')
+            # 模拟 同属性弱点 同等级 的怪物
+            # 韧性条减伤
+            enemy_damage_reduction = 0.1
+            damage_reduction = 1 - enemy_damage_reduction
+            logger.info(f'韧性区: {damage_reduction}')
+            # 抗性区
+            enemy_status_resistance = 0
+            for attr in merged_attr:
+                if attr.__contains__('ResistancePenetration'):
+                    # 先默认触发
+                    enemy_status_resistance = merged_attr[attr]
+            resistance_area = 1 - (0 - enemy_status_resistance)
+            if self.raw_data.avatar.id_ == 1213:
+                if skill_info[2] == 7: 
+                    Normal_Penetration = merged_attr.get(
+                        'Normal_ImaginaryResistancePenetration', 0
                     )
-                    injury_area += merged_attr[attr]
-        # 检查球有无符合属性的伤害加成
-        logger.info('检查球有无符合属性的伤害加成')
-        for attr in merged_attr:
-            if attr.__contains__('AddedRatio'):
-                attr_name = attr.split('AddedRatio')[0]
-                if attr_name == self.avatar.avatar_element:
-                    logger.info(
-                        f'{attr} 对 {self.avatar.avatar_element} '
-                        f'有 {merged_attr[attr]} 伤害加成'
-                    )
-                    injury_area += merged_attr[attr]
-        injury_area += 1
-        logger.info(f'增伤区: {injury_area}')
+                    resistance_area = resistance_area - (0 - Normal_Penetration)
+            logger.info(f'抗性区: {resistance_area}')
 
-        # 爆伤区
-        logger.info('检查是否有爆伤加成')
-        logger.info(f'{merged_attr}')
-        critical_damage_base = merged_attr['CriticalDamageBase']
-        # 检查是否有对特定技能的爆伤加成
-        # Ultra_CriticalChance
-        for attr in merged_attr:
-            if attr.__contains__('_CriticalChance'):
-                skill_name = attr.split('_')[0]
-                if skill_name == skill_type:
-                    logger.info(
-                        f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 爆伤加成'
-                    )
-                    critical_damage_base += merged_attr[attr]
-        critical_damage = critical_damage_base + 1
-        logger.info(f'暴伤: {critical_damage}')
+            # 防御区
+            # 检查是否有 ignore_defence
+            logger.info('检查是否有 ignore_defence')
+            ignore_defence = 1
+            for attr in merged_attr:
+                if attr == 'ignore_defence':
+                    ignore_defence = 1 - merged_attr[attr]
+                    break
+            logger.info(f'ignore_defence {ignore_defence}')
+            enemy_defence = (self.avatar.avatar_level * 10 + 200) * ignore_defence
+            defence_multiplier = (self.avatar.avatar_level * 10 + 200) / (
+                self.avatar.avatar_level * 10 + 200 + enemy_defence
+            )
+            logger.info(f'防御区: {defence_multiplier}')
 
-        damage = (
-            attack
-            * skill_multiplier
-            * injury_area
-            * defence_multiplier
-            * resistance_area
-            * damage_reduction
-            * critical_damage
-        )
-        im = f'{skill_type} 伤害: {damage}'
-        logger.info(f'{skill_type} 伤害: {damage}')
-        return im
+            # 增伤区
+            # TODO: 这里计算只考虑了希儿,需要重写 injury_area = self.avatar.Talent_add()
+            injury_area = self.avatar.Talent_add()
+            # 检查是否有对某一个技能的伤害加成
+            logger.info('检查是否有对某一个技能的伤害加成')
+            for attr in merged_attr:
+                if attr.__contains__('DmgAdd'):
+                    attr_name = attr.split('DmgAdd')[0]
+                    if attr_name == skill_type:
+                        logger.info(
+                            f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 伤害加成'
+                        )
+                        injury_area += merged_attr[attr]
+            # 检查有无符合属性的伤害加成
+            logger.info('检查球有无符合属性的伤害加成')
+            element_area = 0
+            for attr in merged_attr:
+                if attr.__contains__('AddedRatio'):
+                    attr_name = attr.split('AddedRatio')[0]
+                    if attr_name == self.avatar.avatar_element or attr_name == 'AllDamage':
+                        logger.info(
+                            f'{attr} 对 {self.avatar.avatar_element} '
+                            f'有 {merged_attr[attr]} 伤害加成'
+                        )
+                        if attr_name == self.avatar.avatar_element:
+                            element_area += merged_attr[attr]
+                        injury_area += merged_attr[attr]
+            injury_area += 1
+            logger.info(f'增伤区: {injury_area}')
+            
+            # 易伤区
+            logger.info('检查是否有易伤加成')
+            logger.info(f'{merged_attr}')
+            damage_ratio = merged_attr.get('DmgRatio', 0)
+            # 检查是否有对特定技能的易伤加成
+            # Talent_DmgRatio
+            for attr in merged_attr:
+                if attr.__contains__('_DmgRatio'):
+                    skill_name = attr.split('_')[0]
+                    if skill_name == skill_type:
+                        logger.info(
+                            f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 易伤加成'
+                        )
+                        damage_ratio += merged_attr[attr]
+            damage_ratio = damage_ratio + 1
+            logger.info(f'易伤: {damage_ratio}')
+            
+            # 爆伤区
+            logger.info('检查是否有爆伤加成')
+            logger.info(f'{merged_attr}')
+            critical_damage_base = merged_attr['CriticalDamageBase']
+            # 检查是否有对特定技能的爆伤加成
+            # Ultra_CriticalChance
+            for attr in merged_attr:
+                if attr.__contains__('_CriticalChance'):
+                    skill_name = attr.split('_')[0]
+                    if skill_name == skill_type:
+                        logger.info(
+                            f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 爆伤加成'
+                        )
+                        critical_damage_base += merged_attr[attr]
+            critical_damage = critical_damage_base + 1
+            logger.info(f'暴伤: {critical_damage}')
+            
+             # 暴击区
+            critical_chance_base = min(1, merged_attr['CriticalChanceBase'])
+            logger.info(f'暴击: {critical_chance_base}')
+            
+            #期望伤害
+            qiwang_damage = (critical_chance_base * critical_damage_base) + 1
+            logger.info(f'暴击期望: {qiwang_damage}')
+            damage_cd_z = 0
+            damage_qw_z = 0
+            damage_tz_z = 0
+            attack_tz = 0
+            injury_add = 0
+            critical_damage_add = 0
+            for i in range(1, skill_info[2]+1):
+                logger.info(f'段数: {i}')
+                injury_add = 0
+                critical_damage_add = 0
+                if self.raw_data.avatar.id_ == 1213:
+                    injury_add = self.avatar.Talent()
+                    critical_damage_add = self.avatar.BPSkill()
+                    normal_buff = merged_attr.get('Normal_buff', 0)
+                    if i >= 4:
+                        normal_buff = min(4, int(normal_buff + (i-3)))
+                    if normal_buff >= 1:
+                        critical_damage_add = normal_buff * critical_damage_add
+                    atk_buff = merged_attr.get('Atk_buff', 0)
+                    atk_buff = min(10, int((i - 1)*(atk_buff + 1)))
+                    injury_add = atk_buff * injury_add
+                    qiwang_damage = (
+                        (critical_chance_base * 
+                        (critical_damage_base + critical_damage_add)) 
+                        + 1
+                    )
+                    
+                damage_cd = (
+                    attack
+                    * skill_multiplier
+                    * damage_ratio
+                    * (injury_area + injury_add)
+                    * defence_multiplier
+                    * resistance_area
+                    * damage_reduction
+                    * (critical_damage + critical_damage_add)
+                )
+                damage_cd_z += damage_cd
+                damage_qw = (
+                    attack
+                    * skill_multiplier
+                    * damage_ratio
+                    * (injury_area + injury_add)
+                    * defence_multiplier
+                    * resistance_area
+                    * damage_reduction
+                    * qiwang_damage
+                )
+                damage_qw_z += damage_qw
+                
+                attr_value_tz: float= self.base_attr.get('attack', 0)
+                attack_tz = attr_value_tz + attr_value_tz * (
+                    1 + self.attribute_bonus['AttackAddedRatio'] + 2.144
+                ) + self.attribute_bonus['AttackDelta']
+                injury_add_tz = 0
+                if self.avatar.avatar_element == 'Imaginary':
+                    injury_add_tz = 0.12
+                damage_tz = (
+                    attack_tz
+                    * skill_multiplier
+                    * damage_ratio
+                    * (injury_area + injury_add + injury_add_tz + 2.326)
+                    * defence_multiplier
+                    * resistance_area
+                    * damage_reduction
+                    * (critical_damage + critical_damage_add + 1.594)
+                    * 10
+                )
+                
+                damage_tz_z += damage_tz
+                logger.info(
+                    f'{skill_info[1]}第{i}段 暴击伤害: {damage_cd} 期望伤害{damage_qw}'
+                )
+            
+            if self.avatar.avatar_element == 'Thunder':
+                element_area = 0
+            damage_tz_fj = (
+                attack_tz
+                * 0.44
+                * damage_ratio
+                * (injury_area + injury_add + 2.326 + element_area)
+                * defence_multiplier
+                * resistance_area
+                * damage_reduction
+                * (critical_damage + critical_damage_add + 1.594)
+                * 10
+            )
+            damage_tz_z += damage_tz_fj
+            skill_info_list = []
+            skill_info_list.append(skill_info[1])
+            skill_info_list.append(damage_cd_z)
+            skill_info_list.append(damage_qw_z)
+            skill_info_list.append(damage_tz_z)
+            logger.info(
+                f'{skill_info[1]} 暴击伤害: {damage_cd_z} 期望伤害{damage_qw_z}'
+            )
+        return skill_info_list

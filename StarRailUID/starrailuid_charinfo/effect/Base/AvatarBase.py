@@ -86,13 +86,24 @@ class BaseAvatar:
             promotion["BaseAggro"]['Value']
         )
 
+    def Skill_Info(self, skill_type):
+        skill_info = skill_dict[str(self.avatar_id)]['skilllist'][skill_type]
+        return skill_info
+    
+    def Normalnum(self, skill_type):
+        return mp.mpf(
+            skill_dict[str(self.avatar_id)][skill_type][
+                self.Skill.Normal_.level - 1
+            ]
+        )
+    
     def Normal(self):
         return mp.mpf(
             skill_dict[str(self.avatar_id)]['Normal'][
                 self.Skill.Normal_.level - 1
             ]
         )
-
+    
     def BPSkill(self):
         return mp.mpf(
             skill_dict[str(self.avatar_id)]['BPSkill'][
@@ -111,8 +122,33 @@ class BaseAvatar:
         return mp.mpf(
             skill_dict[str(self.avatar_id)]['Maze'][self.Skill.Maze_.level - 1]
         )
-
+    
     def Talent(self):
         return mp.mpf(
-            skill_dict[str(self.avatar_id)][''][self.Skill.Talent_.level - 1]
+            skill_dict[str(self.avatar_id)]['Talent'][self.Skill.Talent_.level - 1]
         )
+    
+    def BPSkill_d(self):
+        return mp.mpf(
+            skill_dict[str(self.avatar_id)]['BPSkill_D'][
+                self.Skill.BPSkill_.level - 1
+            ]
+        )
+    
+    def Ultra_d(self):
+        return mp.mpf(
+            skill_dict[str(self.avatar_id)]['Ultra_D'][
+                self.Skill.Ultra_.level - 1
+            ]
+        )
+    
+    def Talent_add(self):
+        if self.avatar_id in [1102]:
+            return mp.mpf(
+                skill_dict[str(self.avatar_id)]['Talent'][self.Skill.Talent_.level - 1]
+            )
+        else:
+            return mp.mpf(0)
+    
+    def Ultra_Use(self):
+        return skill_dict[str(self.avatar_id)]['Ultra_Use'][0]

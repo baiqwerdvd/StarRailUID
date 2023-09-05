@@ -24,7 +24,7 @@ class Arrows(BaseWeapon):
         # 装备者消灭敌方目标
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChance', 0)
             attribute_bonus['CriticalChance'] = critical_chance_base + mp.mpf(
@@ -44,7 +44,7 @@ class ReturntoDarkness(BaseWeapon):
         # 装备者消灭敌方目标
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             pass
         return attribute_bonus
@@ -59,7 +59,7 @@ class Swordplay(BaseWeapon):
         # 装备者消灭敌方目标
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
                 'AllDamageAddedRatio', 0
@@ -83,7 +83,7 @@ class DartingArrow(BaseWeapon):
         # 装备者消灭敌方目标
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
@@ -103,7 +103,7 @@ class Adversarial(BaseWeapon):
         # 装备者消灭敌方目标
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
             attribute_bonus['SpeedAddedRatio'] = speed_added_ratio + mp.mpf(
@@ -124,7 +124,7 @@ class SubscribeforMore(BaseWeapon):
         # 装备者的当前能量值等于其能量上限
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
             attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
@@ -158,7 +158,7 @@ class RiverFlowsinSpring(BaseWeapon):
         # 当装备者受到伤害后该效果失效,下个回合结束时该效果恢复。
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
             attribute_bonus['SpeedAddedRatio'] = speed_added_ratio + mp.mpf(
@@ -190,7 +190,7 @@ class SleepLiketheDead(BaseWeapon):
         # 该效果每3回合可以触发1次。
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             return attribute_bonus
         return None
@@ -205,7 +205,7 @@ class OnlySilenceRemains(BaseWeapon):
         # 当场上的敌方目标数量小于等于2时
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
             attribute_bonus[
@@ -218,6 +218,35 @@ class OnlySilenceRemains(BaseWeapon):
             return attribute_bonus
         return None
 
+#拂晓之前
+class BeforeDawn(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        pass
+
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
+        attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
+            mp.mpf(
+                weapon_effect['23010']['Param']['e_dmg'][self.weapon_rank - 1]
+            )
+        )
+        ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
+        attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
+            mp.mpf(
+                weapon_effect['23010']['Param']['r_dmg'][self.weapon_rank - 1]
+            )
+        )
+        talent_dmg_add = attribute_bonus.get('TalentDmgAdd', 0)
+        attribute_bonus['TalentDmgAdd'] = talent_dmg_add + (
+            mp.mpf(
+                weapon_effect['23010']['Param']['t_dmg'][self.weapon_rank - 1]
+            )
+        )
+        return attribute_bonus
 
 class IntheNight(BaseWeapon):
     weapon_base_attributes: Dict
@@ -227,8 +256,13 @@ class IntheNight(BaseWeapon):
     async def check(self):
         pass
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
-        char_speed = mp.mpf(base_attr.get('speed', 0))
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        char_speed = (
+            (mp.mpf(base_attr.get('speed', 0)) 
+            + mp.mpf(attribute_bonus.get('SpeedDelta', 0))) 
+            * (mp.mpf(attribute_bonus.get('SpeedAddedRatio', 0))+1)
+        )
+        print(char_speed)
         count_ = min(6, int(mp.floor((char_speed - 100) / 10)))
         normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
         attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
@@ -270,7 +304,7 @@ class CruisingintheStellarSea(BaseWeapon):
         # 装备者消灭敌方目标
         return True
 
-    async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
             attribute_bonus[
@@ -289,16 +323,477 @@ class CruisingintheStellarSea(BaseWeapon):
             )
         return attribute_bonus
 
+class SeriousnessofBreakfast(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #使装备者造成伤害提高12%
+        #每消灭1个敌方目标，装备者的攻击力提高4%，该效果最多叠加3层。
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        all_damage_added_ratio = attribute_bonus.get(
+            'AllDamageAddedRatio', 0
+        )
+        attribute_bonus[
+            'AllDamageAddedRatio'
+        ] = all_damage_added_ratio + mp.mpf(
+            weapon_effect['21027']['Param']['AllDamageAddedRatio'][
+                self.weapon_rank - 1
+            ]
+        )   
+        if await self.check():
+            attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+                weapon_effect['21027']['Param']['AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            ) * 3
+        return attribute_bonus
 
-# class HuntWeapon(
-#     IntheNight, OnlySilenceRemains, SleepLiketheDead,
-#     SubscribeforMore, Swordplay, DartingArrow, Adversarial,
-#     RiverFlowsinSpring, Arrows, ReturntoDarkness
-# ):
-#     @classmethod
-#     def create(cls, weapon: DamageInstanceWeapon):
+#银河铁道之夜
+class NightontheMilkyWay(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #场上每有1个敌方目标，使装备者的攻击力提高9%
+        #敌方目标的弱点被击破时，装备者造成的伤害提高30%
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        if await self.check():
+            attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+                weapon_effect['23000']['Param']['AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+            all_damage_added_ratio = attribute_bonus.get(
+                'AllDamageAddedRatio', 0
+            )
+            attribute_bonus[
+                'AllDamageAddedRatio'
+            ] = all_damage_added_ratio + mp.mpf(
+                weapon_effect['23000']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+            return attribute_bonus
+        return None
+
+#今日亦是和平的一日
+class TodayIsAnotherPeacefulDay(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #根据装备者的能量上限，提高装备者造成的伤害：每点能量提高0.2%，最多计入160点
+        pass
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        all_damage_added_ratio = attribute_bonus.get(
+            'AllDamageAddedRatio', 0
+        )
+        attribute_bonus[
+            'AllDamageAddedRatio'
+        ] = all_damage_added_ratio + mp.mpf(
+            weapon_effect['21034']['Param']['AllDamageAddedRatio'][
+                self.weapon_rank - 1
+            ]
+        ) * Ultra_Use
+        return attribute_bonus
+
+#天才们的休憩
+class GeniusesRepose(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #使装备者攻击力提高16%
+        #当装备者消灭敌方目标后，暴击伤害提高24%
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+        # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+            # weapon_effect['21020']['Param']['AttackAddedRatio'][
+                # self.weapon_rank - 1
+            # ]
+        # )
+        if await self.check():
+            critical_chance_base  = attribute_bonus.get('CriticalDamageBase', 0)
+            attribute_bonus['CriticalDamageBase'] = critical_chance_base + (
+                mp.mpf(
+                    weapon_effect['21020']['Param']['CriticalDamageBase'][self.weapon_rank - 1]
+                )
+            )
+        return attribute_bonus
+
+#别让世界静下来
+class MaketheWorldClamor(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #终结技造成的伤害提高32%。
+        pass
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
+        attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
+            mp.mpf(
+                weapon_effect['21013']['Param']['r_dmg'][self.weapon_rank - 1]
+            )
+        )
+        return attribute_bonus
+
+#「我」的诞生
+class TheBirthoftheSelf(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #追加攻击造成的伤害提高30%
+        #若该敌方目标当前生命值百分比小于等于50%，则追加攻击造成的伤害额外提高30%。
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        if await self.check():
+            talent_dmg_add = attribute_bonus.get('TalentDmgAdd', 0)
+            attribute_bonus['TalentDmgAdd'] = talent_dmg_add + (
+                mp.mpf(
+                    weapon_effect['21006']['Param']['t_dmg'][self.weapon_rank - 1]
+                )
+            )
+            return attribute_bonus
+        return None
+    
+#秘密誓心
+class ASecretVow(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #造成的伤害提高20%
+        #对当前生命值百分比大于等于装备者自身当前生命值百分比的敌方目标造成的伤害额外提高20%
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        if await self.check():
+            all_damage_added_ratio = attribute_bonus.get(
+                'AllDamageAddedRatio', 0
+            )
+            attribute_bonus[
+                'AllDamageAddedRatio'
+            ] = all_damage_added_ratio + mp.mpf(
+                weapon_effect['21012']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+            return attribute_bonus
+        return None
+
+#比阳光更明亮的
+class BrighterThantheSun(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #使装备者的暴击率提高18%
+        #当装备者施放普攻时，获得1层【龙吟】，持续2回合。每层【龙吟】使装备者的攻击力提高18%,【龙吟】最多叠加2层
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        if await self.check():
+            attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+                weapon_effect['23015']['Param']['AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            ) * 2
+        return attribute_bonus
+
+#到不了的彼岸
+class TheUnreachableSide(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #装备者的暴击率提高30%，生命上限提高30%
+        #当装备者受到攻击或装备者消耗自身生命值后，造成的伤害提高40%
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        # critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
+        # attribute_bonus[
+            # 'CriticalChanceBase'
+        # ] = critical_chance_base + mp.mpf(
+            # weapon_effect['23009']['Param']['CriticalChance'][
+                # self.weapon_rank - 1
+            # ]
+        # )
+        # hp_added_ratio = attribute_bonus.get('HPAddedRatio', 0)
+        # attribute_bonus[
+            # 'HPAddedRatio'
+        # ] = hp_added_ratio + mp.mpf(
+            # weapon_effect['23009']['Param']['HPAddedRatio'][
+                # self.weapon_rank - 1
+            # ]
+        # )
+        if await self.check():
+            all_damage_added_ratio = attribute_bonus.get(
+                'AllDamageAddedRatio', 0
+            )
+            attribute_bonus[
+                'AllDamageAddedRatio'
+            ] = all_damage_added_ratio + mp.mpf(
+                weapon_effect['23009']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+#无可取代的东西
+class SomethingIrreplaceable(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #使装备者的攻击力提高24%
+        #当装备者消灭敌方目标或受到攻击后，造成的伤害提高24%
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+        # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+            # weapon_effect['23002']['Param']['AttackAddedRatio'][
+                # self.weapon_rank - 1
+            # ]
+        # )
+        if await self.check():
+            all_damage_added_ratio = attribute_bonus.get(
+                'AllDamageAddedRatio', 0
+            )
+            attribute_bonus[
+                'AllDamageAddedRatio'
+            ] = all_damage_added_ratio + mp.mpf(
+                weapon_effect['23002']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+#记一位星神的陨落
+class OntheFallofanAeon(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #当装备者施放攻击时，使装备者本场战斗中的攻击力提高8%，该效果最多叠加4层
+        #当装备者击破敌方目标弱点后，造成的伤害提高12%
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        if await self.check():
+            attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+                weapon_effect['24000']['Param']['AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            ) * 4
+            all_damage_added_ratio = attribute_bonus.get(
+                'AllDamageAddedRatio', 0
+            )
+            attribute_bonus[
+                'AllDamageAddedRatio'
+            ] = all_damage_added_ratio + mp.mpf(
+                weapon_effect['24000']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+#无处可逃
+class NowheretoRun(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #使装备者的攻击力提高24%
+        pass
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+        # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+            # weapon_effect['21033']['Param']['AttackAddedRatio'][
+                # self.weapon_rank - 1
+            # ]
+        # )
+        return attribute_bonus
+
+#汪！散步时间！
+class WoofWalkTime(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #使装备者的攻击力提高10%
+        #对处于灼烧或裂伤状态的敌方目标造成的伤害提高16%
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+        # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+            # weapon_effect['21026']['Param']['AttackAddedRatio'][
+                # self.weapon_rank - 1
+            # ]
+        # )
+        if await self.check():
+            all_damage_added_ratio = attribute_bonus.get(
+                'AllDamageAddedRatio', 0
+            )
+            attribute_bonus[
+                'AllDamageAddedRatio'
+            ] = all_damage_added_ratio + mp.mpf(
+                weapon_effect['21026']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+#在蓝天下
+class UndertheBlueSky(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #使装备者攻击力提高16%
+        #当装备者消灭敌方目标后，暴击率提高12%
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+        # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+            # weapon_effect['21019']['Param']['AttackAddedRatio'][
+                # self.weapon_rank - 1
+            # ]
+        # )
+        if await self.check():
+            critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
+            attribute_bonus[
+                'CriticalChanceBase'
+            ] = critical_chance_base + mp.mpf(
+                weapon_effect['21019']['Param']['CriticalChance'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+#鼹鼠党欢迎你
+class TheMolesWelcomeYou(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #装备者施放普攻、战技或终结技攻击敌方目标后，分别获取一层【淘气值】。每层使装备者的攻击力提高12%。
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        if await self.check():
+            attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
+                weapon_effect['21005']['Param']['AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            ) * 3
+        return attribute_bonus
+
+#雨一直下
+class IncessantRain(BaseWeapon):
+    weapon_base_attributes: Dict
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+        
+    async def check(self):
+        #当装备者对同时处于大于等于3个负面效果的敌方目标造成伤害时，暴击率提高12%
+        #持有【以太编码】的目标受到的伤害提高12%
+        return True
+        
+    async def weapon_ability(self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict):
+        if await self.check():
+            damage_ratio = attribute_bonus.get('DmgRatio', 0)
+            attribute_bonus[
+                'DmgRatio'
+            ] = damage_ratio + mp.mpf(
+                weapon_effect['23007']['Param']['DmgRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+            critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
+            attribute_bonus[
+                'CriticalChanceBase'
+            ] = critical_chance_base + mp.mpf(
+                weapon_effect['23007']['Param']['CriticalChance'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+# class HuntWeapon:
+#     def __new__(cls, weapon: DamageInstanceWeapon):
+#         if weapon.id_ == 23007:
+#             return IncessantRain(weapon)
+#         if weapon.id_ == 21005:
+#             return TheMolesWelcomeYou(weapon)
+#         if weapon.id_ == 21019:
+#             return UndertheBlueSky(weapon)
+#         if weapon.id_ == 21026:
+#             return WoofWalkTime(weapon)
+#         if weapon.id_ == 21033:
+#             return NowheretoRun(weapon)
+#         if weapon.id_ == 24000:
+#             return OntheFallofanAeon(weapon)
+#         if weapon.id_ == 23002:
+#             return SomethingIrreplaceable(weapon)
+#         if weapon.id_ == 23009:
+#             return TheUnreachableSide(weapon)
+#         if weapon.id_ == 23015:
+#             return BrighterThantheSun(weapon)
+#         if weapon.id_ == 21012:
+#             return ASecretVow(weapon)
+#         if weapon.id_ == 21006:
+#             return TheBirthoftheSelf(weapon)
+#         if weapon.id_ == 21013:
+#             return MaketheWorldClamor(weapon)
+#         if weapon.id_ == 21020:
+#             return GeniusesRepose(weapon)
+#         if weapon.id_ == 21027:
+#             return SeriousnessofBreakfast(weapon)
+#         if weapon.id_ == 21034:
+#             return TodayIsAnotherPeacefulDay(weapon)
+#         if weapon.id_ == 23000:
+#             return NightontheMilkyWay(weapon)
+#         if weapon.id_ == 23010:
+#             return BeforeDawn(weapon)
 #         if weapon.id_ == 24001:
-#             return SleepLiketheDead(weapon)
+#             return CruisingintheStellarSea(weapon)
 #         if weapon.id_ == 23001:
 #             return IntheNight(weapon)
 #         if weapon.id_ == 21003:
@@ -321,14 +816,27 @@ class CruisingintheStellarSea(BaseWeapon):
 #         pass
 
 
-class Weapon(
-    IntheNight, OnlySilenceRemains, SleepLiketheDead,
-    SubscribeforMore, Swordplay, DartingArrow, Adversarial,
-    RiverFlowsinSpring, Arrows, ReturntoDarkness
-):
+class Weapon:
     @classmethod
     def create(cls, weapon: DamageInstanceWeapon):
         if weapon.id_ in [
+            23007,
+            21005,
+            21019,
+            21026,
+            21033,
+            24000,
+            23002,
+            23009,
+            23015,
+            21012,
+            21006,
+            21013,
+            21027,
+            21020,
+            21034,
+            23000,
+            23010,
             23001,
             21003,
             23012,
@@ -341,8 +849,42 @@ class Weapon(
             21031,
             20000,
         ]:
+            if weapon.id_ == 23007:
+                return IncessantRain(weapon)
+            if weapon.id_ == 21005:
+                return TheMolesWelcomeYou(weapon)
+            if weapon.id_ == 21019:
+                return UndertheBlueSky(weapon)
+            if weapon.id_ == 21026:
+                return WoofWalkTime(weapon)
+            if weapon.id_ == 21033:
+                return NowheretoRun(weapon)
+            if weapon.id_ == 24000:
+                return OntheFallofanAeon(weapon)
+            if weapon.id_ == 23002:
+                return SomethingIrreplaceable(weapon)
+            if weapon.id_ == 23009:
+                return TheUnreachableSide(weapon)
+            if weapon.id_ == 23015:
+                return BrighterThantheSun(weapon)
+            if weapon.id_ == 21012:
+                return ASecretVow(weapon)
+            if weapon.id_ == 21006:
+                return TheBirthoftheSelf(weapon)
+            if weapon.id_ == 21013:
+                return MaketheWorldClamor(weapon)
+            if weapon.id_ == 21020:
+                return GeniusesRepose(weapon)
+            if weapon.id_ == 21027:
+                return SeriousnessofBreakfast(weapon)
+            if weapon.id_ == 21034:
+                return TodayIsAnotherPeacefulDay(weapon)
+            if weapon.id_ == 23000:
+                return NightontheMilkyWay(weapon)
+            if weapon.id_ == 23010:
+                return BeforeDawn(weapon)
             if weapon.id_ == 24001:
-                return SleepLiketheDead(weapon)
+                return CruisingintheStellarSea(weapon)
             if weapon.id_ == 23001:
                 return IntheNight(weapon)
             if weapon.id_ == 21003:
