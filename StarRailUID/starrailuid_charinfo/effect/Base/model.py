@@ -1,5 +1,6 @@
 from typing import List
 
+import msgspec
 from msgspec import Struct, field
 
 
@@ -48,7 +49,7 @@ class DamageInstanceWeapon(Struct):
 class AttributeBounsStatusAdd(Struct):
     property: str
     name: str
-    value: int
+    value: float
 
 
 class DamageInstanceAvatarAttributeBouns(Struct):
@@ -80,8 +81,8 @@ class DamageInstance:
             rank=char.char_rank,
             element=char.char_element,
             promotion=char.char_promotion,
-            attribute_bonus=char.attribute_bonus,
-            extra_ability=char.extra_ability,
+            attribute_bonus=msgspec.from_builtins(char.attribute_bonus, List[DamageInstanceAvatarAttributeBouns] | None),
+            extra_ability=msgspec.from_builtins(char.extra_ability, List | None),
         )
         self.weapon = DamageInstanceWeapon(
             id_=char.equipment['equipmentID'],
@@ -92,10 +93,10 @@ class DamageInstance:
         self.relic = []
         for relic in char.char_relic:
             self.relic.append(
-                DamageInstanceRelic(**relic)
+                msgspec.from_builtins(relic, DamageInstanceRelic)
             )
         self.skill = []
         for skill in char.char_skill:
             self.skill.append(
-                DamageInstanceSkill(**skill)
+                msgspec.from_builtins(skill, DamageInstanceSkill)
             )
