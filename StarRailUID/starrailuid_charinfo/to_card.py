@@ -4,13 +4,13 @@ from typing import List, Union
 
 from PIL import Image, ImageDraw
 
-from ..utils.fonts.first_world import fw_font_28
-from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
-from ..utils.image.convert import convert_img
-from ..utils.map.name_covert import avatar_id_to_char_star
-from ..utils.map.SR_MAP_PATH import avatarId2Name
-from ..utils.resource.RESOURCE_PATH import CHAR_ICON_PATH, CHAR_PREVIEW_PATH
 from .to_data import api_to_dict
+from ..utils.image.convert import convert_img
+from ..utils.fonts.first_world import fw_font_28
+from ..utils.map.SR_MAP_PATH import avatarId2Name
+from ..utils.map.name_covert import avatar_id_to_char_star
+from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
+from ..utils.resource.RESOURCE_PATH import CHAR_ICON_PATH, CHAR_PREVIEW_PATH
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
@@ -39,9 +39,7 @@ async def api_to_card(uid: str) -> Union[str, bytes]:
     return await draw_enka_card(uid=uid, char_list=char_data_list, showfrom=1)
 
 
-async def draw_enka_card(
-    uid: str, char_list: List, showfrom: int = 0
-):
+async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
     char_data_list = []
     if 1102 in char_list:
         char_list.remove(1102)

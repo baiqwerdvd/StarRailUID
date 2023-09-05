@@ -1,6 +1,6 @@
-from base64 import b64encode
 from io import BytesIO
 from pathlib import Path
+from base64 import b64encode
 from typing import Union, overload
 
 import aiofiles
@@ -96,7 +96,7 @@ def get_str_size(
 
         line += i
         if hasattr(font, 'getsize'):
-            size, _ = font.getsize(line) # type: ignore
+            size, _ = font.getsize(line)  # type: ignore
         else:
             size, _, _, _ = font.getbbox(line)
         if size >= limit:

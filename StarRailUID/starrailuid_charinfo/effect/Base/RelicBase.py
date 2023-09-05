@@ -1,12 +1,11 @@
-from abc import abstractmethod
 from typing import Dict
+from abc import abstractmethod
 
 from mpmath import mp
-
 from gsuid_core.logger import logger
 
-from ....utils.map.SR_MAP_PATH import RelicSetSkill
 from .model import DamageInstanceRelic
+from ....utils.map.SR_MAP_PATH import RelicSetSkill
 
 mp.dps = 14
 
@@ -22,10 +21,7 @@ class SingleRelic:
 
     def get_attribute_(self):
         # MainAffix
-        if (
-            self.raw_relic.MainAffix.Property
-            in self.relic_attribute_bonus
-        ):
+        if self.raw_relic.MainAffix.Property in self.relic_attribute_bonus:
             self.relic_attribute_bonus[
                 self.raw_relic.MainAffix.Property
             ] += mp.mpf(self.raw_relic.MainAffix.Value)

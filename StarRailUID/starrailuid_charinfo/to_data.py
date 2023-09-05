@@ -1,36 +1,36 @@
 import json
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Union, Optional
 
-from httpx import ReadTimeout
 from mpmath import mp
+from httpx import ReadTimeout
 
+from ..utils.error_reply import UID_HINT
 from ..sruid_utils.api.mihomo import MihomoData
 from ..sruid_utils.api.mihomo.models import Avatar
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..sruid_utils.api.mihomo.requests import get_char_card_info
-from ..utils.error_reply import UID_HINT
+
+# from gsuid_core.utils.api.minigg.request import get_weapon_info
+from .cal_value import cal_relic_sub_affix, cal_relic_main_affix
 from ..utils.excel.read_excel import AvatarPromotion, EquipmentPromotion
 from ..utils.map.SR_MAP_PATH import (
-    EquipmentID2Name,
-    EquipmentID2Rarity,
+    SetId2Name,
     ItemId2Name,
     Property2Name,
     RelicId2SetId,
-    SetId2Name,
-    avatarId2DamageType,
-    avatarId2EnName,
+    EquipmentID2Name,
+    EquipmentID2Rarity,
+    rankId2Name,
+    skillId2Name,
     avatarId2Name,
+    skillId2Effect,
+    avatarId2EnName,
     avatarId2Rarity,
     characterSkillTree,
-    rankId2Name,
     skillId2AttackType,
-    skillId2Effect,
-    skillId2Name,
+    avatarId2DamageType,
 )
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-
-# from gsuid_core.utils.api.minigg.request import get_weapon_info
-from .cal_value import cal_relic_main_affix, cal_relic_sub_affix
 
 mp.dps = 14
 
@@ -65,9 +65,7 @@ async def api_to_dict(
     PlayerDetailInfo = sr_data['detailInfo']
     path = PLAYER_PATH / str(sr_uid)
     path.mkdir(parents=True, exist_ok=True)
-    with Path.open(
-        path / f'{sr_uid!s}.json', 'w', encoding='UTF-8'
-    ) as file:
+    with Path.open(path / f'{sr_uid!s}.json', 'w', encoding='UTF-8') as file:
         json.dump(PlayerDetailInfo, file, ensure_ascii=False)
     with Path.open(path / 'rawData.json', 'w', encoding='UTF-8') as file:
         json.dump(sr_data, file, ensure_ascii=False)
@@ -334,9 +332,7 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
 
     char_data['equipmentInfo'] = equipment_info
 
-    with Path.open(
-        path / f'{avatarName}.json', 'w', encoding='UTF-8'
-    ) as file:
+    with Path.open(path / f'{avatarName}.json', 'w', encoding='UTF-8') as file:
         json.dump(char_data, file, ensure_ascii=False)
     return char_data, avatarName
 

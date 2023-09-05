@@ -1,10 +1,10 @@
 import json
-from pathlib import Path
 from typing import List
+from pathlib import Path
 
 from mpmath import mp
 
-from .model import DamageInstanceAvatar, DamageInstanceSkill
+from .model import DamageInstanceSkill, DamageInstanceAvatar
 
 mp.dps = 14
 
@@ -28,7 +28,9 @@ class BaseSkills:
     Talent_: SingleSkill
 
     @classmethod
-    def create(cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]):
+    def create(
+        cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
         for skill in skills:
             skill_attack_type = skill.skillAttackType
             if skill_attack_type == 'Normal':

@@ -1,11 +1,11 @@
 import json
-from collections import Counter
 from typing import Dict
+from collections import Counter
 
-from loguru import logger
 from mpmath import mp
+from loguru import logger
 
-from ...utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty, RelicSetSkill
+from ...utils.map.SR_MAP_PATH import RelicSetSkill, EquipmentID2AbilityProperty
 
 mp.dps = 14
 

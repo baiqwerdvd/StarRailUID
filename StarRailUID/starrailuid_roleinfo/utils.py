@@ -1,10 +1,9 @@
 from io import BytesIO
 from pathlib import Path
-from typing import Generator, List, TypeVar
+from typing import List, TypeVar, Generator
 
-from aiohttp import ClientSession
 from PIL import Image
-
+from aiohttp import ClientSession
 from gsuid_core.data_store import get_res_path
 
 T = TypeVar("T")

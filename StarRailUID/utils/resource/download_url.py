@@ -1,12 +1,11 @@
-from typing import Optional, Tuple
+from typing import Tuple, Optional
 
 import aiofiles
+from gsuid_core.logger import logger
 from aiohttp.client import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError
 
-from gsuid_core.logger import logger
-
-from .RESOURCE_PATH import GUIDE_PATH, RESOURCE_PATH, WIKI_PATH
+from .RESOURCE_PATH import WIKI_PATH, GUIDE_PATH, RESOURCE_PATH
 
 PATHDICT = {
     'resource': RESOURCE_PATH,

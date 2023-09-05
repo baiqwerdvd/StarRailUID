@@ -1,14 +1,14 @@
-import asyncio
 import random
+import asyncio
 from copy import deepcopy
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
 from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
-from ..starrailuid_config.sr_config import srconfig
 from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
+from ..starrailuid_config.sr_config import srconfig
 
 private_msg_list = {}
 group_msg_list = {}
@@ -49,7 +49,9 @@ async def sign_in(sr_uid: str) -> str:
                 if core_plugins_config.get_config('CaptchaPass').data:
                     gt = sign_data['gt']
                     ch = sign_data['challenge']
-                    vl, ch = await mys_api._pass(gt, ch, Header)  # noqa: SLF001
+                    vl, ch = await mys_api._pass(
+                        gt, ch, Header
+                    )  # noqa: SLF001
                     if vl:
                         delay = 1
                         Header['x-rpc-challenge'] = ch
