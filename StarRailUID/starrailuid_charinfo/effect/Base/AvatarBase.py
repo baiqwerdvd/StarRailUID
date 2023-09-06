@@ -1,13 +1,13 @@
 import json
-from abc import abstractmethod
-from pathlib import Path
 from typing import List
+from pathlib import Path
+from abc import abstractmethod
 
 from mpmath import mp
 
-from ....utils.excel.read_excel import AvatarPromotion
-from .model import DamageInstanceAvatar, DamageInstanceSkill
 from .SkillBase import BaseSkills
+from ....utils.excel.read_excel import AvatarPromotion
+from .model import DamageInstanceSkill, DamageInstanceAvatar
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'seele.json', encoding='utf-8') as f:
@@ -18,7 +18,9 @@ mp.dps = 14
 
 class BaseAvatarBuff:
     @classmethod
-    def create(cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]):
+    def create(
+        cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
         cls.extra_ability_id = []
         if char.extra_ability:
             for extra_ability in char.extra_ability:
@@ -39,7 +41,9 @@ class BaseAvatarBuff:
 
 
 class BaseAvatar:
-    def __init__(self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]):
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
         self.Skill = BaseSkills.create(char=char, skills=skills)
         self.Buff = BaseAvatarBuff.create(char=char, skills=skills)
         self.avatar_id = char.id_
@@ -89,21 +93,21 @@ class BaseAvatar:
     def Skill_Info(self, skill_type):
         skill_info = skill_dict[str(self.avatar_id)]['skilllist'][skill_type]
         return skill_info
-    
+
     def Normalnum(self, skill_type):
         return mp.mpf(
             skill_dict[str(self.avatar_id)][skill_type][
                 self.Skill.Normal_.level - 1
             ]
         )
-    
+
     def Normal(self):
         return mp.mpf(
             skill_dict[str(self.avatar_id)]['Normal'][
                 self.Skill.Normal_.level - 1
             ]
         )
-    
+
     def BPSkill(self):
         return mp.mpf(
             skill_dict[str(self.avatar_id)]['BPSkill'][
@@ -122,33 +126,37 @@ class BaseAvatar:
         return mp.mpf(
             skill_dict[str(self.avatar_id)]['Maze'][self.Skill.Maze_.level - 1]
         )
-    
+
     def Talent(self):
         return mp.mpf(
-            skill_dict[str(self.avatar_id)]['Talent'][self.Skill.Talent_.level - 1]
+            skill_dict[str(self.avatar_id)]['Talent'][
+                self.Skill.Talent_.level - 1
+            ]
         )
-    
+
     def BPSkill_d(self):
         return mp.mpf(
             skill_dict[str(self.avatar_id)]['BPSkill_D'][
                 self.Skill.BPSkill_.level - 1
             ]
         )
-    
+
     def Ultra_d(self):
         return mp.mpf(
             skill_dict[str(self.avatar_id)]['Ultra_D'][
                 self.Skill.Ultra_.level - 1
             ]
         )
-    
+
     def Talent_add(self):
         if self.avatar_id in [1102]:
             return mp.mpf(
-                skill_dict[str(self.avatar_id)]['Talent'][self.Skill.Talent_.level - 1]
+                skill_dict[str(self.avatar_id)]['Talent'][
+                    self.Skill.Talent_.level - 1
+                ]
             )
         else:
             return mp.mpf(0)
-    
+
     def Ultra_Use(self):
         return skill_dict[str(self.avatar_id)]['Ultra_Use'][0]

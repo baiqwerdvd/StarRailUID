@@ -1,12 +1,12 @@
-from collections import Counter
 from typing import Dict, List
+from collections import Counter
 
-from gsuid_core.logger import logger
 from mpmath import mp
+from gsuid_core.logger import logger
 
-from ..Base.model import DamageInstanceRelic
-from ..Base.RelicBase import BaseRelicSetSkill, SingleRelic
 from ..utils import merge_attribute
+from ..Base.model import DamageInstanceRelic
+from ..Base.RelicBase import SingleRelic, BaseRelicSetSkill
 
 
 class Relic101(BaseRelicSetSkill):
@@ -173,6 +173,7 @@ class Relic108(BaseRelicSetSkill):
             )
         return attribute_bonus
 
+
 class Relic109(BaseRelicSetSkill):
     def __init__(self, set_id: int, count: int):
         super().__init__(set_id, count)
@@ -192,6 +193,7 @@ class Relic109(BaseRelicSetSkill):
                 0.20000000018626451
             )
         return attribute_bonus
+
 
 class Relic110(BaseRelicSetSkill):
     def __init__(self, set_id: int, count: int):
@@ -256,6 +258,49 @@ class Relic112(BaseRelicSetSkill):
             attribute_bonus[
                 'CriticalDamageBase'
             ] = critical_damage_base + mp.mpf(0.20000000018626451)
+        return attribute_bonus
+
+
+class Relic113(BaseRelicSetSkill):
+    def __init__(self, set_id: int, count: int):
+        super().__init__(set_id, count)
+        self._count = count
+
+    async def check(self, base_attr: Dict, attribute_bonus: Dict):
+        '''
+        当装备者受到攻击或被我方目标消耗生命值后，暴击率提高8%，持续2回合，该效果最多叠加2层。
+        '''
+        logger.info('Relic113 check success')
+        return True
+
+    async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
+        if self.pieces4 and await self.check(base_attr, attribute_bonus):
+            logger.info('当装备者受到攻击或被我方目标消耗生命值后')
+            critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
+            attribute_bonus['CriticalChanceBase'] = (
+                critical_chance_base + mp.mpf(0.08000000009313226) * 2
+            )
+        return attribute_bonus
+
+
+class Relic114(BaseRelicSetSkill):
+    def __init__(self, set_id: int, count: int):
+        super().__init__(set_id, count)
+        self._count = count
+
+    async def check(self, base_attr: Dict, attribute_bonus: Dict):
+        '''
+        当装备者对我方目标施放终结技时，我方全体速度提高12%，持续1回合，该效果无法叠加。
+        '''
+        logger.info('Relic114 check success')
+        return True
+
+    async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
+        if self.pieces4 and await self.check(base_attr, attribute_bonus):
+            speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
+            attribute_bonus['SpeedAddedRatio'] = speed_added_ratio + mp.mpf(
+                0.12000000011175871
+            )
         return attribute_bonus
 
 
@@ -334,7 +379,7 @@ class Relic304(BaseRelicSetSkill):
         备者的效果命中大于等于50%
         '''
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
-        if merged_attr['StatusProbability'] >= mp.mpf(0.5000000004656613):
+        if merged_attr['StatusResistanceBase'] >= mp.mpf(0.5000000004656613):
             logger.info('Relic306 check success')
             return True
         return None
@@ -440,6 +485,7 @@ class Relic308(BaseRelicSetSkill):
             logger.info('ModifyActionDelay')
         return attribute_bonus
 
+
 class Relic309(BaseRelicSetSkill):
     def __init__(self, set_id: int, count: int):
         super().__init__(set_id, count)
@@ -465,6 +511,30 @@ class Relic309(BaseRelicSetSkill):
                 0.20000000018626451
             )
         return attribute_bonus
+
+
+class Relic310(BaseRelicSetSkill):
+    def __init__(self, set_id: int, count: int):
+        super().__init__(set_id, count)
+
+    async def check(self, base_attr: Dict, attribute_bonus: Dict):
+        '''
+        当装备者的效果抵抗大于等于30%时，我方全体暴击伤害提高10%。
+        '''
+        merged_attr = await merge_attribute(base_attr, attribute_bonus)
+        if merged_attr['StatusResistanceBase'] >= mp.mpf(0.3):
+            logger.info('Relic310 check success')
+            return True
+        return None
+
+    async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
+        if self.pieces2 and await self.check(base_attr, attribute_bonus):
+            critical_damage_base = attribute_bonus.get('CriticalDamageBase', 0)
+            attribute_bonus[
+                'CriticalDamageBase'
+            ] = critical_damage_base + mp.mpf(0.10000000018626451)
+        return attribute_bonus
+
 
 class RelicSet:
     HEAD: SingleRelic
@@ -543,6 +613,10 @@ class RelicSet:
                 cls.SetSkill.append(Relic111(set_id, count))
             elif set_id == 112:
                 cls.SetSkill.append(Relic112(set_id, count))
+            elif set_id == 113:
+                cls.SetSkill.append(Relic113(set_id, count))
+            elif set_id == 114:
+                cls.SetSkill.append(Relic114(set_id, count))
             elif set_id == 301:
                 cls.SetSkill.append(Relic301(set_id, count))
             elif set_id == 302:
@@ -561,5 +635,7 @@ class RelicSet:
                 cls.SetSkill.append(Relic308(set_id, count))
             elif set_id == 309:
                 cls.SetSkill.append(Relic309(set_id, count))
+            elif set_id == 310:
+                cls.SetSkill.append(Relic310(set_id, count))
             else:
                 raise Exception(f'Unknow SetId: {set_id}')

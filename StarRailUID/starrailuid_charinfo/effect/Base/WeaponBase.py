@@ -1,11 +1,11 @@
-from abc import abstractmethod
 from typing import Dict
+from abc import abstractmethod
 
 from mpmath import mp
 
+from .model import DamageInstanceWeapon
 from ....utils.excel.read_excel import EquipmentPromotion
 from ....utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty
-from .model import DamageInstanceWeapon
 
 mp.dps = 14
 

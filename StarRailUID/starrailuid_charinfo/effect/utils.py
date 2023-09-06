@@ -4,6 +4,7 @@ from typing import Dict
 async def merge_attribute(base_attr: Dict, attribute_bonus: Dict) -> Dict:
     # hp attack defence need base_value and add_value
     merged_attr = {}
+    attr_list = ['attack', 'defence', 'hp', 'speed']
     for attribute in attribute_bonus:
         if (
             attribute.__contains__('Attack')
@@ -13,14 +14,16 @@ async def merge_attribute(base_attr: Dict, attribute_bonus: Dict) -> Dict:
         ):
             if attribute.__contains__('Delta'):
                 attr = attribute.split('Delta')[0].lower()
-                attr_value = merged_attr.get(attr, 0)
-                merged_attr[attr] = attr_value + attribute_bonus[attribute]
+                if attr in attr_list:
+                    attr_value = merged_attr.get(attr, 0)
+                    merged_attr[attr] = attr_value + attribute_bonus[attribute]
             elif attribute.__contains__('AddedRatio'):
                 attr = attribute.split('AddedRatio')[0].lower()
-                attr_value = merged_attr.get(attr, 0)
-                merged_attr[attr] = attr_value + base_attr[attr] * (
-                    1 + attribute_bonus[attribute]
-                )
+                if attr in attr_list:
+                    attr_value = merged_attr.get(attr, 0)
+                    merged_attr[attr] = attr_value + base_attr[attr] * (
+                        1 + attribute_bonus[attribute]
+                    )
             else:
                 raise Exception(f'attribute error {attribute}')
         elif attribute.__contains__('Base'):
@@ -49,5 +52,5 @@ async def merge_attribute(base_attr: Dict, attribute_bonus: Dict) -> Dict:
             attr_value = base_attr.get(attribute, 0)
             merged_attr[attribute] = attr_value + attribute_bonus[attribute]
         else:
-            raise Exception(f'attribute error {attribute}')
+            continue
     return merged_attr

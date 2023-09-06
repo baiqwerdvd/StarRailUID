@@ -156,7 +156,9 @@ for skill in AvatarSkillConfig:
 for avatar_property in AvatarPropertyConfig:
     PropertyType = AvatarPropertyConfig[avatar_property]['PropertyType']
     PropertyName = AvatarPropertyConfig[avatar_property]['PropertyName']
-    PropertyNameHash = AvatarPropertyConfig[avatar_property]['PropertyNameFilter']['Hash']
+    PropertyNameHash = AvatarPropertyConfig[avatar_property][
+        'PropertyNameFilter'
+    ]['Hash']
     for item in TextMapCN:
         if str(item) == str(PropertyNameHash):
             Property_Name = TextMapCN[item]
@@ -180,7 +182,11 @@ for set_group in RelicSetConfig:
 
 for character in characters:
     char_id = characters[character]['id']
-    characterSkillTree[str(char_id)] = {} if str(char_id) not in characterSkillTree else characterSkillTree[str(char_id)]
+    characterSkillTree[str(char_id)] = (
+        {}
+        if str(char_id) not in characterSkillTree
+        else characterSkillTree[str(char_id)]
+    )
     skill_tree_list = characters[character]['skill_trees']
     for skill in skill_tree_list:
         skill_tree = character_skill_trees[skill]
@@ -191,8 +197,14 @@ for set_ in RelicSetSkillConfig:
     for item in RelicSetSkillConfig[set_]:
         set_id = RelicSetSkillConfig[set_][item]['SetID']
         property_list = RelicSetSkillConfig[set_][item]['PropertyList']
-        RelicSetSkill[set_] = {} if set_ not in RelicSetSkill else RelicSetSkill[set_]
-        RelicSetSkill[set_][item] = {} if item not in RelicSetSkill[set_] else RelicSetSkill[set_][item]
+        RelicSetSkill[set_] = (
+            {} if set_ not in RelicSetSkill else RelicSetSkill[set_]
+        )
+        RelicSetSkill[set_][item] = (
+            {}
+            if item not in RelicSetSkill[set_]
+            else RelicSetSkill[set_][item]
+        )
         for property_ in property_list:
             property_id = property_['NAOGDGBJNOJ']
             property_value = property_['MBOHKHKHFPD']['Value']
@@ -234,7 +246,9 @@ Property2Name = json.dumps(Property2Name, ensure_ascii=False)
 Relic2SetId = json.dumps(Relic2SetId, ensure_ascii=False)
 SetId2Name = json.dumps(SetId2Name, ensure_ascii=False)
 characterSkillTree = json.dumps(characterSkillTree, ensure_ascii=False)
-EquipmentID2AbilityProperty = json.dumps(EquipmentID2AbilityProperty, ensure_ascii=False)
+EquipmentID2AbilityProperty = json.dumps(
+    EquipmentID2AbilityProperty, ensure_ascii=False
+)
 RelicSetSkill = json.dumps(RelicSetSkill, ensure_ascii=False)
 skillId2AttackType = json.dumps(skillId2AttackType, ensure_ascii=False)
 EquipmentID2Rarity = json.dumps(EquipmentID2Rarity, ensure_ascii=False)

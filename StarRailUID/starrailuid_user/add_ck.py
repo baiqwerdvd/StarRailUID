@@ -1,10 +1,10 @@
-from http.cookies import SimpleCookie
 from pathlib import Path
 from typing import Dict, List
+from http.cookies import SimpleCookie
 
 from ..utils.api import get_sqla
-from ..utils.error_reply import UID_HINT
 from ..utils.mys_api import mys_api
+from ..utils.error_reply import UID_HINT
 
 pic_path = Path(__file__).parent / 'pic'
 id_list = [
@@ -77,7 +77,6 @@ async def refresh_ck_by_uid_list(bot_id: str, uid_dict: Dict) -> str:
     s_im = f'执行完成~成功刷新CK{uid_num - error_num}个!跳过{skip_num}个!'
     f_im = '\n'.join([f'UID{u}:{error_list[u]}' for u in error_list])
     return f'{s_im}\n{f_im}' if f_im else s_im
-
 
 
 async def deal_ck(bot_id: str, mes: str, user_id: str, mode: str = 'PIC'):
@@ -236,10 +235,8 @@ async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
         'Cookies和Stoken属于个人重要信息,如果你是在不知情的情况下添加,请马上修改米游社账户密码,保护个人隐私!'
     )
     im_list.append(
-
-            '如果需要【sr开启自动签到】和【sr开启推送】还需要在【群聊中】使用命令“绑定uid”绑定你的uid。'
-            '\n例如:绑定uid123456789。'
-
+        '如果需要【sr开启自动签到】和【sr开启推送】还需要在【群聊中】使用命令“绑定uid”绑定你的uid。'
+        '\n例如:绑定uid123456789。'
     )
     im_list.append('你可以使用命令【sr绑定信息】检查你的账号绑定情况!')
     return '\n'.join(im_list)

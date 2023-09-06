@@ -1,19 +1,35 @@
+import re
 import json
 import math
-import re
 from pathlib import Path
 from typing import Dict, Union
 
 from mpmath import mp, nstr
 from PIL import Image, ImageDraw
-
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
 
+from .to_data import api_to_dict
+from .effect.Role import RoleInstance
+from .mono.Character import Character
 from ..utils.error_reply import CHAR_HINT
-from ..utils.excel.read_excel import light_cone_ranks
 from ..utils.fonts.first_world import fw_font_28
+from ..utils.excel.read_excel import light_cone_ranks
+from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
+from ..utils.map.SR_MAP_PATH import (
+    RelicId2Rarity,
+    AvatarRelicScore,
+    avatarId2Name,
+    avatarId2DamageType,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    RELIC_PATH,
+    SKILL_PATH,
+    PLAYER_PATH,
+    WEAPON_PATH,
+    CHAR_PORTRAIT_PATH,
+)
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_23,
@@ -23,23 +39,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
-from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
-from ..utils.map.SR_MAP_PATH import (
-    AvatarRelicScore,
-    RelicId2Rarity,
-    avatarId2DamageType,
-    avatarId2Name,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_PORTRAIT_PATH,
-    PLAYER_PATH,
-    RELIC_PATH,
-    SKILL_PATH,
-    WEAPON_PATH,
-)
-from .effect.Role import RoleInstance
-from .mono.Character import Character
-from .to_data import api_to_dict
 
 Excel_path = Path(__file__).parent / 'effect'
 with Path.open(Excel_path / 'Excel' / 'seele.json', encoding='utf-8') as f:
@@ -118,7 +117,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         (620, 207), char.char_name, (255, 255, 255), sr_font_38, 'lm'
     )
     if hasattr(sr_font_38, 'getsize'):
-        char_name_len = sr_font_38.getsize(char.char_name)[0] # type: ignore
+        char_name_len = sr_font_38.getsize(char.char_name)[0]  # type: ignore
     else:
         bbox = sr_font_38.getbbox(char.char_name)
         char_name_len = bbox[2] - bbox[0]
@@ -365,7 +364,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
             'lm',
         )
         if hasattr(sr_font_34, 'getsize'):
-            weapon_name_len = sr_font_34.getsize( # type: ignore
+            weapon_name_len = sr_font_34.getsize(  # type: ignore
                 char.equipment["equipmentName"]
             )[0]
         else:
@@ -532,7 +531,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
                 if subName in ['攻击力', '生命值', '防御力', '速度']:
                     subValueStr = nstr(subValue, 3)
                 else:
-                    subValueStr = nstr(subValue * 100, 3) + '%' # type: ignore
+                    subValueStr = nstr(subValue * 100, 3) + '%'  # type: ignore
                 subNameStr = subName.replace('百分比', '').replace('元素', '')
                 # 副词条文字颜色
                 relic_color = (255, 255, 255)
@@ -584,7 +583,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
             fw_font_28,
             'mm',
         )
-    
+
     if damage_len > 0:
         damage_list = await cal(char_data)
         # 写伤害
@@ -595,7 +594,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
             sr_font_26,
             'lm',
         )
-        
+
         char_img_draw.text(
             (370, 2048),
             '暴击值',
@@ -603,7 +602,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
             sr_font_26,
             'lm',
         )
-        
+
         char_img_draw.text(
             (560, 2048),
             '期望值',
@@ -611,7 +610,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
             sr_font_26,
             'lm',
         )
-        
+
         char_img_draw.text(
             (750, 2048),
             '满配辅助末日兽',
@@ -653,7 +652,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
                 sr_font_26,
                 'lm',
             )
-    
+
     # 写底层文字
     char_img_draw.text(
         (525, 2022 + bg_height),
@@ -722,7 +721,13 @@ async def cal(char_data: Dict):
     skill_info_list = []
     if char.char_id in [1102, 1204, 1107, 1213, 1006]:
         if char.char_id == 1213:
-            for skill_type in ['Normal', 'Normal1', 'Normal2', 'Normal3', 'Ultra']:
+            for skill_type in [
+                'Normal',
+                'Normal1',
+                'Normal2',
+                'Normal3',
+                'Ultra',
+            ]:
                 role = RoleInstance(char)
                 im_tmp = await role.cal_damage(skill_type)
                 skill_info_list.append(im_tmp)
