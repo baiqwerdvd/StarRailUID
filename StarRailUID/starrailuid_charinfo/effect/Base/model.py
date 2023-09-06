@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 import msgspec
 from msgspec import Struct, field
@@ -35,7 +35,7 @@ class DamageInstanceRelic(Struct):
     SetName: str
     Type: int
     MainAffix: DamageInstanceRelicMainAffix
-    SubAffixList: List[DamageInstanceRelicSubAffix] | None
+    SubAffixList: Union[List[DamageInstanceRelicSubAffix], None]
     Level: int = 0
 
 
@@ -64,8 +64,8 @@ class DamageInstanceAvatar(Struct):
     rank: int
     element: str
     promotion: int
-    attribute_bonus: List[DamageInstanceAvatarAttributeBouns] | None
-    extra_ability: List | None
+    attribute_bonus: Union[List[DamageInstanceAvatarAttributeBouns], None]
+    extra_ability: Union[List, None]
 
 
 class DamageInstance:
@@ -81,8 +81,8 @@ class DamageInstance:
             rank=char.char_rank,
             element=char.char_element,
             promotion=char.char_promotion,
-            attribute_bonus=msgspec.from_builtins(char.attribute_bonus, List[DamageInstanceAvatarAttributeBouns] | None),
-            extra_ability=msgspec.from_builtins(char.extra_ability, List | None),
+            attribute_bonus=msgspec.from_builtins(char.attribute_bonus, Union[List[DamageInstanceAvatarAttributeBouns], None]),
+            extra_ability=msgspec.from_builtins(char.extra_ability, Union[List, None]),
         )
         self.weapon = DamageInstanceWeapon(
             id_=char.equipment['equipmentID'],
