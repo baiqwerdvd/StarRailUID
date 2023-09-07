@@ -81,8 +81,13 @@ class DamageInstance:
             rank=char.char_rank,
             element=char.char_element,
             promotion=char.char_promotion,
-            attribute_bonus=msgspec.from_builtins(char.attribute_bonus, Union[List[DamageInstanceAvatarAttributeBouns], None]),
-            extra_ability=msgspec.from_builtins(char.extra_ability, Union[List, None]),
+            attribute_bonus=msgspec.from_builtins(
+                char.attribute_bonus,
+                Union[List[DamageInstanceAvatarAttributeBouns], None],
+            ),
+            extra_ability=msgspec.from_builtins(
+                char.extra_ability, Union[List, None]
+            ),
         )
         self.weapon = DamageInstanceWeapon(
             id_=char.equipment['equipmentID'],

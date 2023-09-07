@@ -128,7 +128,7 @@ class RoleInstance:
         logger.info(self.base_attr)
         logger.info('attribute_bonus')
         logger.info(self.attribute_bonus)
-
+        logger.info(skill_type)
         # 技能区
         skill_info = self.avatar.Skill_Info(skill_type)
         if skill_type == 'Normal':
@@ -151,6 +151,12 @@ class RoleInstance:
             if self.raw_data.avatar.id_ == 1213:
                 skill_multiplier = self.avatar.Normalnum(skill_type)
                 skill_type = 'Normal'
+            elif self.raw_data.avatar.id_ == 1005:
+                skill_multiplier = self.avatar.Ultra_num(skill_type)
+                if self.raw_data.avatar.rank >= 6:
+                    skill_multiplier = skill_multiplier + 1.56
+            elif self.raw_data.avatar.id_ == 1205:
+                skill_multiplier = self.avatar.Normalnum(skill_type)
             else:
                 raise Exception('skill type error')
 
@@ -202,13 +208,34 @@ class RoleInstance:
         merged_attr = await merge_attribute(
             self.base_attr, self.attribute_bonus
         )
-
+        logger.info(f'{merged_attr}')
         # 技能类型为攻击
         if skill_info[0] == 'attack':
             skill_multiplier = skill_multiplier / skill_info[2]
             logger.info(f'技能区单段: {skill_multiplier}')
             attack = merged_attr['attack']
             logger.info(f'攻击力: {attack}')
+            damage_add = 0
+            if self.raw_data.avatar.id_ == 1205:
+                hp_num = merged_attr['hp']
+                if skill_type == 'Normal1':
+                    hp_multiplier = self.avatar.Normalnum('Normal1_HP')
+                    skill_type = 'Normal'
+                elif skill_type == 'Ultra':
+                    hp_multiplier = self.avatar.Ultra_num('Ultra_HP')
+                    if self.raw_data.avatar.rank >= 1:
+                        hp_multiplier += 0.9
+                elif skill_type == 'Talent':
+                    hp_multiplier = self.avatar.Talent_num('Talent_HP')
+                    if self.raw_data.avatar.rank >= 6:
+                        damage_add = hp_num * 0.5
+                else:
+                    hp_multiplier = 0
+                attack = (skill_multiplier * attack) + (hp_multiplier * hp_num)
+                skill_multiplier = 1
+                logger.info(f'混伤区: {attack}')
+
+            logger.info(f'额外伤害: {damage_add}')
             # 模拟 同属性弱点 同等级 的怪物
             # 韧性条减伤
             enemy_damage_reduction = 0.1
@@ -283,7 +310,6 @@ class RoleInstance:
 
             # 易伤区
             logger.info('检查是否有易伤加成')
-            logger.info(f'{merged_attr}')
             damage_ratio = merged_attr.get('DmgRatio', 0)
             # 检查是否有对特定技能的易伤加成
             # Talent_DmgRatio
@@ -299,19 +325,22 @@ class RoleInstance:
             logger.info(f'易伤: {damage_ratio}')
 
             # 爆伤区
-            logger.info('检查是否有爆伤加成')
-            logger.info(f'{merged_attr}')
-            critical_damage_base = merged_attr['CriticalDamageBase']
-            # 检查是否有对特定技能的爆伤加成
-            # Ultra_CriticalChance
-            for attr in merged_attr:
-                if attr.__contains__('_CriticalChance'):
-                    skill_name = attr.split('_')[0]
-                    if skill_name == skill_type:
-                        logger.info(
-                            f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 爆伤加成'
-                        )
-                        critical_damage_base += merged_attr[attr]
+            if skill_type == 'DOT':
+                critical_damage_base = 0
+            else:
+                logger.info('检查是否有爆伤加成')
+                logger.info(f'{merged_attr}')
+                critical_damage_base = merged_attr['CriticalDamageBase']
+                # 检查是否有对特定技能的爆伤加成
+                # Ultra_CriticalChance
+                for attr in merged_attr:
+                    if attr.__contains__('_CriticalChance'):
+                        skill_name = attr.split('_')[0]
+                        if skill_name == skill_type:
+                            logger.info(
+                                f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 爆伤加成'
+                            )
+                            critical_damage_base += merged_attr[attr]
             critical_damage = critical_damage_base + 1
             logger.info(f'暴伤: {critical_damage}')
 
@@ -357,6 +386,7 @@ class RoleInstance:
                     * resistance_area
                     * damage_reduction
                     * (critical_damage + critical_damage_add)
+                    + damage_add
                 )
                 damage_cd_z += damage_cd
                 damage_qw = (
@@ -368,6 +398,7 @@ class RoleInstance:
                     * resistance_area
                     * damage_reduction
                     * qiwang_damage
+                    + damage_add
                 )
                 damage_qw_z += damage_qw
 
@@ -378,6 +409,10 @@ class RoleInstance:
                     * (1 + self.attribute_bonus['AttackAddedRatio'] + 2.144)
                     + self.attribute_bonus['AttackDelta']
                 )
+                if self.raw_data.avatar.id_ == 1205:
+                    attack_tz = (skill_multiplier * attack_tz) + (
+                        hp_multiplier * hp_num
+                    )
                 injury_add_tz = 0
                 if self.avatar.avatar_element == 'Imaginary':
                     injury_add_tz = 0.12
@@ -391,6 +426,7 @@ class RoleInstance:
                     * damage_reduction
                     * (critical_damage + critical_damage_add + 1.594)
                     * 10
+                    + damage_add
                 )
 
                 damage_tz_z += damage_tz

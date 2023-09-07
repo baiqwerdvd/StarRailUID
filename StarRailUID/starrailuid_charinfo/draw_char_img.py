@@ -50,7 +50,6 @@ TEXT_PATH = Path(__file__).parent / 'texture2D'
 
 bg_img = Image.open(TEXT_PATH / "bg.png")
 white_color = (213, 213, 213)
-yellow_color = (255, 255, 0)
 NUM_MAP = {0: '零', 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七'}
 
 RANK_MAP = {
@@ -90,7 +89,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         return char_data
     char = await cal_char_info(char_data)
     damage_len = 0
-    if char.char_id in [1102, 1204, 1107, 1213, 1006]:
+    if char.char_id in [1102, 1204, 1107, 1213, 1006, 1005, 1205]:
         skill_list = skill_dict[str(char.char_id)]['skilllist']
         damage_len = len(skill_list)
     # print(damage_len)
@@ -585,12 +584,14 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         )
 
     if damage_len > 0:
+        damage_title_img = Image.open(TEXT_PATH / 'base_info_pure.png')
+        char_info.paste(damage_title_img, (0, 2028), damage_title_img)
         damage_list = await cal(char_data)
         # 写伤害
         char_img_draw.text(
             (55, 2048),
             '角色动作',
-            yellow_color,
+            white_color,
             sr_font_26,
             'lm',
         )
@@ -598,7 +599,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         char_img_draw.text(
             (370, 2048),
             '暴击值',
-            yellow_color,
+            white_color,
             sr_font_26,
             'lm',
         )
@@ -606,7 +607,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         char_img_draw.text(
             (560, 2048),
             '期望值',
-            yellow_color,
+            white_color,
             sr_font_26,
             'lm',
         )
@@ -614,13 +615,20 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         char_img_draw.text(
             (750, 2048),
             '满配辅助末日兽',
-            yellow_color,
+            white_color,
             sr_font_26,
             'lm',
         )
         damage_num = 0
         for damage_info in damage_list:
             damage_num = damage_num + 1
+            if damage_num % 2 == 0:
+                damage_img = Image.open(TEXT_PATH / 'attack_1.png')
+            else:
+                damage_img = Image.open(TEXT_PATH / 'attack_2.png')
+            char_info.paste(
+                damage_img, (0, 2028 + damage_num * 48), damage_img
+            )
             char_img_draw.text(
                 (55, 2048 + damage_num * 48),
                 f'{damage_info[0]}',
@@ -719,7 +727,7 @@ async def cal(char_data: Dict):
     char = await cal_char_info(char_data)
 
     skill_info_list = []
-    if char.char_id in [1102, 1204, 1107, 1213, 1006]:
+    if char.char_id in [1102, 1204, 1107, 1213, 1006, 1005, 1205]:
         if char.char_id == 1213:
             for skill_type in [
                 'Normal',
@@ -731,12 +739,22 @@ async def cal(char_data: Dict):
                 role = RoleInstance(char)
                 im_tmp = await role.cal_damage(skill_type)
                 skill_info_list.append(im_tmp)
+        elif char.char_id == 1005:
+            for skill_type in ['Normal', 'BPSkill', 'Ultra', 'DOT']:
+                role = RoleInstance(char)
+                im_tmp = await role.cal_damage(skill_type)
+                skill_info_list.append(im_tmp)
+        if char.char_id == 1205:
+            for skill_type in ['Normal', 'Normal1', 'Ultra']:
+                role = RoleInstance(char)
+                im_tmp = await role.cal_damage(skill_type)
+                skill_info_list.append(im_tmp)
         else:
             for skill_type in ['Normal', 'BPSkill', 'Ultra']:
                 role = RoleInstance(char)
                 im_tmp = await role.cal_damage(skill_type)
                 skill_info_list.append(im_tmp)
-        if char.char_id in [1204, 1107]:
+        if char.char_id in [1204, 1107, 1005, 1205]:
             role = RoleInstance(char)
             im_tmp = await role.cal_damage('Talent')
             skill_info_list.append(im_tmp)

@@ -134,17 +134,24 @@ class BaseAvatar:
             ]
         )
 
-    def BPSkill_d(self):
+    def BPSkill_num(self, skill_type):
         return mp.mpf(
-            skill_dict[str(self.avatar_id)]['BPSkill_D'][
+            skill_dict[str(self.avatar_id)][skill_type][
                 self.Skill.BPSkill_.level - 1
             ]
         )
 
-    def Ultra_d(self):
+    def Ultra_num(self, skill_type):
         return mp.mpf(
-            skill_dict[str(self.avatar_id)]['Ultra_D'][
+            skill_dict[str(self.avatar_id)][skill_type][
                 self.Skill.Ultra_.level - 1
+            ]
+        )
+
+    def Talent_num(self, skill_type):
+        return mp.mpf(
+            skill_dict[str(self.avatar_id)][skill_type][
+                self.Skill.Talent_.level - 1
             ]
         )
 
@@ -153,6 +160,12 @@ class BaseAvatar:
             return mp.mpf(
                 skill_dict[str(self.avatar_id)]['Talent'][
                     self.Skill.Talent_.level - 1
+                ]
+            )
+        elif self.avatar_id in [1205]:
+            return mp.mpf(
+                skill_dict[str(self.avatar_id)]['BPSkill'][
+                    self.Skill.BPSkill_.level - 1
                 ]
             )
         else:

@@ -28,7 +28,7 @@ class Seele(BaseAvatar):
         if self.avatar_rank < 2:
             self.eidolon_attribute['SpeedAddedRatio'] = mp.mpf(0.25)
         if self.avatar_rank >= 1:
-            self.eidolon_attribute['CriticalDamageBase'] = mp.mpf(0.15)
+            self.eidolon_attribute['CriticalChanceBase'] = mp.mpf(0.15)
         if self.avatar_rank >= 2:
             self.eidolon_attribute['SpeedAddedRatio'] = mp.mpf(0.5)
 
@@ -150,16 +150,69 @@ class Silverwolf(BaseAvatar):
         logger.info('额外能力')
         logger.info('战技降抗')
         logger.info('战技使目标全属性抗性降低的效果额外降低3%')
-        enemy_status_resistance = self.BPSkill_d() + 0.03
+        enemy_status_resistance = self.BPSkill_num('BPSkill_D') + 0.03
         self.extra_ability_attribute['QuantumResistancePenetration'] = mp.mpf(
             enemy_status_resistance
         )
         logger.info('终结技降防')
-        ultra_defence = self.Ultra_d()
+        ultra_defence = self.Ultra_num('Ultra_D')
         logger.info('天赋降防')
         talent_defence = self.Talent()
         ignore_defence = ultra_defence + talent_defence
         self.extra_ability_attribute['ignore_defence'] = mp.mpf(ignore_defence)
+
+
+class Kafka(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute = {}
+        self.extra_ability_attribute = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.extra_ability_attribute['DOTDmgAdd'] = mp.mpf(0.3)
+        if self.avatar_rank >= 2:
+            self.extra_ability_attribute['DOTDmgAdd'] = mp.mpf(0.55)
+
+    def extra_ability(self):
+        pass
+
+
+class Blade(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute = {}
+        self.extra_ability_attribute = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 2:
+            self.eidolon_attribute['CriticalChanceBase'] = mp.mpf(0.15)
+
+        if self.avatar_rank >= 4:
+            self.extra_ability_attribute['HPAddedRatio'] = mp.mpf(0.4)
+
+    def extra_ability(self):
+        logger.info('额外能力')
+        logger.info('天赋施放的追加攻击伤害提高20%')
+        self.extra_ability_attribute['TalentDmgAdd'] = mp.mpf(0.2)
 
 
 class Avatar:
@@ -167,6 +220,10 @@ class Avatar:
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1205:
+            return Blade(char, skills)
+        if char.id_ == 1005:
+            return Kafka(char, skills)
         if char.id_ == 1006:
             return Silverwolf(char, skills)
         if char.id_ == 1213:
