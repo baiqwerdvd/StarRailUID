@@ -1,35 +1,19 @@
-import re
 import json
 import math
+import re
 from pathlib import Path
 from typing import Dict, Union
 
 from mpmath import mp, nstr
 from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
 
-from .to_data import api_to_dict
-from .effect.Role import RoleInstance
-from .mono.Character import Character
 from ..utils.error_reply import CHAR_HINT
-from ..utils.fonts.first_world import fw_font_28
 from ..utils.excel.read_excel import light_cone_ranks
-from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
-from ..utils.map.SR_MAP_PATH import (
-    RelicId2Rarity,
-    AvatarRelicScore,
-    avatarId2Name,
-    avatarId2DamageType,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    RELIC_PATH,
-    SKILL_PATH,
-    PLAYER_PATH,
-    WEAPON_PATH,
-    CHAR_PORTRAIT_PATH,
-)
+from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_23,
@@ -39,6 +23,23 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
+from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
+from ..utils.map.SR_MAP_PATH import (
+    AvatarRelicScore,
+    RelicId2Rarity,
+    avatarId2DamageType,
+    avatarId2Name,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    CHAR_PORTRAIT_PATH,
+    PLAYER_PATH,
+    RELIC_PATH,
+    SKILL_PATH,
+    WEAPON_PATH,
+)
+from .effect.Role import RoleInstance
+from .mono.Character import Character
+from .to_data import api_to_dict
 
 Excel_path = Path(__file__).parent / 'effect'
 with Path.open(Excel_path / 'Excel' / 'seele.json', encoding='utf-8') as f:
@@ -744,7 +745,7 @@ async def cal(char_data: Dict):
                 role = RoleInstance(char)
                 im_tmp = await role.cal_damage(skill_type)
                 skill_info_list.append(im_tmp)
-        if char.char_id == 1205:
+        elif char.char_id == 1205:
             for skill_type in ['Normal', 'Normal1', 'Ultra']:
                 role = RoleInstance(char)
                 im_tmp = await role.cal_damage(skill_type)

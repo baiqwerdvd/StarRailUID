@@ -1,36 +1,36 @@
 import json
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 
-from mpmath import mp
 from httpx import ReadTimeout
+from mpmath import mp
 
-from ..utils.error_reply import UID_HINT
 from ..sruid_utils.api.mihomo import MihomoData
 from ..sruid_utils.api.mihomo.models import Avatar
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..sruid_utils.api.mihomo.requests import get_char_card_info
-
-# from gsuid_core.utils.api.minigg.request import get_weapon_info
-from .cal_value import cal_relic_sub_affix, cal_relic_main_affix
+from ..utils.error_reply import UID_HINT
 from ..utils.excel.read_excel import AvatarPromotion, EquipmentPromotion
 from ..utils.map.SR_MAP_PATH import (
-    SetId2Name,
+    EquipmentID2Name,
+    EquipmentID2Rarity,
     ItemId2Name,
     Property2Name,
     RelicId2SetId,
-    EquipmentID2Name,
-    EquipmentID2Rarity,
-    rankId2Name,
-    skillId2Name,
-    avatarId2Name,
-    skillId2Effect,
+    SetId2Name,
+    avatarId2DamageType,
     avatarId2EnName,
+    avatarId2Name,
     avatarId2Rarity,
     characterSkillTree,
+    rankId2Name,
     skillId2AttackType,
-    avatarId2DamageType,
+    skillId2Effect,
+    skillId2Name,
 )
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+
+# from gsuid_core.utils.api.minigg.request import get_weapon_info
+from .cal_value import cal_relic_main_affix, cal_relic_sub_affix
 
 mp.dps = 14
 
@@ -148,22 +148,7 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
             extra_ability_temp = {}
             extra_ability_temp['extraAbilityId'] = behavior['pointId']
             extra_ability_temp['extraAbilityLevel'] = behavior['level']
-            status_add = characterSkillTree[str(char['avatarId'])][
-                str(behavior['pointId'])
-            ]['levels'][behavior['level'] - 1]['properties']
-            extra_ability_temp['statusAdd'] = {}
-            if status_add:
-                for property_ in status_add:
-                    extra_ability_temp['statusAdd']['property'] = property_[
-                        'type'
-                    ]
-                    extra_ability_temp['statusAdd']['name'] = Property2Name[
-                        property_['type']
-                    ]
-                    extra_ability_temp['statusAdd']['value'] = property_[
-                        'value'
-                    ]
-                    char_data['avatarExtraAbility'].append(extra_ability_temp)
+            char_data['avatarExtraAbility'].append(extra_ability_temp)
 
         # 处理技能树中的属性加成
         if f'{char["avatarId"]}2' == str(behavior['pointId'])[0:5]:
@@ -245,6 +230,25 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
             rankTemp['rankName'] = rankId2Name[str(rank_id)]
             rank_temp.append(rankTemp)
         char_data['rankList'] = rank_temp
+    
+    # 处理命座中的 level_up_skills
+    level_up_skills = []
+    for rank_item in char_data['rankList']:
+        rank_id = rank_item['rankId']
+        # 121303 -> 1213003
+        behavior_id = str(rank_id)[0:5] + '0' + str(rank_id)[-1]
+        char_skill_tree_data = characterSkillTree[str(char['avatarId'])][behavior_id]
+        if char_skill_tree_data['level_up_skills'] != []:
+            for skill in char_skill_tree_data['level_up_skills']:
+                skill_id = char_skill_tree_data['level_up_skills']['id']
+                skill_up_num = char_skill_tree_data['level_up_skills']['num']
+                # 查找skill_id在不在avatarSkill中
+                for skill_item in char_data['avatarSkill']:
+                    if skill_id == skill_item['skillId']:
+                        skill_item['skillLevel'] += skill_up_num
+                        level_up_skills.append(skill_item)
+                        break
+
 
     # 处理基础属性
     base_attributes = {}

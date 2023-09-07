@@ -1,12 +1,13 @@
 from mpmath import mp
+
 from gsuid_core.logger import logger
 
-from .Avatar.Avatar import Avatar
-from .Weapon.Weapon import Weapon
-from .utils import merge_attribute
 from ..mono.Character import Character
+from .Avatar.Avatar import Avatar
 from .Base.model import DamageInstance
 from .Relic.Relic import RelicSet, SingleRelic
+from .utils import merge_attribute
+from .Weapon.Weapon import Weapon
 
 mp.dps = 14
 
@@ -176,6 +177,8 @@ class RoleInstance:
 
         # 检查是否有对某一个技能的属性加成
         logger.info('检查是否有对某一个技能的属性加成')
+        if self.attribute_bonus is None:
+            raise Exception('attribute_bonus is None')
         for attr in self.attribute_bonus:
             # 攻击加成
             if attr.__contains__('AttackAddedRatio'):
@@ -209,6 +212,7 @@ class RoleInstance:
             self.base_attr, self.attribute_bonus
         )
         logger.info(f'{merged_attr}')
+        skill_info_list = []
         # 技能类型为攻击
         if skill_info[0] == 'attack':
             skill_multiplier = skill_multiplier / skill_info[2]
@@ -216,6 +220,8 @@ class RoleInstance:
             attack = merged_attr['attack']
             logger.info(f'攻击力: {attack}')
             damage_add = 0
+            hp_multiplier = 0
+            hp_num = 0
             if self.raw_data.avatar.id_ == 1205:
                 hp_num = merged_attr['hp']
                 if skill_type == 'Normal1':
