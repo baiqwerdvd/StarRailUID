@@ -11,6 +11,7 @@ from ..sruid_utils.api.mihomo.requests import get_char_card_info
 from ..utils.error_reply import UID_HINT
 from ..utils.excel.read_excel import AvatarPromotion, EquipmentPromotion
 from ..utils.map.SR_MAP_PATH import (
+    AvatarRankSkillUp,
     EquipmentID2Name,
     EquipmentID2Rarity,
     ItemId2Name,
@@ -232,23 +233,20 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
         char_data['rankList'] = rank_temp
     
     # 处理命座中的 level_up_skills
-    level_up_skills = []
     if char_data.get('rankList'):
         for rank_item in char_data['rankList']:
             rank_id = rank_item['rankId']
-            # 121303 -> 1213003
-            behavior_id = str(rank_id)[0:5] + '0' + str(rank_id)[-1]
-            char_skill_tree_data = characterSkillTree[str(char['avatarId'])].get(behavior_id, [])
-            if char_skill_tree_data != [] and char_skill_tree_data['level_up_skills'] != []:
-                for skill in char_skill_tree_data['level_up_skills']:
-                    skill_id = skill['id']
-                    skill_up_num = skill['num']
+            level_up_skill = AvatarRankSkillUp[str(rank_id)]
+            if level_up_skill:
+                for item in level_up_skill:
+                    skill_id = item['id']
+                    skill_up_num = item['num']
                     # 查找skill_id在不在avatarSkill中
                     for skill_item in char_data['avatarSkill']:
                         if skill_id == skill_item['skillId']:
-                            skill_item['skillLevel'] += skill_up_num
-                            level_up_skills.append(skill_item)
+                            char_data['avatarSkill']['skillLevel'] += skill_up_num
                             break
+            
 
 
     # 处理基础属性

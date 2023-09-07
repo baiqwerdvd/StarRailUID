@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, TypedDict
+from typing import Dict, List, TypedDict, Union
 
 from msgspec import json as msgjson
 
@@ -34,11 +34,16 @@ RelicId2MainAffixGroup_fileName = (
     f'RelicId2MainAffixGroup_mapping_{version}.json'
 )
 AvatarRelicScore_fileName = 'AvatarRelicScore.json'
+avatarRankSkillUp_fileName = f'avatarRankSkillUp_mapping_{version}.json'
 
 
 class TS(TypedDict):
     Name: Dict[str, str]
     Icon: Dict[str, str]
+
+class LU(TypedDict):
+    id: str
+    num: int
 
 
 with Path.open(MAP / avatarId2Name_fileName, encoding='UTF-8') as f:
@@ -110,3 +115,6 @@ with Path.open(MAP / RelicId2MainAffixGroup_fileName, encoding='UTF-8') as f:
 
 with Path.open(MAP / AvatarRelicScore_fileName, encoding='UTF-8') as f:
     AvatarRelicScore = msgjson.decode(f.read(), type=List[Dict])
+
+with Path.open(MAP / avatarRankSkillUp_fileName, encoding='UTF-8') as f:
+    AvatarRankSkillUp = msgjson.decode(f.read(), type=Dict[str, Union[List[LU], None]])

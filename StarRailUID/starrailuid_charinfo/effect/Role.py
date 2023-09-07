@@ -412,7 +412,7 @@ class RoleInstance:
                 attack_tz = (
                     attr_value_tz
                     + attr_value_tz
-                    * (1 + self.attribute_bonus['AttackAddedRatio'] + 2.144)
+                    * (1 + self.attribute_bonus.get('AttackAddedRatio', 0) + 2.144)
                     + self.attribute_bonus['AttackDelta']
                 )
                 if self.raw_data.avatar.id_ == 1205:

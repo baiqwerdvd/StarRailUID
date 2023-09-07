@@ -81,11 +81,11 @@ class DamageInstance:
             rank=char.char_rank,
             element=char.char_element,
             promotion=char.char_promotion,
-            attribute_bonus=msgspec.from_builtins(
+            attribute_bonus=msgspec.convert(
                 char.attribute_bonus,
                 Union[List[DamageInstanceAvatarAttributeBouns], None],
             ),
-            extra_ability=msgspec.from_builtins(
+            extra_ability=msgspec.convert(
                 char.extra_ability, Union[List, None]
             ),
         )
@@ -98,10 +98,10 @@ class DamageInstance:
         self.relic = []
         for relic in char.char_relic:
             self.relic.append(
-                msgspec.from_builtins(relic, DamageInstanceRelic)
+                msgspec.convert(relic, DamageInstanceRelic)
             )
         self.skill = []
         for skill in char.char_skill:
             self.skill.append(
-                msgspec.from_builtins(skill, DamageInstanceSkill)
+                msgspec.convert(skill, DamageInstanceSkill)
             )
