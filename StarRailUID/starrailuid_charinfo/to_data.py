@@ -242,10 +242,11 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
                     skill_id = item['id']
                     skill_up_num = item['num']
                     # 查找skill_id在不在avatarSkill中
-                    for skill_item in char_data['avatarSkill']:
+                    for index, skill_item in enumerate(char_data['avatarSkill']):
                         if skill_id == str(skill_item['skillId']):
-                            char_data['avatarSkill']['skillLevel'] += skill_up_num
+                            char_data['avatarSkill'][index]['skillLevel'] += skill_up_num
                             break
+
             
 
 
