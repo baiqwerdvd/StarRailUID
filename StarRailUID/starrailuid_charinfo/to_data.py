@@ -233,21 +233,22 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
     
     # 处理命座中的 level_up_skills
     level_up_skills = []
-    for rank_item in char_data['rankList']:
-        rank_id = rank_item['rankId']
-        # 121303 -> 1213003
-        behavior_id = str(rank_id)[0:5] + '0' + str(rank_id)[-1]
-        char_skill_tree_data = characterSkillTree[str(char['avatarId'])][behavior_id]
-        if char_skill_tree_data['level_up_skills'] != []:
-            for skill in char_skill_tree_data['level_up_skills']:
-                skill_id = char_skill_tree_data['level_up_skills']['id']
-                skill_up_num = char_skill_tree_data['level_up_skills']['num']
-                # 查找skill_id在不在avatarSkill中
-                for skill_item in char_data['avatarSkill']:
-                    if skill_id == skill_item['skillId']:
-                        skill_item['skillLevel'] += skill_up_num
-                        level_up_skills.append(skill_item)
-                        break
+    if char_data.get('rankList'):
+        for rank_item in char_data['rankList']:
+            rank_id = rank_item['rankId']
+            # 121303 -> 1213003
+            behavior_id = str(rank_id)[0:5] + '0' + str(rank_id)[-1]
+            char_skill_tree_data = characterSkillTree[str(char['avatarId'])][behavior_id]
+            if char_skill_tree_data['level_up_skills'] != []:
+                for skill in char_skill_tree_data['level_up_skills']:
+                    skill_id = skill['id']
+                    skill_up_num = skill['num']
+                    # 查找skill_id在不在avatarSkill中
+                    for skill_item in char_data['avatarSkill']:
+                        if skill_id == skill_item['skillId']:
+                            skill_item['skillLevel'] += skill_up_num
+                            level_up_skills.append(skill_item)
+                            break
 
 
     # 处理基础属性
