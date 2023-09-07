@@ -215,11 +215,36 @@ class Blade(BaseAvatar):
         self.extra_ability_attribute['TalentDmgAdd'] = mp.mpf(0.2)
 
 
+class Fuxuan(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute = {}
+        self.extra_ability_attribute = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['CriticalDamageBase'] = mp.mpf(0.3)
+
+    def extra_ability(self):
+        pass
+
+
 class Avatar:
     @classmethod
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1208:
+            return Fuxuan(char, skills)
         if char.id_ == 1205:
             return Blade(char, skills)
         if char.id_ == 1005:

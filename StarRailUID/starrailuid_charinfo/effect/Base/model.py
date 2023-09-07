@@ -97,11 +97,7 @@ class DamageInstance:
         )
         self.relic = []
         for relic in char.char_relic:
-            self.relic.append(
-                msgspec.convert(relic, DamageInstanceRelic)
-            )
+            self.relic.append(msgspec.convert(relic, DamageInstanceRelic))
         self.skill = []
         for skill in char.char_skill:
-            self.skill.append(
-                msgspec.convert(skill, DamageInstanceSkill)
-            )
+            self.skill.append(msgspec.convert(skill, DamageInstanceSkill))

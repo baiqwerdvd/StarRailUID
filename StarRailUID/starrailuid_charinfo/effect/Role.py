@@ -1,13 +1,12 @@
 from mpmath import mp
-
 from gsuid_core.logger import logger
 
-from ..mono.Character import Character
 from .Avatar.Avatar import Avatar
+from .Weapon.Weapon import Weapon
+from .utils import merge_attribute
+from ..mono.Character import Character
 from .Base.model import DamageInstance
 from .Relic.Relic import RelicSet, SingleRelic
-from .utils import merge_attribute
-from .Weapon.Weapon import Weapon
 
 mp.dps = 14
 
@@ -163,6 +162,22 @@ class RoleInstance:
 
         logger.info(f'技能区总: {skill_multiplier}')
 
+        if self.raw_data.avatar.id_ == 1208:
+            logger.info(f'符玄战技【穷观阵】属性加成')
+            fx_cc_up = self.avatar.BPSkill_num('BPSkill_CC')
+            fx_hp_up = self.avatar.BPSkill_num('BPSkill_HP')
+            critical_chance_base = self.attribute_bonus.get(
+                'CriticalChanceBase', 0
+            )
+            self.attribute_bonus[
+                'CriticalChanceBase'
+            ] = critical_chance_base + mp.mpf(fx_cc_up)
+
+            hp_added_ratio = self.attribute_bonus.get('HPAddedRatio', 0)
+            self.attribute_bonus['HPAddedRatio'] = hp_added_ratio + mp.mpf(
+                fx_hp_up
+            )
+
         # 检查武器战斗生效的buff
         logger.info('检查武器战斗生效的buff')
         Ultra_Use = self.avatar.Ultra_Use()
@@ -222,18 +237,32 @@ class RoleInstance:
             damage_add = 0
             hp_multiplier = 0
             hp_num = 0
-            if self.raw_data.avatar.id_ == 1205:
+            if self.raw_data.avatar.id_ in [1205, 1208]:
                 hp_num = merged_attr['hp']
-                if skill_type == 'Normal1':
+                if skill_type == 'Normal':
+                    if self.raw_data.avatar.id_ == 1208:
+                        hp_multiplier = self.avatar.Normalnum('Normal_HP')
+                elif skill_type == 'Normal1':
                     hp_multiplier = self.avatar.Normalnum('Normal1_HP')
                     skill_type = 'Normal'
                 elif skill_type == 'Ultra':
                     hp_multiplier = self.avatar.Ultra_num('Ultra_HP')
-                    if self.raw_data.avatar.rank >= 1:
+                    if (
+                        self.raw_data.avatar.rank >= 1
+                        and self.raw_data.avatar.id_ == 1205
+                    ):
                         hp_multiplier += 0.9
+                    if (
+                        self.raw_data.avatar.rank >= 6
+                        and self.raw_data.avatar.id_ == 1208
+                    ):
+                        hp_multiplier += 1.2
                 elif skill_type == 'Talent':
                     hp_multiplier = self.avatar.Talent_num('Talent_HP')
-                    if self.raw_data.avatar.rank >= 6:
+                    if (
+                        self.raw_data.avatar.rank >= 6
+                        and self.raw_data.avatar.id_ == 1205
+                    ):
                         damage_add = hp_num * 0.5
                 else:
                     hp_multiplier = 0
@@ -412,10 +441,14 @@ class RoleInstance:
                 attack_tz = (
                     attr_value_tz
                     + attr_value_tz
-                    * (1 + self.attribute_bonus.get('AttackAddedRatio', 0) + 2.144)
+                    * (
+                        1
+                        + self.attribute_bonus.get('AttackAddedRatio', 0)
+                        + 2.144
+                    )
                     + self.attribute_bonus['AttackDelta']
                 )
-                if self.raw_data.avatar.id_ == 1205:
+                if self.raw_data.avatar.id_ in [1205, 1208]:
                     attack_tz = (skill_multiplier * attack_tz) + (
                         hp_multiplier * hp_num
                     )

@@ -1117,10 +1117,41 @@ class GoodNightandSleepWell(BaseWeapon):
         return attribute_bonus
 
 
+# 她已闭上双眼
+class SheAlreadyShutHerEyes(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者的生命值降低时，使我方全体造成的伤害提高15%
+        return True
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        if await self.check():
+            all_damage_added_ratio = attribute_bonus.get(
+                'AllDamageAddedRatio', 0
+            )
+            attribute_bonus['AllDamageAddedRatio'] = (
+                all_damage_added_ratio
+                + mp.mpf(
+                    weapon_effect['23011']['Param']['AllDamageAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 3
+            )
+        return attribute_bonus
+
+
 class Weapon:
     @classmethod
     def create(cls, weapon: DamageInstanceWeapon):
         if weapon.id_ in [
+            23011,
             23007,
             21005,
             21019,
@@ -1159,6 +1190,8 @@ class Weapon:
             21008,
             21001,
         ]:
+            if weapon.id_ == 23011:
+                return SheAlreadyShutHerEyes(weapon)
             if weapon.id_ == 21001:
                 return GoodNightandSleepWell(weapon)
             if weapon.id_ == 21008:

@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, TypedDict, Union
+from typing import Dict, List, Union, TypedDict
 
 from msgspec import json as msgjson
 
@@ -40,6 +40,7 @@ avatarRankSkillUp_fileName = f'avatarRankSkillUp_mapping_{version}.json'
 class TS(TypedDict):
     Name: Dict[str, str]
     Icon: Dict[str, str]
+
 
 class LU(TypedDict):
     id: str
@@ -117,4 +118,6 @@ with Path.open(MAP / AvatarRelicScore_fileName, encoding='UTF-8') as f:
     AvatarRelicScore = msgjson.decode(f.read(), type=List[Dict])
 
 with Path.open(MAP / avatarRankSkillUp_fileName, encoding='UTF-8') as f:
-    AvatarRankSkillUp = msgjson.decode(f.read(), type=Dict[str, Union[List[LU], None]])
+    AvatarRankSkillUp = msgjson.decode(
+        f.read(), type=Dict[str, Union[List[LU], None]]
+    )
