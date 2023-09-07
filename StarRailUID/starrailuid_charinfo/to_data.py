@@ -238,8 +238,8 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
             rank_id = rank_item['rankId']
             # 121303 -> 1213003
             behavior_id = str(rank_id)[0:5] + '0' + str(rank_id)[-1]
-            char_skill_tree_data = characterSkillTree[str(char['avatarId'])][behavior_id]
-            if char_skill_tree_data['level_up_skills'] != []:
+            char_skill_tree_data = characterSkillTree[str(char['avatarId'])].get(behavior_id, [])
+            if char_skill_tree_data != [] and char_skill_tree_data['level_up_skills'] != []:
                 for skill in char_skill_tree_data['level_up_skills']:
                     skill_id = skill['id']
                     skill_up_num = skill['num']
