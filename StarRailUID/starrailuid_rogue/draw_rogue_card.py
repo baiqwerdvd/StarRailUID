@@ -262,12 +262,17 @@ async def draw_rogue_img(
         based_h = based_h + detail_h
     # 获取查询者数据
     if floor:
-        if floor > 6:
-            return '世界不能大于第六世界!'
+        if floor > 7:
+            return '世界不能大于第七世界!'
         if floor not in detail_list:
             return '你还没有挑战该模拟宇宙!'
-    elif raw_rogue_data['current_record']['basic']['finish_cnt'] == 0:
-        return '你还没有挑战本期模拟宇宙!\n可以使用[sr上期模拟宇宙]命令查询上期~'
+    else:
+        if schedule_type == '3':
+            if raw_rogue_data['current_record']['basic']['finish_cnt'] == 0:
+                return '你还没有挑战本期模拟宇宙!\n可以使用[sr上期模拟宇宙]命令查询上期~'
+        else:
+            if raw_rogue_data['last_record']['basic']['finish_cnt'] == 0:
+                return '你还没有挑战上期模拟宇宙!\n可以使用[sr模拟宇宙]命令查询本期~'
 
     # 获取背景图片各项参数
     based_w = 900

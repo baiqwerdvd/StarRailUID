@@ -89,7 +89,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         return char_data
     char = await cal_char_info(char_data)
     damage_len = 0
-    if char.char_id in [1102, 1204, 1107, 1213, 1006, 1005, 1205, 1208]:
+    if char.char_id in [1102, 1204, 1107, 1213, 1006, 1005, 1205, 1208, 1104]:
         skill_list = skill_dict[str(char.char_id)]['skilllist']
         damage_len = len(skill_list)
     # print(damage_len)
@@ -727,7 +727,7 @@ async def cal(char_data: Dict):
     char = await cal_char_info(char_data)
 
     skill_info_list = []
-    if char.char_id in [1102, 1204, 1107, 1213, 1006, 1005, 1205, 1208]:
+    if char.char_id in [1102, 1204, 1107, 1213, 1006, 1005, 1205, 1208, 1104]:
         if char.char_id == 1213:
             for skill_type in [
                 'Normal',

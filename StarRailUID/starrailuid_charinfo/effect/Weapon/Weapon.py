@@ -1147,6 +1147,418 @@ class SheAlreadyShutHerEyes(BaseWeapon):
         return attribute_bonus
 
 
+# 制胜的瞬间
+class MomentofVictory(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者受到攻击后，防御力额外提高24%
+        return True
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        if await self.check():
+            defence_added_ratio = attribute_bonus.get('DefenceAddedRatio', 0)
+            attribute_bonus[
+                'DefenceAddedRatio'
+            ] = defence_added_ratio + mp.mpf(
+                weapon_effect['23005']['Param']['DefenceAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+
+# 记忆的质料
+class TextureofMemories(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # ...
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 这就是我啦
+class ThisIsMe(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 装备者施放终结技时造成的伤害值提高，提高数值等同于装备者防御力的60%
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 我们是地火
+class WeAreWildfire(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 战斗开始时，使我方全体受到的伤害降低8%
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 宇宙市场趋势
+class TrendoftheUniversalMarket(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者受到攻击后，有100%的基础概率使敌方目标陷入灼烧状态，每回合造成等同于装备者40%防御力的持续伤害
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 朗道的选择
+class LandausChoice(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 装备者受到攻击的概率提高，同时受到的伤害降低16%。
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 余生的第一天
+class DayOneofMyNewLife(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 进入战斗后，使我方全体的全属性抗性提高8%
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 开疆
+class Pioneering(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 进入战斗后，使我方全体的全属性抗性提高8%
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 戍御
+class Defense(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 进入战斗后，使我方全体的全属性抗性提高8%
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 琥珀
+class Amber(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者当前生命值百分比小于50%时，其防御力额外提高16%。
+        return True
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        if await self.check():
+            defence_added_ratio = attribute_bonus.get('DefenceAddedRatio', 0)
+            attribute_bonus[
+                'DefenceAddedRatio'
+            ] = defence_added_ratio + mp.mpf(
+                weapon_effect['20003']['Param']['DefenceAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+
+# 俱殁
+class MutualDemise(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 装备者当前生命值百分比小于80%时，暴击率提高12%
+        return True
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        if await self.check():
+            critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
+            attribute_bonus[
+                'CriticalChanceBase'
+            ] = critical_chance_base + mp.mpf(
+                weapon_effect['20016']['Param']['CriticalChance'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+
+# 乐圮
+class ShatteredHome(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 使装备者对当前生命值百分比大于50%的敌方目标造成的伤害提高20%。
+        return True
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        if await self.check():
+            all_damage_added_ratio = attribute_bonus.get(
+                'AllDamageAddedRatio', 0
+            )
+            attribute_bonus[
+                'AllDamageAddedRatio'
+            ] = all_damage_added_ratio + mp.mpf(
+                weapon_effect['20009']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+
+# 天倾
+class CollapsingSky(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 使装备者普攻和战技造成的伤害提高20%。
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
+        attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
+            mp.mpf(
+                weapon_effect['20002']['Param']['a_dmg'][self.weapon_rank - 1]
+            )
+        )
+        bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
+        attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
+            mp.mpf(
+                weapon_effect['20002']['Param']['e_dmg'][self.weapon_rank - 1]
+            )
+        )
+        return attribute_bonus
+
+
+# 匿影
+class HiddenShadow(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 施放战技后，使装备者的下一次普攻对敌方目标造成等同于自身60%攻击力的附加伤害。
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 渊环
+class Loop(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 使装备者对减速状态下的敌方目标造成的伤害提高24%。
+        return True
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        if await self.check():
+            all_damage_added_ratio = attribute_bonus.get(
+                'AllDamageAddedRatio', 0
+            )
+            attribute_bonus[
+                'AllDamageAddedRatio'
+            ] = all_damage_added_ratio + mp.mpf(
+                weapon_effect['20009']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+
+# 幽邃
+class Void(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 战斗开始时，使装备者的效果命中提高20%，持续3回合。
+        return True
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        if await self.check():
+            status_probability = attribute_bonus.get(
+                'StatusProbabilityBase', 0
+            )
+            attribute_bonus[
+                'StatusProbabilityBase'
+            ] = status_probability + mp.mpf(
+                weapon_effect['20004']['Param']['StatusProbability'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+
+# 睿见
+class Sagacity(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者施放终结技时，攻击力提高24%，持续2回合。
+        return True
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        if await self.check():
+            a3_attack_added_ratio = attribute_bonus.get(
+                'UltraAttackAddedRatio', 0
+            )
+            attribute_bonus[
+                'UltraAttackAddedRatio'
+            ] = a3_attack_added_ratio + mp.mpf(
+                weapon_effect['20020']['Param']['A3_AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
+
+
+# 灵钥
+class Passkey(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 使装备者施放战技后额外恢复8点能量
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        return attribute_bonus
+
+
+# 智库
+class DataBank(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 使装备者终结技造成的伤害提高28%。
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
+        attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
+            mp.mpf(
+                weapon_effect['20006']['Param']['r_dmg'][self.weapon_rank - 1]
+            )
+        )
+        return attribute_bonus
+
+
 class Weapon:
     @classmethod
     def create(cls, weapon: DamageInstanceWeapon):
@@ -1189,7 +1601,64 @@ class Weapon:
             21015,
             21008,
             21001,
+            23005,
+            24002,
+            21030,
+            21023,
+            21016,
+            21009,
+            21002,
+            20017,
+            20010,
+            20003,
+            20016,
+            20009,
+            20002,
+            20018,
+            20011,
+            20004,
+            20020,
+            20013,
+            20006,
         ]:
+            if weapon.id_ == 20006:
+                return DataBank(weapon)
+            if weapon.id_ == 20013:
+                return Passkey(weapon)
+            if weapon.id_ == 20020:
+                return Sagacity(weapon)
+            if weapon.id_ == 20004:
+                return Void(weapon)
+            if weapon.id_ == 20011:
+                return Loop(weapon)
+            if weapon.id_ == 20018:
+                return HiddenShadow(weapon)
+            if weapon.id_ == 20002:
+                return CollapsingSky(weapon)
+            if weapon.id_ == 20009:
+                return ShatteredHome(weapon)
+            if weapon.id_ == 20016:
+                return MutualDemise(weapon)
+            if weapon.id_ == 20003:
+                return Amber(weapon)
+            if weapon.id_ == 20010:
+                return Defense(weapon)
+            if weapon.id_ == 20017:
+                return Pioneering(weapon)
+            if weapon.id_ == 21002:
+                return DayOneofMyNewLife(weapon)
+            if weapon.id_ == 21009:
+                return LandausChoice(weapon)
+            if weapon.id_ == 21016:
+                return TrendoftheUniversalMarket(weapon)
+            if weapon.id_ == 21023:
+                return WeAreWildfire(weapon)
+            if weapon.id_ == 21030:
+                return ThisIsMe(weapon)
+            if weapon.id_ == 24002:
+                return TextureofMemories(weapon)
+            if weapon.id_ == 23005:
+                return MomentofVictory(weapon)
             if weapon.id_ == 23011:
                 return SheAlreadyShutHerEyes(weapon)
             if weapon.id_ == 21001:

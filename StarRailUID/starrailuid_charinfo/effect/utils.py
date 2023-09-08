@@ -51,6 +51,9 @@ async def merge_attribute(base_attr: Dict, attribute_bonus: Dict) -> Dict:
         elif attribute == 'Normal_buff':
             attr_value = base_attr.get(attribute, 0)
             merged_attr[attribute] = attr_value + attribute_bonus[attribute]
+        elif attribute == 'shield_added_ratio':
+            attr_value = base_attr.get(attribute, 0)
+            merged_attr[attribute] = attr_value + attribute_bonus[attribute]
         else:
             continue
     return merged_attr

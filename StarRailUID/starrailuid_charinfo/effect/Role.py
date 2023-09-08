@@ -163,7 +163,7 @@ class RoleInstance:
         logger.info(f'技能区总: {skill_multiplier}')
 
         if self.raw_data.avatar.id_ == 1208:
-            logger.info(f'符玄战技【穷观阵】属性加成')
+            logger.info('符玄战技【穷观阵】属性加成')
             fx_cc_up = self.avatar.BPSkill_num('BPSkill_CC')
             fx_hp_up = self.avatar.BPSkill_num('BPSkill_HP')
             critical_chance_base = self.attribute_bonus.get(
@@ -233,6 +233,10 @@ class RoleInstance:
             skill_multiplier = skill_multiplier / skill_info[2]
             logger.info(f'技能区单段: {skill_multiplier}')
             attack = merged_attr['attack']
+            if self.raw_data.avatar.id_ == 1104:
+                # 杰帕德天赋加攻
+                defence = merged_attr['defence']
+                attack = attack + (defence * 0.35)
             logger.info(f'攻击力: {attack}')
             damage_add = 0
             hp_multiplier = 0
@@ -373,7 +377,8 @@ class RoleInstance:
                         skill_name = attr.split('_')[0]
                         if skill_name == skill_type:
                             logger.info(
-                                f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 爆伤加成'
+                                f'{attr} 对 {skill_type} 有 '
+                                f'{merged_attr[attr]} 爆伤加成'
                             )
                             critical_damage_base += merged_attr[attr]
             critical_damage = critical_damage_base + 1
@@ -492,4 +497,35 @@ class RoleInstance:
             logger.info(
                 f'{skill_info[1]} 暴击伤害: {damage_cd_z} 期望伤害{damage_qw_z}'
             )
+
+        # 技能类型为防御
+        if skill_info[0] == 'defence':
+            defence = merged_attr['defence']
+            logger.info(f'防御力: {defence}')
+
+            # 获取技能提供的固定护盾值
+            if skill_type == 'Normal':
+                defence_multiplier = self.avatar.Normalnum('Normal_G')
+            elif skill_type == 'BPSkill':
+                defence_multiplier = self.avatar.BPSkill_num('BPSkill_G')
+            elif skill_type == 'Ultra':
+                defence_multiplier = self.avatar.Ultra_num('Ultra_G')
+            elif skill_type == 'Talent':
+                defence_multiplier = self.avatar.Talent_num('Talent_G')
+
+            # 检查是否有护盾加成
+            shield_added_ratio = merged_attr.get('shield_added_ratio', 0)
+            shield_added = shield_added_ratio + 1
+            logger.info(f'护盾加成: {shield_added}')
+
+            defence_num = (
+                defence * skill_multiplier + defence_multiplier
+            ) * shield_added
+
+            skill_info_list = []
+            skill_info_list.append(skill_info[1])
+            skill_info_list.append(defence_num)
+            skill_info_list.append(defence_num)
+            skill_info_list.append(defence_num)
+
         return skill_info_list

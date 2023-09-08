@@ -238,11 +238,35 @@ class Fuxuan(BaseAvatar):
         pass
 
 
+class Gepard(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute = {}
+        self.extra_ability_attribute = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        pass
+
+    def extra_ability(self):
+        pass
+
+
 class Avatar:
     @classmethod
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1104:
+            return Gepard(char, skills)
         if char.id_ == 1208:
             return Fuxuan(char, skills)
         if char.id_ == 1205:
