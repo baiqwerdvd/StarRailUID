@@ -147,6 +147,11 @@ class RoleInstance:
                 skill_multiplier = self.avatar.Ultra()
         elif skill_type == 'Talent':
             skill_multiplier = self.avatar.Talent()
+            if self.raw_data.avatar.id_ == 1209:
+                if self.raw_data.avatar.rank >= 1:
+                    skill_multiplier = skill_multiplier + 0.9
+                else:
+                    skill_multiplier = skill_multiplier + 0.3
         else:
             if self.raw_data.avatar.id_ == 1213:
                 skill_multiplier = self.avatar.Normalnum(skill_type)
@@ -398,7 +403,6 @@ class RoleInstance:
             injury_add = 0
             critical_damage_add = 0
             for i in range(1, skill_info[2] + 1):
-                logger.info(f'段数: {i}')
                 injury_add = 0
                 critical_damage_add = 0
                 if self.raw_data.avatar.id_ == 1213:

@@ -63,7 +63,7 @@ class Swordplay(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者消灭敌方目标
+        # 当装备者多次击中同一敌方目标时，每次造成的伤害提高8%，该效果最多叠加5层
         return True
 
     async def weapon_ability(
@@ -73,12 +73,14 @@ class Swordplay(BaseWeapon):
             all_damage_added_ratio = attribute_bonus.get(
                 'AllDamageAddedRatio', 0
             )
-            attribute_bonus[
-                'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['21010']['Param']['AllDamageAddedRatio'][
-                    self.weapon_rank - 1
-                ]
+            attribute_bonus['AllDamageAddedRatio'] = (
+                all_damage_added_ratio
+                + mp.mpf(
+                    weapon_effect['21010']['Param']['AllDamageAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 5
             )
         return attribute_bonus
 

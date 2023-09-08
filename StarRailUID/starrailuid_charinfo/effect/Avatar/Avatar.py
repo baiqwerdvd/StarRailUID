@@ -260,11 +260,48 @@ class Gepard(BaseAvatar):
         pass
 
 
+class Yanqing(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute = {}
+        self.extra_ability_attribute = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 4:
+            self.eidolon_attribute['IceResistancePenetration'] = mp.mpf(0.15)
+
+    def extra_ability(self):
+        logger.info('额外能力')
+        logger.info('触发暴击时，速度提高10%')
+        self.extra_ability_attribute['SpeedAddedRatio'] = mp.mpf(0.1)
+        logger.info('【智剑连心】增益')
+        critical_damage_base_t = self.Talent_num('Talent_CD')
+        critical_damage_base_u = self.Ultra_num('Ultra_CD')
+        self.extra_ability_attribute['CriticalDamageBase'] = (
+            critical_damage_base_t + critical_damage_base_u
+        )
+        critical_chance_base = self.Talent_num('Talent_CC')
+        self.extra_ability_attribute[
+            'CriticalChanceBase'
+        ] = critical_chance_base + mp.mpf(0.6)
+
+
 class Avatar:
     @classmethod
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1209:
+            return Yanqing(char, skills)
         if char.id_ == 1104:
             return Gepard(char, skills)
         if char.id_ == 1208:
