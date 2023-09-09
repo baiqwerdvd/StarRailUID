@@ -24,6 +24,7 @@ from ..sruid_utils.api.mys.models import (
     DailyNoteData,
     RoleBasicInfo,
     WidgetStamina,
+    RogueLocustData,
 )
 
 RECOGNIZE_SERVER = {
@@ -356,6 +357,28 @@ class MysApi(_MysApi):
                 'need_detail': 'true',
                 'role_id': uid,
                 'schedule_type': schedule_type,
+                'server': server_id,
+            },
+            cookie=ck,
+            header=self._HEADER,
+        )
+        # print(data)
+        if isinstance(data, Dict):
+            data = cast(RogueData, data['data'])
+        return data
+
+    async def get_rogue_locust_info(
+        self,
+        uid: str,
+        ck: Optional[str] = None,
+    ) -> Union[RogueLocustData, int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0])
+        data = await self.simple_mys_req(
+            'ROGUE_LOCUST_INFO_URL',
+            uid,
+            params={
+                'need_detail': 'true',
+                'role_id': uid,
                 'server': server_id,
             },
             cookie=ck,

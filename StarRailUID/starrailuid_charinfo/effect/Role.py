@@ -172,6 +172,9 @@ class RoleInstance:
                     skill_multiplier = skill_multiplier + 1.56
             elif self.raw_data.avatar.id_ == 1205:
                 skill_multiplier = self.avatar.Normalnum(skill_type)
+            elif self.raw_data.avatar.id_ == 1212:
+                skill_multiplier = self.avatar.BPSkill_num(skill_type)
+                skill_type = 'BPSkill'
             else:
                 raise Exception('skill type error')
 
@@ -213,7 +216,7 @@ class RoleInstance:
             # 攻击加成
             if attr.__contains__('AttackAddedRatio'):
                 attr_name = attr.split('AttackAddedRatio')[0]
-                if attr_name == skill_type:
+                if attr_name == skill_type or attr_name == skill_info[3]:
                     attack_added_ratio = self.attribute_bonus.get(
                         'AttackAddedRatio', 0
                     )
@@ -223,7 +226,7 @@ class RoleInstance:
             # 效果命中加成
             if attr.__contains__('StatusProbabilityBase'):
                 attr_name = attr.split('StatusProbabilityBase')[0]
-                if attr_name == skill_type:
+                if attr_name == skill_type or attr_name == skill_info[3]:
                     status_probability = self.attribute_bonus.get(
                         'StatusProbabilityBase', 0
                     )
@@ -383,7 +386,7 @@ class RoleInstance:
             for attr in merged_attr:
                 if attr.__contains__('_DmgRatio'):
                     skill_name = attr.split('_')[0]
-                    if skill_name == skill_type:
+                    if skill_name == skill_type or skill_name == skill_info[3]:
                         logger.info(
                             f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 易伤加成'
                         )
@@ -401,9 +404,12 @@ class RoleInstance:
                 # 检查是否有对特定技能的爆伤加成
                 # Ultra_CriticalChance
                 for attr in merged_attr:
-                    if attr.__contains__('_CriticalChance'):
+                    if attr.__contains__('_CriticalDamageBase'):
                         skill_name = attr.split('_')[0]
-                        if skill_name == skill_type:
+                        if (
+                            skill_name == skill_type
+                            or skill_name == skill_info[3]
+                        ):
                             logger.info(
                                 f'{attr} 对 {skill_type} 有 '
                                 f'{merged_attr[attr]} 爆伤加成'
@@ -413,7 +419,20 @@ class RoleInstance:
             logger.info(f'暴伤: {critical_damage}')
 
             # 暴击区
-            critical_chance_base = min(1, merged_attr['CriticalChanceBase'])
+            logger.info('检查是否有暴击加成')
+            critical_chance_base = merged_attr['CriticalChanceBase']
+            # 检查是否有对特定技能的爆伤加成
+            # Ultra_CriticalChance
+            for attr in merged_attr:
+                if attr.__contains__('_CriticalChance'):
+                    skill_name = attr.split('_')[0]
+                    if skill_name == skill_type or skill_name == skill_info[3]:
+                        logger.info(
+                            f'{attr} 对 {skill_type} 有 '
+                            f'{merged_attr[attr]} 暴击加成'
+                        )
+                        critical_chance_base += merged_attr[attr]
+            critical_chance_base = min(1, critical_chance_base)
             logger.info(f'暴击: {critical_chance_base}')
 
             # 期望伤害
@@ -509,6 +528,15 @@ class RoleInstance:
                 damage_cd_z = damage_cd_z * 1.8
                 damage_qw_z = damage_qw_z * 1.8
                 damage_tz_z = damage_tz_z * 1.8
+
+            if (
+                self.raw_data.avatar.id_ == 1212
+                and self.raw_data.avatar.rank >= 1
+            ):
+                if skill_info[3] == 'BPSkill1' or skill_info[3] == 'Ultra':
+                    damage_cd_z = damage_cd_z * 1.6
+                    damage_qw_z = damage_qw_z * 1.6
+                    damage_tz_z = damage_tz_z * 1.6
 
             if self.avatar.avatar_element == 'Thunder':
                 element_area = 0

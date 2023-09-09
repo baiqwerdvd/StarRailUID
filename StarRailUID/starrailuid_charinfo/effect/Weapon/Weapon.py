@@ -315,10 +315,10 @@ class IntheNight(BaseWeapon):
             * count_
         )
         ultra_critical_chance_base = attribute_bonus.get(
-            'Ultra_CriticalChanceBase', 0
+            'Ultra_CriticalDamageBase', 0
         )
         attribute_bonus[
-            'Ultra_CriticalChanceBase'
+            'Ultra_CriticalDamageBase'
         ] = ultra_critical_chance_base + (
             mp.mpf(
                 weapon_effect['23001']['Param']['q_crit_dmg'][
@@ -477,12 +477,6 @@ class GeniusesRepose(BaseWeapon):
     async def weapon_ability(
         self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
     ):
-        # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-        # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
-        # weapon_effect['21020']['Param']['AttackAddedRatio'][
-        # self.weapon_rank - 1
-        # ]
-        # )
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalDamageBase', 0)
             attribute_bonus['CriticalDamageBase'] = critical_chance_base + (
@@ -620,22 +614,6 @@ class TheUnreachableSide(BaseWeapon):
     async def weapon_ability(
         self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
     ):
-        # critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
-        # attribute_bonus[
-        # 'CriticalChanceBase'
-        # ] = critical_chance_base + mp.mpf(
-        # weapon_effect['23009']['Param']['CriticalChance'][
-        # self.weapon_rank - 1
-        # ]
-        # )
-        # hp_added_ratio = attribute_bonus.get('HPAddedRatio', 0)
-        # attribute_bonus[
-        # 'HPAddedRatio'
-        # ] = hp_added_ratio + mp.mpf(
-        # weapon_effect['23009']['Param']['HPAddedRatio'][
-        # self.weapon_rank - 1
-        # ]
-        # )
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
                 'AllDamageAddedRatio', 0
@@ -1561,6 +1539,39 @@ class DataBank(BaseWeapon):
         return attribute_bonus
 
 
+# 此身为剑
+class Thisbodyisasword(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 使装备者战技造成的伤害提高30%。施放终结技时，立即恢复12点能量，并使装备者的暴击伤害提高36%
+        pass
+
+    async def weapon_ability(
+        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+    ):
+        ultra_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
+        attribute_bonus['BPSkillDmgAdd'] = ultra_dmg_add + (
+            mp.mpf(
+                weapon_effect['23014']['Param']['e_dmg'][self.weapon_rank - 1]
+            )
+        )
+
+        critical_chance_base = attribute_bonus.get('CriticalDamageBase', 0)
+        attribute_bonus['CriticalDamageBase'] = critical_chance_base + (
+            mp.mpf(
+                weapon_effect['23014']['Param']['CriticalDamageBase'][
+                    self.weapon_rank - 1
+                ]
+            )
+        )
+
+        return attribute_bonus
+
+
 class Weapon:
     @classmethod
     def create(cls, weapon: DamageInstanceWeapon):
@@ -1622,7 +1633,10 @@ class Weapon:
             20020,
             20013,
             20006,
+            23014,
         ]:
+            if weapon.id_ == 23014:
+                return Thisbodyisasword(weapon)
             if weapon.id_ == 20006:
                 return DataBank(weapon)
             if weapon.id_ == 20013:

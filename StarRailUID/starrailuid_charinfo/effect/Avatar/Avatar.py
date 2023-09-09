@@ -381,11 +381,50 @@ class Qingque(BaseAvatar):
         self.extra_ability_attribute['AttackAddedRatio'] = self.Talent()
 
 
+class Jingliu(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute = {}
+        self.extra_ability_attribute = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['Ultra_CriticalChanceBase'] = mp.mpf(0.12)
+            self.eidolon_attribute['BPSkill1_CriticalChanceBase'] = mp.mpf(
+                0.12
+            )
+        if self.avatar_rank >= 2:
+            self.eidolon_attribute['UltraDmgAdd'] = mp.mpf(0.3)
+        if self.avatar_rank >= 4:
+            self.eidolon_attribute['BPSkill1AttackAddedRatio'] = mp.mpf(0.4)
+            self.eidolon_attribute['UltraAttackAddedRatio'] = mp.mpf(0.4)
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['Ultra_CriticalDamageBase'] = mp.mpf(0.5)
+            self.eidolon_attribute['BPSkill1_CriticalDamageBase'] = mp.mpf(0.5)
+
+    def extra_ability(self):
+        logger.info('额外能力')
+        logger.info('【转魄】状态下，造成的伤害提高10%。')
+        self.extra_ability_attribute['BPSkill1DmgAdd'] = mp.mpf(0.1)
+        self.extra_ability_attribute['UltraDmgAdd'] = mp.mpf(0.1)
+
+
 class Avatar:
     @classmethod
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1212:
+            return Jingliu(char, skills)
         if char.id_ == 1201:
             return Qingque(char, skills)
         if char.id_ == 1003:

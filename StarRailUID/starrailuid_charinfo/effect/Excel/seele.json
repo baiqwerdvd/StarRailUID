@@ -68,9 +68,9 @@
             120
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"BPSkill": ["attack","战技", 1],
-			"Ultra": ["attack","终结技", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 1, "BPSkill"],
+			"Ultra": ["attack","终结技", 1, "Ultra"]
 		}
     },
 	"1204": {
@@ -144,10 +144,10 @@
             130
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"BPSkill": ["attack","战技", 1],
-			"Ultra": ["attack","终结技", 1],
-			"Talent": ["attack","10层神君", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 1, "BPSkill"],
+			"Ultra": ["attack","终结技", 1, "Ultra"],
+			"Talent": ["attack","10层神君", 1, "Talent"]
 		}
     },
 	"1107": {
@@ -220,10 +220,10 @@
             130
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"BPSkill": ["attack","战技", 1],
-			"Ultra": ["attack","强化反击", 1],
-			"Talent": ["attack","反击", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 1, "BPSkill"],
+			"Ultra": ["attack","强化反击", 1, "Ultra"],
+			"Talent": ["attack","反击", 1, "Talent"]
 		}
     },
 	"1213": {
@@ -330,11 +330,11 @@
             140
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 2],
-			"Normal1": ["attack","瞬华", 3],
-			"Normal2": ["attack","天矢阴", 5],
-			"Normal3": ["attack","盘拏耀跃", 7],
-			"Ultra": ["attack","终结技", 3]
+			"Normal": ["attack","普攻", 2, "Normal"],
+			"Normal1": ["attack","瞬华", 3, "Normal1"],
+			"Normal2": ["attack","天矢阴", 5, "Normal2"],
+			"Normal3": ["attack","盘拏耀跃", 7, "Normal3"],
+			"Ultra": ["attack","终结技", 3, "Ultra"]
 		}
     },
 	"1006": {
@@ -440,9 +440,9 @@
             110
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"BPSkill": ["attack","战技", 1],
-			"Ultra": ["attack","终结技", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 1, "BPSkill"],
+			"Ultra": ["attack","终结技", 1, "Ultra"]
 		}
     },
 	"1005": {
@@ -531,11 +531,11 @@
             110
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"BPSkill": ["attack","战技", 1],
-			"Ultra": ["attack","终结技", 1],
-			"DOT": ["attack","单次持续伤害", 1],
-			"Talent": ["attack","追加攻击", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 1, "BPSkill"],
+			"Ultra": ["attack","终结技", 1, "Ultra"],
+			"DOT": ["attack","单次持续伤害", 1, "DOT"],
+			"Talent": ["attack","追加攻击", 1, "Talent"]
 		}
     },
 	"1205": {
@@ -664,10 +664,10 @@
             110
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"Normal1": ["attack","无间剑树", 1],
-			"Ultra": ["attack","终结技", 1],
-			"Talent": ["attack","追加攻击", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"Normal1": ["attack","无间剑树", 1, "Normal1"],
+			"Ultra": ["attack","终结技", 1, "Ultra"],
+			"Talent": ["attack","追加攻击", 1, "Talent"]
 		}
     },
 	"1208": {
@@ -785,8 +785,8 @@
             135
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"Ultra": ["attack","终结技", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"Ultra": ["attack","终结技", 1, "Ultra"]
 		}
     },
 	"1104": {
@@ -859,9 +859,9 @@
             110
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"BPSkill": ["attack","战技", 1],
-			"Ultra": ["defence","终结技(护盾)", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 1, "BPSkill"],
+			"Ultra": ["defence","终结技(护盾)", 1, "Ultra"]
 		}
     },
 	"1209": {
@@ -984,10 +984,10 @@
             120
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"BPSkill": ["attack","战技", 1],
-			"Ultra": ["attack","终结技", 1],
-			"Talent": ["attack","附加伤害", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 1, "BPSkill"],
+			"Ultra": ["attack","终结技", 1, "Ultra"],
+			"Talent": ["attack","附加伤害", 1, "Talent"]
 		}
     },
 	"1004": {
@@ -1059,9 +1059,9 @@
             120
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"BPSkill": ["attack","战技", 3],
-			"Ultra": ["attack","终结技", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 3, "BPSkill"],
+			"Ultra": ["attack","终结技", 1, "Ultra"]
 		}
     },
 	"1003": {
@@ -1133,10 +1133,10 @@
             120
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"BPSkill": ["attack","战技", 3],
-			"Ultra": ["attack","终结技", 1],
-			"Talent": ["attack","追加攻击", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 1, "BPSkill"],
+			"Ultra": ["attack","终结技", 1, "Ultra"],
+			"Talent": ["attack","追加攻击", 1, "Talent"]
 		}
     },
 	"1201": {
@@ -1219,9 +1219,102 @@
             140
         ],
 		"skilllist": {
-			"Normal": ["attack","普攻", 1],
-			"Normal1": ["attack","杠上开花！", 1],
-			"Ultra": ["attack","终结技", 1]
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"Normal1": ["attack","杠上开花！", 1, "Normal1"],
+			"Ultra": ["attack","终结技", 1, "Ultra"]
+		}
+    },
+	"1212": {
+        "Normal": [
+            0.5000000004656613,
+            0.6000000005587935,
+            0.7000000006519258,
+            0.8000000007450581,
+            0.9000000008381903,
+            1.0000000000931323,
+            1.1000000001862645,
+            1.2000000002793968,
+			1.3000000002793968
+        ],
+		"BPSkill": [
+            1.0000000005122274,
+            1.1000000006705523,
+            1.200000000828877,
+            1.300000000558794,
+            1.400000000214204,
+            1.500000000372529,
+            1.630000000745058,
+            1.750000000419095,
+            1.880000000860302,
+            2.000000000232831,
+            2.1000000003911555,
+            2.20000000054948,
+            2.300000000707805,
+            2.40000000086613,
+            2.50000000093132
+        ],
+		"BPSkill1": [
+            1.2000000005122274,
+            1.3200000006705523,
+            1.440000000828877,
+            1.560000000558794,
+            1.680000000214204,
+            1.800000000372529,
+            1.950000000745058,
+            2.100000000419095,
+            2.250000000860302,
+            2.400000000232831,
+            2.5200000003911555,
+            2.64000000054948,
+            2.760000000707805,
+            2.88000000086613,
+            3.00000000093132
+        ],
+        "Ultra": [
+            1.8000000005122274,
+            1.9200000006705523,
+            2.040000000828877,
+            2.160000000558794,
+            2.280000000214204,
+            2.400000000372529,
+            2.550000000745058,
+            2.700000000419095,
+            2.850000000860302,
+            3.000000000232831,
+            3.1200000003911555,
+            3.24000000054948,
+            3.360000000707805,
+            3.48000000086613,
+            3.60000000093132
+        ],
+		"Talent": [
+            0.60000000037252903,
+            0.66000000040978193,
+            0.72000000044703484,
+            0.7800000004842877,
+            0.8400000005215406,
+            0.9000000005587935,
+            0.9800000006053597,
+            1.0500000006519258,
+            1.1200000006984919,
+            1.2000000007450581,
+            1.260000000782311,
+            1.3200000008195639,
+            1.3800000008568168,
+            1.4400000008940697,
+            1.5000000008940697
+        ],
+        "Maze": [
+            20
+        ],
+		"Ultra_Use": [
+            140
+        ],
+		"skilllist": {
+			"Normal": ["attack","普攻", 1, "Normal"],
+			"BPSkill": ["attack","战技", 1, "BPSkill"],
+			"BPSkill1": ["attack","寒川映月", 1, "BPSkill1"],
+			"Ultra": ["attack","终结技", 1, "Ultra"]
 		}
     }
 }

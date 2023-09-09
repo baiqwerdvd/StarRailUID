@@ -113,10 +113,58 @@ class RogueBasicInfo(TypedDict):
     unlocked_skill_points: int
 
 
+class LocustCntInfo(TypedDict):
+    narrow: int
+    miracle: int
+    event: int
+
+
+class LocustDestinyInfo(TypedDict):
+    id: int
+    desc: str
+    level: int
+
+
+class LocustBasicInfo(TypedDict):
+    cnt: LocustCntInfo
+    destiny: List[LocustDestinyInfo]
+
+
 class RoleInfo(TypedDict):
     server: str
     nickname: str
     level: int
+
+
+class LocustBlocks(TypedDict):
+    block_id: int
+    name: str
+    num: int
+
+
+class LocustFury(TypedDict):
+    type: int
+    point: str
+
+
+class LocustRecordInfo(TypedDict):
+    name: str
+    finish_time: RogueTime
+    final_lineup: List[RogueAvatar]
+    base_type_list: List[RogueBaseType]
+    cached_avatars: List[RogueAvatar]
+    buffs: List[RogueBuffs]
+    miracles: List[RogueMiracles]
+    blocks: List[LocustBlocks]
+    worm_weak: Union[str, str]
+    difficulty: int
+    fury: LocustFury
+    detail_h: Union[int, None]
+    start_h: Union[int, None]
+
+
+class LocustRecord(TypedDict):
+    records: List[LocustRecordInfo]
 
 
 class RogueData(TypedDict):
@@ -124,6 +172,12 @@ class RogueData(TypedDict):
     basic_info: RogueBasicInfo
     current_record: RogueRecord
     last_record: RogueRecord
+
+
+class RogueLocustData(TypedDict):
+    role: RoleInfo
+    basic: LocustBasicInfo
+    detail: LocustRecord
 
 
 ################

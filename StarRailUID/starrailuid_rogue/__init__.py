@@ -7,9 +7,10 @@ from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
 from ..utils.sr_prefix import PREFIX
-from .draw_rogue_card import draw_rogue_img
+from .draw_rogue_card import draw_rogue_img, draw_rogue_locust_img
 
 sv_srabyss = SV('sr查询模拟宇宙')
+sv_srabyss_locust = SV('sr查询寰宇蝗灾')
 
 
 @sv_srabyss.on_command(
@@ -67,5 +68,35 @@ async def send_srabyss_info(bot: Bot, ev: Event):
     # raw_rogue_data = await data.get_rogue_data(uid, schedule_type)
     # print(raw_rogue_data)
     im = await draw_rogue_img(user_id, uid, floor, schedule_type)
+    await bot.send(im)
+    return None
+
+
+@sv_srabyss_locust.on_command(
+    (
+        f'{PREFIX}寰宇蝗灾',
+        f'{PREFIX}hyhz',
+        f'{PREFIX}查询寰宇蝗灾',
+        f'{PREFIX}sqhyhz',
+    ),
+    block=True,
+)
+async def send_srabyss_locust_info(bot: Bot, ev: Event):
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
+    if name:
+        return None
+
+    await bot.logger.info('开始执行[sr查询寰宇蝗灾信息]')
+    get_uid_ = await get_uid(bot, ev, True)
+    if get_uid_ is None:
+        return await bot.send(UID_HINT)
+    uid, user_id = get_uid_
+    if uid is None:
+        return await bot.send(UID_HINT)
+    await bot.logger.info(f'[sr查询寰宇蝗灾信息]uid: {uid}')
+    # data = GsCookie()
+    # raw_rogue_data = await data.get_rogue_data(uid, schedule_type)
+    # print(raw_rogue_data)
+    im = await draw_rogue_locust_img(user_id, uid)
     await bot.send(im)
     return None
