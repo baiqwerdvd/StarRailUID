@@ -207,7 +207,7 @@ class Blade(BaseAvatar):
             self.eidolon_attribute['CriticalChanceBase'] = mp.mpf(0.15)
 
         if self.avatar_rank >= 4:
-            self.extra_ability_attribute['HPAddedRatio'] = mp.mpf(0.4)
+            self.eidolon_attribute['HPAddedRatio'] = mp.mpf(0.4)
 
     def extra_ability(self):
         logger.info('额外能力')
@@ -295,11 +295,103 @@ class Yanqing(BaseAvatar):
         ] = critical_chance_base + mp.mpf(0.6)
 
 
+class Welt(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute = {}
+        self.extra_ability_attribute = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        pass
+
+    def extra_ability(self):
+        logger.info('额外能力')
+        logger.info('施放终结技时，有100%基础概率使目标受到的伤害提高12%，持续2回合。')
+        logger.info('对被弱点击破的敌方目标造成的伤害提高20')
+        self.extra_ability_attribute['AllDamageAddedRatio'] = mp.mpf(0.32)
+
+
+class Himeko(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute = {}
+        self.extra_ability_attribute = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['SpeedAddedRatio'] = mp.mpf(0.1)
+        if self.avatar_rank >= 2:
+            self.eidolon_attribute['AllDamageAddedRatio'] = mp.mpf(0.15)
+
+    def extra_ability(self):
+        logger.info('额外能力')
+        logger.info('战技对灼烧状态下的敌方目标造成的伤害提高20%。')
+        self.extra_ability_attribute['BPSkillDmgAdd'] = mp.mpf(0.2)
+        logger.info('若当前生命值百分比大于等于80%，则暴击率提高15%。')
+        self.extra_ability_attribute['CriticalChanceBase'] = mp.mpf(0.15)
+
+
+class Qingque(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute = {}
+        self.extra_ability_attribute = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['UltraDmgAdd'] = mp.mpf(0.1)
+
+    def extra_ability(self):
+        logger.info('额外能力')
+        logger.info('施放强化普攻后，青雀的速度提高10%，持续1回合。')
+        self.extra_ability_attribute['SpeedAddedRatio'] = mp.mpf(0.1)
+        logger.info('默认4层战技加伤害')
+        all_damage_added_ratio = self.BPSkill() + mp.mpf(0.1)
+        self.extra_ability_attribute['AllDamageAddedRatio'] = (
+            all_damage_added_ratio * 4
+        )
+        logger.info('默认暗杠加攻')
+        self.extra_ability_attribute['AttackAddedRatio'] = self.Talent()
+
+
 class Avatar:
     @classmethod
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1201:
+            return Qingque(char, skills)
+        if char.id_ == 1003:
+            return Himeko(char, skills)
+        if char.id_ == 1004:
+            return Welt(char, skills)
         if char.id_ == 1209:
             return Yanqing(char, skills)
         if char.id_ == 1104:

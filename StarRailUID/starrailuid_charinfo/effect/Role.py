@@ -133,8 +133,18 @@ class RoleInstance:
         skill_info = self.avatar.Skill_Info(skill_type)
         if skill_type == 'Normal':
             skill_multiplier = self.avatar.Normal()
+            if (
+                self.raw_data.avatar.id_ == 1004
+                and self.raw_data.avatar.rank >= 1
+            ):
+                skill_multiplier = skill_multiplier + (skill_multiplier * 0.5)
         elif skill_type == 'BPSkill':
             skill_multiplier = self.avatar.BPSkill()
+            if (
+                self.raw_data.avatar.id_ == 1004
+                and self.raw_data.avatar.rank >= 1
+            ):
+                skill_multiplier = skill_multiplier + (skill_multiplier * 0.8)
         elif skill_type == 'Ultra':
             if self.raw_data.avatar.id_ == 1107:
                 skill_multiplier = self.avatar.Talent() + self.avatar.Ultra()
@@ -153,7 +163,7 @@ class RoleInstance:
                 else:
                     skill_multiplier = skill_multiplier + 0.3
         else:
-            if self.raw_data.avatar.id_ == 1213:
+            if self.raw_data.avatar.id_ in [1213, 1201]:
                 skill_multiplier = self.avatar.Normalnum(skill_type)
                 skill_type = 'Normal'
             elif self.raw_data.avatar.id_ == 1005:
@@ -237,6 +247,19 @@ class RoleInstance:
         if skill_info[0] == 'attack':
             skill_multiplier = skill_multiplier / skill_info[2]
             logger.info(f'技能区单段: {skill_multiplier}')
+            if self.raw_data.avatar.id_ == 1004:
+                if self.raw_data.avatar.rank >= 6 and skill_type == 'BPSkill':
+                    skill_info[2] = skill_info[2] + 1
+                multiplier_add = self.avatar.Talent()
+                skill_multiplier = skill_multiplier + multiplier_add
+
+            if (
+                self.raw_data.avatar.id_ == 1201
+                and self.raw_data.avatar.rank >= 4
+                and skill_type == 'Normal'
+            ):
+                skill_info[2] = skill_info[2] + 1
+
             attack = merged_attr['attack']
             if self.raw_data.avatar.id_ == 1104:
                 # 杰帕德天赋加攻
@@ -478,6 +501,14 @@ class RoleInstance:
                 )
 
                 damage_tz_z += damage_tz
+
+            if (
+                self.raw_data.avatar.id_ == 1003
+                and self.raw_data.avatar.rank >= 6
+            ):
+                damage_cd_z = damage_cd_z * 1.8
+                damage_qw_z = damage_qw_z * 1.8
+                damage_tz_z = damage_tz_z * 1.8
 
             if self.avatar.avatar_element == 'Thunder':
                 element_area = 0

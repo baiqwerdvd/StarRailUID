@@ -100,6 +100,9 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         1208,
         1104,
         1209,
+        1004,
+        1003,
+        1201,
     ]:
         skill_list = skill_dict[str(char.char_id)]['skilllist']
         damage_len = len(skill_list)
@@ -749,6 +752,9 @@ async def cal(char_data: Dict):
         1208,
         1104,
         1209,
+        1004,
+        1003,
+        1201,
     ]:
         if char.char_id == 1213:
             for skill_type in [
@@ -771,7 +777,7 @@ async def cal(char_data: Dict):
                 role = RoleInstance(char)
                 im_tmp = await role.cal_damage(skill_type)
                 skill_info_list.append(im_tmp)
-        elif char.char_id == 1205:
+        elif char.char_id in [1205, 1201]:
             for skill_type in ['Normal', 'Normal1', 'Ultra']:
                 role = RoleInstance(char)
                 im_tmp = await role.cal_damage(skill_type)
@@ -781,7 +787,7 @@ async def cal(char_data: Dict):
                 role = RoleInstance(char)
                 im_tmp = await role.cal_damage(skill_type)
                 skill_info_list.append(im_tmp)
-        if char.char_id in [1204, 1107, 1005, 1205, 1209]:
+        if char.char_id in [1204, 1107, 1005, 1205, 1209, 1003]:
             role = RoleInstance(char)
             im_tmp = await role.cal_damage('Talent')
             skill_info_list.append(im_tmp)
