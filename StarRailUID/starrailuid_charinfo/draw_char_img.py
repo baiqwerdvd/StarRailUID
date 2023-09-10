@@ -36,8 +36,7 @@ from ..utils.resource.RESOURCE_PATH import (
     SKILL_PATH,
     WEAPON_PATH,
 )
-from .cal_damage import cal
-from .mono.Character import Character
+from .cal_damage import cal, cal_char_info
 from .to_data import api_to_dict
 
 Excel_path = Path(__file__).parent / 'effect'
@@ -677,14 +676,6 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
     res = await convert_img(char_info)
     logger.info('[sr面板]绘图已完成,等待发送!')
     return res
-
-
-async def cal_char_info(char_data: Dict):
-    char: Character = Character(char_data)
-    await char.get_equipment_info()
-    await char.get_char_attribute_bonus()
-    await char.get_relic_info()
-    return char
 
 
 async def get_char_data(

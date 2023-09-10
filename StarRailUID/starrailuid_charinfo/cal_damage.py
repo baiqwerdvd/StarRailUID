@@ -1,7 +1,15 @@
 from typing import Dict
 
-from .draw_char_img import cal_char_info
 from .effect.Role import RoleInstance
+from .mono.Character import Character
+
+
+async def cal_char_info(char_data: Dict):
+    char: Character = Character(char_data)
+    await char.get_equipment_info()
+    await char.get_char_attribute_bonus()
+    await char.get_relic_info()
+    return char
 
 
 async def cal(char_data: Dict):
