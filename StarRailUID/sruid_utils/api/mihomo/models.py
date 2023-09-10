@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union, TypedDict
+from typing import List, TypedDict, Union
 
 
 class MihomoData(TypedDict):
@@ -20,7 +20,7 @@ class Equipment(TypedDict):
 
 
 class Relic(TypedDict):
-    subAffixList: list[SubAffix]
+    subAffixList: List[SubAffix]
     tid: int
     mainAffixId: int
     type: int
@@ -33,13 +33,13 @@ class SubAffix(TypedDict):
 
 
 class Avatar(TypedDict):
-    skillTreeList: list[Behavior]
+    skillTreeList: List[Behavior]
     rank: Union[int, None]
     pos: Union[int, None]
     avatarId: int
     level: int
     equipment: Union[Equipment, None]
-    relicList: list[Relic]
+    relicList: List[Relic]
     promotion: int
 
 
@@ -61,7 +61,7 @@ class PlayerDetailInfo(TypedDict):
     assistAvatarDetail: Avatar
     platform: str
     isDisplayAvatar: bool
-    avatarDetailList: Union[list[Avatar], None]
+    avatarDetailList: Union[List[Avatar], None]
     uid: int
     friendCount: int
     worldLevel: int

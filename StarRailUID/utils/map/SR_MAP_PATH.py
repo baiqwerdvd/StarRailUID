@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, Union, TypedDict
+from typing import Dict, List, TypedDict, Union
 
 from msgspec import json as msgjson
 
@@ -78,7 +78,7 @@ with Path.open(MAP / rankId2Name_fileName, encoding='UTF-8') as f:
     rankId2Name = msgjson.decode(f.read(), type=Dict[str, str])
 
 with Path.open(MAP / characterSkillTree_fileName, encoding='UTF-8') as f:
-    characterSkillTree = msgjson.decode(f.read(), type=Dict[str, dict])
+    characterSkillTree = msgjson.decode(f.read(), type=Dict[str, Dict])
 
 with Path.open(MAP / avatarId2DamageType_fileName, encoding='UTF-8') as f:
     avatarId2DamageType = msgjson.decode(f.read(), type=Dict[str, str])
@@ -97,7 +97,7 @@ with Path.open(
     )
 
 with Path.open(MAP / RelicSetSkill_fileName, encoding='UTF-8') as f:
-    RelicSetSkill = msgjson.decode(f.read(), type=Dict[str, dict])
+    RelicSetSkill = msgjson.decode(f.read(), type=Dict[str, Dict])
 
 with Path.open(MAP / skillId2AttackType_fileName, encoding='UTF-8') as f:
     skillId2AttackType = msgjson.decode(f.read(), type=Dict[str, str])

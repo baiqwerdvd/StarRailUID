@@ -1,16 +1,16 @@
 import asyncio
 from pathlib import Path
-from typing import List, Union
+from typing import Dict, List, Union
 
 from PIL import Image, ImageDraw
 
-from .to_data import api_to_dict
-from ..utils.image.convert import convert_img
 from ..utils.fonts.first_world import fw_font_28
-from ..utils.map.SR_MAP_PATH import avatarId2Name
-from ..utils.map.name_covert import avatar_id_to_char_star
 from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
+from ..utils.image.convert import convert_img
+from ..utils.map.name_covert import avatar_id_to_char_star
+from ..utils.map.SR_MAP_PATH import avatarId2Name
 from ..utils.resource.RESOURCE_PATH import CHAR_ICON_PATH, CHAR_PREVIEW_PATH
+from .to_data import api_to_dict
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
@@ -18,7 +18,6 @@ second_color = (67, 61, 56)
 white_color = (247, 247, 247)
 gray_color = (175, 175, 175)
 
-# MAP_PATH = Path(__file__).parent / 'map'
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 char_mask = Image.open(TEXT_PATH / 'char_mask.png')
 char_bg_mask = Image.open(TEXT_PATH / 'char_bg_mask.png')
@@ -104,7 +103,7 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
     return await convert_img(img)
 
 
-async def draw_mihomo_char(index: int, img: Image.Image, char_data: dict):
+async def draw_mihomo_char(index: int, img: Image.Image, char_data: Dict):
     char_id = char_data['avatarId']
     char_name = char_data['avatarName']
     char_star = await avatar_id_to_char_star(str(char_id))
@@ -136,7 +135,7 @@ async def draw_mihomo_char(index: int, img: Image.Image, char_data: dict):
     img.paste(char_card, (x, 199), char_card)
 
 
-async def draw_enka_char(index: int, img: Image.Image, char_data: dict):
+async def draw_enka_char(index: int, img: Image.Image, char_data: Dict):
     char_id = char_data['avatarId']
     char_star = await avatar_id_to_char_star(str(char_id))
     char_card = Image.open(TEXT_PATH / f'char_card_{char_star}.png')

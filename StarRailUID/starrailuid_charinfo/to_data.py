@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from httpx import ReadTimeout
 
@@ -33,13 +33,13 @@ from .cal_value import cal_relic_main_affix, cal_relic_sub_affix
 
 async def api_to_dict(
     sr_uid: str, sr_data: Optional[MihomoData] = None
-) -> Union[List[dict], str]:
+) -> Union[List[Dict], str]:
     """
     :说明:
       访问Mihomo.me API并转换为StarRailUID的数据Json。
     :参数:
       * ``uid: str``: 玩家uid。
-      * ``sr_data: Optional[dict] = None``: 来自Mihomo.me的dict, 可留空。
+      * ``sr_data: Optional[Dict] = None``: 来自Mihomo.me的dict, 可留空。
     :返回:
       * ``刷新完成提示语: str``: 包含刷新成功的角色列表。
     """
@@ -54,7 +54,7 @@ async def api_to_dict(
             return '网络不太稳定...'
     if isinstance(sr_data, str):
         return []
-    if isinstance(sr_data, dict):
+    if isinstance(sr_data, Dict):
         if 'detailInfo' not in sr_data:
             return '服务器正在维护或者关闭中...\n检查Mihomo.me是否可以访问\n如可以访问,尝试上报Bug!'
     elif sr_data is None:
@@ -342,7 +342,7 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
 
 async def api_to_data(
     uid: str, mihomo_data: Optional[MihomoData] = None
-) -> Union[dict, str]:
+) -> Union[Dict, str]:
     raw_data = await api_to_dict(uid, mihomo_data)
     if isinstance(raw_data, str):
         return raw_data

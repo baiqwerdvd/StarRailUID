@@ -1,9 +1,9 @@
-import json
 import asyncio
-from pathlib import Path
-from urllib import parse
+import json
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, Optional
+from urllib import parse
 
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
@@ -61,7 +61,7 @@ async def get_new_gachalog_by_link(
 async def save_gachalogs(
     uid: str,
     gacha_url: str,
-    raw_data: Optional[dict] = None,
+    raw_data: Optional[Dict] = None,
     is_force: bool = False,
 ) -> str:
     path = PLAYER_PATH / str(uid)
