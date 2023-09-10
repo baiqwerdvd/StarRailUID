@@ -1,14 +1,11 @@
-from mpmath import mp
 from gsuid_core.logger import logger
 
-from .Avatar.Avatar import Avatar
-from .Weapon.Weapon import Weapon
-from .utils import merge_attribute
 from ..mono.Character import Character
+from .Avatar.Avatar import Avatar
 from .Base.model import DamageInstance
 from .Relic.Relic import RelicSet, SingleRelic
-
-mp.dps = 14
+from .utils import merge_attribute
+from .Weapon.Weapon import Weapon
 
 
 class RoleInstance:
@@ -19,10 +16,9 @@ class RoleInstance:
         self.weapon = Weapon.create(self.raw_data.weapon)
         self.relic_set = RelicSet.create(self.raw_data.relic)
 
-        self.base_attr = {}
+        self.base_attr = self.cal_role_base_attr()
         self.attribute_bonus = {}
 
-        self.cal_role_base_attr()
         self.cal_relic_attr_add()
         self.cal_avatar_attr_add()
         self.cal_avatar_eidolon_add()
@@ -30,24 +26,23 @@ class RoleInstance:
 
     def cal_role_base_attr(self):
         logger.info('cal_role_base_attr')
-        avatar_attribute = self.avatar.__dict__['avatar_attribute']
-        logger.info(avatar_attribute)
-        for attribute in avatar_attribute:
-            if attribute in self.base_attr:
-                self.base_attr[attribute] += avatar_attribute[attribute]
+        base_attr = {}
+        avatar_attribute = self.avatar.avatar_attribute
+        for attr_name, attr_value in avatar_attribute.items():
+            if attr_name in base_attr:
+                base_attr[attr_name] += attr_value
             else:
-                self.base_attr[attribute] = avatar_attribute[attribute]
+                base_attr[attr_name] = attr_value
 
-        weapon_attribute = self.weapon.__dict__['weapon_base_attribute']
-        for attribute in weapon_attribute:
-            if attribute in self.base_attr:
-                self.base_attr[attribute] += weapon_attribute[attribute]
+        weapon_attribute = self.weapon.weapon_base_attribute
+        for attr_name, attr_value in weapon_attribute.items():
+            if attr_name in base_attr:
+                base_attr[attr_name] += attr_value
             else:
-                self.base_attr[attribute] = weapon_attribute[attribute]
+                base_attr[attr_name] = attr_value
+        return base_attr
 
     def cal_relic_attr_add(self):
-        if self.attribute_bonus is None:
-            raise Exception('attribute_bonus is None')
         # 单件属性
         for relic_type in self.relic_set.__dict__:
             if type(self.relic_set.__dict__[relic_type]) == SingleRelic:
@@ -80,17 +75,13 @@ class RoleInstance:
             for bonus in attribute_bonus:
                 status_add = bonus.statusAdd
                 bonus_property = status_add.property
-                value = mp.mpf(status_add.value)
-                if self.attribute_bonus is None:
-                    raise Exception('attribute_bonus is None')
+                value = status_add.value
                 if bonus_property in self.attribute_bonus:
                     self.attribute_bonus[bonus_property] += value
                 else:
                     self.attribute_bonus[bonus_property] = value
 
     def cal_avatar_eidolon_add(self):
-        if self.attribute_bonus is None:
-            raise Exception('attribute_bonus is None')
         for attribute in self.avatar.eidolon_attribute:
             if attribute in self.attribute_bonus:
                 self.attribute_bonus[
@@ -111,19 +102,17 @@ class RoleInstance:
                 ] = self.avatar.extra_ability_attribute[attribute]
 
     def cal_weapon_attr_add(self):
-        if self.attribute_bonus is None:
-            raise Exception('attribute_bonus is None')
-        for attribute in self.weapon.__dict__['weapon_attribute']:
+        for attribute in self.weapon.weapon_attribute:
             if attribute in self.attribute_bonus:
-                self.attribute_bonus[attribute] += self.weapon.__dict__[
-                    'weapon_attribute'
-                ][attribute]
+                self.attribute_bonus[attribute] += self.weapon.weapon_attribute[
+                    attribute
+                ]
             else:
-                self.attribute_bonus[attribute] = self.weapon.__dict__[
-                    'weapon_attribute'
-                ][attribute]
+                self.attribute_bonus[attribute] = self.weapon.weapon_attribute[
+                    attribute
+                ]
 
-    async def cal_damage(self, skill_type):
+    async def cal_damage(self, skill_type: str):
         logger.info('base_attr')
         logger.info(self.base_attr)
         logger.info('attribute_bonus')
@@ -189,20 +178,16 @@ class RoleInstance:
             )
             self.attribute_bonus[
                 'CriticalChanceBase'
-            ] = critical_chance_base + mp.mpf(fx_cc_up)
+            ] = critical_chance_base + fx_cc_up
 
             hp_added_ratio = self.attribute_bonus.get('HPAddedRatio', 0)
-            self.attribute_bonus['HPAddedRatio'] = hp_added_ratio + mp.mpf(
-                fx_hp_up
-            )
+            self.attribute_bonus['HPAddedRatio'] = hp_added_ratio + fx_hp_up
 
         # 检查武器战斗生效的buff
         logger.info('检查武器战斗生效的buff')
         Ultra_Use = self.avatar.Ultra_Use()
         logger.info('Ultra_Use')
         logger.info(Ultra_Use)
-        if self.attribute_bonus is None:
-            raise Exception('attribute_bonus is None')
         self.attribute_bonus = await self.weapon.weapon_ability(
             Ultra_Use, self.base_attr, self.attribute_bonus
         )
@@ -210,19 +195,17 @@ class RoleInstance:
 
         # 检查是否有对某一个技能的属性加成
         logger.info('检查是否有对某一个技能的属性加成')
-        if self.attribute_bonus is None:
-            raise Exception('attribute_bonus is None')
         for attr in self.attribute_bonus:
             # 攻击加成
             if attr.__contains__('AttackAddedRatio'):
-                attr_name = attr.split('AttackAddedRatio')[0]
+                attr_name: str = attr.split('AttackAddedRatio')[0]
                 if attr_name == skill_type or attr_name == skill_info[3]:
                     attack_added_ratio = self.attribute_bonus.get(
                         'AttackAddedRatio', 0
                     )
                     self.attribute_bonus[
                         'AttackAddedRatio'
-                    ] = attack_added_ratio + mp.mpf(self.attribute_bonus[attr])
+                    ] = attack_added_ratio + self.attribute_bonus[attr]
             # 效果命中加成
             if attr.__contains__('StatusProbabilityBase'):
                 attr_name = attr.split('StatusProbabilityBase')[0]
@@ -232,7 +215,7 @@ class RoleInstance:
                     )
                     self.attribute_bonus[
                         'StatusProbabilityBase'
-                    ] = status_probability + mp.mpf(self.attribute_bonus[attr])
+                    ] = status_probability + self.attribute_bonus[attr]
         logger.info(self.attribute_bonus)
         logger.info('检查遗器套装战斗生效的buff')
         for set_skill in self.relic_set.SetSkill:
@@ -565,6 +548,7 @@ class RoleInstance:
         if skill_info[0] == 'defence':
             defence = merged_attr['defence']
             logger.info(f'防御力: {defence}')
+            defence_multiplier = 0
 
             # 获取技能提供的固定护盾值
             if skill_type == 'Normal':

@@ -1,18 +1,13 @@
 import json
-from typing import Dict
 from pathlib import Path
+from typing import Dict
 
-from mpmath import mp
-
-from ..Base.WeaponBase import BaseWeapon
 from ..Base.model import DamageInstanceWeapon
+from ..Base.WeaponBase import BaseWeapon
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:
     weapon_effect = json.load(f)
-
-
-mp.dps = 14
 
 
 class Arrows(BaseWeapon):
@@ -26,14 +21,13 @@ class Arrows(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChance', 0)
-            attribute_bonus['CriticalChance'] = critical_chance_base + mp.mpf(
-                weapon_effect['20000']['Param']['CriticalChance'][
-                    self.weapon_rank - 1
-                ]
+            attribute_bonus['CriticalChance'] = (
+                critical_chance_base
+                + weapon_effect['20000']['Param']['CriticalChance'][self.weapon_rank - 1]
             )
         return attribute_bonus
 
@@ -49,7 +43,7 @@ class ReturntoDarkness(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             pass
@@ -67,7 +61,7 @@ class Swordplay(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -75,13 +69,10 @@ class Swordplay(BaseWeapon):
             )
             attribute_bonus['AllDamageAddedRatio'] = (
                 all_damage_added_ratio
-                + mp.mpf(
-                    weapon_effect['21010']['Param']['AllDamageAddedRatio'][
+                + weapon_effect['21010']['Param']['AllDamageAddedRatio'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 5
-            )
+                ) * 5
         return attribute_bonus
 
 
@@ -96,15 +87,13 @@ class DartingArrow(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
-                weapon_effect['20007']['Param']['AttackAddedRatio'][
+            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + weapon_effect['20007']['Param']['AttackAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -119,17 +108,15 @@ class Adversarial(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
-            attribute_bonus['SpeedAddedRatio'] = speed_added_ratio + mp.mpf(
-                weapon_effect['20014']['Param']['SpeedAddedRatio'][
+            attribute_bonus['SpeedAddedRatio'] = speed_added_ratio + weapon_effect['20014']['Param']['SpeedAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
             return attribute_bonus
-        return None
+        return attribute_bonus
 
 
 class SubscribeforMore(BaseWeapon):
@@ -143,29 +130,23 @@ class SubscribeforMore(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
             attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
-                mp.mpf(
                     weapon_effect['21017']['Param']['a_dmg'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 2
-            )
+                ) * 2
             bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
             attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
-                mp.mpf(
                     weapon_effect['21017']['Param']['e_dmg'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 2
-            )
+                ) * 2
             return attribute_bonus
-        return None
+        return attribute_bonus
 
 
 class RiverFlowsinSpring(BaseWeapon):
@@ -180,27 +161,23 @@ class RiverFlowsinSpring(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
-            attribute_bonus['SpeedAddedRatio'] = speed_added_ratio + mp.mpf(
-                weapon_effect['21024']['Param']['SpeedAddedRatio'][
+            attribute_bonus['SpeedAddedRatio'] = speed_added_ratio + weapon_effect['21024']['Param']['SpeedAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
             all_damage_added_ratio = attribute_bonus.get(
                 'AllDamageAddedRatio', 0
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['21024']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['21024']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
             return attribute_bonus
-        return None
+        return attribute_bonus
 
 
 class SleepLiketheDead(BaseWeapon):
@@ -215,11 +192,11 @@ class SleepLiketheDead(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             return attribute_bonus
-        return None
+        return attribute_bonus
 
 
 class OnlySilenceRemains(BaseWeapon):
@@ -233,19 +210,17 @@ class OnlySilenceRemains(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
             attribute_bonus[
                 'CriticalChanceBase'
-            ] = critical_chance_base + mp.mpf(
-                weapon_effect['21003']['Param']['CriticalChance'][
+            ] = critical_chance_base + weapon_effect['21003']['Param']['CriticalChance'][
                     self.weapon_rank - 1
                 ]
-            )
             return attribute_bonus
-        return None
+        return attribute_bonus
 
 
 # 拂晓之前
@@ -259,26 +234,20 @@ class BeforeDawn(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
         attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
-            mp.mpf(
-                weapon_effect['23010']['Param']['e_dmg'][self.weapon_rank - 1]
+            weapon_effect['23010']['Param']['e_dmg'][self.weapon_rank - 1]
             )
-        )
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
         attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
-            mp.mpf(
-                weapon_effect['23010']['Param']['r_dmg'][self.weapon_rank - 1]
+            weapon_effect['23010']['Param']['r_dmg'][self.weapon_rank - 1]
             )
-        )
         talent_dmg_add = attribute_bonus.get('TalentDmgAdd', 0)
         attribute_bonus['TalentDmgAdd'] = talent_dmg_add + (
-            mp.mpf(
-                weapon_effect['23010']['Param']['t_dmg'][self.weapon_rank - 1]
+            weapon_effect['23010']['Param']['t_dmg'][self.weapon_rank - 1]
             )
-        )
         return attribute_bonus
 
 
@@ -292,41 +261,31 @@ class IntheNight(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         char_speed = (
-            mp.mpf(base_attr.get('speed', 0))
-            + mp.mpf(attribute_bonus.get('SpeedDelta', 0))
-        ) * (mp.mpf(attribute_bonus.get('SpeedAddedRatio', 0)) + 1)
-        print(char_speed)
-        count_ = min(6, int(mp.floor((char_speed - 100) / 10)))
+            base_attr.get('speed', 0)
+            + attribute_bonus.get('SpeedDelta', 0)
+        ) * (attribute_bonus.get('SpeedAddedRatio', 0) + 1)
+        count_ = min(6, int((char_speed - 100) / 10))
         normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
         attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
-            mp.mpf(
-                weapon_effect['23001']['Param']['a_dmg'][self.weapon_rank - 1]
-            )
-            * count_
-        )
+            weapon_effect['23001']['Param']['a_dmg'][self.weapon_rank - 1]
+            ) * count_
         bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
         attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
-            mp.mpf(
-                weapon_effect['23001']['Param']['e_dmg'][self.weapon_rank - 1]
-            )
-            * count_
-        )
+            weapon_effect['23001']['Param']['e_dmg'][self.weapon_rank - 1]
+            ) * count_
         ultra_critical_chance_base = attribute_bonus.get(
             'Ultra_CriticalDamageBase', 0
         )
         attribute_bonus[
             'Ultra_CriticalDamageBase'
         ] = ultra_critical_chance_base + (
-            mp.mpf(
-                weapon_effect['23001']['Param']['q_crit_dmg'][
+            weapon_effect['23001']['Param']['q_crit_dmg'][
                     self.weapon_rank - 1
                 ]
-            )
-            * count_
-        )
+            ) * count_
         return attribute_bonus
 
 
@@ -342,24 +301,20 @@ class CruisingintheStellarSea(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
             attribute_bonus[
                 'CriticalChanceBase'
-            ] = critical_chance_base + mp.mpf(
-                weapon_effect['24001']['Param']['CriticalChance'][
+            ] = critical_chance_base + weapon_effect['24001']['Param']['CriticalChance'][
                     self.weapon_rank - 1
                 ]
-            )
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
-                weapon_effect['24001']['Param']['AttackAddedRatio'][
+            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + weapon_effect['24001']['Param']['AttackAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -375,27 +330,22 @@ class SeriousnessofBreakfast(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
         attribute_bonus[
             'AllDamageAddedRatio'
-        ] = all_damage_added_ratio + mp.mpf(
-            weapon_effect['21027']['Param']['AllDamageAddedRatio'][
+        ] = all_damage_added_ratio + weapon_effect['21027']['Param']['AllDamageAddedRatio'][
                 self.weapon_rank - 1
             ]
-        )
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = (
                 attack_added_ratio
-                + mp.mpf(
-                    weapon_effect['21027']['Param']['AttackAddedRatio'][
+                +     weapon_effect['21027']['Param']['AttackAddedRatio'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 3
-            )
+                ) * 3
         return attribute_bonus
 
 
@@ -412,27 +362,23 @@ class NightontheMilkyWay(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
-                weapon_effect['23000']['Param']['AttackAddedRatio'][
+            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + weapon_effect['23000']['Param']['AttackAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
             all_damage_added_ratio = attribute_bonus.get(
                 'AllDamageAddedRatio', 0
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['23000']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['23000']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
             return attribute_bonus
-        return None
+        return attribute_bonus
 
 
 # 今日亦是和平的一日
@@ -447,18 +393,15 @@ class TodayIsAnotherPeacefulDay(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
         attribute_bonus['AllDamageAddedRatio'] = (
             all_damage_added_ratio
-            + mp.mpf(
-                weapon_effect['21034']['Param']['AllDamageAddedRatio'][
+            + weapon_effect['21034']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
-            * Ultra_Use
-        )
+            ) * Ultra_Use
         return attribute_bonus
 
 
@@ -475,17 +418,15 @@ class GeniusesRepose(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalDamageBase', 0)
             attribute_bonus['CriticalDamageBase'] = critical_chance_base + (
-                mp.mpf(
                     weapon_effect['21020']['Param']['CriticalDamageBase'][
                         self.weapon_rank - 1
                     ]
                 )
-            )
         return attribute_bonus
 
 
@@ -501,14 +442,12 @@ class MaketheWorldClamor(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
         attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
-            mp.mpf(
-                weapon_effect['21013']['Param']['r_dmg'][self.weapon_rank - 1]
+            weapon_effect['21013']['Param']['r_dmg'][self.weapon_rank - 1]
             )
-        )
         return attribute_bonus
 
 
@@ -525,19 +464,17 @@ class TheBirthoftheSelf(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             talent_dmg_add = attribute_bonus.get('TalentDmgAdd', 0)
             attribute_bonus['TalentDmgAdd'] = talent_dmg_add + (
-                mp.mpf(
                     weapon_effect['21006']['Param']['t_dmg'][
                         self.weapon_rank - 1
                     ]
                 )
-            )
             return attribute_bonus
-        return None
+        return attribute_bonus
 
 
 # 秘密誓心
@@ -553,7 +490,7 @@ class ASecretVow(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -561,13 +498,11 @@ class ASecretVow(BaseWeapon):
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['21012']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['21012']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
             return attribute_bonus
-        return None
+        return attribute_bonus
 
 
 # 比阳光更明亮的
@@ -583,19 +518,16 @@ class BrighterThantheSun(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = (
                 attack_added_ratio
-                + mp.mpf(
-                    weapon_effect['23015']['Param']['AttackAddedRatio'][
+                +     weapon_effect['23015']['Param']['AttackAddedRatio'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 2
-            )
+                ) * 2
         return attribute_bonus
 
 
@@ -612,7 +544,7 @@ class TheUnreachableSide(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -620,11 +552,9 @@ class TheUnreachableSide(BaseWeapon):
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['23009']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['23009']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -641,25 +571,17 @@ class SomethingIrreplaceable(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
-        # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-        # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
-        # weapon_effect['23002']['Param']['AttackAddedRatio'][
-        # self.weapon_rank - 1
-        # ]
-        # )
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
                 'AllDamageAddedRatio', 0
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['23002']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['23002']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -676,29 +598,24 @@ class OntheFallofanAeon(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = (
                 attack_added_ratio
-                + mp.mpf(
-                    weapon_effect['24000']['Param']['AttackAddedRatio'][
+                +     weapon_effect['24000']['Param']['AttackAddedRatio'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 4
-            )
+                ) * 4
             all_damage_added_ratio = attribute_bonus.get(
                 'AllDamageAddedRatio', 0
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['24000']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['24000']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -714,7 +631,7 @@ class NowheretoRun(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
         # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
@@ -738,7 +655,7 @@ class WoofWalkTime(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
         # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
@@ -752,11 +669,9 @@ class WoofWalkTime(BaseWeapon):
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['21026']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['21026']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -773,7 +688,7 @@ class UndertheBlueSky(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
         # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
@@ -785,11 +700,9 @@ class UndertheBlueSky(BaseWeapon):
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
             attribute_bonus[
                 'CriticalChanceBase'
-            ] = critical_chance_base + mp.mpf(
-                weapon_effect['21019']['Param']['CriticalChance'][
+            ] = critical_chance_base + weapon_effect['21019']['Param']['CriticalChance'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -805,19 +718,16 @@ class TheMolesWelcomeYou(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = (
                 attack_added_ratio
-                + mp.mpf(
-                    weapon_effect['21005']['Param']['AttackAddedRatio'][
+                +     weapon_effect['21005']['Param']['AttackAddedRatio'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 3
-            )
+                ) * 3
         return attribute_bonus
 
 
@@ -834,23 +744,19 @@ class IncessantRain(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             damage_ratio = attribute_bonus.get('DmgRatio', 0)
-            attribute_bonus['DmgRatio'] = damage_ratio + mp.mpf(
-                weapon_effect['23007']['Param']['DmgRatio'][
+            attribute_bonus['DmgRatio'] = damage_ratio + weapon_effect['23007']['Param']['DmgRatio'][
                     self.weapon_rank - 1
                 ]
-            )
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
             attribute_bonus[
                 'CriticalChanceBase'
-            ] = critical_chance_base + mp.mpf(
-                weapon_effect['23007']['Param']['CriticalChance'][
+            ] = critical_chance_base + weapon_effect['23007']['Param']['CriticalChance'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -867,7 +773,7 @@ class PatienceIsAllYouNeed(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -875,22 +781,17 @@ class PatienceIsAllYouNeed(BaseWeapon):
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['23006']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['23006']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
 
             speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
             attribute_bonus['SpeedAddedRatio'] = (
                 speed_added_ratio
-                + mp.mpf(
-                    weapon_effect['23006']['Param']['SpeedAddedRatio'][
+                +     weapon_effect['23006']['Param']['SpeedAddedRatio'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 3
-            )
+                ) * 3
         return attribute_bonus
 
 
@@ -908,7 +809,7 @@ class IntheNameoftheWorld(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -916,33 +817,27 @@ class IntheNameoftheWorld(BaseWeapon):
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['23004']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['23004']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
 
             a2_status_probability = attribute_bonus.get(
                 'BPSkillStatusProbabilityBase', 0
             )
             attribute_bonus[
                 'BPSkillStatusProbabilityBase'
-            ] = a2_status_probability + mp.mpf(
-                weapon_effect['23004']['Param']['A2_StatusProbability'][
+            ] = a2_status_probability + weapon_effect['23004']['Param']['A2_StatusProbability'][
                     self.weapon_rank - 1
                 ]
-            )
 
             a2_attack_added_ratio = attribute_bonus.get(
                 'BPSkillAttackAddedRatio', 0
             )
             attribute_bonus[
                 'BPSkillAttackAddedRatio'
-            ] = a2_attack_added_ratio + mp.mpf(
-                weapon_effect['23004']['Param']['A2_AttackAddedRatio'][
+            ] = a2_attack_added_ratio + weapon_effect['23004']['Param']['A2_AttackAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -959,7 +854,7 @@ class SolitaryHealing(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -976,7 +871,7 @@ class BeforetheTutorialMissionStarts(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -993,7 +888,7 @@ class WeWillMeetAgain(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1010,7 +905,7 @@ class Fermata(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -1018,11 +913,9 @@ class Fermata(BaseWeapon):
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['21022']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['21022']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -1038,15 +931,13 @@ class ResolutionShinesAsPearlsofSweat(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             ignore_defence = attribute_bonus.get('ignore_defence', 0)
-            attribute_bonus['ignore_defence'] = ignore_defence + mp.mpf(
-                weapon_effect['21015']['Param']['ignore_defence'][
+            attribute_bonus['ignore_defence'] = ignore_defence + weapon_effect['21015']['Param']['ignore_defence'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -1062,7 +953,7 @@ class EyesofthePrey(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1079,7 +970,7 @@ class GoodNightandSleepWell(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -1087,13 +978,10 @@ class GoodNightandSleepWell(BaseWeapon):
             )
             attribute_bonus['AllDamageAddedRatio'] = (
                 all_damage_added_ratio
-                + mp.mpf(
-                    weapon_effect['21001']['Param']['AllDamageAddedRatio'][
+                +     weapon_effect['21001']['Param']['AllDamageAddedRatio'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 3
-            )
+                ) * 3
         return attribute_bonus
 
 
@@ -1109,7 +997,7 @@ class SheAlreadyShutHerEyes(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -1117,13 +1005,10 @@ class SheAlreadyShutHerEyes(BaseWeapon):
             )
             attribute_bonus['AllDamageAddedRatio'] = (
                 all_damage_added_ratio
-                + mp.mpf(
-                    weapon_effect['23011']['Param']['AllDamageAddedRatio'][
+                +     weapon_effect['23011']['Param']['AllDamageAddedRatio'][
                         self.weapon_rank - 1
                     ]
-                )
-                * 3
-            )
+                ) * 3
         return attribute_bonus
 
 
@@ -1139,17 +1024,15 @@ class MomentofVictory(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             defence_added_ratio = attribute_bonus.get('DefenceAddedRatio', 0)
             attribute_bonus[
                 'DefenceAddedRatio'
-            ] = defence_added_ratio + mp.mpf(
-                weapon_effect['23005']['Param']['DefenceAddedRatio'][
+            ] = defence_added_ratio + weapon_effect['23005']['Param']['DefenceAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -1165,7 +1048,7 @@ class TextureofMemories(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1182,7 +1065,7 @@ class ThisIsMe(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1199,7 +1082,7 @@ class WeAreWildfire(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1216,7 +1099,7 @@ class TrendoftheUniversalMarket(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1233,7 +1116,7 @@ class LandausChoice(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1250,7 +1133,7 @@ class DayOneofMyNewLife(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1267,7 +1150,7 @@ class Pioneering(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1284,7 +1167,7 @@ class Defense(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1301,17 +1184,15 @@ class Amber(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             defence_added_ratio = attribute_bonus.get('DefenceAddedRatio', 0)
             attribute_bonus[
                 'DefenceAddedRatio'
-            ] = defence_added_ratio + mp.mpf(
-                weapon_effect['20003']['Param']['DefenceAddedRatio'][
+            ] = defence_added_ratio + weapon_effect['20003']['Param']['DefenceAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -1327,17 +1208,15 @@ class MutualDemise(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
             attribute_bonus[
                 'CriticalChanceBase'
-            ] = critical_chance_base + mp.mpf(
-                weapon_effect['20016']['Param']['CriticalChance'][
+            ] = critical_chance_base + weapon_effect['20016']['Param']['CriticalChance'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -1353,7 +1232,7 @@ class ShatteredHome(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -1361,11 +1240,9 @@ class ShatteredHome(BaseWeapon):
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['20009']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['20009']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -1381,20 +1258,16 @@ class CollapsingSky(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
         attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
-            mp.mpf(
-                weapon_effect['20002']['Param']['a_dmg'][self.weapon_rank - 1]
+            weapon_effect['20002']['Param']['a_dmg'][self.weapon_rank - 1]
             )
-        )
         bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
         attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
-            mp.mpf(
-                weapon_effect['20002']['Param']['e_dmg'][self.weapon_rank - 1]
+            weapon_effect['20002']['Param']['e_dmg'][self.weapon_rank - 1]
             )
-        )
         return attribute_bonus
 
 
@@ -1410,7 +1283,7 @@ class HiddenShadow(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1427,7 +1300,7 @@ class Loop(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -1435,11 +1308,9 @@ class Loop(BaseWeapon):
             )
             attribute_bonus[
                 'AllDamageAddedRatio'
-            ] = all_damage_added_ratio + mp.mpf(
-                weapon_effect['20009']['Param']['AllDamageAddedRatio'][
+            ] = all_damage_added_ratio + weapon_effect['20009']['Param']['AllDamageAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -1455,7 +1326,7 @@ class Void(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             status_probability = attribute_bonus.get(
@@ -1463,11 +1334,9 @@ class Void(BaseWeapon):
             )
             attribute_bonus[
                 'StatusProbabilityBase'
-            ] = status_probability + mp.mpf(
-                weapon_effect['20004']['Param']['StatusProbability'][
+            ] = status_probability + weapon_effect['20004']['Param']['StatusProbability'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -1483,7 +1352,7 @@ class Sagacity(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         if await self.check():
             a3_attack_added_ratio = attribute_bonus.get(
@@ -1491,11 +1360,9 @@ class Sagacity(BaseWeapon):
             )
             attribute_bonus[
                 'UltraAttackAddedRatio'
-            ] = a3_attack_added_ratio + mp.mpf(
-                weapon_effect['20020']['Param']['A3_AttackAddedRatio'][
+            ] = a3_attack_added_ratio + weapon_effect['20020']['Param']['A3_AttackAddedRatio'][
                     self.weapon_rank - 1
                 ]
-            )
         return attribute_bonus
 
 
@@ -1511,7 +1378,7 @@ class Passkey(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         return attribute_bonus
 
@@ -1528,14 +1395,12 @@ class DataBank(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
         attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
-            mp.mpf(
-                weapon_effect['20006']['Param']['r_dmg'][self.weapon_rank - 1]
+            weapon_effect['20006']['Param']['r_dmg'][self.weapon_rank - 1]
             )
-        )
         return attribute_bonus
 
 
@@ -1551,23 +1416,19 @@ class Thisbodyisasword(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         ultra_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
         attribute_bonus['BPSkillDmgAdd'] = ultra_dmg_add + (
-            mp.mpf(
-                weapon_effect['23014']['Param']['e_dmg'][self.weapon_rank - 1]
+            weapon_effect['23014']['Param']['e_dmg'][self.weapon_rank - 1]
             )
-        )
 
         critical_chance_base = attribute_bonus.get('CriticalDamageBase', 0)
         attribute_bonus['CriticalDamageBase'] = critical_chance_base + (
-            mp.mpf(
-                weapon_effect['23014']['Param']['CriticalDamageBase'][
+            weapon_effect['23014']['Param']['CriticalDamageBase'][
                     self.weapon_rank - 1
                 ]
             )
-        )
 
         return attribute_bonus
 

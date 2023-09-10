@@ -55,7 +55,6 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
         return await convert_img(Image.new('RGBA', (0, 1), (255, 255, 255)))
     else:
         line1 = f'UID {uid} 刷新成功'
-    # print(char_list)
     line2 = f'可以使用 sr查询{char_data_list[0]["avatarName"]} 查询详情角色面板'
     char_num = len(char_data_list)
     if char_num <= 4:

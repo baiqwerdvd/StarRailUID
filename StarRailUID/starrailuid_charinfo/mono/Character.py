@@ -1,13 +1,10 @@
 import json
-from typing import Dict
 from collections import Counter
+from typing import Dict
 
-from mpmath import mp
 from loguru import logger
 
-from ...utils.map.SR_MAP_PATH import RelicSetSkill, EquipmentID2AbilityProperty
-
-mp.dps = 14
+from ...utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty, RelicSetSkill
 
 
 class Character:
@@ -34,20 +31,6 @@ class Character:
             card_prop['rankList'] if card_prop.get('rankList') else []
         )
 
-        # 伤害计算
-        self.def_ignore = 0
-        self.q_dmg = 0
-        self.q_crit_dmg = 0
-        self.e_dmg = 0
-        self.a_dmg = 0
-        self.a3_dmg = 0
-
-        # 角色的圣遗物总分
-        self.artifacts_all_score: float = 0
-        self.percent: str = '0.0'
-        self.dmg_data: Dict = {}
-        self.seq_str: str = '无匹配'
-
     async def get_equipment_info(self):
         if self.equipment == {}:
             return
@@ -61,16 +44,9 @@ class Character:
         equip_ability_property = ability_property[str(equip_rank)]
 
         equip_add_base_attr = equip['baseAttributes']
-        hp = mp.mpf(base_attr['hp']) + mp.mpf(equip_add_base_attr['hp'])
-        attack = mp.mpf(base_attr['attack']) + mp.mpf(
-            equip_add_base_attr['attack']
-        )
-        defence = mp.mpf(base_attr['defence']) + mp.mpf(
-            equip_add_base_attr['defence']
-        )
-        base_attr['hp'] = str(hp)
-        base_attr['attack'] = str(attack)
-        base_attr['defence'] = str(defence)
+        base_attr['hp'] = base_attr['hp'] + equip_add_base_attr['hp']
+        base_attr['attack'] = base_attr['attack'] + equip_add_base_attr['attack']
+        base_attr['defence'] = base_attr['defence'] + equip_add_base_attr['defence']
         self.base_attributes = base_attr
 
         for equip_ability in equip_ability_property:
@@ -99,23 +75,23 @@ class Character:
             set_id_list.append(relic['SetId'])
             # 处理主属性
             relic_property = relic['MainAffix']['Property']
-            property_value = mp.mpf(relic['MainAffix']['Value'])
+            property_value = relic['MainAffix']['Value']
             if relic_property in self.add_attr:
-                self.add_attr[relic_property] = str(
-                    mp.mpf(self.add_attr[relic_property]) + property_value
+                self.add_attr[relic_property] = (
+                    self.add_attr[relic_property] + property_value
                 )
             else:
-                self.add_attr[relic_property] = str(property_value)
+                self.add_attr[relic_property] = property_value
             # 处理副词条
             for sub in relic['SubAffixList']:
                 sub_property = sub['Property']
-                sub_value = mp.mpf(sub['Value'])
+                sub_value = sub['Value']
                 if sub_property in self.add_attr:
-                    self.add_attr[sub_property] = str(
-                        mp.mpf(self.add_attr[sub_property]) + sub_value
+                    self.add_attr[sub_property] = (
+                        self.add_attr[sub_property] + sub_value
                     )
                 else:
-                    self.add_attr[sub_property] = str(sub_value)
+                    self.add_attr[sub_property] = sub_value
         # 处理套装属性
         set_id_dict = Counter(set_id_list)
         for item in set_id_dict.most_common():
@@ -125,17 +101,17 @@ class Character:
             set_value = 0
             if count >= 2 and RelicSetSkill[str(set_id)]['2'] != {}:
                 set_property = RelicSetSkill[str(set_id)]['2']['Property']
-                set_value = mp.mpf(RelicSetSkill[str(set_id)]['2']['Value'])
+                set_value = RelicSetSkill[str(set_id)]['2']['Value']
             if count == 4 and RelicSetSkill[str(set_id)]['4'] != {}:
                 set_property = RelicSetSkill[str(set_id)]['4']['Property']
-                set_value = mp.mpf(RelicSetSkill[str(set_id)]['4']['Value'])
+                set_value = RelicSetSkill[str(set_id)]['4']['Value']
             if set_property != '':
                 if set_property in self.add_attr:
-                    self.add_attr[set_property] = str(
-                        mp.mpf(self.add_attr[set_property]) + set_value
+                    self.add_attr[set_property] = (
+                        self.add_attr[set_property] + set_value
                     )
                 else:
-                    self.add_attr[set_property] = str(set_value)
+                    self.add_attr[set_property] = set_value
 
         logger.info(json.dumps(self.base_attributes))
         logger.info(json.dumps(self.add_attr))

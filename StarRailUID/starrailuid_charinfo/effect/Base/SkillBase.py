@@ -1,16 +1,11 @@
 import json
-from typing import List
 from pathlib import Path
+from typing import List
 
-from mpmath import mp
-
-from .model import DamageInstanceSkill, DamageInstanceAvatar
-
-mp.dps = 14
-
+from .model import DamageInstanceAvatar, DamageInstanceSkill
 
 path = Path(__file__).parent.parent
-with Path.open(path / 'Excel' / 'seele.json', encoding='utf-8') as f:
+with Path.open(path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
 
 

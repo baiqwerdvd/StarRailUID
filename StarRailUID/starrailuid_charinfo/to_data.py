@@ -1,39 +1,34 @@
 import json
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 
-from mpmath import mp
 from httpx import ReadTimeout
 
-from ..utils.error_reply import UID_HINT
 from ..sruid_utils.api.mihomo import MihomoData
 from ..sruid_utils.api.mihomo.models import Avatar
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..sruid_utils.api.mihomo.requests import get_char_card_info
-
-# from gsuid_core.utils.api.minigg.request import get_weapon_info
-from .cal_value import cal_relic_sub_affix, cal_relic_main_affix
-from ..utils.excel.read_excel import AvatarPromotion, EquipmentPromotion
+from ..utils.error_reply import UID_HINT
+from ..utils.excel.model import AvatarPromotionConfig, EquipmentPromotionConfig
 from ..utils.map.SR_MAP_PATH import (
-    SetId2Name,
+    AvatarRankSkillUp,
+    EquipmentID2Name,
+    EquipmentID2Rarity,
     ItemId2Name,
     Property2Name,
     RelicId2SetId,
-    EquipmentID2Name,
-    AvatarRankSkillUp,
-    EquipmentID2Rarity,
-    rankId2Name,
-    skillId2Name,
-    avatarId2Name,
-    skillId2Effect,
+    SetId2Name,
+    avatarId2DamageType,
     avatarId2EnName,
+    avatarId2Name,
     avatarId2Rarity,
     characterSkillTree,
+    rankId2Name,
     skillId2AttackType,
-    avatarId2DamageType,
+    skillId2Effect,
+    skillId2Name,
 )
-
-mp.dps = 14
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from .cal_value import cal_relic_main_affix, cal_relic_sub_affix
 
 
 async def api_to_dict(
@@ -54,6 +49,8 @@ async def api_to_dict(
         try:
             sr_data = await get_char_card_info(sr_uid)
         except ReadTimeout:
+            return '网络不太稳定...'
+        except json.decoder.JSONDecodeError:
             return '网络不太稳定...'
     if isinstance(sr_data, str):
         return []
@@ -195,6 +192,7 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
                 relic_type=relic['type'],
                 relic_level=relic_temp['Level'],
             )
+            print(affix_property)
             relic_temp['MainAffix']['Property'] = affix_property
             relic_temp['MainAffix']['Name'] = Property2Name[affix_property]
             relic_temp['MainAffix']['Value'] = value
@@ -253,42 +251,42 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
 
     # 处理基础属性
     base_attributes = {}
-    avatar_promotion_base = AvatarPromotion[str(char['avatarId'])][
+    avatar_promotion_base = AvatarPromotionConfig.Avatar[str(char['avatarId'])][
         str(char.get('promotion', 0))
     ]
 
     # 攻击力
-    base_attributes['attack'] = str(
-        mp.mpf(avatar_promotion_base["AttackBase"]['Value'])
-        + mp.mpf(avatar_promotion_base["AttackAdd"]['Value'])
+    base_attributes['attack'] = (
+        avatar_promotion_base.AttackBase.Value
+        + avatar_promotion_base.AttackAdd.Value
         * (char['level'] - 1)
     )
     # 防御力
-    base_attributes['defence'] = str(
-        mp.mpf(avatar_promotion_base["DefenceBase"]['Value'])
-        + mp.mpf(avatar_promotion_base["DefenceAdd"]['Value'])
+    base_attributes['defence'] = (
+        avatar_promotion_base.DefenceBase.Value
+        + avatar_promotion_base.DefenceAdd.Value
         * (char['level'] - 1)
     )
     # 血量
-    base_attributes['hp'] = str(
-        mp.mpf(avatar_promotion_base["HPBase"]['Value'])
-        + mp.mpf(avatar_promotion_base["HPAdd"]['Value']) * (char['level'] - 1)
+    base_attributes['hp'] = (
+        avatar_promotion_base.HPBase.Value
+        + avatar_promotion_base.HPAdd.Value * (char['level'] - 1)
     )
     # 速度
-    base_attributes['speed'] = str(
-        mp.mpf(avatar_promotion_base["SpeedBase"]['Value'])
+    base_attributes['speed'] = (
+        avatar_promotion_base.SpeedBase.Value
     )
     # 暴击率
-    base_attributes['CriticalChanceBase'] = str(
-        mp.mpf(avatar_promotion_base["CriticalChance"]['Value'])
+    base_attributes['CriticalChanceBase'] = (
+        avatar_promotion_base.CriticalChance.Value
     )
     # 暴击伤害
-    base_attributes['CriticalDamageBase'] = str(
-        mp.mpf(avatar_promotion_base["CriticalDamage"]['Value'])
+    base_attributes['CriticalDamageBase'] = (
+        avatar_promotion_base.CriticalDamage.Value
     )
     # 嘲讽
-    base_attributes['BaseAggro'] = str(
-        mp.mpf(avatar_promotion_base["BaseAggro"]['Value'])
+    base_attributes['BaseAggro'] = (
+        avatar_promotion_base.BaseAggro.Value
     )
 
     char_data['baseAttributes'] = base_attributes
@@ -311,26 +309,26 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
             str(char['equipment']['tid'])
         ]
         equipment_base_attributes = {}
-        equipment_promotion_base = EquipmentPromotion[
+        equipment_promotion_base = EquipmentPromotionConfig.Equipment[
             str(char['equipment']['tid'])
         ][str(equipment_info['equipmentPromotion'])]
 
         # 生命值
-        equipment_base_attributes['hp'] = str(
-            mp.mpf(equipment_promotion_base["BaseHP"]['Value'])
-            + mp.mpf(equipment_promotion_base["BaseHPAdd"]['Value'])
+        equipment_base_attributes['hp'] = (
+            equipment_promotion_base.BaseHP.Value
+            + equipment_promotion_base.BaseHPAdd.Value
             * (char['equipment']['level'] - 1)
         )
         # 攻击力
-        equipment_base_attributes['attack'] = str(
-            mp.mpf(equipment_promotion_base["BaseAttack"]['Value'])
-            + mp.mpf(equipment_promotion_base["BaseAttackAdd"]['Value'])
+        equipment_base_attributes['attack'] = (
+            equipment_promotion_base.BaseAttack.Value
+            + equipment_promotion_base.BaseAttackAdd.Value
             * (char['equipment']['level'] - 1)
         )
         # 防御力
-        equipment_base_attributes['defence'] = str(
-            mp.mpf(equipment_promotion_base["BaseDefence"]['Value'])
-            + mp.mpf(equipment_promotion_base["BaseDefenceAdd"]['Value'])
+        equipment_base_attributes['defence'] = (
+            equipment_promotion_base.BaseDefence.Value
+            + equipment_promotion_base.BaseDefenceAdd.Value
             * (char['equipment']['level'] - 1)
         )
         equipment_info['baseAttributes'] = equipment_base_attributes

@@ -1,13 +1,10 @@
-from typing import Dict
 from abc import abstractmethod
+from typing import Dict
 
-from mpmath import mp
 from gsuid_core.logger import logger
 
-from .model import DamageInstanceRelic
 from ....utils.map.SR_MAP_PATH import RelicSetSkill
-
-mp.dps = 14
+from .model import DamageInstanceRelic
 
 
 class SingleRelic:
@@ -24,17 +21,17 @@ class SingleRelic:
         if self.raw_relic.MainAffix.Property in self.relic_attribute_bonus:
             self.relic_attribute_bonus[
                 self.raw_relic.MainAffix.Property
-            ] += mp.mpf(self.raw_relic.MainAffix.Value)
+            ] += self.raw_relic.MainAffix.Value
         else:
             self.relic_attribute_bonus[
                 self.raw_relic.MainAffix.Property
-            ] = mp.mpf(self.raw_relic.MainAffix.Value)
+            ] = self.raw_relic.MainAffix.Value
 
         # SubAffix
         if self.raw_relic.SubAffixList:
             for sub_affix in self.raw_relic.SubAffixList:
                 sub_affix_property = sub_affix.Property
-                value = mp.mpf(sub_affix.Value)
+                value = sub_affix.Value
                 if sub_affix_property in self.relic_attribute_bonus:
                     self.relic_attribute_bonus[sub_affix_property] += value
                 else:
@@ -70,13 +67,13 @@ class BaseRelicSetSkill:
 
     def set_skill_property_ability(self):
         set_property = ''
-        set_value = mp.mpf(0)
+        set_value = 0
         if self.pieces2 and RelicSetSkill[str(self.setId)]['2'] != {}:
             set_property = RelicSetSkill[str(self.setId)]['2']['Property']
-            set_value = mp.mpf(RelicSetSkill[str(self.setId)]['2']['Value'])
+            set_value = RelicSetSkill[str(self.setId)]['2']['Value']
         if self.pieces4 and RelicSetSkill[str(self.setId)]['4'] != {}:
             set_property = RelicSetSkill[str(self.setId)]['4']['Property']
-            set_value = mp.mpf(RelicSetSkill[str(self.setId)]['4']['Value'])
+            set_value = RelicSetSkill[str(self.setId)]['4']['Value']
         if set_property != '':
             if set_property in self.relicSetAttribute:
                 self.relicSetAttribute[set_property] = (

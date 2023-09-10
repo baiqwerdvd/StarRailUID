@@ -18,14 +18,14 @@ class DamageInstanceRelicSubAffix(Struct):
     Name: str
     Cnt: int
     Step: int
-    Value: str
+    Value: float
 
 
 class DamageInstanceRelicMainAffix(Struct):
     AffixID: int
     Property: str
     Name: str
-    Value: str
+    Value: float
 
 
 class DamageInstanceRelic(Struct):

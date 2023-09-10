@@ -1,13 +1,24 @@
-from typing import Dict
 from abc import abstractmethod
+from typing import Dict
 
-from mpmath import mp
+from msgspec import Struct
 
-from .model import DamageInstanceWeapon
-from ....utils.excel.read_excel import EquipmentPromotion
+from ....utils.excel.model import EquipmentPromotionConfig
 from ....utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty
+from .model import DamageInstanceWeapon
 
-mp.dps = 14
+
+class BaseWeaponAttribute(Struct):
+    hp: float
+    attack: float
+    defence: float
+
+    def items(self):
+        return [
+            ('hp', self.hp),
+            ('attack', self.attack),
+            ('defence', self.defence)
+        ]
 
 
 class BaseWeapon:
@@ -16,7 +27,7 @@ class BaseWeapon:
         self.weapon_level = weapon.level
         self.weapon_rank = weapon.rank
         self.weapon_promotion = weapon.promotion
-        self.weapon_base_attribute = {}
+        self.weapon_base_attribute = self.get_attribute()
         self.weapon_attribute = {}
         self.get_attribute()
         self.weapon_property_ability()
@@ -47,22 +58,25 @@ class BaseWeapon:
         ...
 
     def get_attribute(self):
-        promotion = EquipmentPromotion[str(self.weapon_id)][
-            str(self.weapon_promotion)
-        ]
+        promotion = EquipmentPromotionConfig.Equipment[
+            str(self.weapon_id)
+        ][str(self.weapon_promotion)]
+        print(promotion)
 
-        self.weapon_base_attribute['hp'] = mp.mpf(
-            promotion["BaseHP"]['Value']
-        ) + mp.mpf(promotion["BaseHPAdd"]['Value']) * (self.weapon_level - 1)
-
-        self.weapon_base_attribute['attack'] = mp.mpf(
-            promotion["BaseAttack"]['Value']
-        ) + mp.mpf(promotion["BaseAttackAdd"]['Value']) * (
-            self.weapon_level - 1
-        )
-
-        self.weapon_base_attribute['defence'] = mp.mpf(
-            promotion["BaseDefence"]['Value']
-        ) + mp.mpf(promotion["BaseDefenceAdd"]['Value']) * (
-            self.weapon_level - 1
+        return BaseWeaponAttribute(
+            hp = (
+                promotion.BaseHP.Value
+                + promotion.BaseHPAdd.Value
+                * (self.weapon_level - 1)
+            ),
+            attack = (
+                promotion.BaseAttack.Value
+                + promotion.BaseAttackAdd.Value
+                * (self.weapon_level - 1)
+            ),
+            defence = (
+                promotion.BaseDefence.Value
+                + promotion.BaseDefenceAdd.Value
+                * (self.weapon_level - 1)
+            )
         )

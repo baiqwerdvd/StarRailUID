@@ -1,30 +1,31 @@
 import math
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 
 from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.image_tools import (
-    get_qq_avatar,
     draw_pic_with_ring,
+    get_qq_avatar,
 )
 
-from .utils import get_icon
+from ..sruid_utils.api.mys.models import (
+    LocustBlocks,
+    RogueAvatar,
+    RogueBuffitems,
+    RogueMiracles,
+)
 from ..utils.convert import GsCookie
-from ..utils.image.convert import convert_img
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
     sr_font_34,
     sr_font_42,
 )
-from ..sruid_utils.api.mys.models import (
-    RogueAvatar,
-    LocustBlocks,
-    RogueMiracles,
-    RogueBuffitems,
-)
+from ..utils.image.convert import convert_img
+from .utils import get_icon
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 white_color = (255, 255, 255)
@@ -585,6 +586,7 @@ async def draw_rogue_locust_img(
         detail_h = detail_h + miracles_h
 
         # 事件
+        blocks_h = 0
         if len(detail['blocks']) > 0:
             blocks_h = 60
             blocks_num = len(detail['blocks'])

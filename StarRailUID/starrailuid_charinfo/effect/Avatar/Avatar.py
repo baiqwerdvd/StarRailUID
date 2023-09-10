@@ -1,12 +1,9 @@
 from typing import List
 
-from mpmath import mp
 from gsuid_core.logger import logger
 
 from ..Base.AvatarBase import BaseAvatar, BaseAvatarBuff
-from ..Base.model import DamageInstanceSkill, DamageInstanceAvatar
-
-mp.dps = 14
+from ..Base.model import DamageInstanceAvatar, DamageInstanceSkill
 
 
 class Seele(BaseAvatar):
@@ -26,17 +23,15 @@ class Seele(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank < 2:
-            self.eidolon_attribute['SpeedAddedRatio'] = mp.mpf(0.25)
+            self.eidolon_attribute['SpeedAddedRatio'] = 0.25
         if self.avatar_rank >= 1:
-            self.eidolon_attribute['CriticalChanceBase'] = mp.mpf(0.15)
+            self.eidolon_attribute['CriticalChanceBase'] = 0.15
         if self.avatar_rank >= 2:
-            self.eidolon_attribute['SpeedAddedRatio'] = mp.mpf(0.5)
+            self.eidolon_attribute['SpeedAddedRatio'] = 0.5
 
     def extra_ability(self):
         # 额外能力 割裂 抗性穿透提高20
-        self.extra_ability_attribute['QuantumResistancePenetration'] = mp.mpf(
-            0.2
-        )
+        self.extra_ability_attribute['QuantumResistancePenetration'] = 0.2
 
 
 class JingYuan(BaseAvatar):
@@ -56,18 +51,18 @@ class JingYuan(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 2:
-            self.eidolon_attribute['NormalDmgAdd'] = mp.mpf(0.2)
-            self.eidolon_attribute['BPSkillDmgAdd'] = mp.mpf(0.2)
-            self.eidolon_attribute['UltraDmgAdd'] = mp.mpf(0.2)
+            self.eidolon_attribute['NormalDmgAdd'] = 0.2
+            self.eidolon_attribute['BPSkillDmgAdd'] = 0.2
+            self.eidolon_attribute['UltraDmgAdd'] = 0.2
         if self.avatar_rank >= 6:
-            self.eidolon_attribute['Talent_DmgRatio'] = mp.mpf(0.288)
+            self.eidolon_attribute['Talent_DmgRatio'] = 0.288
 
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('【神君】下回合的攻击段数大于等于6段，则其下回合的暴击伤害提高25%。')
-        self.extra_ability_attribute['CriticalDamageBase'] = mp.mpf(0.25)
+        self.extra_ability_attribute['CriticalDamageBase'] = 0.25
         logger.info('施放战技后，暴击率提升10%')
-        self.extra_ability_attribute['CriticalChanceBase'] = mp.mpf(0.1)
+        self.extra_ability_attribute['CriticalChanceBase'] = 0.1
 
 
 class Clara(BaseAvatar):
@@ -87,13 +82,13 @@ class Clara(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 2:
-            self.eidolon_attribute['AttackAddedRatio'] = mp.mpf(0.2)
+            self.eidolon_attribute['AttackAddedRatio'] = 0.2
 
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('史瓦罗的反击造成的伤害提高30%')
-        self.extra_ability_attribute['TalentDmgAdd'] = mp.mpf(0.3)
-        self.extra_ability_attribute['UltraDmgAdd'] = mp.mpf(0.3)
+        self.extra_ability_attribute['TalentDmgAdd'] = 0.3
+        self.extra_ability_attribute['UltraDmgAdd'] = 0.3
 
 
 class Danhengil(BaseAvatar):
@@ -113,18 +108,18 @@ class Danhengil(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 1:
-            self.eidolon_attribute['Atk_buff'] = mp.mpf(1)
+            self.eidolon_attribute['Atk_buff'] = 1
         if self.avatar_rank >= 4:
-            self.eidolon_attribute['Normal_buff'] = mp.mpf(4)
+            self.eidolon_attribute['Normal_buff'] = 4
         if self.avatar_rank >= 6:
             self.extra_ability_attribute[
                 'Normal_ImaginaryResistancePenetration'
-            ] = mp.mpf(0.6)
+            ] = 0.6
 
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('对拥有虚数属性弱点的敌方目标造成伤害时，暴击伤害提高24%。')
-        self.extra_ability_attribute['CriticalDamageBase'] = mp.mpf(0.24)
+        self.extra_ability_attribute['CriticalDamageBase'] = 0.24
 
 
 class Silverwolf(BaseAvatar):
@@ -144,22 +139,20 @@ class Silverwolf(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 6:
-            self.extra_ability_attribute['AllDamageAddedRatio'] = mp.mpf(1)
+            self.extra_ability_attribute['AllDamageAddedRatio'] = 1
 
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('战技降抗')
         logger.info('战技使目标全属性抗性降低的效果额外降低3%')
         enemy_status_resistance = self.BPSkill_num('BPSkill_D') + 0.03
-        self.extra_ability_attribute['QuantumResistancePenetration'] = mp.mpf(
-            enemy_status_resistance
-        )
+        self.extra_ability_attribute['QuantumResistancePenetration'] = enemy_status_resistance
         logger.info('终结技降防')
         ultra_defence = self.Ultra_num('Ultra_D')
         logger.info('天赋降防')
         talent_defence = self.Talent()
         ignore_defence = ultra_defence + talent_defence
-        self.extra_ability_attribute['ignore_defence'] = mp.mpf(ignore_defence)
+        self.extra_ability_attribute['ignore_defence'] = ignore_defence
 
 
 class Kafka(BaseAvatar):
@@ -179,9 +172,9 @@ class Kafka(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 1:
-            self.extra_ability_attribute['DOTDmgAdd'] = mp.mpf(0.3)
+            self.extra_ability_attribute['DOTDmgAdd'] = 0.3
         if self.avatar_rank >= 2:
-            self.extra_ability_attribute['DOTDmgAdd'] = mp.mpf(0.55)
+            self.extra_ability_attribute['DOTDmgAdd'] = 0.55
 
     def extra_ability(self):
         pass
@@ -204,15 +197,15 @@ class Blade(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 2:
-            self.eidolon_attribute['CriticalChanceBase'] = mp.mpf(0.15)
+            self.eidolon_attribute['CriticalChanceBase'] = 0.15
 
         if self.avatar_rank >= 4:
-            self.eidolon_attribute['HPAddedRatio'] = mp.mpf(0.4)
+            self.eidolon_attribute['HPAddedRatio'] = 0.4
 
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('天赋施放的追加攻击伤害提高20%')
-        self.extra_ability_attribute['TalentDmgAdd'] = mp.mpf(0.2)
+        self.extra_ability_attribute['TalentDmgAdd'] = 0.2
 
 
 class Fuxuan(BaseAvatar):
@@ -232,7 +225,7 @@ class Fuxuan(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 1:
-            self.eidolon_attribute['CriticalDamageBase'] = mp.mpf(0.3)
+            self.eidolon_attribute['CriticalDamageBase'] = 0.3
 
     def extra_ability(self):
         pass
@@ -277,12 +270,12 @@ class Yanqing(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 4:
-            self.eidolon_attribute['IceResistancePenetration'] = mp.mpf(0.15)
+            self.eidolon_attribute['IceResistancePenetration'] = 0.15
 
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('触发暴击时，速度提高10%')
-        self.extra_ability_attribute['SpeedAddedRatio'] = mp.mpf(0.1)
+        self.extra_ability_attribute['SpeedAddedRatio'] = 0.1
         logger.info('【智剑连心】增益')
         critical_damage_base_t = self.Talent_num('Talent_CD')
         critical_damage_base_u = self.Ultra_num('Ultra_CD')
@@ -292,7 +285,7 @@ class Yanqing(BaseAvatar):
         critical_chance_base = self.Talent_num('Talent_CC')
         self.extra_ability_attribute[
             'CriticalChanceBase'
-        ] = critical_chance_base + mp.mpf(0.6)
+        ] = critical_chance_base + 0.6
 
 
 class Welt(BaseAvatar):
@@ -317,7 +310,7 @@ class Welt(BaseAvatar):
         logger.info('额外能力')
         logger.info('施放终结技时，有100%基础概率使目标受到的伤害提高12%，持续2回合。')
         logger.info('对被弱点击破的敌方目标造成的伤害提高20')
-        self.extra_ability_attribute['AllDamageAddedRatio'] = mp.mpf(0.32)
+        self.extra_ability_attribute['AllDamageAddedRatio'] = 0.32
 
 
 class Himeko(BaseAvatar):
@@ -337,16 +330,16 @@ class Himeko(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 1:
-            self.eidolon_attribute['SpeedAddedRatio'] = mp.mpf(0.1)
+            self.eidolon_attribute['SpeedAddedRatio'] = 0.1
         if self.avatar_rank >= 2:
-            self.eidolon_attribute['AllDamageAddedRatio'] = mp.mpf(0.15)
+            self.eidolon_attribute['AllDamageAddedRatio'] = 0.15
 
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('战技对灼烧状态下的敌方目标造成的伤害提高20%。')
-        self.extra_ability_attribute['BPSkillDmgAdd'] = mp.mpf(0.2)
+        self.extra_ability_attribute['BPSkillDmgAdd'] = 0.2
         logger.info('若当前生命值百分比大于等于80%，则暴击率提高15%。')
-        self.extra_ability_attribute['CriticalChanceBase'] = mp.mpf(0.15)
+        self.extra_ability_attribute['CriticalChanceBase'] = 0.15
 
 
 class Qingque(BaseAvatar):
@@ -366,14 +359,14 @@ class Qingque(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 1:
-            self.eidolon_attribute['UltraDmgAdd'] = mp.mpf(0.1)
+            self.eidolon_attribute['UltraDmgAdd'] = 0.1
 
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('施放强化普攻后，青雀的速度提高10%，持续1回合。')
-        self.extra_ability_attribute['SpeedAddedRatio'] = mp.mpf(0.1)
+        self.extra_ability_attribute['SpeedAddedRatio'] = 0.1
         logger.info('默认4层战技加伤害')
-        all_damage_added_ratio = self.BPSkill() + mp.mpf(0.1)
+        all_damage_added_ratio = self.BPSkill() + 0.1
         self.extra_ability_attribute['AllDamageAddedRatio'] = (
             all_damage_added_ratio * 4
         )
@@ -398,24 +391,22 @@ class Jingliu(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 1:
-            self.eidolon_attribute['Ultra_CriticalChanceBase'] = mp.mpf(0.12)
-            self.eidolon_attribute['BPSkill1_CriticalChanceBase'] = mp.mpf(
-                0.12
-            )
+            self.eidolon_attribute['Ultra_CriticalChanceBase'] = 0.12
+            self.eidolon_attribute['BPSkill1_CriticalChanceBase'] = 0.12
         if self.avatar_rank >= 2:
-            self.eidolon_attribute['UltraDmgAdd'] = mp.mpf(0.3)
+            self.eidolon_attribute['UltraDmgAdd'] = 0.3
         if self.avatar_rank >= 4:
-            self.eidolon_attribute['BPSkill1AttackAddedRatio'] = mp.mpf(0.4)
-            self.eidolon_attribute['UltraAttackAddedRatio'] = mp.mpf(0.4)
+            self.eidolon_attribute['BPSkill1AttackAddedRatio'] = 0.4
+            self.eidolon_attribute['UltraAttackAddedRatio'] = 0.4
         if self.avatar_rank >= 6:
-            self.eidolon_attribute['Ultra_CriticalDamageBase'] = mp.mpf(0.5)
-            self.eidolon_attribute['BPSkill1_CriticalDamageBase'] = mp.mpf(0.5)
+            self.eidolon_attribute['Ultra_CriticalDamageBase'] = 0.5
+            self.eidolon_attribute['BPSkill1_CriticalDamageBase'] = 0.5
 
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('【转魄】状态下，造成的伤害提高10%。')
-        self.extra_ability_attribute['BPSkill1DmgAdd'] = mp.mpf(0.1)
-        self.extra_ability_attribute['UltraDmgAdd'] = mp.mpf(0.1)
+        self.extra_ability_attribute['BPSkill1DmgAdd'] = 0.1
+        self.extra_ability_attribute['UltraDmgAdd'] = 0.1
 
 
 class Avatar:

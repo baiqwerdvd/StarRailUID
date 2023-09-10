@@ -1,31 +1,31 @@
 import copy
-import time
 import random
-from string import digits, ascii_letters
-from typing import Any, Dict, Union, Optional, cast
+import time
+from string import ascii_letters, digits
+from typing import Any, Dict, Optional, Union, cast
 
-from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.models import MysSign, SignInfo, SignList
 from gsuid_core.utils.api.mys.tools import (
     _random_int_ds,
     generate_os_ds,
     get_web_ds_token,
 )
+from gsuid_core.utils.api.mys_api import _MysApi
 
-from .api import srdbsqla
 from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
-    GachaLog,
     AbyssData,
-    RogueData,
-    RoleIndex,
     AvatarInfo,
-    MonthlyAward,
     DailyNoteData,
-    RoleBasicInfo,
-    WidgetStamina,
+    GachaLog,
+    MonthlyAward,
+    RogueData,
     RogueLocustData,
+    RoleBasicInfo,
+    RoleIndex,
+    WidgetStamina,
 )
+from .api import srdbsqla
 
 RECOGNIZE_SERVER = {
     '1': 'prod_gf_cn',
@@ -386,7 +386,7 @@ class MysApi(_MysApi):
         )
         # print(data)
         if isinstance(data, Dict):
-            data = cast(RogueData, data['data'])
+            data = cast(RogueLocustData, data['data'])
         return data
 
     async def mys_sign(

@@ -1,19 +1,38 @@
 import json
-from typing import List
-from pathlib import Path
 from abc import abstractmethod
+from pathlib import Path
+from typing import List
 
-from mpmath import mp
+from msgspec import Struct
 
+from ....utils.excel.model import AvatarPromotionConfig
+from .model import DamageInstanceAvatar, DamageInstanceSkill
 from .SkillBase import BaseSkills
-from ....utils.excel.read_excel import AvatarPromotion
-from .model import DamageInstanceSkill, DamageInstanceAvatar
 
 path = Path(__file__).parent.parent
-with Path.open(path / 'Excel' / 'seele.json', encoding='utf-8') as f:
+with Path.open(path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
 
-mp.dps = 14
+
+class BaseAvatarAttribute(Struct):
+    attack: float
+    defence: float
+    hp: float
+    speed: float
+    CriticalChanceBase: float
+    CriticalDamageBase: float
+    BaseAggro: float
+
+    def items(self):
+        return [
+            ('attack', self.attack),
+            ('defence', self.defence),
+            ('hp', self.hp),
+            ('speed', self.speed),
+            ('CriticalChanceBase', self.CriticalChanceBase),
+            ('CriticalDamageBase', self.CriticalDamageBase),
+            ('BaseAggro', self.BaseAggro),
+        ]
 
 
 class BaseAvatarBuff:
@@ -53,123 +72,100 @@ class BaseAvatar:
         self.avatar_promotion = char.promotion
         self.avatar_attribute_bonus = char.attribute_bonus
         self.avatar_extra_ability = char.extra_ability
-        self.avatar_attribute = {}
-        self.get_attribute()
+        self.avatar_attribute = self.get_attribute()
 
     def get_attribute(self):
-        promotion = AvatarPromotion[str(self.avatar_id)][
-            str(self.avatar_promotion)
-        ]
+        promotion = AvatarPromotionConfig.Avatar[
+            str(self.avatar_id)
+        ][str(self.avatar_promotion)]
 
-        # 攻击力
-        self.avatar_attribute['attack'] = mp.mpf(
-            promotion["AttackBase"]['Value']
-        ) + mp.mpf(promotion["AttackAdd"]['Value']) * (self.avatar_level - 1)
-        # 防御力
-        self.avatar_attribute['defence'] = mp.mpf(
-            promotion["DefenceBase"]['Value']
-        ) + mp.mpf(promotion["DefenceAdd"]['Value']) * (self.avatar_level - 1)
-        # 血量
-        self.avatar_attribute['hp'] = mp.mpf(
-            promotion["HPBase"]['Value']
-        ) + mp.mpf(promotion["HPAdd"]['Value']) * (self.avatar_level - 1)
-        # 速度
-        self.avatar_attribute['speed'] = mp.mpf(
-            promotion["SpeedBase"]['Value']
-        )
-        # 暴击率
-        self.avatar_attribute['CriticalChanceBase'] = mp.mpf(
-            promotion["CriticalChance"]['Value']
-        )
-        # 暴击伤害
-        self.avatar_attribute['CriticalDamageBase'] = mp.mpf(
-            promotion["CriticalDamage"]['Value']
-        )
-        # 嘲讽
-        self.avatar_attribute['BaseAggro'] = mp.mpf(
-            promotion["BaseAggro"]['Value']
+        return BaseAvatarAttribute(
+            # 攻击力
+            attack = (
+                promotion.AttackBase.Value
+                + promotion.AttackAdd.Value
+                * (self.avatar_level - 1)
+            ),
+            # 防御力
+            defence = (
+                promotion.DefenceBase.Value
+                + promotion.DefenceAdd.Value
+                * (self.avatar_level - 1)
+            ),
+            # 血量
+            hp = (
+                promotion.HPBase.Value
+                + promotion.HPAdd.Value
+                * (self.avatar_level - 1)
+            ),
+            # 速度
+            speed = promotion.SpeedBase.Value,
+            # 暴击率
+            CriticalChanceBase = promotion.CriticalChance.Value,
+            # 暴击伤害
+            CriticalDamageBase = promotion.CriticalDamage.Value,
+            # 嘲讽
+            BaseAggro = promotion.BaseAggro.Value
         )
 
-    def Skill_Info(self, skill_type):
-        skill_info = skill_dict[str(self.avatar_id)]['skilllist'][skill_type]
+    def Skill_Info(self, skill_type: str):
+        skill_info = skill_dict[str(self.avatar_id)]['skillList'][skill_type]
         return skill_info
 
-    def Normalnum(self, skill_type):
-        return mp.mpf(
-            skill_dict[str(self.avatar_id)][skill_type][
-                self.Skill.Normal_.level - 1
-            ]
-        )
+    def Normalnum(self, skill_type: str) -> float:
+        return skill_dict[str(self.avatar_id)][skill_type][
+            self.Skill.Normal_.level - 1
+        ]
 
-    def Normal(self):
-        return mp.mpf(
-            skill_dict[str(self.avatar_id)]['Normal'][
-                self.Skill.Normal_.level - 1
-            ]
-        )
+    def Normal(self) -> float:
+        return skill_dict[str(self.avatar_id)]['Normal'][
+            self.Skill.Normal_.level - 1
+        ]
 
-    def BPSkill(self):
-        return mp.mpf(
-            skill_dict[str(self.avatar_id)]['BPSkill'][
-                self.Skill.BPSkill_.level - 1
-            ]
-        )
+    def BPSkill(self) -> float:
+        return skill_dict[str(self.avatar_id)]['BPSkill'][
+            self.Skill.BPSkill_.level - 1
+        ]
 
-    def Ultra(self):
-        return mp.mpf(
-            skill_dict[str(self.avatar_id)]['Ultra'][
-                self.Skill.Ultra_.level - 1
-            ]
-        )
+    def Ultra(self) -> float:
+        return skill_dict[str(self.avatar_id)]['Ultra'][
+            self.Skill.Ultra_.level - 1
+        ]
 
-    def Maze(self):
-        return mp.mpf(
-            skill_dict[str(self.avatar_id)]['Maze'][self.Skill.Maze_.level - 1]
-        )
+    def Maze(self) -> float:
+        return skill_dict[str(self.avatar_id)]['Maze'][self.Skill.Maze_.level - 1]
 
-    def Talent(self):
-        return mp.mpf(
-            skill_dict[str(self.avatar_id)]['Talent'][
-                self.Skill.Talent_.level - 1
-            ]
-        )
+    def Talent(self) -> float:
+        return skill_dict[str(self.avatar_id)]['Talent'][
+            self.Skill.Talent_.level - 1
+        ]
 
-    def BPSkill_num(self, skill_type):
-        return mp.mpf(
-            skill_dict[str(self.avatar_id)][skill_type][
-                self.Skill.BPSkill_.level - 1
-            ]
-        )
+    def BPSkill_num(self, skill_type) -> float:
+        return skill_dict[str(self.avatar_id)][skill_type][
+            self.Skill.BPSkill_.level - 1
+        ]
 
-    def Ultra_num(self, skill_type):
-        return mp.mpf(
-            skill_dict[str(self.avatar_id)][skill_type][
-                self.Skill.Ultra_.level - 1
-            ]
-        )
+    def Ultra_num(self, skill_type) -> float:
+        return skill_dict[str(self.avatar_id)][skill_type][
+            self.Skill.Ultra_.level - 1
+        ]
 
-    def Talent_num(self, skill_type):
-        return mp.mpf(
-            skill_dict[str(self.avatar_id)][skill_type][
-                self.Skill.Talent_.level - 1
-            ]
-        )
+    def Talent_num(self, skill_type) -> float:
+        return skill_dict[str(self.avatar_id)][skill_type][
+            self.Skill.Talent_.level - 1
+        ]
 
-    def Talent_add(self):
+    def Talent_add(self) -> float:
         if self.avatar_id in [1102]:
-            return mp.mpf(
-                skill_dict[str(self.avatar_id)]['Talent'][
-                    self.Skill.Talent_.level - 1
-                ]
-            )
+            return float(skill_dict[str(self.avatar_id)]['Talent'][
+                self.Skill.Talent_.level - 1
+            ])
         elif self.avatar_id in [1205]:
-            return mp.mpf(
-                skill_dict[str(self.avatar_id)]['BPSkill'][
-                    self.Skill.BPSkill_.level - 1
-                ]
-            )
+            return float(skill_dict[str(self.avatar_id)]['BPSkill'][
+                self.Skill.BPSkill_.level - 1
+            ])
         else:
-            return mp.mpf(0)
+            return float(0)
 
-    def Ultra_Use(self):
+    def Ultra_Use(self) -> float:
         return skill_dict[str(self.avatar_id)]['Ultra_Use'][0]

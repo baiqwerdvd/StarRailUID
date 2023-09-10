@@ -1,35 +1,18 @@
-import re
 import json
 import math
+import re
 from pathlib import Path
 from typing import Dict, Union
 
-from mpmath import mp, nstr
 from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
 
-from .to_data import api_to_dict
-from .effect.Role import RoleInstance
-from .mono.Character import Character
 from ..utils.error_reply import CHAR_HINT
-from ..utils.fonts.first_world import fw_font_28
 from ..utils.excel.read_excel import light_cone_ranks
-from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
-from ..utils.map.SR_MAP_PATH import (
-    RelicId2Rarity,
-    AvatarRelicScore,
-    avatarId2Name,
-    avatarId2DamageType,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    RELIC_PATH,
-    SKILL_PATH,
-    PLAYER_PATH,
-    WEAPON_PATH,
-    CHAR_PORTRAIT_PATH,
-)
+from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_23,
@@ -39,12 +22,27 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
+from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
+from ..utils.map.SR_MAP_PATH import (
+    AvatarRelicScore,
+    RelicId2Rarity,
+    avatarId2DamageType,
+    avatarId2Name,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    CHAR_PORTRAIT_PATH,
+    PLAYER_PATH,
+    RELIC_PATH,
+    SKILL_PATH,
+    WEAPON_PATH,
+)
+from .effect.Role import RoleInstance
+from .mono.Character import Character
+from .to_data import api_to_dict
 
 Excel_path = Path(__file__).parent / 'effect'
-with Path.open(Excel_path / 'Excel' / 'seele.json', encoding='utf-8') as f:
+with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
-
-mp.dps = 14
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 
@@ -105,9 +103,8 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         1201,
         1212,
     ]:
-        skill_list = skill_dict[str(char.char_id)]['skilllist']
+        skill_list = skill_dict[str(char.char_id)]['skillList']
         damage_len = len(skill_list)
-    # print(damage_len)
     bg_height = 0
     if damage_len > 0:
         bg_height = 48 * (1 + damage_len) + 48
@@ -172,12 +169,11 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
     attr_bg = Image.open(TEXT_PATH / 'attr_bg.png')
     attr_bg_draw = ImageDraw.Draw(attr_bg)
     # 生命值
-    hp = mp.mpf(char.base_attributes.get('hp'))
-    add_hp = mp.mpf(char.add_attr.get('HPDelta', 0)) + hp * mp.mpf(
-        char.add_attr.get('HPAddedRatio', 0)
-    )
-    hp = int(mp.floor(hp))
-    add_hp = int(mp.floor(add_hp))
+    hp = int(char.base_attributes.get('hp'))
+    add_hp = int(char.add_attr.get('HPDelta', 0)
+                 + hp
+                 * char.add_attr.get('HPAddedRatio', 0)
+                 )
     attr_bg_draw.text(
         (413, 31), f'{hp + add_hp}', white_color, sr_font_26, 'rm'
     )
@@ -189,15 +185,14 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         anchor='lm',
     )
     # 攻击力
-    attack = mp.mpf(char.base_attributes['attack'])
-    add_attack = mp.mpf(char.add_attr.get('AttackDelta', 0)) + attack * mp.mpf(
-        char.add_attr.get('AttackAddedRatio', 0)
-    )
-    atk = int(mp.floor(attack))
-    add_attack = int(mp.floor(add_attack))
+    attack = int(char.base_attributes['attack'])
+    add_attack = int(char.add_attr.get('AttackDelta', 0)
+                     + attack
+                     * char.add_attr.get('AttackAddedRatio', 0)
+                     )
     attr_bg_draw.text(
         (413, 31 + 48),
-        f'{atk + add_attack}',
+        f'{attack + add_attack}',
         white_color,
         sr_font_26,
         'rm',
@@ -210,12 +205,11 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         anchor='lm',
     )
     # 防御力
-    defence = mp.mpf(char.base_attributes['defence'])
-    add_defence = mp.mpf(
-        char.add_attr.get('DefenceDelta', 0)
-    ) + defence * mp.mpf(char.add_attr.get('DefenceAddedRatio', 0))
-    defence = int(mp.floor(defence))
-    add_defence = int(mp.floor(add_defence))
+    defence = int(char.base_attributes['defence'])
+    add_defence = int(char.add_attr.get('DefenceDelta', 0)
+                      + defence
+                      * char.add_attr.get('DefenceAddedRatio', 0)
+                      )
     attr_bg_draw.text(
         (413, 31 + 48 * 2),
         f'{defence + add_defence}',
@@ -231,10 +225,8 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         anchor='lm',
     )
     # 速度
-    speed = mp.mpf(char.base_attributes['speed'])
-    add_speed = mp.mpf(char.add_attr.get('SpeedDelta', 0))
-    speed = int(mp.floor(speed))
-    add_speed = int(mp.floor(add_speed))
+    speed = int(char.base_attributes['speed'])
+    add_speed = int(char.add_attr.get('SpeedDelta', 0))
     attr_bg_draw.text(
         (413, 31 + 48 * 3),
         f'{speed + add_speed}',
@@ -250,49 +242,45 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         anchor='lm',
     )
     # 暴击率
-    critical_chance = mp.mpf(char.base_attributes['CriticalChanceBase'])
-    critical_chance_base = mp.mpf(char.add_attr.get('CriticalChanceBase', 0))
+    critical_chance = char.base_attributes['CriticalChanceBase']
+    critical_chance_base = char.add_attr.get('CriticalChanceBase', 0)
     critical_chance = (critical_chance + critical_chance_base) * 100
-    critical_chance = nstr(critical_chance, 3)
     attr_bg_draw.text(
         (500, 31 + 48 * 4),
-        f'{critical_chance}%',
+        "{:.1f}%".format(critical_chance),
         white_color,
         sr_font_26,
         'rm',
     )
     # 暴击伤害
-    critical_damage = mp.mpf(char.base_attributes['CriticalDamageBase'])
-    critical_damage_base = mp.mpf(char.add_attr.get('CriticalDamageBase', 0))
+    critical_damage = char.base_attributes['CriticalDamageBase']
+    critical_damage_base = char.add_attr.get('CriticalDamageBase', 0)
     critical_damage = (critical_damage + critical_damage_base) * 100
-    critical_damage = nstr(critical_damage, 4)
     attr_bg_draw.text(
         (500, 31 + 48 * 5),
-        f'{critical_damage}%',
+        "{:.1f}%".format(critical_damage),
         white_color,
         sr_font_26,
         'rm',
     )
     # 效果命中
     status_probability_base = (
-        mp.mpf(char.add_attr.get('StatusProbabilityBase', 0)) * 100
+        char.add_attr.get('StatusProbabilityBase', 0) * 100
     )
-    status_probability = nstr(status_probability_base, 3)
     attr_bg_draw.text(
         (500, 31 + 48 * 6),
-        f'{status_probability}%',
+        "{:.1f}%".format(status_probability_base),
         white_color,
         sr_font_26,
         'rm',
     )
     # 效果抵抗
     status_resistance_base = (
-        mp.mpf(char.add_attr.get('StatusResistanceBase', 0)) * 100
+        char.add_attr.get('StatusResistanceBase', 0) * 100
     )
-    status_resistance = nstr(status_resistance_base, 3)
     attr_bg_draw.text(
         (500, 31 + 48 * 7),
-        f'{status_resistance}%',
+        "{:.1f}%".format(status_resistance_base),
         white_color,
         sr_font_26,
         'rm',
@@ -475,13 +463,13 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
             )
 
             # 主属性
-            main_value = mp.mpf(relic['MainAffix']['Value'])
+            main_value = relic['MainAffix']['Value']
             main_name: str = relic['MainAffix']['Name']
             main_property: str = relic['MainAffix']['Property']
             main_level: int = relic['Level']
 
             if main_name in ['攻击力', '生命值', '防御力', '速度']:
-                mainValueStr = nstr(main_value, 3)
+                mainValueStr = "{:.1f}".format(main_value)
             else:
                 mainValueStr = str(math.floor(main_value * 1000) / 10) + '%'
 
@@ -534,7 +522,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
             single_relic_score += main_value_score
             for index, i in enumerate(relic['SubAffixList']):
                 subName: str = i['Name']
-                subValue = mp.mpf(i['Value'])
+                subValue = i['Value']
                 subProperty = i['Property']
 
                 tmp_score = await get_relic_score(
@@ -543,9 +531,9 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
                 single_relic_score += tmp_score
 
                 if subName in ['攻击力', '生命值', '防御力', '速度']:
-                    subValueStr = nstr(subValue, 3)
+                    subValueStr = "{:.1f}".format(subValue)
                 else:
-                    subValueStr = nstr(subValue * 100, 3) + '%'  # type: ignore
+                    subValueStr = "{:.1f}".format(subValue * 100) + '%'  # type: ignore
                 subNameStr = subName.replace('百分比', '').replace('元素', '')
                 # 副词条文字颜色
                 relic_color = (255, 255, 255)
