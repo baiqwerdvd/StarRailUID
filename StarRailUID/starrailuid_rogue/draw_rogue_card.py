@@ -246,7 +246,6 @@ async def draw_rogue_img(
     # return retcode
     # raw_data = data.raw_data
     raw_rogue_data = await data.get_rogue_data(uid, '3')
-    # print(raw_rogue_data)
 
     if isinstance(raw_rogue_data, int):
         return get_error(raw_rogue_data)
@@ -542,7 +541,6 @@ async def draw_rogue_locust_img(
     # return retcode
     # raw_data = data.raw_data
     raw_rogue_data = await data.get_rogue_locust_data(uid)
-    # print(raw_rogue_data)
 
     if isinstance(raw_rogue_data, int):
         return get_error(raw_rogue_data)

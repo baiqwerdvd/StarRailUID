@@ -192,7 +192,6 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
                 relic_type=relic['type'],
                 relic_level=relic_temp['Level'],
             )
-            print(affix_property)
             relic_temp['MainAffix']['Property'] = affix_property
             relic_temp['MainAffix']['Name'] = Property2Name[affix_property]
             relic_temp['MainAffix']['Value'] = value

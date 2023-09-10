@@ -62,11 +62,7 @@ async def send_srabyss_info(bot: Bot, ev: Event):
         floor = int(floor)
     else:
         floor = None
-    # print(floor)
     await bot.logger.info(f'[sr查询深渊信息]深渊层数: {floor}')
-    # data = GsCookie()
-    # raw_abyss_data = await data.get_spiral_abyss_data(uid, schedule_type)
-    # print(raw_abyss_data)
     im = await draw_abyss_img(user_id, uid, floor, schedule_type)
     await bot.send(im)
     return None

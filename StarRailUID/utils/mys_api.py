@@ -338,7 +338,6 @@ class MysApi(_MysApi):
                 cookie=ck,
                 header=self._HEADER,
             )
-        # print(data)
         if isinstance(data, Dict):
             data = cast(AbyssData, data['data'])
         return data
@@ -362,7 +361,6 @@ class MysApi(_MysApi):
             cookie=ck,
             header=self._HEADER,
         )
-        # print(data)
         if isinstance(data, Dict):
             data = cast(RogueData, data['data'])
         return data
@@ -384,7 +382,6 @@ class MysApi(_MysApi):
             cookie=ck,
             header=self._HEADER,
         )
-        # print(data)
         if isinstance(data, Dict):
             data = cast(RogueLocustData, data['data'])
         return data

@@ -151,7 +151,6 @@ async def draw_abyss_img(
     # return retcode
     # raw_data = data.raw_data
     raw_abyss_data = await data.get_spiral_abyss_data(uid, schedule_type)
-    # print(raw_abyss_data)
 
     if isinstance(raw_abyss_data, int):
         return get_error(raw_abyss_data)

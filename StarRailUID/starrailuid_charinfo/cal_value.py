@@ -15,7 +15,6 @@ async def cal_relic_main_affix(
     else:
         group_id = str(RelicId2MainAffixGroup[str(relic_id)])
     relic_data = RelicMainAffixConfig.Relic[group_id][str(affix_id)]
-    print(relic_data)
     base_value = relic_data.BaseValue.Value
     level_add = relic_data.LevelAdd.Value
     value = base_value + level_add * relic_level

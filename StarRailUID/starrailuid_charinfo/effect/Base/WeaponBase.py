@@ -61,7 +61,6 @@ class BaseWeapon:
         promotion = EquipmentPromotionConfig.Equipment[
             str(self.weapon_id)
         ][str(self.weapon_promotion)]
-        print(promotion)
 
         return BaseWeaponAttribute(
             hp = (

@@ -62,11 +62,7 @@ async def send_srabyss_info(bot: Bot, ev: Event):
         floor = int(floor)
     else:
         floor = None
-    # print(floor)
     await bot.logger.info(f'[sr查询模拟宇宙信息]模拟宇宙世界数: {floor}')
-    # data = GsCookie()
-    # raw_rogue_data = await data.get_rogue_data(uid, schedule_type)
-    # print(raw_rogue_data)
     im = await draw_rogue_img(user_id, uid, floor, schedule_type)
     await bot.send(im)
     return None
@@ -94,9 +90,6 @@ async def send_srabyss_locust_info(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     await bot.logger.info(f'[sr查询寰宇蝗灾信息]uid: {uid}')
-    # data = GsCookie()
-    # raw_rogue_data = await data.get_rogue_data(uid, schedule_type)
-    # print(raw_rogue_data)
     im = await draw_rogue_locust_img(user_id, uid)
     await bot.send(im)
     return None
