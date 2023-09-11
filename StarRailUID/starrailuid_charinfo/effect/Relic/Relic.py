@@ -3,9 +3,9 @@ from typing import Dict, List, Union
 
 from gsuid_core.logger import logger
 
-from ..Base.model import DamageInstanceRelic
-from ..Base.RelicBase import BaseRelicSetSkill, SingleRelic
 from ..utils import merge_attribute
+from ..Base.model import DamageInstanceRelic
+from ..Base.RelicBase import SingleRelic, BaseRelicSetSkill
 
 
 class Relic101(BaseRelicSetSkill):
@@ -628,32 +628,34 @@ class RelicSet:
     OBJECT: SingleRelic
     Unknow: SingleRelic
 
-    SetSkill: List[Union[
-        Relic101,
-        Relic102,
-        Relic103,
-        Relic104,
-        Relic105,
-        Relic106,
-        Relic107,
-        Relic108,
-        Relic109,
-        Relic110,
-        Relic111,
-        Relic112,
-        Relic113,
-        Relic114,
-        Relic301,
-        Relic302,
-        Relic303,
-        Relic304,
-        Relic305,
-        Relic306,
-        Relic307,
-        Relic308,
-        Relic309,
-        Relic310,
-    ]]
+    SetSkill: List[
+        Union[
+            Relic101,
+            Relic102,
+            Relic103,
+            Relic104,
+            Relic105,
+            Relic106,
+            Relic107,
+            Relic108,
+            Relic109,
+            Relic110,
+            Relic111,
+            Relic112,
+            Relic113,
+            Relic114,
+            Relic301,
+            Relic302,
+            Relic303,
+            Relic304,
+            Relic305,
+            Relic306,
+            Relic307,
+            Relic308,
+            Relic309,
+            Relic310,
+        ]
+    ]
 
     def create(self, relic_list: List[DamageInstanceRelic]):
         set_id_list: List[int] = []

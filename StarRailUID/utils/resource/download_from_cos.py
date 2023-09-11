@@ -2,13 +2,12 @@ import asyncio
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
-from aiohttp.client import ClientSession
 from msgspec import json as msgjson
-
 from gsuid_core.logger import logger
+from aiohttp.client import ClientSession
 
 from .download_url import download_file
-from .RESOURCE_PATH import GUIDE_PATH, RESOURCE_PATH, WIKI_PATH
+from .RESOURCE_PATH import WIKI_PATH, GUIDE_PATH, RESOURCE_PATH
 
 with Path.open(
     Path(__file__).parent / 'resource_map.json', encoding='UTF-8'
@@ -120,6 +119,4 @@ async def download_all_file_from_cos():
                 await _download(TASKS)
         await _download(TASKS)
         if count := len(failed_list):
-            logger.error(
-                f'[cos]仍有{count}个文件未下载,请使用命令 `下载全部资源` 重新下载'
-            )
+            logger.error(f'[cos]仍有{count}个文件未下载,请使用命令 `下载全部资源` 重新下载')

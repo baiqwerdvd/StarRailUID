@@ -57,4 +57,9 @@ async def merge_attribute(
             merged_attr[attribute] = attr_value + attribute_bonus[attribute]
         else:
             continue
+    for attr in base_attr:
+        merged_value = merged_attr.get(attr, 0)
+        if merged_value == 0:
+            merged_attr[attr] = base_attr[attr]
+
     return merged_attr

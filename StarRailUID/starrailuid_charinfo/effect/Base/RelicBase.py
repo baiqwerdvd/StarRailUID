@@ -1,10 +1,10 @@
-from abc import abstractmethod
 from typing import Dict
+from abc import abstractmethod
 
 from gsuid_core.logger import logger
 
-from ....utils.map.SR_MAP_PATH import RelicSetSkill
 from .model import DamageInstanceRelic
+from ....utils.map.SR_MAP_PATH import RelicSetSkill
 
 
 class SingleRelic:

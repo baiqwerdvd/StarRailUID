@@ -1,14 +1,14 @@
 import json
-from abc import abstractmethod
 from pathlib import Path
+from abc import abstractmethod
 from typing import List, Union
 
 import msgspec
 from msgspec import Struct
 
-from ....utils.excel.model import AvatarPromotionConfig
-from .model import DamageInstanceAvatar, DamageInstanceSkill
 from .SkillBase import BaseSkills
+from ....utils.excel.model import AvatarPromotionConfig
+from .model import DamageInstanceSkill, DamageInstanceAvatar
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -168,13 +168,13 @@ class BaseAvatar:
     def Talent_add(self):
         if self.avatar_id in [1102]:
             skill_info = skill_dict[str(self.avatar_id)]['Talent'][
-                    self.Skill.Talent_.level - 1
-                ]
+                self.Skill.Talent_.level - 1
+            ]
             return msgspec.convert(skill_info, type=float)
         elif self.avatar_id in [1205]:
             skill_info = skill_dict[str(self.avatar_id)]['BPSkill'][
-                    self.Skill.BPSkill_.level - 1
-                ]
+                self.Skill.BPSkill_.level - 1
+            ]
             return msgspec.convert(skill_info, type=float)
         else:
             return 0.0

@@ -56,8 +56,7 @@ async def api_to_dict(
         return []
     if isinstance(sr_data, Dict):
         if 'detailInfo' not in sr_data:
-            return '服务器正在维护或者关闭中...\n' \
-                   '检查Mihomo.me是否可以访问\n如可以访问,尝试上报Bug!'
+            return '服务器正在维护或者关闭中...\n' '检查Mihomo.me是否可以访问\n如可以访问,尝试上报Bug!'
     elif sr_data is None:
         return []
 
@@ -99,8 +98,7 @@ async def api_to_dict(
                     char_id_list.append(char['avatarId'])
 
     if not char_name_list:
-        return f'UID: {sr_uid} 的角色展柜刷新失败!\n' \
-                '请检查UID是否正确或者角色展柜是否打开!'
+        return f'UID: {sr_uid} 的角色展柜刷新失败!\n' '请检查UID是否正确或者角色展柜是否打开!'
 
     return char_id_list
 
