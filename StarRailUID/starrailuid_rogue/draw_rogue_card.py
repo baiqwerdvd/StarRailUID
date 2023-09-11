@@ -1,30 +1,31 @@
 import math
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 
 from PIL import Image, ImageDraw
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.image_tools import (
-    get_qq_avatar,
     draw_pic_with_ring,
+    get_qq_avatar,
 )
 
-from .utils import get_icon
+from ..sruid_utils.api.mys.models import (
+    LocustBlocks,
+    RogueAvatar,
+    RogueBuffitems,
+    RogueMiracles,
+)
 from ..utils.convert import GsCookie
-from ..utils.image.convert import convert_img
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
     sr_font_34,
     sr_font_42,
 )
-from ..sruid_utils.api.mys.models import (
-    RogueAvatar,
-    LocustBlocks,
-    RogueMiracles,
-    RogueBuffitems,
-)
+from ..utils.image.convert import convert_img
+from .utils import get_icon
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 white_color = (255, 255, 255)
@@ -307,10 +308,12 @@ async def draw_rogue_img(
     else:
         if schedule_type == '3':
             if raw_rogue_data['current_record']['basic']['finish_cnt'] == 0:
-                return '你还没有挑战本期模拟宇宙!\n可以使用[sr上期模拟宇宙]命令查询上期~'
+                return '你还没有挑战本期模拟宇宙!\n' \
+                       '可以使用[sr上期模拟宇宙]命令查询上期~'
         else:
             if raw_rogue_data['last_record']['basic']['finish_cnt'] == 0:
-                return '你还没有挑战上期模拟宇宙!\n可以使用[sr模拟宇宙]命令查询本期~'
+                return '你还没有挑战上期模拟宇宙!\n' \
+                       '可以使用[sr模拟宇宙]命令查询本期~'
 
     # 获取背景图片各项参数
     based_w = 900
@@ -555,7 +558,7 @@ async def draw_rogue_locust_img(
     rogue_detail = raw_rogue_data['detail']['records']
 
     # 记录打的宇宙列表
-    detail_list = []
+    # detail_list = []
     based_h = 700
     for index_floor, detail in enumerate(rogue_detail):
         # 100+70+170

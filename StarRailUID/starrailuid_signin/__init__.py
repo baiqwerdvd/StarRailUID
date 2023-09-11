@@ -1,18 +1,18 @@
-import random
 import asyncio
+import random
 
-from gsuid_core.sv import SV
+from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
 from gsuid_core.gss import gss
-from gsuid_core.models import Event
-from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
+from gsuid_core.models import Event
+from gsuid_core.sv import SV
 
-from ..utils.api import get_sqla
-from ..utils.sr_prefix import PREFIX
-from .sign import sign_in, daily_sign
-from ..utils.error_reply import UID_HINT
 from ..starrailuid_config.sr_config import srconfig
+from ..utils.api import get_sqla
+from ..utils.error_reply import UID_HINT
+from ..utils.sr_prefix import PREFIX
+from .sign import daily_sign, sign_in
 
 SIGN_TIME = srconfig.get_config('SignTime').data
 
@@ -78,11 +78,8 @@ async def send_daily_sign():
                 if group_msg_list[gid]['push_message'] != ''
                 else ''
             )
-            msg_title = '星穹铁道今日自动签到已完成!\n本群共签到成功{}人,共签到失败{}人。{}'.format(
-                group_msg_list[gid]['success'],
-                group_msg_list[gid]['failed'],
-                report,
-            )
+            msg_title = f"星穹铁道今日自动签到已完成!\n" \
+            f"本群共签到成功{group_msg_list[gid]['success']}人,共签到失败{group_msg_list[gid]['failed']}人。{report}"
         else:
             msg_title = group_msg_list[gid]['push_message']
         # 发送群消息

@@ -1,14 +1,14 @@
-import random
 import asyncio
+import random
 from copy import deepcopy
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
 from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
+from ..starrailuid_config.sr_config import srconfig
 from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
-from ..starrailuid_config.sr_config import srconfig
 
 private_msg_list = {}
 group_msg_list = {}
@@ -57,11 +57,15 @@ async def sign_in(sr_uid: str) -> str:
                         Header['x-rpc-challenge'] = ch
                         Header['x-rpc-validate'] = vl
                         Header['x-rpc-seccode'] = f'{vl}|jordan'
-                        logger.info(f'[SR签到] {sr_uid} 已获取验证码, 等待时间{delay}秒')
+                        logger.info(
+                            f'[SR签到] {sr_uid} 已获取验证码, 等待时间{delay}秒'
+                        )
                         await asyncio.sleep(delay)
                     else:
                         delay = 605 + random.randint(1, 120)
-                        logger.info(f'[SR签到] {sr_uid} 未获取验证码,等待{delay}秒后重试...')
+                        logger.info(
+                            f'[SR签到] {sr_uid} 未获取验证码,等待{delay}秒后重试...'
+                        )
                         await asyncio.sleep(delay)
                     continue
                 logger.info('配置文件暂未开启[跳过无感验证],结束本次任务...')
@@ -70,7 +74,9 @@ async def sign_in(sr_uid: str) -> str:
             if index == 0:
                 logger.info(f'[SR签到] {sr_uid} 该用户无校验码!')
             else:
-                logger.info(f'[SR签到] [无感验证] {sr_uid} 该用户重试 {index} 次验证成功!')
+                logger.info(
+                    f'[SR签到] [无感验证] {sr_uid} 该用户重试 {index} 次验证成功!'
+                )
             break
         if (int(str(sr_uid)[0]) > 5) and (sign_data['data']['code'] == 'ok'):
             # 国际服签到无risk_code字段
@@ -78,7 +84,8 @@ async def sign_in(sr_uid: str) -> str:
             break
         # 重试超过阈值
         logger.warning('[SR签到] 超过请求阈值...')
-        return 'sr签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到!'
+        return 'sr签到失败...出现验证码!\n' \
+               '请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到!'
     # 签到失败
     else:
         im = 'sr签到失败!'
@@ -163,7 +170,9 @@ async def daily_sign():
                     delay = 1
                 else:
                     delay = 50 + random.randint(3, 45)
-                logger.info(f'[SR签到] 已签到{len(tasks)}个用户, 等待{delay}秒进行下一次签到')
+                logger.info(
+                    f'[SR签到] 已签到{len(tasks)}个用户, 等待{delay}秒进行下一次签到'
+                )
                 tasks.clear()
                 already = 0
                 await asyncio.sleep(delay)

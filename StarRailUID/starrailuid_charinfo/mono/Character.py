@@ -9,9 +9,6 @@ from ...utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty, RelicSetSkill
 
 class Character:
     def __init__(self, card_prop: Dict):
-        # 面板数据
-        self.card_prop: Dict = card_prop
-
         self.char_level: int = int(card_prop['avatarLevel'])
         self.char_id: str = card_prop['avatarId']
         self.char_name: str = card_prop['avatarName']
