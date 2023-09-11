@@ -1,11 +1,11 @@
-from abc import abstractmethod
 from typing import Dict
+from abc import abstractmethod
 
 from msgspec import Struct
 
+from .model import DamageInstanceWeapon
 from ....utils.excel.model import EquipmentPromotionConfig
 from ....utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty
-from .model import DamageInstanceWeapon
 
 
 class BaseWeaponAttribute(Struct):
@@ -17,7 +17,7 @@ class BaseWeaponAttribute(Struct):
         return [
             ('hp', self.hp),
             ('attack', self.attack),
-            ('defence', self.defence)
+            ('defence', self.defence),
         ]
 
 
@@ -58,24 +58,21 @@ class BaseWeapon:
         ...
 
     def get_attribute(self):
-        promotion = EquipmentPromotionConfig.Equipment[
-            str(self.weapon_id)
-        ][str(self.weapon_promotion)]
+        promotion = EquipmentPromotionConfig.Equipment[str(self.weapon_id)][
+            str(self.weapon_promotion)
+        ]
 
         return BaseWeaponAttribute(
-            hp = (
+            hp=(
                 promotion.BaseHP.Value
-                + promotion.BaseHPAdd.Value
-                * (self.weapon_level - 1)
+                + promotion.BaseHPAdd.Value * (self.weapon_level - 1)
             ),
-            attack = (
+            attack=(
                 promotion.BaseAttack.Value
-                + promotion.BaseAttackAdd.Value
-                * (self.weapon_level - 1)
+                + promotion.BaseAttackAdd.Value * (self.weapon_level - 1)
             ),
-            defence = (
+            defence=(
                 promotion.BaseDefence.Value
-                + promotion.BaseDefenceAdd.Value
-                * (self.weapon_level - 1)
-            )
+                + promotion.BaseDefenceAdd.Value * (self.weapon_level - 1)
+            ),
         )

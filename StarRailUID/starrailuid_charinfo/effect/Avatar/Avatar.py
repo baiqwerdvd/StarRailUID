@@ -3,7 +3,7 @@ from typing import List
 from gsuid_core.logger import logger
 
 from ..Base.AvatarBase import BaseAvatar, BaseAvatarBuff
-from ..Base.model import DamageInstanceAvatar, DamageInstanceSkill
+from ..Base.model import DamageInstanceSkill, DamageInstanceAvatar
 
 
 class Seele(BaseAvatar):
@@ -146,7 +146,9 @@ class Silverwolf(BaseAvatar):
         logger.info('战技降抗')
         logger.info('战技使目标全属性抗性降低的效果额外降低3%')
         enemy_status_resistance = self.BPSkill_num('BPSkill_D') + 0.03
-        self.extra_ability_attribute['QuantumResistancePenetration'] = enemy_status_resistance
+        self.extra_ability_attribute[
+            'QuantumResistancePenetration'
+        ] = enemy_status_resistance
         logger.info('终结技降防')
         ultra_defence = self.Ultra_num('Ultra_D')
         logger.info('天赋降防')
@@ -283,9 +285,9 @@ class Yanqing(BaseAvatar):
             critical_damage_base_t + critical_damage_base_u
         )
         critical_chance_base = self.Talent_num('Talent_CC')
-        self.extra_ability_attribute[
-            'CriticalChanceBase'
-        ] = critical_chance_base + 0.6
+        self.extra_ability_attribute['CriticalChanceBase'] = (
+            critical_chance_base + 0.6
+        )
 
 
 class Welt(BaseAvatar):
@@ -391,22 +393,36 @@ class Jingliu(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 1:
-            self.eidolon_attribute['Ultra_CriticalChanceBase'] = 0.12
-            self.eidolon_attribute['BPSkill1_CriticalChanceBase'] = 0.12
+            self.eidolon_attribute['CriticalDamageBase'] = 0.24
         if self.avatar_rank >= 2:
-            self.eidolon_attribute['UltraDmgAdd'] = 0.3
+            self.eidolon_attribute['BPSkill1DmgAdd'] = 0.8
         if self.avatar_rank >= 4:
-            self.eidolon_attribute['BPSkill1AttackAddedRatio'] = 0.4
-            self.eidolon_attribute['UltraAttackAddedRatio'] = 0.4
+            self.eidolon_attribute['BPSkill1AttackAddedRatio'] = 0.3
+            self.eidolon_attribute['UltraAttackAddedRatio'] = 0.3
         if self.avatar_rank >= 6:
             self.eidolon_attribute['Ultra_CriticalDamageBase'] = 0.5
             self.eidolon_attribute['BPSkill1_CriticalDamageBase'] = 0.5
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('【转魄】状态下，造成的伤害提高10%。')
-        self.extra_ability_attribute['BPSkill1DmgAdd'] = 0.1
-        self.extra_ability_attribute['UltraDmgAdd'] = 0.1
+        logger.info('【转魄】状态下，终结技造成的伤害提高20%。')
+        logger.info('【转魄】状态下，暴击率提高。')
+        logger.info('【转魄】状态下，攻击力提高。')
+        self.extra_ability_attribute['UltraDmgAdd'] = 0.2
+        critical_chance_base = self.Talent_num('Talent_CC')
+        self.extra_ability_attribute[
+            'Ultra_CriticalChanceBase'
+        ] = critical_chance_base
+        self.extra_ability_attribute[
+            'BPSkill1_CriticalChanceBase'
+        ] = critical_chance_base
+        attack_added_ratio = self.Talent_num('Talent_atk')
+        self.extra_ability_attribute[
+            'BPSkill1AttackAddedRatio'
+        ] = attack_added_ratio
+        self.extra_ability_attribute[
+            'UltraAttackAddedRatio'
+        ] = attack_added_ratio
 
 
 class Avatar:

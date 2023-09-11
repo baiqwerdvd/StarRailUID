@@ -1,13 +1,13 @@
 import json
-from abc import abstractmethod
-from pathlib import Path
 from typing import List
+from pathlib import Path
+from abc import abstractmethod
 
 from msgspec import Struct
 
-from ....utils.excel.model import AvatarPromotionConfig
-from .model import DamageInstanceAvatar, DamageInstanceSkill
 from .SkillBase import BaseSkills
+from ....utils.excel.model import AvatarPromotionConfig
+from .model import DamageInstanceSkill, DamageInstanceAvatar
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -75,37 +75,34 @@ class BaseAvatar:
         self.avatar_attribute = self.get_attribute()
 
     def get_attribute(self):
-        promotion = AvatarPromotionConfig.Avatar[
-            str(self.avatar_id)
-        ][str(self.avatar_promotion)]
+        promotion = AvatarPromotionConfig.Avatar[str(self.avatar_id)][
+            str(self.avatar_promotion)
+        ]
 
         return BaseAvatarAttribute(
             # 攻击力
-            attack = (
+            attack=(
                 promotion.AttackBase.Value
-                + promotion.AttackAdd.Value
-                * (self.avatar_level - 1)
+                + promotion.AttackAdd.Value * (self.avatar_level - 1)
             ),
             # 防御力
-            defence = (
+            defence=(
                 promotion.DefenceBase.Value
-                + promotion.DefenceAdd.Value
-                * (self.avatar_level - 1)
+                + promotion.DefenceAdd.Value * (self.avatar_level - 1)
             ),
             # 血量
-            hp = (
+            hp=(
                 promotion.HPBase.Value
-                + promotion.HPAdd.Value
-                * (self.avatar_level - 1)
+                + promotion.HPAdd.Value * (self.avatar_level - 1)
             ),
             # 速度
-            speed = promotion.SpeedBase.Value,
+            speed=promotion.SpeedBase.Value,
             # 暴击率
-            CriticalChanceBase = promotion.CriticalChance.Value,
+            CriticalChanceBase=promotion.CriticalChance.Value,
             # 暴击伤害
-            CriticalDamageBase = promotion.CriticalDamage.Value,
+            CriticalDamageBase=promotion.CriticalDamage.Value,
             # 嘲讽
-            BaseAggro = promotion.BaseAggro.Value
+            BaseAggro=promotion.BaseAggro.Value,
         )
 
     def Skill_Info(self, skill_type: str):
@@ -133,7 +130,9 @@ class BaseAvatar:
         ]
 
     def Maze(self) -> float:
-        return skill_dict[str(self.avatar_id)]['Maze'][self.Skill.Maze_.level - 1]
+        return skill_dict[str(self.avatar_id)]['Maze'][
+            self.Skill.Maze_.level - 1
+        ]
 
     def Talent(self) -> float:
         return skill_dict[str(self.avatar_id)]['Talent'][
@@ -157,13 +156,17 @@ class BaseAvatar:
 
     def Talent_add(self) -> float:
         if self.avatar_id in [1102]:
-            return float(skill_dict[str(self.avatar_id)]['Talent'][
-                self.Skill.Talent_.level - 1
-            ])
+            return float(
+                skill_dict[str(self.avatar_id)]['Talent'][
+                    self.Skill.Talent_.level - 1
+                ]
+            )
         elif self.avatar_id in [1205]:
-            return float(skill_dict[str(self.avatar_id)]['BPSkill'][
-                self.Skill.BPSkill_.level - 1
-            ])
+            return float(
+                skill_dict[str(self.avatar_id)]['BPSkill'][
+                    self.Skill.BPSkill_.level - 1
+                ]
+            )
         else:
             return float(0)
 

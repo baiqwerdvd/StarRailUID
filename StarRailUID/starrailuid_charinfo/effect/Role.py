@@ -1,11 +1,11 @@
 from gsuid_core.logger import logger
 
-from ..mono.Character import Character
 from .Avatar.Avatar import Avatar
+from .Weapon.Weapon import Weapon
+from .utils import merge_attribute
+from ..mono.Character import Character
 from .Base.model import DamageInstance
 from .Relic.Relic import RelicSet, SingleRelic
-from .utils import merge_attribute
-from .Weapon.Weapon import Weapon
 
 
 class RoleInstance:
@@ -104,9 +104,9 @@ class RoleInstance:
     def cal_weapon_attr_add(self):
         for attribute in self.weapon.weapon_attribute:
             if attribute in self.attribute_bonus:
-                self.attribute_bonus[attribute] += self.weapon.weapon_attribute[
+                self.attribute_bonus[
                     attribute
-                ]
+                ] += self.weapon.weapon_attribute[attribute]
             else:
                 self.attribute_bonus[attribute] = self.weapon.weapon_attribute[
                     attribute
@@ -176,9 +176,9 @@ class RoleInstance:
             critical_chance_base = self.attribute_bonus.get(
                 'CriticalChanceBase', 0
             )
-            self.attribute_bonus[
-                'CriticalChanceBase'
-            ] = critical_chance_base + fx_cc_up
+            self.attribute_bonus['CriticalChanceBase'] = (
+                critical_chance_base + fx_cc_up
+            )
 
             hp_added_ratio = self.attribute_bonus.get('HPAddedRatio', 0)
             self.attribute_bonus['HPAddedRatio'] = hp_added_ratio + fx_hp_up
@@ -203,9 +203,9 @@ class RoleInstance:
                     attack_added_ratio = self.attribute_bonus.get(
                         'AttackAddedRatio', 0
                     )
-                    self.attribute_bonus[
-                        'AttackAddedRatio'
-                    ] = attack_added_ratio + self.attribute_bonus[attr]
+                    self.attribute_bonus['AttackAddedRatio'] = (
+                        attack_added_ratio + self.attribute_bonus[attr]
+                    )
             # 效果命中加成
             if attr.__contains__('StatusProbabilityBase'):
                 attr_name = attr.split('StatusProbabilityBase')[0]
@@ -213,9 +213,9 @@ class RoleInstance:
                     status_probability = self.attribute_bonus.get(
                         'StatusProbabilityBase', 0
                     )
-                    self.attribute_bonus[
-                        'StatusProbabilityBase'
-                    ] = status_probability + self.attribute_bonus[attr]
+                    self.attribute_bonus['StatusProbabilityBase'] = (
+                        status_probability + self.attribute_bonus[attr]
+                    )
         logger.info(self.attribute_bonus)
         logger.info('检查遗器套装战斗生效的buff')
         for set_skill in self.relic_set.SetSkill:
@@ -298,8 +298,13 @@ class RoleInstance:
             enemy_status_resistance = 0
             for attr in merged_attr:
                 if attr.__contains__('ResistancePenetration'):
-                    # 先默认触发
-                    enemy_status_resistance = merged_attr[attr]
+                    attr_name = attr.split('ResistancePenetration')[0]
+                    if (
+                        attr_name == self.avatar.avatar_element
+                        or attr_name == 'AllDamage'
+                    ):
+                        # 先默认触发
+                        enemy_status_resistance = merged_attr[attr]
             resistance_area = 1 - (0 - enemy_status_resistance)
             if self.raw_data.avatar.id_ == 1213:
                 if skill_info[2] == 7:
@@ -336,7 +341,7 @@ class RoleInstance:
             for attr in merged_attr:
                 if attr.__contains__('DmgAdd'):
                     attr_name = attr.split('DmgAdd')[0]
-                    if attr_name == skill_type:
+                    if attr_name == skill_type or attr_name == skill_info[3]:
                         logger.info(
                             f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 伤害加成'
                         )
@@ -517,9 +522,9 @@ class RoleInstance:
                 and self.raw_data.avatar.rank >= 1
             ):
                 if skill_info[3] == 'BPSkill1' or skill_info[3] == 'Ultra':
-                    damage_cd_z = damage_cd_z * 1.6
-                    damage_qw_z = damage_qw_z * 1.6
-                    damage_tz_z = damage_tz_z * 1.6
+                    damage_cd_z = damage_cd_z * 1.8
+                    damage_qw_z = damage_qw_z * 1.8
+                    damage_tz_z = damage_tz_z * 1.8
 
             if self.avatar.avatar_element == 'Thunder':
                 element_area = 0

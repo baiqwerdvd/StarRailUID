@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, TypedDict, Union
+from typing import List, Union, TypedDict
 
 
 class MihomoData(TypedDict):

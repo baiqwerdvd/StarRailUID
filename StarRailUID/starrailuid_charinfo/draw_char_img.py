@@ -1,18 +1,33 @@
+import re
 import json
 import math
-import re
 from pathlib import Path
 from typing import Dict, Union
 
 from PIL import Image, ImageDraw
-
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
 
+from .to_data import api_to_dict
 from ..utils.error_reply import CHAR_HINT
-from ..utils.excel.read_excel import light_cone_ranks
+from .cal_damage import cal, cal_char_info
 from ..utils.fonts.first_world import fw_font_28
+from ..utils.excel.read_excel import light_cone_ranks
+from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
+from ..utils.map.SR_MAP_PATH import (
+    RelicId2Rarity,
+    AvatarRelicScore,
+    avatarId2Name,
+    avatarId2DamageType,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    RELIC_PATH,
+    SKILL_PATH,
+    PLAYER_PATH,
+    WEAPON_PATH,
+    CHAR_PORTRAIT_PATH,
+)
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_23,
@@ -22,22 +37,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
-from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
-from ..utils.map.SR_MAP_PATH import (
-    AvatarRelicScore,
-    RelicId2Rarity,
-    avatarId2DamageType,
-    avatarId2Name,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_PORTRAIT_PATH,
-    PLAYER_PATH,
-    RELIC_PATH,
-    SKILL_PATH,
-    WEAPON_PATH,
-)
-from .cal_damage import cal, cal_char_info
-from .to_data import api_to_dict
 
 Excel_path = Path(__file__).parent / 'effect'
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -169,10 +168,10 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
     attr_bg_draw = ImageDraw.Draw(attr_bg)
     # 生命值
     hp = int(char.base_attributes.get('hp'))
-    add_hp = int(char.add_attr.get('HPDelta', 0)
-                 + hp
-                 * char.add_attr.get('HPAddedRatio', 0)
-                 )
+    add_hp = int(
+        char.add_attr.get('HPDelta', 0)
+        + hp * char.add_attr.get('HPAddedRatio', 0)
+    )
     attr_bg_draw.text(
         (413, 31), f'{hp + add_hp}', white_color, sr_font_26, 'rm'
     )
@@ -185,10 +184,10 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
     )
     # 攻击力
     attack = int(char.base_attributes['attack'])
-    add_attack = int(char.add_attr.get('AttackDelta', 0)
-                     + attack
-                     * char.add_attr.get('AttackAddedRatio', 0)
-                     )
+    add_attack = int(
+        char.add_attr.get('AttackDelta', 0)
+        + attack * char.add_attr.get('AttackAddedRatio', 0)
+    )
     attr_bg_draw.text(
         (413, 31 + 48),
         f'{attack + add_attack}',
@@ -205,10 +204,10 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
     )
     # 防御力
     defence = int(char.base_attributes['defence'])
-    add_defence = int(char.add_attr.get('DefenceDelta', 0)
-                      + defence
-                      * char.add_attr.get('DefenceAddedRatio', 0)
-                      )
+    add_defence = int(
+        char.add_attr.get('DefenceDelta', 0)
+        + defence * char.add_attr.get('DefenceAddedRatio', 0)
+    )
     attr_bg_draw.text(
         (413, 31 + 48 * 2),
         f'{defence + add_defence}',
@@ -274,9 +273,7 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
         'rm',
     )
     # 效果抵抗
-    status_resistance_base = (
-        char.add_attr.get('StatusResistanceBase', 0) * 100
-    )
+    status_resistance_base = char.add_attr.get('StatusResistanceBase', 0) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 7),
         "{:.1f}%".format(status_resistance_base),

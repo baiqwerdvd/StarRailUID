@@ -1,11 +1,11 @@
-from collections import Counter
 from typing import Dict, List
+from collections import Counter
 
 from gsuid_core.logger import logger
 
-from ..Base.model import DamageInstanceRelic
-from ..Base.RelicBase import BaseRelicSetSkill, SingleRelic
 from ..utils import merge_attribute
+from ..Base.model import DamageInstanceRelic
+from ..Base.RelicBase import SingleRelic, BaseRelicSetSkill
 
 
 class Relic101(BaseRelicSetSkill):
@@ -57,9 +57,9 @@ class Relic103(BaseRelicSetSkill):
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             shield_added_ratio = attribute_bonus.get('shield_added_ratio', 0)
-            attribute_bonus[
-                'shield_added_ratio'
-            ] = shield_added_ratio + 0.20000000018626451
+            attribute_bonus['shield_added_ratio'] = (
+                shield_added_ratio + 0.20000000018626451
+            )
         return attribute_bonus
 
 
@@ -77,9 +77,9 @@ class Relic104(BaseRelicSetSkill):
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             critical_damage_base = attribute_bonus.get('CriticalDamageBase', 0)
-            attribute_bonus[
-                'CriticalDamageBase'
-            ] = critical_damage_base + 0.25000000023283064
+            attribute_bonus['CriticalDamageBase'] = (
+                critical_damage_base + 0.25000000023283064
+            )
         return attribute_bonus
 
 
@@ -97,7 +97,9 @@ class Relic105(BaseRelicSetSkill):
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + 0.05000000004656613 * 5
+            attribute_bonus['AttackAddedRatio'] = (
+                attack_added_ratio + 0.05000000004656613 * 5
+            )
         return attribute_bonus
 
 
@@ -131,13 +133,15 @@ class Relic107(BaseRelicSetSkill):
 
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces4:
-            e_dmg = attribute_bonus.get('BPSkillDmgAdd', {})
-            q_dmg = attribute_bonus.get('UltraSkillDmgAdd', {})
+            e_dmg = attribute_bonus.get('BPSkillDmgAdd', 0)
+            q_dmg = attribute_bonus.get('UltraSkillDmgAdd', 0)
             attribute_bonus['BPSkillDmgAdd'] = e_dmg + 0.12000000011175871
             attribute_bonus['UltraSkillDmgAdd'] = q_dmg + 0.12000000011175871
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
-            fire_added_ratio = attribute_bonus.get('FireAddedRatio', {})
-            attribute_bonus['FireAddedRatio'] = fire_added_ratio + 0.12000000011175871
+            fire_added_ratio = attribute_bonus.get('FireAddedRatio', 0)
+            attribute_bonus['FireAddedRatio'] = (
+                fire_added_ratio + 0.12000000011175871
+            )
         return attribute_bonus
 
 
@@ -157,7 +161,9 @@ class Relic108(BaseRelicSetSkill):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             logger.info(attribute_bonus)
             ignore_defence = attribute_bonus.get('ignore_defence', 0)
-            attribute_bonus['ignore_defence'] = ignore_defence + 0.10000000009313226 * 2
+            attribute_bonus['ignore_defence'] = (
+                ignore_defence + 0.10000000009313226 * 2
+            )
         return attribute_bonus
 
 
@@ -176,7 +182,9 @@ class Relic109(BaseRelicSetSkill):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             logger.info(attribute_bonus)
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + 0.20000000018626451
+            attribute_bonus['AttackAddedRatio'] = (
+                attack_added_ratio + 0.20000000018626451
+            )
         return attribute_bonus
 
 
@@ -234,15 +242,15 @@ class Relic112(BaseRelicSetSkill):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             logger.info('对陷入负面效果的敌方目标造成伤害')
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
-            attribute_bonus[
-                'CriticalChanceBase'
-            ] = critical_chance_base + 0.10000000009313226
+            attribute_bonus['CriticalChanceBase'] = (
+                critical_chance_base + 0.10000000009313226
+            )
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             logger.info('对陷入禁锢状态的敌方目标造成伤害')
             critical_damage_base = attribute_bonus.get('CriticalDamageBase', 0)
-            attribute_bonus[
-                'CriticalDamageBase'
-            ] = critical_damage_base + 0.20000000018626451
+            attribute_bonus['CriticalDamageBase'] = (
+                critical_damage_base + 0.20000000018626451
+            )
         return attribute_bonus
 
 
@@ -262,7 +270,9 @@ class Relic113(BaseRelicSetSkill):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             logger.info('当装备者受到攻击或被我方目标消耗生命值后')
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
-            attribute_bonus['CriticalChanceBase'] = critical_chance_base + 0.08000000009313226 * 2
+            attribute_bonus['CriticalChanceBase'] = (
+                critical_chance_base + 0.08000000009313226 * 2
+            )
         return attribute_bonus
 
 
@@ -281,7 +291,9 @@ class Relic114(BaseRelicSetSkill):
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
-            attribute_bonus['SpeedAddedRatio'] = speed_added_ratio + 0.12000000011175871
+            attribute_bonus['SpeedAddedRatio'] = (
+                speed_added_ratio + 0.12000000011175871
+            )
         return attribute_bonus
 
 
@@ -302,7 +314,9 @@ class Relic301(BaseRelicSetSkill):
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + 0.12000000011175871
+            attribute_bonus['AttackAddedRatio'] = (
+                attack_added_ratio + 0.12000000011175871
+            )
         return attribute_bonus
 
 
@@ -323,7 +337,9 @@ class Relic302(BaseRelicSetSkill):
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-            attribute_bonus['AttackAddedRatio'] = attack_added_ratio + 0.0800000000745058
+            attribute_bonus['AttackAddedRatio'] = (
+                attack_added_ratio + 0.0800000000745058
+            )
         return attribute_bonus
 
 
@@ -343,7 +359,7 @@ class Relic303(BaseRelicSetSkill):
             # 提高装备者等同于当前效果命中25%的攻击力,最多提高25%
             attribute_bonus['AttackAddedRatio'] = attack_added_ratio + min(
                 0.25000000023283064, status_probability / 0.25
-                )
+            )
         return attribute_bonus
 
 
@@ -364,9 +380,9 @@ class Relic304(BaseRelicSetSkill):
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
             defence_added_ratio = attribute_bonus.get('DefenceAddedRatio', 0)
-            attribute_bonus[
-                'DefenceAddedRatio'
-            ] = defence_added_ratio + 0.1500000001396984
+            attribute_bonus['DefenceAddedRatio'] = (
+                defence_added_ratio + 0.1500000001396984
+            )
         return attribute_bonus
 
 
@@ -387,9 +403,9 @@ class Relic305(BaseRelicSetSkill):
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
-            attribute_bonus[
-                'CriticalChanceBase'
-            ] = critical_chance_base + 0.6000000005587935
+            attribute_bonus['CriticalChanceBase'] = (
+                critical_chance_base + 0.6000000005587935
+            )
         return attribute_bonus
 
 
@@ -435,9 +451,9 @@ class Relic307(BaseRelicSetSkill):
             break_damage_added_ratio_base = attribute_bonus.get(
                 'BreakDamageAddedRatioBase', 0
             )
-            attribute_bonus[
-                'BreakDamageAddedRatioBase'
-            ] = break_damage_added_ratio_base + 0.20000000018626451
+            attribute_bonus['BreakDamageAddedRatioBase'] = (
+                break_damage_added_ratio_base + 0.20000000018626451
+            )
         return attribute_bonus
 
 
@@ -501,9 +517,9 @@ class Relic310(BaseRelicSetSkill):
     async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
         if self.pieces2 and await self.check(base_attr, attribute_bonus):
             critical_damage_base = attribute_bonus.get('CriticalDamageBase', 0)
-            attribute_bonus[
-                'CriticalDamageBase'
-            ] = critical_damage_base + 0.10000000018626451
+            attribute_bonus['CriticalDamageBase'] = (
+                critical_damage_base + 0.10000000018626451
+            )
         return attribute_bonus
 
 

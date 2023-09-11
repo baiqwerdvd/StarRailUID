@@ -1,10 +1,10 @@
 import json
-from collections import Counter
 from typing import Dict
+from collections import Counter
 
 from loguru import logger
 
-from ...utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty, RelicSetSkill
+from ...utils.map.SR_MAP_PATH import RelicSetSkill, EquipmentID2AbilityProperty
 
 
 class Character:
@@ -45,8 +45,12 @@ class Character:
 
         equip_add_base_attr = equip['baseAttributes']
         base_attr['hp'] = base_attr['hp'] + equip_add_base_attr['hp']
-        base_attr['attack'] = base_attr['attack'] + equip_add_base_attr['attack']
-        base_attr['defence'] = base_attr['defence'] + equip_add_base_attr['defence']
+        base_attr['attack'] = (
+            base_attr['attack'] + equip_add_base_attr['attack']
+        )
+        base_attr['defence'] = (
+            base_attr['defence'] + equip_add_base_attr['defence']
+        )
         self.base_attributes = base_attr
 
         for equip_ability in equip_ability_property:

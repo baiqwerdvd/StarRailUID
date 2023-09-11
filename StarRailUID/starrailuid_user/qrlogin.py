@@ -1,16 +1,15 @@
-import asyncio
-import base64
 import io
 import json
+import base64
+import asyncio
 from http.cookies import SimpleCookie
-from typing import Any, Dict, List, Literal, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union, Literal
 
 import qrcode
-from qrcode.constants import ERROR_CORRECT_L
-
 from gsuid_core.bot import Bot
-from gsuid_core.logger import logger
 from gsuid_core.models import Event
+from gsuid_core.logger import logger
+from qrcode.constants import ERROR_CORRECT_L
 from gsuid_core.segment import MessageSegment
 
 from ..utils.api import get_sqla

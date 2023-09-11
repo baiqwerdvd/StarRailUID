@@ -3,10 +3,10 @@ from typing import Dict, List, Union
 from msgspec import Struct
 
 from .read_excel import (
+    RelicSubAffix,
+    RelicMainAffix,
     AvatarPromotion,
     EquipmentPromotion,
-    RelicMainAffix,
-    RelicSubAffix,
 )
 
 
@@ -84,10 +84,11 @@ class AvatarPromotionConfigModel(Struct):
                         Promotion=promotion_dict[promotion]['Promotion'],
                         PromotionCostList=[
                             PromotionCost(
-                                ItemID=item['ItemID'],
-                                ItemNum=item['ItemNum']
+                                ItemID=item['ItemID'], ItemNum=item['ItemNum']
                             )
-                            for item in promotion_dict[promotion]['PromotionCostList']
+                            for item in promotion_dict[promotion][
+                                'PromotionCostList'
+                            ]
                         ],
                         PlayerLevelRequire=promotion_dict[promotion].get(
                             'PlayerLevelRequire', None
@@ -97,16 +98,24 @@ class AvatarPromotionConfigModel(Struct):
                         ),
                         MaxLevel=promotion_dict[promotion]['MaxLevel'],
                         AttackBase=PromotionAttr(
-                            Value=promotion_dict[promotion]['AttackBase']['Value']
+                            Value=promotion_dict[promotion]['AttackBase'][
+                                'Value'
+                            ]
                         ),
                         AttackAdd=PromotionAttr(
-                            Value=promotion_dict[promotion]['AttackAdd']['Value']
+                            Value=promotion_dict[promotion]['AttackAdd'][
+                                'Value'
+                            ]
                         ),
                         DefenceBase=PromotionAttr(
-                            Value=promotion_dict[promotion]['DefenceBase']['Value']
+                            Value=promotion_dict[promotion]['DefenceBase'][
+                                'Value'
+                            ]
                         ),
                         DefenceAdd=PromotionAttr(
-                            Value=promotion_dict[promotion]['DefenceAdd']['Value']
+                            Value=promotion_dict[promotion]['DefenceAdd'][
+                                'Value'
+                            ]
                         ),
                         HPBase=PromotionAttr(
                             Value=promotion_dict[promotion]['HPBase']['Value']
@@ -115,17 +124,25 @@ class AvatarPromotionConfigModel(Struct):
                             Value=promotion_dict[promotion]['HPAdd']['Value']
                         ),
                         SpeedBase=PromotionAttr(
-                            Value=promotion_dict[promotion]['SpeedBase']['Value']
+                            Value=promotion_dict[promotion]['SpeedBase'][
+                                'Value'
+                            ]
                         ),
                         CriticalChance=PromotionAttr(
-                            Value=promotion_dict[promotion]['CriticalChance']['Value']
+                            Value=promotion_dict[promotion]['CriticalChance'][
+                                'Value'
+                            ]
                         ),
                         CriticalDamage=PromotionAttr(
-                            Value=promotion_dict[promotion]['CriticalDamage']['Value']
+                            Value=promotion_dict[promotion]['CriticalDamage'][
+                                'Value'
+                            ]
                         ),
                         BaseAggro=PromotionAttr(
-                            Value=promotion_dict[promotion]['BaseAggro']['Value']
-                        )
+                            Value=promotion_dict[promotion]['BaseAggro'][
+                                'Value'
+                            ]
+                        ),
                     )
                     for promotion in promotion_dict.keys()
                 }
@@ -147,10 +164,11 @@ class EquipmentPromotionConfigModel(Struct):
                         Promotion=promotion_dict[promotion]['Promotion'],
                         PromotionCostList=[
                             PromotionCost(
-                                ItemID=item['ItemID'],
-                                ItemNum=item['ItemNum']
+                                ItemID=item['ItemID'], ItemNum=item['ItemNum']
                             )
-                            for item in promotion_dict[promotion]['PromotionCostList']
+                            for item in promotion_dict[promotion][
+                                'PromotionCostList'
+                            ]
                         ],
                         PlayerLevelRequire=promotion_dict[promotion].get(
                             'PlayerLevelRequire', None
@@ -163,20 +181,30 @@ class EquipmentPromotionConfigModel(Struct):
                             Value=promotion_dict[promotion]['BaseHP']['Value']
                         ),
                         BaseHPAdd=PromotionAttr(
-                            Value=promotion_dict[promotion]['BaseHPAdd']['Value']
+                            Value=promotion_dict[promotion]['BaseHPAdd'][
+                                'Value'
+                            ]
                         ),
                         BaseAttack=PromotionAttr(
-                            Value=promotion_dict[promotion]['BaseAttack']['Value']
+                            Value=promotion_dict[promotion]['BaseAttack'][
+                                'Value'
+                            ]
                         ),
                         BaseAttackAdd=PromotionAttr(
-                            Value=promotion_dict[promotion]['BaseAttackAdd']['Value']
+                            Value=promotion_dict[promotion]['BaseAttackAdd'][
+                                'Value'
+                            ]
                         ),
                         BaseDefence=PromotionAttr(
-                            Value=promotion_dict[promotion]['BaseDefence']['Value']
+                            Value=promotion_dict[promotion]['BaseDefence'][
+                                'Value'
+                            ]
                         ),
                         BaseDefenceAdd=PromotionAttr(
-                            Value=promotion_dict[promotion]['BaseDefenceAdd']['Value']
-                        )
+                            Value=promotion_dict[promotion]['BaseDefenceAdd'][
+                                'Value'
+                            ]
+                        ),
                     )
                     for promotion in promotion_dict.keys()
                 }
@@ -203,7 +231,7 @@ class RelicMainAffixConfigModel(Struct):
                         LevelAdd=PromotionAttr(
                             Value=affix_dict[group_id]['LevelAdd']['Value']
                         ),
-                        IsAvailable=affix_dict[group_id]['IsAvailable']
+                        IsAvailable=affix_dict[group_id]['IsAvailable'],
                     )
                     for group_id in affix_dict.keys()
                 }
@@ -230,7 +258,7 @@ class RelicSubAffixConfigModel(Struct):
                         StepValue=PromotionAttr(
                             Value=affix_dict[group_id]['StepValue']['Value']
                         ),
-                        StepNum=affix_dict[group_id]['StepNum']
+                        StepNum=affix_dict[group_id]['StepNum'],
                     )
                     for group_id in affix_dict.keys()
                 }
@@ -240,6 +268,8 @@ class RelicSubAffixConfigModel(Struct):
 
 
 AvatarPromotionConfig = AvatarPromotionConfigModel.from_json(AvatarPromotion)
-EquipmentPromotionConfig = EquipmentPromotionConfigModel.from_json(EquipmentPromotion)
+EquipmentPromotionConfig = EquipmentPromotionConfigModel.from_json(
+    EquipmentPromotion
+)
 RelicMainAffixConfig = RelicMainAffixConfigModel.from_json(RelicMainAffix)
 RelicSubAffixConfig = RelicSubAffixConfigModel.from_json(RelicSubAffix)
