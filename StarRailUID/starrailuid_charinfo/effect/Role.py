@@ -1,3 +1,5 @@
+from typing import List, Union
+
 from gsuid_core.logger import logger
 
 from ..mono.Character import Character
@@ -428,11 +430,11 @@ class RoleInstance:
             # 期望伤害
             qiwang_damage = (critical_chance_base * critical_damage_base) + 1
             logger.info(f'暴击期望: {qiwang_damage}')
-            damage_cd_z = 0
-            damage_qw_z = 0
-            damage_tz_z = 0
-            attack_tz = 0
-            injury_add = 0
+            damage_cd_z = 0.0
+            damage_qw_z = 0.0
+            damage_tz_z = 0.0
+            attack_tz = 0.0
+            injury_add = 0.0
             critical_damage_add = 0
             for i in range(1, skill_info[2] + 1):
                 injury_add = 0
@@ -542,7 +544,7 @@ class RoleInstance:
                 * 10
             )
             damage_tz_z += damage_tz_fj
-            skill_info_list = []
+            skill_info_list: List[Union[str, float]] = []
             skill_info_list.append(skill_info[1])
             skill_info_list.append(damage_cd_z)
             skill_info_list.append(damage_qw_z)
@@ -576,7 +578,7 @@ class RoleInstance:
                 defence * skill_multiplier + defence_multiplier
             ) * shield_added
 
-            skill_info_list = []
+            skill_info_list: List[Union[str, float]] = []
             skill_info_list.append(skill_info[1])
             skill_info_list.append(defence_num)
             skill_info_list.append(defence_num)

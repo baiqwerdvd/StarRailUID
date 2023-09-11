@@ -89,6 +89,8 @@ for item in AvatarConfig:
     avatar_id = avatar_item['AvatarID']
     avatar_name_hash = avatar_item['AvatarName']['Hash']
     avatar_damage_type = avatar_item['DamageType']
+    avatar_en_name = ''
+    avatar_name = ''
     for item in TextMapCN:
         if str(item) == str(avatar_name_hash):
             avatar_name = TextMapCN[item]
@@ -108,6 +110,7 @@ for item in EquipmentConfig:
     equipment_item = EquipmentConfig[item]
     equipment_id = equipment_item['EquipmentID']
     equipment_name_hash = equipment_item['EquipmentName']['Hash']
+    equipment_name = ''
     for item in TextMapCN:
         if str(item) == str(equipment_name_hash):
             equipment_name = TextMapCN[item]
@@ -127,6 +130,7 @@ for item in EquipmentConfig:
     equipment_item = EquipmentConfig[item]
     equipment_id = equipment_item['EquipmentID']
     equipment_name_hash = equipment_item['EquipmentName']['Hash']
+    equipment_name = ''
     for item in TextMapEN:
         if str(item) == str(equipment_name_hash):
             equipment_name = TextMapEN[item].replace(' ', '')
@@ -140,6 +144,8 @@ for skill in AvatarSkillConfig:
     skill_name_hash = skill_item['1']['SkillName']['Hash']
     skill_type_hash = skill_item['1']['SkillTag']['Hash']
     skill_attack_type = skill_item['1'].get('AttackType', '')
+    skill_name = ''
+    skill_type = ''
     for item in TextMapCN:
         if str(item) == str(skill_name_hash):
             skill_name = TextMapCN[item]
@@ -159,6 +165,7 @@ for avatar_property in AvatarPropertyConfig:
     PropertyNameHash = AvatarPropertyConfig[avatar_property][
         'PropertyNameFilter'
     ]['Hash']
+    Property_Name = ''
     for item in TextMapCN:
         if str(item) == str(PropertyNameHash):
             Property_Name = TextMapCN[item]
@@ -173,6 +180,7 @@ for relic in RelicConfig:
 
 for set_group in RelicSetConfig:
     set_name_hash = RelicSetConfig[set_group]['SetName']['Hash']
+    set_name = ''
     for item in TextMapCN:
         if str(item) == str(set_name_hash):
             set_name = TextMapCN[item]
@@ -226,6 +234,7 @@ for item in relics_new:
 for item in ItemConfigRelic:
     item_id = ItemConfigRelic[item]['ID']
     item_name_hash = ItemConfigRelic[item]['ItemName']['Hash']
+    item_name = ''
     for item in TextMapCN:
         if str(item) == str(item_name_hash):
             item_name = TextMapCN[item]

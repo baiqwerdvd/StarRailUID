@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List, Union
 
 from .effect.Role import RoleInstance
 from .mono.Character import Character
@@ -15,7 +15,7 @@ async def cal_char_info(char_data: Dict):
 async def cal(char_data: Dict):
     char = await cal_char_info(char_data)
 
-    skill_info_list = []
+    skill_info_list: List[List[Union[str, float]]] = []
     if char.char_id in [
         1102,
         1204,
