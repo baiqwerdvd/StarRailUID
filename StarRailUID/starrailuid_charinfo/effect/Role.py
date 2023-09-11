@@ -1,11 +1,11 @@
 from gsuid_core.logger import logger
 
-from .Avatar.Avatar import Avatar
-from .Weapon.Weapon import Weapon
-from .utils import merge_attribute
 from ..mono.Character import Character
+from .Avatar.Avatar import Avatar
 from .Base.model import DamageInstance
 from .Relic.Relic import RelicSet, SingleRelic
+from .utils import merge_attribute
+from .Weapon.Weapon import Weapon
 
 
 class RoleInstance:
@@ -388,7 +388,7 @@ class RoleInstance:
             else:
                 logger.info('检查是否有爆伤加成')
                 logger.info(f'{merged_attr}')
-                critical_damage_base = merged_attr['CriticalDamageBase']
+                critical_damage_base = merged_attr.get('CriticalDamageBase', 0)
                 # 检查是否有对特定技能的爆伤加成
                 # Ultra_CriticalChance
                 for attr in merged_attr:
