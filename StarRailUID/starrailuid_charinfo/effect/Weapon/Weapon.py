@@ -21,7 +21,8 @@ class Arrows(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChance', 0)
@@ -45,7 +46,8 @@ class ReturntoDarkness(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             pass
@@ -63,7 +65,8 @@ class Swordplay(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -89,7 +92,8 @@ class DartingArrow(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
@@ -113,7 +117,8 @@ class Adversarial(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
@@ -138,7 +143,8 @@ class SubscribeforMore(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
@@ -177,7 +183,8 @@ class RiverFlowsinSpring(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
@@ -212,7 +219,8 @@ class SleepLiketheDead(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             return attribute_bonus
@@ -230,7 +238,8 @@ class OnlySilenceRemains(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
@@ -255,7 +264,8 @@ class BeforeDawn(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
         attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
@@ -282,7 +292,8 @@ class IntheNight(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         char_speed = (
             base_attr.get('speed', 0) + attribute_bonus.get('SpeedDelta', 0)
@@ -327,7 +338,8 @@ class CruisingintheStellarSea(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
@@ -360,7 +372,8 @@ class SeriousnessofBreakfast(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
         attribute_bonus['AllDamageAddedRatio'] = (
@@ -393,7 +406,8 @@ class NightontheMilkyWay(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
@@ -428,7 +442,8 @@ class TodayIsAnotherPeacefulDay(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
         attribute_bonus['AllDamageAddedRatio'] = (
@@ -453,7 +468,8 @@ class GeniusesRepose(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalDamageBase', 0)
@@ -477,7 +493,8 @@ class MaketheWorldClamor(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
         attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
@@ -499,7 +516,8 @@ class TheBirthoftheSelf(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             talent_dmg_add = attribute_bonus.get('TalentDmgAdd', 0)
@@ -519,11 +537,13 @@ class ASecretVow(BaseWeapon):
 
     async def check(self):
         # 造成的伤害提高20%
-        # 对当前生命值百分比大于等于装备者自身当前生命值百分比的敌方目标造成的伤害额外提高20%
+        # 对当前生命值百分比大于等于装备者自身当前生命值百分比的敌方目标
+        # 造成的伤害额外提高20%
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -548,11 +568,13 @@ class BrighterThantheSun(BaseWeapon):
 
     async def check(self):
         # 使装备者的暴击率提高18%
-        # 当装备者施放普攻时，获得1层【龙吟】，持续2回合。每层【龙吟】使装备者的攻击力提高18%,【龙吟】最多叠加2层
+        # 当装备者施放普攻时，获得1层【龙吟】，持续2回合。
+        # 每层【龙吟】使装备者的攻击力提高18%,【龙吟】最多叠加2层
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
@@ -578,7 +600,8 @@ class TheUnreachableSide(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -606,7 +629,8 @@ class SomethingIrreplaceable(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -634,7 +658,8 @@ class OntheFallofanAeon(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
@@ -668,7 +693,8 @@ class NowheretoRun(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
         # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
@@ -692,7 +718,8 @@ class WoofWalkTime(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
         # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
@@ -726,7 +753,8 @@ class UndertheBlueSky(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
         # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
@@ -753,11 +781,13 @@ class TheMolesWelcomeYou(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者施放普攻、战技或终结技攻击敌方目标后，分别获取一层【淘气值】。每层使装备者的攻击力提高12%。
+        # 装备者施放普攻、战技或终结技攻击敌方目标后，
+        # 分别获取一层【淘气值】。每层使装备者的攻击力提高12%。
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
@@ -783,7 +813,8 @@ class IncessantRain(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             damage_ratio = attribute_bonus.get('DmgRatio', 0)
@@ -816,7 +847,8 @@ class PatienceIsAllYouNeed(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -853,7 +885,8 @@ class IntheNameoftheWorld(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -901,7 +934,8 @@ class SolitaryHealing(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -918,7 +952,8 @@ class BeforetheTutorialMissionStarts(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -931,11 +966,13 @@ class WeWillMeetAgain(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者施放普攻或战技后，对随机1个受到攻击的敌方目标造成等同于自身48%攻击力的附加伤害。
+        # 装备者施放普攻或战技后，
+        # 对随机1个受到攻击的敌方目标造成等同于自身48%攻击力的附加伤害。
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -952,7 +989,8 @@ class Fermata(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -979,7 +1017,8 @@ class ResolutionShinesAsPearlsofSweat(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             ignore_defence = attribute_bonus.get('ignore_defence', 0)
@@ -1004,7 +1043,8 @@ class EyesofthePrey(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1021,7 +1061,8 @@ class GoodNightandSleepWell(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -1048,7 +1089,8 @@ class SheAlreadyShutHerEyes(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -1075,7 +1117,8 @@ class MomentofVictory(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             defence_added_ratio = attribute_bonus.get('DefenceAddedRatio', 0)
@@ -1100,7 +1143,8 @@ class TextureofMemories(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1117,7 +1161,8 @@ class ThisIsMe(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1134,7 +1179,8 @@ class WeAreWildfire(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1147,11 +1193,13 @@ class TrendoftheUniversalMarket(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者受到攻击后，有100%的基础概率使敌方目标陷入灼烧状态，每回合造成等同于装备者40%防御力的持续伤害
+        # 当装备者受到攻击后，有100%的基础概率使敌方目标陷入灼烧状态，
+        # 每回合造成等同于装备者40%防御力的持续伤害
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1168,7 +1216,8 @@ class LandausChoice(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1185,7 +1234,8 @@ class DayOneofMyNewLife(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1202,7 +1252,8 @@ class Pioneering(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1219,7 +1270,8 @@ class Defense(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1236,7 +1288,8 @@ class Amber(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             defence_added_ratio = attribute_bonus.get('DefenceAddedRatio', 0)
@@ -1261,7 +1314,8 @@ class MutualDemise(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
@@ -1286,7 +1340,8 @@ class ShatteredHome(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -1313,7 +1368,8 @@ class CollapsingSky(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
         attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
@@ -1338,7 +1394,8 @@ class HiddenShadow(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1355,7 +1412,8 @@ class Loop(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             all_damage_added_ratio = attribute_bonus.get(
@@ -1382,7 +1440,8 @@ class Void(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             status_probability = attribute_bonus.get(
@@ -1409,7 +1468,8 @@ class Sagacity(BaseWeapon):
         return True
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         if await self.check():
             a3_attack_added_ratio = attribute_bonus.get(
@@ -1436,7 +1496,8 @@ class Passkey(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         return attribute_bonus
 
@@ -1453,7 +1514,8 @@ class DataBank(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
         attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
@@ -1470,11 +1532,14 @@ class Thisbodyisasword(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当队友受到攻击或消耗生命值后，装备者获得1层【月蚀】，最多叠加3层。每层【月蚀】使装备者下一次攻击造成的伤害提高14%。叠满3层时，额外使该次攻击无视目标12%的防御力。该效果在装备者施放攻击后解除。
+        # 当队友受到攻击或消耗生命值后，装备者获得1层【月蚀】，
+        # 最多叠加3层。每层【月蚀】使装备者下一次攻击造成的伤害提高14%。
+        # 叠满3层时，额外使该次攻击无视目标12%的防御力。该效果在装备者施放攻击后解除。
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float]
     ):
         all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
         attribute_bonus['AllDamageAddedRatio'] = (

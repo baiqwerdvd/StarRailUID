@@ -14,10 +14,10 @@ class RoleInstance:
 
         self.avatar = Avatar.create(self.raw_data.avatar, self.raw_data.skill)
         self.weapon = Weapon.create(self.raw_data.weapon)
-        self.relic_set = RelicSet.create(self.raw_data.relic)
+        self.relic_set = RelicSet().create(self.raw_data.relic)
 
         self.base_attr = self.cal_role_base_attr()
-        self.attribute_bonus = {}
+        self.attribute_bonus: dict[str, float] = {}
 
         self.cal_relic_attr_add()
         self.cal_avatar_attr_add()
@@ -26,7 +26,7 @@ class RoleInstance:
 
     def cal_role_base_attr(self):
         logger.info('cal_role_base_attr')
-        base_attr = {}
+        base_attr: dict[str, float] = {}
         avatar_attribute = self.avatar.avatar_attribute
         for attr_name, attr_value in avatar_attribute.items():
             if attr_name in base_attr:
@@ -198,7 +198,7 @@ class RoleInstance:
         for attr in self.attribute_bonus:
             # 攻击加成
             if attr.__contains__('AttackAddedRatio'):
-                attr_name: str = attr.split('AttackAddedRatio')[0]
+                attr_name = attr.split('AttackAddedRatio')[0]
                 if attr_name == skill_type or attr_name == skill_info[3]:
                     attack_added_ratio = self.attribute_bonus.get(
                         'AttackAddedRatio', 0
@@ -231,6 +231,8 @@ class RoleInstance:
         skill_info_list = []
         # 技能类型为攻击
         if skill_info[0] == 'attack':
+            if isinstance(skill_info[2], str):
+                raise Exception('skill_info[2] is str')
             skill_multiplier = skill_multiplier / skill_info[2]
             logger.info(f'技能区单段: {skill_multiplier}')
             if self.raw_data.avatar.id_ == 1004:
@@ -295,7 +297,7 @@ class RoleInstance:
             damage_reduction = 1 - enemy_damage_reduction
             logger.info(f'韧性区: {damage_reduction}')
             # 抗性区
-            enemy_status_resistance = 0
+            enemy_status_resistance = 0.0
             for attr in merged_attr:
                 if attr.__contains__('ResistancePenetration'):
                     attr_name = attr.split('ResistancePenetration')[0]
@@ -305,7 +307,7 @@ class RoleInstance:
                     ):
                         # 先默认触发
                         enemy_status_resistance = merged_attr[attr]
-            resistance_area = 1 - (0 - enemy_status_resistance)
+            resistance_area = 1.0 - (0 - enemy_status_resistance)
             if self.raw_data.avatar.id_ == 1213:
                 if skill_info[2] == 7:
                     Normal_Penetration = merged_attr.get(
@@ -319,7 +321,7 @@ class RoleInstance:
             # 防御区
             # 检查是否有 ignore_defence
             logger.info('检查是否有 ignore_defence')
-            ignore_defence = 1
+            ignore_defence = 1.0
             for attr in merged_attr:
                 if attr == 'ignore_defence':
                     ignore_defence = 1 - merged_attr[attr]
@@ -384,7 +386,7 @@ class RoleInstance:
 
             # 爆伤区
             if skill_type == 'DOT':
-                critical_damage_base = 0
+                critical_damage_base = 0.0
             else:
                 logger.info('检查是否有爆伤加成')
                 logger.info(f'{merged_attr}')

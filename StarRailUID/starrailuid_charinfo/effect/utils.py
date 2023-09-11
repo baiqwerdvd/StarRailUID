@@ -1,9 +1,11 @@
 from typing import Dict
 
 
-async def merge_attribute(base_attr: Dict, attribute_bonus: Dict) -> Dict:
+async def merge_attribute(
+    base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
+):
     # hp attack defence need base_value and add_value
-    merged_attr = {}
+    merged_attr: Dict[str, float] = {}
     attr_list = ['attack', 'defence', 'hp', 'speed']
     for attribute in attribute_bonus:
         if (

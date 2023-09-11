@@ -1,10 +1,10 @@
-from typing import Dict
 from abc import abstractmethod
+from typing import Dict
 
 from gsuid_core.logger import logger
 
-from .model import DamageInstanceRelic
 from ....utils.map.SR_MAP_PATH import RelicSetSkill
+from .model import DamageInstanceRelic
 
 
 class SingleRelic:
@@ -51,15 +51,19 @@ class BaseRelicSetSkill:
         if count == 4:
             self.pieces4 = True
             logger.info(f'Relic {set_id} 4 pieces set activated')
-        self.relicSetAttribute = {}
+        self.relicSetAttribute: Dict[str, float] = {}
         self.set_skill_property_ability()
 
     @abstractmethod
-    async def check(self, base_attr: Dict, attribute_bonus: Dict):
+    async def check(
+        self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
+    ):
         ...
 
     @abstractmethod
-    async def set_skill_ability(self, base_attr: Dict, attribute_bonus: Dict):
+    async def set_skill_ability(
+        self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
+    ):
         '''
         战斗加成属性, 与 set_skill_property() 互斥
         '''
@@ -81,3 +85,4 @@ class BaseRelicSetSkill:
                 )
             else:
                 self.relicSetAttribute[set_property] = set_value
+        return self.relicSetAttribute
