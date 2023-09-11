@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from msgspec import Struct
 
@@ -24,8 +24,8 @@ class SingleAvatarPromotion(Struct):
     Promotion: int
     PromotionCostList: List[PromotionCost]
     MaxLevel: int
-    PlayerLevelRequire: int | None
-    WorldLevelRequire: int | None
+    PlayerLevelRequire: Union[int, None]
+    WorldLevelRequire: Union[int, None]
     AttackBase: PromotionAttr
     AttackAdd: PromotionAttr
     DefenceBase: PromotionAttr
@@ -43,8 +43,8 @@ class SingleEquipmentPromotion(Struct):
     Promotion: int
     PromotionCostList: List[PromotionCost]
     MaxLevel: int
-    PlayerLevelRequire: int | None
-    WorldLevelRequire: int | None
+    PlayerLevelRequire: Union[int, None]
+    WorldLevelRequire: Union[int, None]
     BaseHP: PromotionAttr
     BaseHPAdd: PromotionAttr
     BaseAttack: PromotionAttr
