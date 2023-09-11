@@ -1,11 +1,11 @@
-from typing import Dict
 from abc import abstractmethod
+from typing import Dict
 
 from msgspec import Struct
 
-from .model import DamageInstanceWeapon
 from ....utils.excel.model import EquipmentPromotionConfig
 from ....utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty
+from .model import DamageInstanceWeapon
 
 
 class BaseWeaponAttribute(Struct):
@@ -28,7 +28,7 @@ class BaseWeapon:
         self.weapon_rank = weapon.rank
         self.weapon_promotion = weapon.promotion
         self.weapon_base_attribute = self.get_attribute()
-        self.weapon_attribute = {}
+        self.weapon_attribute: Dict[str, float] = {}
         self.get_attribute()
         self.weapon_property_ability()
 

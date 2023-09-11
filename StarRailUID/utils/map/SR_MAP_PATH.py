@@ -1,9 +1,11 @@
+import json
 from pathlib import Path
-from typing import Dict, List, Union, TypedDict
+from typing import Dict, List, TypedDict, Union
 
 from msgspec import json as msgjson
 
 from ...version import StarRail_version
+from .model.RelicSetSkill import RelicSetSkillModel
 
 MAP = Path(__file__).parent / 'data'
 
@@ -97,7 +99,8 @@ with Path.open(
     )
 
 with Path.open(MAP / RelicSetSkill_fileName, encoding='UTF-8') as f:
-    RelicSetSkill = msgjson.decode(f.read(), type=Dict[str, Dict])
+    data = json.load(f)
+    RelicSetSkill = RelicSetSkillModel.from_json(data)
 
 with Path.open(MAP / skillId2AttackType_fileName, encoding='UTF-8') as f:
     skillId2AttackType = msgjson.decode(f.read(), type=Dict[str, str])

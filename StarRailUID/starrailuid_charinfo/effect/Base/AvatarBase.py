@@ -111,66 +111,74 @@ class BaseAvatar:
         skill_info_ = msgspec.convert(skill_info, type=List[Union[str, int]])
         return skill_info_
 
-    def Normalnum(self, skill_type: str) -> float:
-        return skill_dict[str(self.avatar_id)][skill_type][
+    def Normalnum(self, skill_type: str):
+        skill_info = skill_dict[str(self.avatar_id)][skill_type][
             self.Skill.Normal_.level - 1
         ]
+        return msgspec.convert(skill_info, type=float)
 
-    def Normal(self) -> float:
-        return skill_dict[str(self.avatar_id)]['Normal'][
+    def Normal(self):
+        skill_info = skill_dict[str(self.avatar_id)]['Normal'][
             self.Skill.Normal_.level - 1
         ]
+        return msgspec.convert(skill_info, type=float)
 
-    def BPSkill(self) -> float:
-        return skill_dict[str(self.avatar_id)]['BPSkill'][
+    def BPSkill(self):
+        skill_info = skill_dict[str(self.avatar_id)]['BPSkill'][
             self.Skill.BPSkill_.level - 1
         ]
+        return msgspec.convert(skill_info, type=float)
 
-    def Ultra(self) -> float:
-        return skill_dict[str(self.avatar_id)]['Ultra'][
+    def Ultra(self):
+        skill_info = skill_dict[str(self.avatar_id)]['Ultra'][
             self.Skill.Ultra_.level - 1
         ]
+        return msgspec.convert(skill_info, type=float)
 
-    def Maze(self) -> float:
-        return skill_dict[str(self.avatar_id)]['Maze'][
+    def Maze(self):
+        skill_info = skill_dict[str(self.avatar_id)]['Maze'][
             self.Skill.Maze_.level - 1
         ]
+        return msgspec.convert(skill_info, type=float)
 
-    def Talent(self) -> float:
-        return skill_dict[str(self.avatar_id)]['Talent'][
+    def Talent(self):
+        skill_info = skill_dict[str(self.avatar_id)]['Talent'][
             self.Skill.Talent_.level - 1
         ]
+        return msgspec.convert(skill_info, type=float)
 
-    def BPSkill_num(self, skill_type: str) -> float:
-        return skill_dict[str(self.avatar_id)][skill_type][
+    def BPSkill_num(self, skill_type: str):
+        skill_info = skill_dict[str(self.avatar_id)][skill_type][
             self.Skill.BPSkill_.level - 1
         ]
+        return msgspec.convert(skill_info, type=float)
 
-    def Ultra_num(self, skill_type: str) -> float:
-        return skill_dict[str(self.avatar_id)][skill_type][
+    def Ultra_num(self, skill_type: str):
+        skill_info = skill_dict[str(self.avatar_id)][skill_type][
             self.Skill.Ultra_.level - 1
         ]
+        return msgspec.convert(skill_info, type=float)
 
-    def Talent_num(self, skill_type: str) -> float:
-        return skill_dict[str(self.avatar_id)][skill_type][
+    def Talent_num(self, skill_type: str):
+        skill_info = skill_dict[str(self.avatar_id)][skill_type][
             self.Skill.Talent_.level - 1
         ]
+        return msgspec.convert(skill_info, type=float)
 
-    def Talent_add(self) -> float:
+    def Talent_add(self):
         if self.avatar_id in [1102]:
-            return float(
-                skill_dict[str(self.avatar_id)]['Talent'][
+            skill_info = skill_dict[str(self.avatar_id)]['Talent'][
                     self.Skill.Talent_.level - 1
                 ]
-            )
+            return msgspec.convert(skill_info, type=float)
         elif self.avatar_id in [1205]:
-            return float(
-                skill_dict[str(self.avatar_id)]['BPSkill'][
+            skill_info = skill_dict[str(self.avatar_id)]['BPSkill'][
                     self.Skill.BPSkill_.level - 1
                 ]
-            )
+            return msgspec.convert(skill_info, type=float)
         else:
-            return float(0)
+            return 0.0
 
-    def Ultra_Use(self) -> float:
-        return skill_dict[str(self.avatar_id)]['Ultra_Use'][0]
+    def Ultra_Use(self):
+        skill_info = skill_dict[str(self.avatar_id)]['Ultra_Use'][0]
+        return msgspec.convert(skill_info, type=float)

@@ -1,9 +1,9 @@
-from typing import List
+from typing import Dict, List
 
 from gsuid_core.logger import logger
 
 from ..Base.AvatarBase import BaseAvatar, BaseAvatarBuff
-from ..Base.model import DamageInstanceSkill, DamageInstanceAvatar
+from ..Base.model import DamageInstanceAvatar, DamageInstanceSkill
 
 
 class Seele(BaseAvatar):
@@ -13,8 +13,8 @@ class Seele(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -41,8 +41,8 @@ class JingYuan(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -72,8 +72,8 @@ class Clara(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -98,8 +98,8 @@ class Danhengil(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -129,8 +129,8 @@ class Silverwolf(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -164,8 +164,8 @@ class Kafka(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -189,8 +189,8 @@ class Blade(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -217,8 +217,8 @@ class Fuxuan(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -240,8 +240,8 @@ class Gepard(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -262,8 +262,8 @@ class Yanqing(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -297,8 +297,8 @@ class Welt(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -322,8 +322,8 @@ class Himeko(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -351,8 +351,8 @@ class Qingque(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 
@@ -383,8 +383,8 @@ class Jingliu(BaseAvatar):
         self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
         super().__init__(char=char, skills=skills)
-        self.eidolon_attribute = {}
-        self.extra_ability_attribute = {}
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
         self.eidolons()
         self.extra_ability()
 

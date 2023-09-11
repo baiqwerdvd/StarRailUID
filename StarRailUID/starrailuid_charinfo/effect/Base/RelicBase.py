@@ -14,7 +14,7 @@ class SingleRelic:
         self.set_id = relic.SetId
         self.relic_type = relic.Type
         self.relic_level = relic.Level
-        self.relic_attribute_bonus = {}
+        self.relic_attribute_bonus: Dict[str, float] = {}
 
     def get_attribute_(self):
         # MainAffix
@@ -51,8 +51,7 @@ class BaseRelicSetSkill:
         if count == 4:
             self.pieces4 = True
             logger.info(f'Relic {set_id} 4 pieces set activated')
-        self.relicSetAttribute: Dict[str, float] = {}
-        self.set_skill_property_ability()
+        self.relicSetAttribute = self.set_skill_property_ability()
 
     @abstractmethod
     async def check(
@@ -72,17 +71,22 @@ class BaseRelicSetSkill:
     def set_skill_property_ability(self):
         set_property = ''
         set_value = 0
-        if self.pieces2 and RelicSetSkill[str(self.setId)]['2'] != {}:
-            set_property = RelicSetSkill[str(self.setId)]['2']['Property']
-            set_value = RelicSetSkill[str(self.setId)]['2']['Value']
-        if self.pieces4 and RelicSetSkill[str(self.setId)]['4'] != {}:
-            set_property = RelicSetSkill[str(self.setId)]['4']['Property']
-            set_value = RelicSetSkill[str(self.setId)]['4']['Value']
+        relic_set_attribute: Dict[str, float] = {}
+        if self.pieces2:
+            status_add = RelicSetSkill.RelicSet[str(self.setId)]['2']
+            if status_add:
+                set_property = status_add.Property
+                set_value = status_add.Value
+        if self.pieces4:
+            status_add = RelicSetSkill.RelicSet[str(self.setId)]['4']
+            if status_add:
+                set_property = status_add.Property
+                set_value = status_add.Value
         if set_property != '':
-            if set_property in self.relicSetAttribute:
-                self.relicSetAttribute[set_property] = (
-                    self.relicSetAttribute[set_property] + set_value
+            if set_property in relic_set_attribute:
+                relic_set_attribute[set_property] = (
+                    relic_set_attribute[set_property] + set_value
                 )
             else:
-                self.relicSetAttribute[set_property] = set_value
-        return self.relicSetAttribute
+                relic_set_attribute[set_property] = set_value
+        return relic_set_attribute

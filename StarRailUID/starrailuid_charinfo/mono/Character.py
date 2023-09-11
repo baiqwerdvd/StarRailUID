@@ -1,10 +1,10 @@
 import json
-from typing import Dict
 from collections import Counter
+from typing import Dict, List
 
 from loguru import logger
 
-from ...utils.map.SR_MAP_PATH import RelicSetSkill, EquipmentID2AbilityProperty
+from ...utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty, RelicSetSkill
 
 
 class Character:
@@ -74,7 +74,7 @@ class Character:
 
     async def get_relic_info(self):
         # 计算圣遗物效果
-        set_id_list = []
+        set_id_list: List[int] = []
         for relic in self.char_relic:
             set_id_list.append(relic['SetId'])
             # 处理主属性
@@ -103,12 +103,16 @@ class Character:
             set_id = item[0]
             count = item[1]
             set_value = 0
-            if count >= 2 and RelicSetSkill[str(set_id)]['2'] != {}:
-                set_property = RelicSetSkill[str(set_id)]['2']['Property']
-                set_value = RelicSetSkill[str(set_id)]['2']['Value']
-            if count == 4 and RelicSetSkill[str(set_id)]['4'] != {}:
-                set_property = RelicSetSkill[str(set_id)]['4']['Property']
-                set_value = RelicSetSkill[str(set_id)]['4']['Value']
+            if count >= 2:
+                status_add = RelicSetSkill.RelicSet[str(set_id)]['2']
+                if status_add:
+                    set_property = status_add.Property
+                    set_value = status_add.Value
+            if count == 4:
+                status_add = RelicSetSkill.RelicSet[str(set_id)]['4']
+                if status_add:
+                    set_property = status_add.Property
+                    set_value = status_add.Value
             if set_property != '':
                 if set_property in self.add_attr:
                     self.add_attr[set_property] = (
