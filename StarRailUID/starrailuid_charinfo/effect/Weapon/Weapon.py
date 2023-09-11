@@ -1,9 +1,9 @@
 import json
-from typing import Dict
 from pathlib import Path
+from typing import Dict
 
-from ..Base.WeaponBase import BaseWeapon
 from ..Base.model import DamageInstanceWeapon
+from ..Base.WeaponBase import BaseWeapon
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:
@@ -1474,7 +1474,7 @@ class Thisbodyisasword(BaseWeapon):
         pass
 
     async def weapon_ability(
-        self, Ultra_Use: int, base_attr: Dict, attribute_bonus: Dict
+        self, Ultra_Use: float, base_attr: Dict, attribute_bonus: Dict
     ):
         all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
         attribute_bonus['AllDamageAddedRatio'] = (
