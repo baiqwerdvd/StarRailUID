@@ -250,7 +250,7 @@ class RoleInstance:
             ):
                 skill_info[2] = skill_info[2] + 1
 
-            attack = merged_attr['attack']
+            attack = merged_attr.get('attack', 0)
             if self.raw_data.avatar.id_ == 1104:
                 # 杰帕德天赋加攻
                 defence = merged_attr['defence']
@@ -481,6 +481,7 @@ class RoleInstance:
                 damage_qw_z += damage_qw
 
                 attr_value_tz: float = self.base_attr.get('attack', 0)
+                attribute_atk = self.attribute_bonus.get('AttackDelta', 0)
                 attack_tz = (
                     attr_value_tz
                     + attr_value_tz
@@ -489,7 +490,7 @@ class RoleInstance:
                         + self.attribute_bonus.get('AttackAddedRatio', 0)
                         + 2.144
                     )
-                    + self.attribute_bonus['AttackDelta']
+                    + attribute_atk
                 )
                 if self.raw_data.avatar.id_ in [1205, 1208]:
                     attack_tz = (skill_multiplier * attack_tz) + (

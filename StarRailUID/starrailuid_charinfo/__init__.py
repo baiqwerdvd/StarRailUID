@@ -11,14 +11,45 @@ from .to_card import api_to_card
 from ..utils.convert import get_uid
 from ..utils.sr_prefix import PREFIX
 from ..utils.error_reply import UID_HINT
+from .get_char_img import draw_char_info_img
 from ..utils.image.convert import convert_img
+from .draw_char_img import cal, get_char_data
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH
-from .draw_char_img import cal, get_char_data, draw_char_info_img
 
 sv_char_info_config = SV('sr面板设置', pm=2)
 sv_get_char_info = SV('sr面板查询', priority=10)
 sv_get_sr_original_pic = SV('sr查看面板原图', priority=5)
 sv_char_damage_cal = SV('sr伤害计算')
+sv_group_damage_cal = SV('sr伤害计算')
+
+
+@sv_group_damage_cal.on_prefix(f'{PREFIX}队伍伤害')
+async def send_group_damage_msg(bot: Bot, ev: Event):
+    msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', ev.text))
+    if not msg:
+        return None
+    await bot.logger.info('开始执行[队伍伤害计算]')
+    # 获取uid
+    sr_uid = await get_uid(bot, ev)
+    if sr_uid is None:
+        return await bot.send(UID_HINT)
+    await bot.logger.info(f'[队伍伤害计算]uid: {sr_uid}')
+    char_name = ' '.join(re.findall('[\u4e00-\u9fa5]+', msg))
+    char_list = char_name.split()
+    char_data_list = []
+    for char_name in char_list:
+        char_data = await get_char_data(sr_uid, char_name)
+        if isinstance(char_data, str):
+            return await bot.send(char_data)
+        char_data_list.append(char_data)
+    im_list = []
+    # im = await cal_group(char_data_list)
+    # for info_im in im:
+    # con = f'{info_im[0]} 暴击伤害: {info_im[1]}'
+    # con = f'{con} 期望伤害{info_im[2]} 满配辅助末日兽伤害{info_im[3]}'
+    # im_list.append(con)
+    await bot.send(im_list)
+    return None
 
 
 @sv_char_damage_cal.on_prefix(f'{PREFIX}伤害计算')
@@ -73,12 +104,15 @@ async def send_char_info(bot: Bot, ev: Event):
 
 async def _get_char_info(bot: Bot, ev: Event, text: str):
     # 获取角色名
-    msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', text))
+    msg = ''.join(re.findall('^[a-zA-Z0-9_\u4e00-\u9fa5]+$', text))
     if not msg:
         return None
     await bot.logger.info('开始执行[查询角色面板]')
     # 获取uid
-    uid = await get_uid(bot, ev)
+    if '换' in msg or '拿' in msg or '圣遗物' in msg:
+        uid = await get_uid(bot, ev, False, True)
+    else:
+        uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
     await bot.logger.info(f'[查询角色面板]uid: {uid}')

@@ -1,4 +1,3 @@
-import re
 import json
 import math
 from pathlib import Path
@@ -76,11 +75,7 @@ RELIC_POS = {
 }
 
 
-async def draw_char_info_img(raw_mes: str, sr_uid: str):
-    # 获取角色名
-    char_name = ' '.join(re.findall('[\u4e00-\u9fa5]+', raw_mes))
-
-    char_data = await get_char_data(sr_uid, char_name)
+async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if isinstance(char_data, str):
         return char_data
     char = await cal_char_info(char_data)
@@ -106,6 +101,10 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
     bg_height = 0
     if damage_len > 0:
         bg_height = 48 * (1 + damage_len) + 48
+    char_change = 0
+    if '换' in msg or '拿' in msg or '圣遗物' in msg:
+        char_change = 1
+        bg_height = bg_height + 80
     # 放角色立绘
     char_info = bg_img.copy()
     char_info = char_info.resize((1050, 2050 + bg_height))
@@ -499,14 +498,17 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
 
             single_relic_score = 0
             main_value_score = await get_relic_score(
-                relic['MainAffix']['Property'], main_value, char_name, True
+                relic['MainAffix']['Property'],
+                main_value,
+                char.char_name,
+                True,
             )
             if main_property.__contains__('AddedRatio') and relic['Type'] == 5:
                 attr_name = main_property.split('AddedRatio')[0]
                 if attr_name == avatarId2DamageType[str(char.char_id)]:
                     weight_dict = {}
                     for item in AvatarRelicScore:
-                        if item['role'] == char_name:
+                        if item['role'] == char.char_name:
                             weight_dict = item
                     add_value = (
                         (main_value + 1)
@@ -522,14 +524,14 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
                 subProperty = i['Property']
 
                 tmp_score = await get_relic_score(
-                    subProperty, subValue, char_name, False
+                    subProperty, subValue, char.char_name, False
                 )
                 single_relic_score += tmp_score
 
                 if subName in ['攻击力', '生命值', '防御力', '速度']:
                     subValueStr = "{:.1f}".format(subValue)
                 else:
-                    subValueStr = "{:.1f}".format(subValue * 100) + '%'  # type: ignore
+                    subValueStr = "{:.1f}".format(subValue * 100) + '%'
                 subNameStr = subName.replace('百分比', '').replace('元素', '')
                 # 副词条文字颜色
                 relic_color = (255, 255, 255)
@@ -659,6 +661,23 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
                 sr_font_26,
                 'lm',
             )
+
+    if char_change == 1:
+        char_img_draw.text(
+            (525, 2022 + bg_height - 80),
+            '面板数据来源于：【面板替换】',
+            (255, 255, 255),
+            sr_font_26,
+            'mm',
+        )
+
+        char_img_draw.text(
+            (525, 2022 + bg_height - 50),
+            f'{msg}',
+            (255, 255, 255),
+            sr_font_26,
+            'mm',
+        )
 
     # 写底层文字
     char_img_draw.text(
