@@ -1,6 +1,6 @@
 [tool.black]
 line-length = 79
-target-version = ["py38", "py39", "py310"]
+target-version = ["py38", "py39", "py310", "py311"]
 include = '\.pyi?$'
 skip-string-normalization = true
 extend-exclude = '''
@@ -51,11 +51,11 @@ pytest = "^7.2.0"
 pytest-asyncio = "^0.20.3"
 
 [tool.ruff]
-line-length = 88
+line-length = 79
 select = [
   "E", "W",   # pycodestyle
   "F",        # pyflakes
-  "I",        # isort
+  # "I",        # isort
   "RUF",      # ruff
   "TRY",      # tryceratops
   "UP",

@@ -80,7 +80,8 @@ async def send_daily_sign():
             )
             msg_title = (
                 f"星穹铁道今日自动签到已完成!\n"
-                f"本群共签到成功{group_msg_list[gid]['success']}人,共签到失败{group_msg_list[gid]['failed']}人。{report}"
+                f"本群共签到成功{group_msg_list[gid]['success']}人,"
+                f"共签到失败{group_msg_list[gid]['failed']}人。{report}"
             )
         else:
             msg_title = group_msg_list[gid]['push_message']
