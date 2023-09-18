@@ -364,9 +364,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         weapon_bg = Image.open(TEXT_PATH / 'weapon_bg.png')
         weapon_id = char.equipment['equipmentID']
         weapon_img = Image.open(WEAPON_PATH / f'{weapon_id}.png').resize(
-            (270, 240)
+            (190, 180)
         )
-        weapon_bg.paste(weapon_img, (20, 50), weapon_img)
+        weapon_bg.paste(weapon_img, (20, 90), weapon_img)
         weapon_bg_draw = ImageDraw.Draw(weapon_bg)
         weapon_bg_draw.text(
             (345, 47),
@@ -419,7 +419,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         for i in range(len(desc_params)):
             desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
         draw_text_by_line(
-            weapon_bg, (286, 115), desc, sr_font_24, '#F9F9F9', 372
+            weapon_bg, (210, 115), desc, sr_font_24, '#F9F9F9', 350
         )
         char_info.paste(weapon_bg, (-10, 870), weapon_bg)
     else:
@@ -434,7 +434,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     # 遗器
     if char.char_relic:
         weapon_rank_bg = Image.open(TEXT_PATH / 'rank_bg.png')
-        char_info.paste(weapon_rank_bg, (690, 880), weapon_rank_bg)
+        char_info.paste(weapon_rank_bg, (735, 880), weapon_rank_bg)
         relic_score = 0
 
         for relic in char.char_relic:
@@ -588,18 +588,24 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 relic_img, RELIC_POS[str(relic['Type'])], relic_img
             )
             relic_score += single_relic_score
-        if relic_score > 200:
+        if relic_score > 270:
+            relic_value_level = Image.open(TEXT_PATH / 'CommonIconSSS.png')
+            char_info.paste(relic_value_level, (825, 963), relic_value_level)
+        elif relic_score > 240:
+            relic_value_level = Image.open(TEXT_PATH / 'CommonIconSS.png')
+            char_info.paste(relic_value_level, (825, 963), relic_value_level)
+        elif relic_score > 200:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconS.png')
-            char_info.paste(relic_value_level, (780, 963), relic_value_level)
+            char_info.paste(relic_value_level, (825, 963), relic_value_level)
         elif relic_score > 150:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconA.png')
-            char_info.paste(relic_value_level, (780, 963), relic_value_level)
+            char_info.paste(relic_value_level, (825, 963), relic_value_level)
         elif relic_score > 100:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconB.png')
-            char_info.paste(relic_value_level, (780, 963), relic_value_level)
+            char_info.paste(relic_value_level, (825, 963), relic_value_level)
         elif relic_score > 0:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconC.png')
-            char_info.paste(relic_value_level, (780, 963), relic_value_level)
+            char_info.paste(relic_value_level, (825, 963), relic_value_level)
 
     else:
         char_img_draw.text(
