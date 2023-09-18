@@ -1,8 +1,8 @@
 import json
-from pathlib import Path
 from typing import List
+from pathlib import Path
 
-from .model import DamageInstanceAvatar, DamageInstanceSkill
+from .model import DamageInstanceSkill, DamageInstanceAvatar
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:

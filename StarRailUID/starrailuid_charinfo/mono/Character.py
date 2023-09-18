@@ -1,10 +1,10 @@
 import json
-from collections import Counter
 from typing import Dict, List
+from collections import Counter
 
 from loguru import logger
 
-from ...utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty, RelicSetSkill
+from ...utils.map.SR_MAP_PATH import RelicSetSkill, EquipmentID2AbilityProperty
 
 
 class Character:

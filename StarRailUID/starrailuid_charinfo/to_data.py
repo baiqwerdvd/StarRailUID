@@ -1,34 +1,34 @@
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union, Optional
 
 from httpx import ReadTimeout
 
+from ..utils.error_reply import UID_HINT
 from ..sruid_utils.api.mihomo import MihomoData
 from ..sruid_utils.api.mihomo.models import Avatar
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..sruid_utils.api.mihomo.requests import get_char_card_info
-from ..utils.error_reply import UID_HINT
+from .cal_value import cal_relic_sub_affix, cal_relic_main_affix
 from ..utils.excel.model import AvatarPromotionConfig, EquipmentPromotionConfig
 from ..utils.map.SR_MAP_PATH import (
-    AvatarRankSkillUp,
-    EquipmentID2Name,
-    EquipmentID2Rarity,
+    SetId2Name,
     ItemId2Name,
     Property2Name,
     RelicId2SetId,
-    SetId2Name,
-    avatarId2DamageType,
-    avatarId2EnName,
+    EquipmentID2Name,
+    AvatarRankSkillUp,
+    EquipmentID2Rarity,
+    rankId2Name,
+    skillId2Name,
     avatarId2Name,
+    skillId2Effect,
+    avatarId2EnName,
     avatarId2Rarity,
     characterSkillTree,
-    rankId2Name,
     skillId2AttackType,
-    skillId2Effect,
-    skillId2Name,
+    avatarId2DamageType,
 )
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-from .cal_value import cal_relic_main_affix, cal_relic_sub_affix
 
 
 async def api_to_dict(

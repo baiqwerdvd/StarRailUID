@@ -1,10 +1,10 @@
-from gsuid_core.bot import Bot
-from gsuid_core.logger import logger
-from gsuid_core.models import Event
 from gsuid_core.sv import SV
+from gsuid_core.bot import Bot
+from gsuid_core.models import Event
+from gsuid_core.logger import logger
 
-from ..utils.resource.download_all_resource import download_all_resource
 from ..utils.sr_prefix import PREFIX
+from ..utils.resource.download_all_resource import download_all_resource
 
 sv_sr_download_config = SV('sr下载资源', pm=1)
 

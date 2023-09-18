@@ -2,12 +2,12 @@ from typing import List, Union
 
 from gsuid_core.logger import logger
 
-from ..mono.Character import Character
 from .Avatar.Avatar import Avatar
+from .Weapon.Weapon import Weapon
+from .utils import merge_attribute
+from ..mono.Character import Character
 from .Base.model import DamageInstance
 from .Relic.Relic import RelicSet, SingleRelic
-from .utils import merge_attribute
-from .Weapon.Weapon import Weapon
 
 
 class RoleInstance:

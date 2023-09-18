@@ -1,15 +1,15 @@
 import asyncio
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union, Optional
 
-from gsuid_core.utils.error_reply import get_error
 from PIL import Image, ImageDraw
+from gsuid_core.utils.error_reply import get_error
 
-from ..sruid_utils.api.mys.models import AvatarListItem, RoleBasicInfo, Stats
-from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_36
-from ..utils.image.convert import convert_img
 from ..utils.mys_api import mys_api
 from .utils import get_icon, wrap_list
+from ..utils.image.convert import convert_img
+from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_36
+from ..sruid_utils.api.mys.models import Stats, RoleBasicInfo, AvatarListItem
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 

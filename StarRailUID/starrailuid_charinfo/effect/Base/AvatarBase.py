@@ -1,14 +1,14 @@
 import json
-from abc import abstractmethod
 from pathlib import Path
+from abc import abstractmethod
 from typing import List, Union
 
 import msgspec
 from msgspec import Struct
 
-from ....utils.excel.model import AvatarPromotionConfig
-from .model import DamageInstanceAvatar, DamageInstanceSkill
 from .SkillBase import BaseSkills
+from ....utils.excel.model import AvatarPromotionConfig
+from .model import DamageInstanceSkill, DamageInstanceAvatar
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:

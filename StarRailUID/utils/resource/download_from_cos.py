@@ -2,12 +2,12 @@ import asyncio
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
-from aiohttp.client import ClientSession
-from gsuid_core.logger import logger
 from msgspec import json as msgjson
+from gsuid_core.logger import logger
+from aiohttp.client import ClientSession
 
 from .download_url import download_file
-from .RESOURCE_PATH import GUIDE_PATH, RESOURCE_PATH, WIKI_PATH
+from .RESOURCE_PATH import WIKI_PATH, GUIDE_PATH, RESOURCE_PATH
 
 with Path.open(
     Path(__file__).parent / 'resource_map.json', encoding='UTF-8'

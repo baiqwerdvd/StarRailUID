@@ -3,9 +3,9 @@ from typing import Dict, List, Union
 
 from gsuid_core.logger import logger
 
-from ..Base.model import DamageInstanceRelic
-from ..Base.RelicBase import BaseRelicSetSkill, SingleRelic
 from ..utils import merge_attribute
+from ..Base.model import DamageInstanceRelic
+from ..Base.RelicBase import SingleRelic, BaseRelicSetSkill
 
 
 class Relic101(BaseRelicSetSkill):

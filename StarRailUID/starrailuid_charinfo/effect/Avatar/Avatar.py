@@ -3,7 +3,7 @@ from typing import Dict, List
 from gsuid_core.logger import logger
 
 from ..Base.AvatarBase import BaseAvatar, BaseAvatarBuff
-from ..Base.model import DamageInstanceAvatar, DamageInstanceSkill
+from ..Base.model import DamageInstanceSkill, DamageInstanceAvatar
 
 
 class Seele(BaseAvatar):

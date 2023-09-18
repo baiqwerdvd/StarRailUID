@@ -1,28 +1,28 @@
-import json
 import re
+import json
 from pathlib import Path
-from typing import Dict, Optional, Tuple, Union
+from typing import Dict, Tuple, Union, Optional
 
 from gsuid_core.logger import logger
 
+from .to_data import api_to_dict
+from .draw_char_img import draw_char_img
 from ..utils.error_reply import CHAR_HINT
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.excel.model import EquipmentPromotionConfig
 from ..utils.map.name_covert import (
-    alias_to_char_name,
     name_to_avatar_id,
     name_to_weapon_id,
+    alias_to_char_name,
 )
 from ..utils.map.SR_MAP_PATH import (
     EquipmentID2Name,
     EquipmentID2Rarity,
-    avatarId2DamageType,
-    avatarId2EnName,
-    avatarId2Name,
     rankId2Name,
+    avatarId2Name,
+    avatarId2EnName,
+    avatarId2DamageType,
 )
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-from .draw_char_img import draw_char_img
-from .to_data import api_to_dict
 
 WEAPON_TO_INT = {
     '一': 1,
@@ -210,7 +210,7 @@ async def get_fake_char_data(
     char_data['avatarPromotion'] = original_data['avatarPromotion']
     char_data['avatarName'] = fake_name
     char_data['avatarId'] = await name_to_avatar_id(fake_name)
-    en_name: str = avatarId2EnName(char_data['avatarId']) # type: ignore
+    en_name: str = avatarId2EnName(char_data['avatarId'])  # type: ignore
     char_data['avatarEnName'] = en_name
     if str(char_data['avatarId']) in avatarId2DamageType:
         char_data['avatarElement'] = avatarId2DamageType[

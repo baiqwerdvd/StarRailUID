@@ -3,10 +3,10 @@ from typing import Dict, List, Union
 from msgspec import Struct
 
 from .read_excel import (
+    RelicSubAffix,
+    RelicMainAffix,
     AvatarPromotion,
     EquipmentPromotion,
-    RelicMainAffix,
-    RelicSubAffix,
 )
 
 

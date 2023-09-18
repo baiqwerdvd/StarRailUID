@@ -4,12 +4,15 @@ from pathlib import Path
 from typing import Optional
 
 import aiohttp
-from gsuid_core.logger import logger
 from PIL import Image, ImageDraw
+from gsuid_core.logger import logger
 
+from ..utils.api import get_sqla
+from ..utils.mys_api import mys_api
+from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import Expedition
 from ..starrailuid_config.sr_config import srconfig
-from ..utils.api import get_sqla
+from ..utils.image.image_tools import get_simple_bg
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_24,
@@ -17,9 +20,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_36,
     sr_font_50,
 )
-from ..utils.image.convert import convert_img
-from ..utils.image.image_tools import get_simple_bg
-from ..utils.mys_api import mys_api
 
 use_widget = srconfig.get_config('WidgetResin').data
 

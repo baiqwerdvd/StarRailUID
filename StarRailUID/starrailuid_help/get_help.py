@@ -1,14 +1,14 @@
 from pathlib import Path
-from typing import Dict, Optional, Union
+from typing import Dict, Union, Optional
 
 import aiofiles
-from gsuid_core.help.draw_plugin_help import get_help
-from gsuid_core.help.model import PluginHelp
-from msgspec import json as msgjson
 from PIL import Image
+from msgspec import json as msgjson
+from gsuid_core.help.model import PluginHelp
+from gsuid_core.help.draw_plugin_help import get_help
 
-from ..utils.fonts.starrail_fonts import starrail_font_origin
 from ..version import StarRail_version
+from ..utils.fonts.starrail_fonts import starrail_font_origin
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 HELP_DATA = Path(__file__).parent / 'Help.json'

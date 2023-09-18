@@ -1,9 +1,9 @@
 import json
-from pathlib import Path
 from typing import Dict
+from pathlib import Path
 
-from ..Base.model import DamageInstanceWeapon
 from ..Base.WeaponBase import BaseWeapon
+from ..Base.model import DamageInstanceWeapon
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:
@@ -1673,11 +1673,9 @@ class Thisbodyisasword(BaseWeapon):
         attribute_bonus[
             'AllResistancePenetration'
         ] = resistance_penetration + (
-
-                weapon_effect['23014']['Param']['ResistancePenetration'][
-                    self.weapon_rank - 1
-                ]
-
+            weapon_effect['23014']['Param']['ResistancePenetration'][
+                self.weapon_rank - 1
+            ]
         )
 
         return attribute_bonus
