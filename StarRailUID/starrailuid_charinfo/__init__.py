@@ -104,17 +104,18 @@ async def send_char_info(bot: Bot, ev: Event):
 
 async def _get_char_info(bot: Bot, ev: Event, text: str):
     # 获取角色名
-    msg = ''.join(re.findall('^[a-zA-Z0-9_\u4e00-\u9fa5]+$', text))
-    if not msg:
-        return None
     await bot.logger.info('开始执行[查询角色面板]')
     # 获取uid
-    if '换' in msg or '拿' in msg or '圣遗物' in msg:
+    if '换' in msg or '拿' in msg or '带' in msg:
         uid = await get_uid(bot, ev, False, True)
+        msg = ''.join(re.findall('^[a-zA-Z0-9_\u4e00-\u9fa5]+$', text))
     else:
         uid = await get_uid(bot, ev)
+        msg = ' '.join(re.findall('[\u4e00-\u9fa5]+', text))
     if uid is None:
         return await bot.send(UID_HINT)
+    if not msg:
+        return None
     await bot.logger.info(f'[查询角色面板]uid: {uid}')
 
     return await draw_char_info_img(msg, uid)
