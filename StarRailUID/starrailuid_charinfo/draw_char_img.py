@@ -1,8 +1,9 @@
 import json
 import math
+import textwrap
 from pathlib import Path
 from typing import Dict, Union
-import textwrap
+
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
@@ -84,6 +85,7 @@ RELIC_CNT = {
     6: '●●●●●',
 }
 
+
 async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if isinstance(char_data, str):
         return char_data
@@ -111,11 +113,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if damage_len > 0:
         bg_height = 48 * (1 + damage_len) + 48
     char_change = 0
-    if (
-        '换' in msg
-        or '拿' in msg
-        or '带' in msg
-    ):
+    if '换' in msg or '拿' in msg or '带' in msg:
         char_change = 1
         para = textwrap.wrap(msg, width=45)
         msg_h = 40 * (len(para) + 1)
@@ -513,7 +511,10 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
 
             single_relic_score = 0
             main_value_score = await get_relic_score(
-                relic['MainAffix']['Property'], main_value, char.char_name, True
+                relic['MainAffix']['Property'],
+                main_value,
+                char.char_name,
+                True,
             )
             if main_property.__contains__('AddedRatio') and relic['Type'] == 5:
                 attr_name = main_property.split('AddedRatio')[0]
@@ -684,7 +685,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 sr_font_26,
                 'lm',
             )
-    
+
     if char_change == 1:
         char_img_draw.text(
             (525, 2022 + bg_height - msg_h),
@@ -693,18 +694,18 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
             sr_font_26,
             'mm',
         )
-        
+
         current_h = 2022 + bg_height - msg_h + 40
         for line in para:
             char_img_draw.text(
-                (525, current_h), 
-                line, 
+                (525, current_h),
+                line,
                 (180, 180, 180),
                 sr_font_26,
                 'mm',
             )
             current_h += 35
-    
+
     # 写底层文字
     char_img_draw.text(
         (525, 2022 + bg_height),
