@@ -2,7 +2,7 @@ import json
 import math
 from pathlib import Path
 from typing import Dict, Union
-
+import textwrap
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
@@ -28,6 +28,7 @@ from ..utils.resource.RESOURCE_PATH import (
     CHAR_PORTRAIT_PATH,
 )
 from ..utils.fonts.starrail_fonts import (
+    sr_font_18,
     sr_font_20,
     sr_font_23,
     sr_font_24,
@@ -74,6 +75,14 @@ RELIC_POS = {
     '6': (700, 1593),
 }
 
+RELIC_CNT = {
+    1: '',
+    2: '●',
+    3: '●●',
+    4: '●●●',
+    5: '●●●●',
+    6: '●●●●●',
+}
 
 async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if isinstance(char_data, str):
@@ -102,9 +111,15 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if damage_len > 0:
         bg_height = 48 * (1 + damage_len) + 48
     char_change = 0
-    if '换' in msg or '拿' in msg or '圣遗物' in msg:
+    if (
+        '换' in msg
+        or '拿' in msg
+        or '带' in msg
+    ):
         char_change = 1
-        bg_height = bg_height + 80
+        para = textwrap.wrap(msg, width=45)
+        msg_h = 40 * (len(para) + 1)
+        bg_height = bg_height + msg_h
     # 放角色立绘
     char_info = bg_img.copy()
     char_info = char_info.resize((1050, 2050 + bg_height))
@@ -498,10 +513,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
 
             single_relic_score = 0
             main_value_score = await get_relic_score(
-                relic['MainAffix']['Property'],
-                main_value,
-                char.char_name,
-                True,
+                relic['MainAffix']['Property'], main_value, char.char_name, True
             )
             if main_property.__contains__('AddedRatio') and relic['Type'] == 5:
                 attr_name = main_property.split('AddedRatio')[0]
@@ -520,6 +532,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
             single_relic_score += main_value_score
             for index, i in enumerate(relic['SubAffixList']):
                 subName: str = i['Name']
+                subCnt = i['Cnt']
                 subValue = i['Value']
                 subProperty = i['Property']
 
@@ -534,13 +547,23 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                     subValueStr = "{:.1f}".format(subValue * 100) + '%'
                 subNameStr = subName.replace('百分比', '').replace('元素', '')
                 # 副词条文字颜色
-                relic_color = (255, 255, 255)
+                if tmp_score == 0:
+                    relic_color = (150, 150, 150)
+                else:
+                    relic_color = (255, 255, 255)
 
                 relic_img_draw.text(
                     (47, 237 + index * 47),
                     f'{subNameStr}',
                     relic_color,
                     sr_font_26,
+                    anchor='lm',
+                )
+                relic_img_draw.text(
+                    (155, 237 + index * 47),
+                    f'{RELIC_CNT[subCnt]}',
+                    relic_color,
+                    sr_font_18,
                     anchor='lm',
                 )
                 relic_img_draw.text(
@@ -661,24 +684,27 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 sr_font_26,
                 'lm',
             )
-
+    
     if char_change == 1:
         char_img_draw.text(
-            (525, 2022 + bg_height - 80),
+            (525, 2022 + bg_height - msg_h),
             '面板数据来源于：【面板替换】',
-            (255, 255, 255),
+            (180, 180, 180),
             sr_font_26,
             'mm',
         )
-
-        char_img_draw.text(
-            (525, 2022 + bg_height - 50),
-            f'{msg}',
-            (255, 255, 255),
-            sr_font_26,
-            'mm',
-        )
-
+        
+        current_h = 2022 + bg_height - msg_h + 40
+        for line in para:
+            char_img_draw.text(
+                (525, current_h), 
+                line, 
+                (180, 180, 180),
+                sr_font_26,
+                'mm',
+            )
+            current_h += 35
+    
     # 写底层文字
     char_img_draw.text(
         (525, 2022 + bg_height),
