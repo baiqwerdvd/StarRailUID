@@ -34,7 +34,7 @@ from .cal_value import cal_relic_main_affix, cal_relic_sub_affix
 async def api_to_dict(
     sr_uid: str, sr_data: Optional[MihomoData] = None
 ) -> Union[List[Dict], str]:
-    '''
+    """
     :说明:
       访问Mihomo.me API并转换为StarRailUID的数据Json。
     :参数:
@@ -42,7 +42,7 @@ async def api_to_dict(
       * ``sr_data: Optional[Dict] = None``: 来自Mihomo.me的dict, 可留空。
     :返回:
       * ``刷新完成提示语: str``: 包含刷新成功的角色列表。
-    '''
+    """
     if '未找到绑定的UID' in sr_uid:
         return UID_HINT
     if not sr_data:

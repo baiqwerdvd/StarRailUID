@@ -63,9 +63,9 @@ class BaseRelicSetSkill:
     async def set_skill_ability(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         战斗加成属性, 与 set_skill_property() 互斥
-        '''
+        """
         ...
 
     def set_skill_property_ability(self):

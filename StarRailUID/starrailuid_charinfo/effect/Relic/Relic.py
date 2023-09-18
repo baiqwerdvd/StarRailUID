@@ -15,9 +15,9 @@ class Relic101(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         在战斗开始时
-        '''
+        """
         logger.info('Relic101 check success')
         return True
 
@@ -36,9 +36,9 @@ class Relic102(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         无
-        '''
+        """
         logger.info('Relic102 check success')
         return True
 
@@ -58,9 +58,9 @@ class Relic103(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         战斗中生效:装备者提供的护盾量提高
-        '''
+        """
         logger.info('Relic103 check success')
         return True
 
@@ -82,9 +82,9 @@ class Relic104(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者施放终结技
-        '''
+        """
         logger.info('Relic104 check success')
         return True
 
@@ -106,9 +106,9 @@ class Relic105(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         施放攻击或受到攻击时, 默认叠满
-        '''
+        """
         logger.info('Relic105 check success')
         return True
 
@@ -130,9 +130,9 @@ class Relic106(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         无
-        '''
+        """
         logger.info('Relic106 check success')
         return True
 
@@ -151,9 +151,9 @@ class Relic107(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         TODO: 检查是否是火属性伤害
-        '''
+        """
         logger.info('Relic107 check success')
         return True
 
@@ -180,10 +180,10 @@ class Relic108(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者对敌方目标造成伤害
         目标拥有量子属性弱点
-        '''
+        """
         logger.info('Relic108 check success')
         return True
 
@@ -206,9 +206,9 @@ class Relic109(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         TODO: 检查是否释放战技
-        '''
+        """
         logger.info('Relic109 check success')
         return True
 
@@ -231,9 +231,9 @@ class Relic110(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者施放终结技
-        '''
+        """
         logger.info('Relic110 check success')
         return True
 
@@ -254,9 +254,9 @@ class Relic111(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者击破敌方目标弱点
-        '''
+        """
         logger.info('Relic111 check success')
         return True
 
@@ -277,10 +277,10 @@ class Relic112(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者对陷入负面效果的敌方目标造成伤害
         对陷入禁锢状态的敌方目标造成伤害
-        '''
+        """
         logger.info('Relic111 check success')
         return True
 
@@ -310,9 +310,9 @@ class Relic113(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         当装备者受到攻击或被我方目标消耗生命值后, 暴击率提高8%, 持续2回合, 该效果最多叠加2层。
-        '''
+        """
         logger.info('Relic113 check success')
         return True
 
@@ -336,9 +336,9 @@ class Relic114(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         当装备者对我方目标施放终结技时, 我方全体速度提高12%, 持续1回合, 该效果无法叠加。
-        '''
+        """
         logger.info('Relic114 check success')
         return True
 
@@ -360,9 +360,9 @@ class Relic301(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者的速度大于等于120
-        '''
+        """
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['speed'] >= 120:
             logger.info('Relic306 check success')
@@ -387,9 +387,9 @@ class Relic302(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者的速度大于等于120
-        '''
+        """
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['speed'] >= 120:
             logger.info('Relic306 check success')
@@ -438,9 +438,9 @@ class Relic304(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         备者的效果命中大于等于50%
-        '''
+        """
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['StatusResistanceBase'] >= 0.5000000004656613:
             logger.info('Relic306 check success')
@@ -465,9 +465,9 @@ class Relic305(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者的暴击伤害大于等于120%
-        '''
+        """
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['CriticalDamageBase'] >= 1.2000000001862645:
             logger.info('Relic306 check success')
@@ -492,9 +492,9 @@ class Relic306(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者当前暴击率大于等于50%
-        '''
+        """
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['CriticalChanceBase'] >= 0.5:
             logger.info('Relic306 check success')
@@ -519,9 +519,9 @@ class Relic307(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者的速度大于等于145
-        '''
+        """
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['speed'] >= 145:
             logger.info('Relic306 check success')
@@ -548,9 +548,9 @@ class Relic308(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         装备者的速度大于等于120
-        '''
+        """
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['speed'] >= 120:
             logger.info('Relic306 check success')
@@ -572,9 +572,9 @@ class Relic309(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         当装备者的当前暴击率大于等于70%时, 普攻和战技造成的伤害提高20%。
-        '''
+        """
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['CriticalChanceBase'] >= 0.7:
             logger.info('Relic309 check success')
@@ -599,9 +599,9 @@ class Relic310(BaseRelicSetSkill):
     async def check(
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
-        '''
+        """
         当装备者的效果抵抗大于等于30%时, 我方全体暴击伤害提高10%。
-        '''
+        """
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['StatusResistanceBase'] >= 0.3:
             logger.info('Relic310 check success')

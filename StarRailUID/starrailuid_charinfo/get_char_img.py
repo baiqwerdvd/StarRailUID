@@ -165,10 +165,10 @@ async def get_part_uid(part: str, uid: str):
 
 
 async def get_fake_char_str(char_name: str) -> Tuple[str, Optional[int]]:
-    '''
+    """
     获取一个角色信息
 
-    '''
+    """
     talent_num = None
     if '魂' in char_name and char_name[0] in CHAR_TO_INT:
         talent_num = CHAR_TO_INT[char_name[0]]

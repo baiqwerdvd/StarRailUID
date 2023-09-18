@@ -20,7 +20,7 @@ async def download(
     resource_type: str,
     name: str,
 ) -> Optional[Tuple[str, str, str]]:
-    '''
+    """
     :说明:
       下载URL保存入目录
     :参数:
@@ -36,7 +36,7 @@ async def download(
         url: `str`
         resource_type: `str`
         name: `str`
-    '''
+    """
     async with ClientSession() as sess:
         return await download_file(url, res_type, resource_type, name, sess)
 

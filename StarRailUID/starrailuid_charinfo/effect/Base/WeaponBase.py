@@ -34,15 +34,15 @@ class BaseWeapon:
 
     @abstractmethod
     async def weapon_ability(self, base_attr: Dict, attribute_bonus: Dict):
-        '''
+        """
         战斗加成属性, 与 weapon_property_ability() 互斥
-        '''
+        """
         ...
 
     def weapon_property_ability(self):
-        '''
+        """
         面板加成属性, 与 weapon_ability() 互斥
-        '''
+        """
         ability_property = EquipmentID2AbilityProperty[str(self.weapon_id)]
         equip_ability_property = ability_property[str(self.weapon_rank)]
         for equip_ability in equip_ability_property:
