@@ -45,12 +45,12 @@ CHAR_TO_INT = {
 }
 
 PieceName_ilst = {
-    0: ['头', '帽子', '头部'],
-    1: ['手', '手套', '手部'],
-    2: ['衣', '衣服', '躯干'],
-    3: ['鞋', '鞋子', '腿', '腿部'],
-    4: ['球', '位面球'],
-    5: ['绳', '绳子', '链', '链子', '连结绳'],
+    0: ['头', '帽'],
+    1: ['手'],
+    2: ['衣', '服', '躯'],
+    3: ['鞋', '腿'],
+    4: ['球'],
+    5: ['绳', '链'],
 }
 
 
@@ -133,7 +133,8 @@ async def get_char_args(
                         changeuid, char_data, part, s, i
                     )
                     if not char_data:
-                        return '要替换的部件不存在噢~'
+                        change_name = part.replace(part[-1], '')
+                        return f'要替换的{change_name}的{s}遗器不存在噢~'
                     break
             else:
                 weapon, weapon_affix = await get_fake_weapon_str(part)
