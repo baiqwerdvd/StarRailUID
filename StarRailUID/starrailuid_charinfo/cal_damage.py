@@ -73,5 +73,4 @@ async def cal(char_data: Dict):
             im_tmp = await role.cal_damage('Talent')
             skill_info_list.append(im_tmp)
         return skill_info_list
-    else:
-        return '角色伤害计算未完成'
+    return '角色伤害计算未完成'

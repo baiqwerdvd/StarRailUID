@@ -3,9 +3,9 @@ from typing import Dict, List, Union
 
 from gsuid_core.logger import logger
 
-from ..utils import merge_attribute
 from ..Base.model import DamageInstanceRelic
-from ..Base.RelicBase import SingleRelic, BaseRelicSetSkill
+from ..Base.RelicBase import BaseRelicSetSkill, SingleRelic
+from ..utils import merge_attribute
 
 
 class Relic101(BaseRelicSetSkill):
@@ -311,7 +311,7 @@ class Relic113(BaseRelicSetSkill):
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
         '''
-        当装备者受到攻击或被我方目标消耗生命值后，暴击率提高8%，持续2回合，该效果最多叠加2层。
+        当装备者受到攻击或被我方目标消耗生命值后, 暴击率提高8%, 持续2回合, 该效果最多叠加2层。
         '''
         logger.info('Relic113 check success')
         return True
@@ -337,7 +337,7 @@ class Relic114(BaseRelicSetSkill):
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
         '''
-        当装备者对我方目标施放终结技时，我方全体速度提高12%，持续1回合，该效果无法叠加。
+        当装备者对我方目标施放终结技时, 我方全体速度提高12%, 持续1回合, 该效果无法叠加。
         '''
         logger.info('Relic114 check success')
         return True
@@ -573,7 +573,7 @@ class Relic309(BaseRelicSetSkill):
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
         '''
-        当装备者的当前暴击率大于等于70%时，普攻和战技造成的伤害提高20%。
+        当装备者的当前暴击率大于等于70%时, 普攻和战技造成的伤害提高20%。
         '''
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['CriticalChanceBase'] >= 0.7:
@@ -600,7 +600,7 @@ class Relic310(BaseRelicSetSkill):
         self, base_attr: Dict[str, float], attribute_bonus: Dict[str, float]
     ):
         '''
-        当装备者的效果抵抗大于等于30%时，我方全体暴击伤害提高10%。
+        当装备者的效果抵抗大于等于30%时, 我方全体暴击伤害提高10%。
         '''
         merged_attr = await merge_attribute(base_attr, attribute_bonus)
         if merged_attr['StatusResistanceBase'] >= 0.3:

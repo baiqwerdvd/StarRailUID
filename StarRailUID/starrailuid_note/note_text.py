@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
+from ..utils.mys_api import mys_api
 
-month_im = """==============
+month_im = '''==============
 SR_UID:{}
 ==============
 本日获取星琼:{}
@@ -19,7 +19,7 @@ SR_UID:{}
 上月获取星轨通票&星轨专票:{}
 ==============
 星琼收入组成:
-{}=============="""
+{}=============='''
 
 
 async def award(uid) -> str:

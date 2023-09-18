@@ -1,11 +1,11 @@
 from pathlib import Path
-from typing import Union, Optional
+from typing import Optional, Union
 
-from PIL import Image
 from gsuid_core.utils.image.image_tools import TEXT_PATH, CustomizeImage
+from PIL import Image
 
-from ..resource.RESOURCE_PATH import CU_BG_PATH
 from ...starrailuid_config.sr_config import srconfig
+from ..resource.RESOURCE_PATH import CU_BG_PATH
 
 BG_PATH = Path(__file__).parent / 'bg'
 NM_BG_PATH = BG_PATH / 'nm_bg'

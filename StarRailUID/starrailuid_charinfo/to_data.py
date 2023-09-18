@@ -1,40 +1,40 @@
 import json
 from pathlib import Path
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Optional, Union
 
 from httpx import ReadTimeout
 
-from ..utils.error_reply import UID_HINT
 from ..sruid_utils.api.mihomo import MihomoData
 from ..sruid_utils.api.mihomo.models import Avatar
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..sruid_utils.api.mihomo.requests import get_char_card_info
-from .cal_value import cal_relic_sub_affix, cal_relic_main_affix
+from ..utils.error_reply import UID_HINT
 from ..utils.excel.model import AvatarPromotionConfig, EquipmentPromotionConfig
 from ..utils.map.SR_MAP_PATH import (
-    SetId2Name,
+    AvatarRankSkillUp,
+    EquipmentID2Name,
+    EquipmentID2Rarity,
     ItemId2Name,
     Property2Name,
     RelicId2SetId,
-    EquipmentID2Name,
-    AvatarRankSkillUp,
-    EquipmentID2Rarity,
-    rankId2Name,
-    skillId2Name,
-    avatarId2Name,
-    skillId2Effect,
+    SetId2Name,
+    avatarId2DamageType,
     avatarId2EnName,
+    avatarId2Name,
     avatarId2Rarity,
     characterSkillTree,
+    rankId2Name,
     skillId2AttackType,
-    avatarId2DamageType,
+    skillId2Effect,
+    skillId2Name,
 )
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from .cal_value import cal_relic_main_affix, cal_relic_sub_affix
 
 
 async def api_to_dict(
     sr_uid: str, sr_data: Optional[MihomoData] = None
 ) -> Union[List[Dict], str]:
-    """
+    '''
     :说明:
       访问Mihomo.me API并转换为StarRailUID的数据Json。
     :参数:
@@ -42,7 +42,7 @@ async def api_to_dict(
       * ``sr_data: Optional[Dict] = None``: 来自Mihomo.me的dict, 可留空。
     :返回:
       * ``刷新完成提示语: str``: 包含刷新成功的角色列表。
-    """
+    '''
     if '未找到绑定的UID' in sr_uid:
         return UID_HINT
     if not sr_data:
@@ -56,7 +56,7 @@ async def api_to_dict(
         return []
     if isinstance(sr_data, Dict):
         if 'detailInfo' not in sr_data:
-            return '服务器正在维护或者关闭中...\n' '检查Mihomo.me是否可以访问\n如可以访问,尝试上报Bug!'
+            return '服务器正在维护或者关闭中...\n检查Mihomo.me是否可以访问\n如可以访问,尝试上报Bug!'
     elif sr_data is None:
         return []
 
@@ -98,7 +98,7 @@ async def api_to_dict(
                     char_id_list.append(char['avatarId'])
 
     if not char_name_list:
-        return f'UID: {sr_uid} 的角色展柜刷新失败!\n' '请检查UID是否正确或者角色展柜是否打开!'
+        return f'UID: {sr_uid} 的角色展柜刷新失败!\n请检查UID是否正确或者角色展柜是否打开!'
 
     return char_id_list
 

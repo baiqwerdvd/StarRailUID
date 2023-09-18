@@ -1,28 +1,28 @@
-import re
 import json
+import re
 from pathlib import Path
-from typing import Dict, Tuple, Union, Optional
+from typing import Dict, Optional, Tuple, Union
 
 from gsuid_core.logger import logger
 
-from .to_data import api_to_dict
-from .draw_char_img import draw_char_img
 from ..utils.error_reply import CHAR_HINT
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.excel.model import EquipmentPromotionConfig
 from ..utils.map.name_covert import (
+    alias_to_char_name,
     name_to_avatar_id,
     name_to_weapon_id,
-    alias_to_char_name,
 )
 from ..utils.map.SR_MAP_PATH import (
     EquipmentID2Name,
     EquipmentID2Rarity,
-    rankId2Name,
-    avatarId2Name,
-    avatarId2EnName,
     avatarId2DamageType,
+    avatarId2EnName,
+    avatarId2Name,
+    rankId2Name,
 )
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from .draw_char_img import draw_char_img
+from .to_data import api_to_dict
 
 WEAPON_TO_INT = {
     '一': 1,
@@ -57,13 +57,11 @@ PieceName_ilst = {
 async def draw_char_info_img(raw_mes: str, sr_uid: str):
     # 获取角色名
     # msg = ' '.join(re.findall('[\u4e00-\u9fa5]+', raw_mes))
-    print(raw_mes)
     _args = await get_char_args(raw_mes, sr_uid)
     if isinstance(_args, str):
         return _args
-    else:
-        if isinstance(_args[0], str):
-            return _args[0]
+    if isinstance(_args[0], str):
+        return _args[0]
 
     char = await get_char(*_args)
 
@@ -99,6 +97,8 @@ async def get_char_args(
     msg_list = msg.split('换')
     for index, part in enumerate(msg_list):
         changeuid = await get_part_uid(part, uid)
+        if changeuid is None:
+            return 'UID不正确噢~'
         # 判断主体
         if index == 0:
             fake_name, talent_num = await get_fake_char_str(part)
@@ -145,8 +145,6 @@ async def change_equip(
     uid: str, char_data: Dict, part: str, s: str, i: int
 ) -> Dict:
     char_name = part.replace(part[-1], '').replace(uid, '')
-    print(char_name)
-    print(uid)
     fake_data = await get_char_data(uid, char_name)
     if isinstance(fake_data, str):
         return {}
@@ -159,7 +157,6 @@ async def change_equip(
 
 
 async def get_part_uid(part: str, uid: str):
-    print(part)
     sr_uid = uid
     uid_data = re.findall(r'\d{9}', part)
     if uid_data:
@@ -194,6 +191,8 @@ async def get_fake_char_data(
 ) -> Union[Dict, str]:
     fake_name = await alias_to_char_name(fake_name)
     original_data = await get_char_data(uid, fake_name)
+    if isinstance(original_data, str):
+        return original_data
     if isinstance(original_data, Dict):
         char_data['RelicInfo'] = original_data['RelicInfo']
         char_data['avatarAttributeBonus'] = original_data[
@@ -211,7 +210,7 @@ async def get_fake_char_data(
     char_data['avatarPromotion'] = original_data['avatarPromotion']
     char_data['avatarName'] = fake_name
     char_data['avatarId'] = await name_to_avatar_id(fake_name)
-    en_name = avatarId2EnName(char_data['avatarId'])
+    en_name: str = avatarId2EnName(char_data['avatarId']) # type: ignore
     char_data['avatarEnName'] = en_name
     if str(char_data['avatarId']) in avatarId2DamageType:
         char_data['avatarElement'] = avatarId2DamageType[
@@ -229,13 +228,13 @@ async def get_char_data(
 ) -> Union[Dict, str]:
     player_path = PLAYER_PATH / str(sr_uid)
     SELF_PATH = player_path / 'SELF'
-    if "开拓者" in str(char_name):
-        char_name = "开拓者"
+    if '开拓者' in str(char_name):
+        char_name = '开拓者'
     char_id = await name_to_avatar_id(char_name)
     if char_id == '':
         char_name = await alias_to_char_name(char_name)
     if char_name is False:
-        return "请输入正确的角色名"
+        return '请输入正确的角色名'
     char_path = player_path / f'{char_name}.json'
     char_self_path = SELF_PATH / f'{char_name}.json'
     path = Path()
@@ -280,11 +279,9 @@ async def get_char(
             rankTemp['rankName'] = rankId2Name[str(rank_id)]
             rank_temp.append(rankTemp)
         char_data['rankList'] = rank_temp
-    print(weapon)
     if weapon:
         # 处理武器
         equipmentid = await name_to_weapon_id(weapon)
-        print(equipmentid)
         equipment_info = {}
         equipment_info['equipmentID'] = int(equipmentid)
         equipment_info['equipmentName'] = EquipmentID2Name[str(equipmentid)]

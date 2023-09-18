@@ -1,16 +1,16 @@
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Union
-from datetime import datetime
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
+from PIL import Image, ImageDraw
 
-from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
-from ..utils.image.convert import convert_img
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.fonts.starrail_fonts import sr_font_20, sr_font_28, sr_font_34
+from ..utils.image.convert import convert_img
+from ..utils.mys_api import mys_api
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 
@@ -215,11 +215,11 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     xy = ((0, 0), (2100, 2100))
     temp = -90
     if not data['month_data']['group_by']:
-        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+        pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         pie_image_draw.ellipse(xy, fill=(128, 128, 128))
     else:
-        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+        pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         for _index, i in enumerate(data['month_data']['group_by']):
             pie_image_draw.pieslice(
@@ -230,7 +230,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
             )
             temp = temp + (i['percent'] / 100) * 360
     # 绘制蒙版圆形
-    new_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+    new_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
     pie_image_draw.ellipse((150, 150, 1950, 1950), fill=(255, 255, 255, 0))
 
     position = (1050, 1050)
@@ -239,7 +239,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     img.paste(result_pie, (138, 618), result_pie)
 
     if last_monthly_data:
-        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+        pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         for _index, i in enumerate(
             last_monthly_data['month_data']['group_by']
@@ -252,12 +252,12 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
             )
             temp = temp + (i['percent'] / 100) * 360
     else:
-        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+        pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         pie_image_draw.ellipse(xy, fill=(128, 128, 128))
 
     # 绘制蒙版圆形
-    new_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
+    new_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
     pie_image_draw.ellipse((150, 150, 1950, 1950), fill=(255, 255, 255, 0))
 
     position = (1050, 1050)

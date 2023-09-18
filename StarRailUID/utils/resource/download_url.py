@@ -1,11 +1,11 @@
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 import aiofiles
-from gsuid_core.logger import logger
 from aiohttp.client import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError
+from gsuid_core.logger import logger
 
-from .RESOURCE_PATH import WIKI_PATH, GUIDE_PATH, RESOURCE_PATH
+from .RESOURCE_PATH import GUIDE_PATH, RESOURCE_PATH, WIKI_PATH
 
 PATHDICT = {
     'resource': RESOURCE_PATH,
@@ -20,7 +20,7 @@ async def download(
     resource_type: str,
     name: str,
 ) -> Optional[Tuple[str, str, str]]:
-    """
+    '''
     :说明:
       下载URL保存入目录
     :参数:
@@ -36,7 +36,7 @@ async def download(
         url: `str`
         resource_type: `str`
         name: `str`
-    """
+    '''
     async with ClientSession() as sess:
         return await download_file(url, res_type, resource_type, name, sess)
 
@@ -54,10 +54,10 @@ async def download_file(
         async with sess.get(url) as res:
             content = await res.read()
     except ClientConnectorError:
-        logger.warning(f"[cos]{name}下载失败")
+        logger.warning(f'[cos]{name}下载失败')
         return url, resource_type, name
     async with aiofiles.open(
-        PATHDICT[res_type] / resource_type / name, "wb"
+        PATHDICT[res_type] / resource_type / name, 'wb'
     ) as f:
         await f.write(content)
         return None

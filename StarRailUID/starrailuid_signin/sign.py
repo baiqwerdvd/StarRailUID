@@ -1,14 +1,14 @@
-import random
 import asyncio
+import random
 from copy import deepcopy
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
 from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
+from ..starrailuid_config.sr_config import srconfig
 from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
-from ..starrailuid_config.sr_config import srconfig
 
 private_msg_list = {}
 group_msg_list = {}
@@ -49,9 +49,9 @@ async def sign_in(sr_uid: str) -> str:
                 if core_plugins_config.get_config('CaptchaPass').data:
                     gt = sign_data['gt']
                     ch = sign_data['challenge']
-                    vl, ch = await mys_api._pass(
+                    vl, ch = await mys_api._pass(  # noqa: SLF001
                         gt, ch, Header
-                    )  # noqa: SLF001
+                    )
                     if vl:
                         delay = 1
                         Header['x-rpc-challenge'] = ch
@@ -78,7 +78,7 @@ async def sign_in(sr_uid: str) -> str:
             break
         # 重试超过阈值
         logger.warning('[SR签到] 超过请求阈值...')
-        return 'sr签到失败...出现验证码!\n' '请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到!'
+        return 'sr签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到!'
     # 签到失败
     else:
         im = 'sr签到失败!'

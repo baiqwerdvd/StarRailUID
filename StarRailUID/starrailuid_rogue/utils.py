@@ -2,11 +2,11 @@ from io import BytesIO
 from pathlib import Path
 from typing import TypeVar
 
-from PIL import Image
 from aiohttp import ClientSession
 from gsuid_core.data_store import get_res_path
+from PIL import Image
 
-T = TypeVar("T")
+T = TypeVar('T')
 
 ROLEINFO_PATH = get_res_path() / 'StarRailUID' / 'roleinfo'
 ROLEINFO_PATH.mkdir(parents=True, exist_ok=True)
@@ -21,6 +21,6 @@ async def get_icon(url: str) -> Image.Image:
         async with ClientSession() as client:
             async with client.get(url) as resp:
                 content = await resp.read()
-                with Path.open(path, "wb") as f:
+                with Path.open(path, 'wb') as f:
                     f.write(content)
-    return Image.open(BytesIO(content)).convert("RGBA")
+    return Image.open(BytesIO(content)).convert('RGBA')

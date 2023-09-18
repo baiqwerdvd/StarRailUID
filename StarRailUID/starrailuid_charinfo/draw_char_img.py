@@ -4,30 +4,14 @@ import textwrap
 from pathlib import Path
 from typing import Dict, Union
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
+from PIL import Image, ImageDraw
 
-from .to_data import api_to_dict
 from ..utils.error_reply import CHAR_HINT
-from .cal_damage import cal, cal_char_info
-from ..utils.fonts.first_world import fw_font_28
 from ..utils.excel.read_excel import light_cone_ranks
-from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
-from ..utils.map.SR_MAP_PATH import (
-    RelicId2Rarity,
-    AvatarRelicScore,
-    avatarId2Name,
-    avatarId2DamageType,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    RELIC_PATH,
-    SKILL_PATH,
-    PLAYER_PATH,
-    WEAPON_PATH,
-    CHAR_PORTRAIT_PATH,
-)
+from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import (
     sr_font_18,
     sr_font_20,
@@ -38,6 +22,22 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
+from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
+from ..utils.map.SR_MAP_PATH import (
+    AvatarRelicScore,
+    RelicId2Rarity,
+    avatarId2DamageType,
+    avatarId2Name,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    CHAR_PORTRAIT_PATH,
+    PLAYER_PATH,
+    RELIC_PATH,
+    SKILL_PATH,
+    WEAPON_PATH,
+)
+from .cal_damage import cal, cal_char_info
+from .to_data import api_to_dict
 
 Excel_path = Path(__file__).parent / 'effect'
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -45,7 +45,7 @@ with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 
-bg_img = Image.open(TEXT_PATH / "bg.png")
+bg_img = Image.open(TEXT_PATH / 'bg.png')
 white_color = (213, 213, 213)
 NUM_MAP = {0: '零', 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七'}
 
@@ -113,6 +113,8 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if damage_len > 0:
         bg_height = 48 * (1 + damage_len) + 48
     char_change = 0
+    msg_h = 0
+    para = []
     if '换' in msg or '拿' in msg or '带' in msg:
         char_change = 1
         para = textwrap.wrap(msg, width=45)
@@ -257,7 +259,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     critical_chance = (critical_chance + critical_chance_base) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 4),
-        "{:.1f}%".format(critical_chance),
+        f'{critical_chance:.1f}%',
         white_color,
         sr_font_26,
         'rm',
@@ -268,7 +270,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     critical_damage = (critical_damage + critical_damage_base) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 5),
-        "{:.1f}%".format(critical_damage),
+        f'{critical_damage:.1f}%',
         white_color,
         sr_font_26,
         'rm',
@@ -279,7 +281,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     )
     attr_bg_draw.text(
         (500, 31 + 48 * 6),
-        "{:.1f}%".format(status_probability_base),
+        f'{status_probability_base:.1f}%',
         white_color,
         sr_font_26,
         'rm',
@@ -288,7 +290,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     status_resistance_base = char.add_attr.get('StatusResistanceBase', 0) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 7),
-        "{:.1f}%".format(status_resistance_base),
+        f'{status_resistance_base:.1f}%',
         white_color,
         sr_font_26,
         'rm',
@@ -309,7 +311,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
             rank_img = (
                 Image.open(SKILL_PATH / f'{char.char_id}{RANK_MAP[rank + 1]}')
                 .resize((50, 50))
-                .convert("RGBA")
+                .convert('RGBA')
             )
             rank_img.putalpha(
                 rank_img.getchannel('A').point(
@@ -375,10 +377,10 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         )
         if hasattr(sr_font_34, 'getsize'):
             weapon_name_len = sr_font_34.getsize(  # type: ignore
-                char.equipment["equipmentName"]
+                char.equipment['equipmentName']
             )[0]
         else:
-            bbox = sr_font_34.getbbox(char.equipment["equipmentName"])
+            bbox = sr_font_34.getbbox(char.equipment['equipmentName'])
             weapon_name_len = bbox[2] - bbox[0]
         # 放阶
         rank_img = Image.open(TEXT_PATH / 'ImgNewBg.png')
@@ -436,9 +438,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         relic_score = 0
 
         for relic in char.char_relic:
-            rarity = RelicId2Rarity[str(relic["relicId"])]
+            rarity = RelicId2Rarity[str(relic['relicId'])]
             relic_img = Image.open(TEXT_PATH / f'yq_bg{rarity}.png')
-            if str(relic["SetId"])[0] == '3':
+            if str(relic['SetId'])[0] == '3':
                 relic_piece_img = Image.open(
                     RELIC_PATH / f'{relic["SetId"]}_{relic["Type"] - 5}.png'
                 )
@@ -448,7 +450,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 )
             relic_piece_new_img = relic_piece_img.resize(
                 (105, 105), Image.Resampling.LANCZOS
-            ).convert("RGBA")
+            ).convert('RGBA')
             relic_img.paste(
                 relic_piece_new_img, (200, 90), relic_piece_new_img
             )
@@ -477,7 +479,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
             main_level: int = relic['Level']
 
             if main_name in ['攻击力', '生命值', '防御力', '速度']:
-                mainValueStr = "{:.1f}".format(main_value)
+                mainValueStr = f'{main_value:.1f}'
             else:
                 mainValueStr = str(math.floor(main_value * 1000) / 10) + '%'
 
@@ -543,9 +545,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 single_relic_score += tmp_score
 
                 if subName in ['攻击力', '生命值', '防御力', '速度']:
-                    subValueStr = "{:.1f}".format(subValue)
+                    subValueStr = f'{subValue:.1f}'
                 else:
-                    subValueStr = "{:.1f}".format(subValue * 100) + '%'
+                    subValueStr = f'{subValue * 100:.1f}' + '%'
                 subNameStr = subName.replace('百分比', '').replace('元素', '')
                 # 副词条文字颜色
                 if tmp_score == 0:
@@ -583,7 +585,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
             )
 
             char_info.paste(
-                relic_img, RELIC_POS[str(relic["Type"])], relic_img
+                relic_img, RELIC_POS[str(relic['Type'])], relic_img
             )
             relic_score += single_relic_score
         if relic_score > 200:
@@ -689,7 +691,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if char_change == 1:
         char_img_draw.text(
             (525, 2022 + bg_height - msg_h),
-            '面板数据来源于：【面板替换】',
+            '面板数据来源于: 【面板替换】',
             (180, 180, 180),
             sr_font_26,
             'mm',
@@ -726,13 +728,13 @@ async def get_char_data(
 ) -> Union[Dict, str]:
     player_path = PLAYER_PATH / str(sr_uid)
     SELF_PATH = player_path / 'SELF'
-    if "开拓者" in str(char_name):
-        char_name = "开拓者"
+    if '开拓者' in str(char_name):
+        char_name = '开拓者'
     char_id = await name_to_avatar_id(char_name)
     if char_id == '':
         char_name = await alias_to_char_name(char_name)
     if char_name is False:
-        return "请输入正确的角色名"
+        return '请输入正确的角色名'
     char_path = player_path / f'{char_name}.json'
     char_self_path = SELF_PATH / f'{char_name}.json'
     path = Path()

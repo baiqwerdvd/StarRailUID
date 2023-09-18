@@ -3,7 +3,7 @@ from typing import Dict, List
 from gsuid_core.logger import logger
 
 from ..Base.AvatarBase import BaseAvatar, BaseAvatarBuff
-from ..Base.model import DamageInstanceSkill, DamageInstanceAvatar
+from ..Base.model import DamageInstanceAvatar, DamageInstanceSkill
 
 
 class Seele(BaseAvatar):
@@ -59,9 +59,9 @@ class JingYuan(BaseAvatar):
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('【神君】下回合的攻击段数大于等于6段，则其下回合的暴击伤害提高25%。')
+        logger.info('【神君】下回合的攻击段数大于等于6段, 则其下回合的暴击伤害提高25%。')
         self.extra_ability_attribute['CriticalDamageBase'] = 0.25
-        logger.info('施放战技后，暴击率提升10%')
+        logger.info('施放战技后, 暴击率提升10%')
         self.extra_ability_attribute['CriticalChanceBase'] = 0.1
 
 
@@ -118,7 +118,7 @@ class Danhengil(BaseAvatar):
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('对拥有虚数属性弱点的敌方目标造成伤害时，暴击伤害提高24%。')
+        logger.info('对拥有虚数属性弱点的敌方目标造成伤害时, 暴击伤害提高24%。')
         self.extra_ability_attribute['CriticalDamageBase'] = 0.24
 
 
@@ -276,7 +276,7 @@ class Yanqing(BaseAvatar):
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('触发暴击时，速度提高10%')
+        logger.info('触发暴击时, 速度提高10%')
         self.extra_ability_attribute['SpeedAddedRatio'] = 0.1
         logger.info('【智剑连心】增益')
         critical_damage_base_t = self.Talent_num('Talent_CD')
@@ -310,7 +310,7 @@ class Welt(BaseAvatar):
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('施放终结技时，有100%基础概率使目标受到的伤害提高12%，持续2回合。')
+        logger.info('施放终结技时, 有100%基础概率使目标受到的伤害提高12%, 持续2回合。')
         logger.info('对被弱点击破的敌方目标造成的伤害提高20')
         self.extra_ability_attribute['AllDamageAddedRatio'] = 0.32
 
@@ -340,7 +340,7 @@ class Himeko(BaseAvatar):
         logger.info('额外能力')
         logger.info('战技对灼烧状态下的敌方目标造成的伤害提高20%。')
         self.extra_ability_attribute['BPSkillDmgAdd'] = 0.2
-        logger.info('若当前生命值百分比大于等于80%，则暴击率提高15%。')
+        logger.info('若当前生命值百分比大于等于80%, 则暴击率提高15%。')
         self.extra_ability_attribute['CriticalChanceBase'] = 0.15
 
 
@@ -365,7 +365,7 @@ class Qingque(BaseAvatar):
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('施放强化普攻后，青雀的速度提高10%，持续1回合。')
+        logger.info('施放强化普攻后, 青雀的速度提高10%, 持续1回合。')
         self.extra_ability_attribute['SpeedAddedRatio'] = 0.1
         logger.info('默认4层战技加伤害')
         all_damage_added_ratio = self.BPSkill() + 0.1
@@ -405,9 +405,9 @@ class Jingliu(BaseAvatar):
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('【转魄】状态下，终结技造成的伤害提高20%。')
-        logger.info('【转魄】状态下，暴击率提高。')
-        logger.info('【转魄】状态下，攻击力提高。')
+        logger.info('【转魄】状态下, 终结技造成的伤害提高20%。')
+        logger.info('【转魄】状态下, 暴击率提高。')
+        logger.info('【转魄】状态下, 攻击力提高。')
         self.extra_ability_attribute['UltraDmgAdd'] = 0.2
         critical_chance_base = self.Talent_num('Talent_CC')
         self.extra_ability_attribute[

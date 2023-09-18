@@ -1,22 +1,22 @@
 import re
 
-from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.sv import SV
 from gsuid_core.utils.image.convert import convert_img
 
 from ..utils.map.name_covert import (
+    alias_to_char_name,
     name_to_avatar_id,
     name_to_weapon_id,
-    alias_to_char_name,
 )
 from ..utils.resource.RESOURCE_PATH import (
-    WIKI_ROLE_PATH,
-    WIKI_RELIC_PATH,
     GUIDE_CHARACTER_PATH,
-    WIKI_LIGHT_CONE_PATH,
     GUIDE_LIGHT_CONE_PATH,
+    WIKI_LIGHT_CONE_PATH,
     WIKI_MATERIAL_FOR_ROLE,
+    WIKI_RELIC_PATH,
+    WIKI_ROLE_PATH,
 )
 
 sv_sr_wiki = SV('星铁WIKI')
@@ -41,8 +41,8 @@ async def send_role_wiki_pic(bot: Bot, ev: Event):
 async def send_role_guide_pic(bot: Bot, ev: Event):
     char_name = ' '.join(re.findall('[\u4e00-\u9fa5]+', ev.text))
     await bot.logger.info(f'开始获取{char_name}图鉴')
-    if "开拓者" in str(char_name):
-        char_name = "开拓者"
+    if '开拓者' in str(char_name):
+        char_name = '开拓者'
     char_id = await name_to_avatar_id(char_name)
     if char_id == '':
         char_name = await alias_to_char_name(char_name)

@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union, TypedDict
+from typing import Any, Dict, List, TypedDict, Union
 
 ################
 # 抽卡记录相关 #

@@ -1,55 +1,55 @@
 import math
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.image_tools import (
-    get_qq_avatar,
     draw_pic_with_ring,
+    get_qq_avatar,
 )
+from PIL import Image, ImageDraw
 
-from .utils import get_icon
+from ..sruid_utils.api.mys.models import (
+    LocustBlocks,
+    RogueAvatar,
+    RogueBuffitems,
+    RogueMiracles,
+)
 from ..utils.convert import GsCookie
-from ..utils.image.convert import convert_img
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
     sr_font_34,
     sr_font_42,
 )
-from ..sruid_utils.api.mys.models import (
-    RogueAvatar,
-    LocustBlocks,
-    RogueMiracles,
-    RogueBuffitems,
-)
+from ..utils.image.convert import convert_img
+from .utils import get_icon
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 white_color = (255, 255, 255)
 gray_color = (175, 175, 175)
 img_bg = Image.open(TEXT_PATH / 'bg.jpg')
-level_cover = Image.open(TEXT_PATH / 'level_cover.png').convert("RGBA")
-char_bg_4 = Image.open(TEXT_PATH / 'char4_bg.png').convert("RGBA")
-char_bg_5 = Image.open(TEXT_PATH / 'char5_bg.png').convert("RGBA")
-content_center = Image.open(TEXT_PATH / 'center.png').convert("RGBA")
+level_cover = Image.open(TEXT_PATH / 'level_cover.png').convert('RGBA')
+char_bg_4 = Image.open(TEXT_PATH / 'char4_bg.png').convert('RGBA')
+char_bg_5 = Image.open(TEXT_PATH / 'char5_bg.png').convert('RGBA')
+content_center = Image.open(TEXT_PATH / 'center.png').convert('RGBA')
 
 elements = {
-    "ice": Image.open(TEXT_PATH / "IconNatureColorIce.png").convert("RGBA"),
-    "fire": Image.open(TEXT_PATH / "IconNatureColorFire.png").convert("RGBA"),
-    "imaginary": Image.open(
-        TEXT_PATH / "IconNatureColorImaginary.png"
-    ).convert("RGBA"),
-    "quantum": Image.open(TEXT_PATH / "IconNatureColorQuantum.png").convert(
-        "RGBA"
+    'ice': Image.open(TEXT_PATH / 'IconNatureColorIce.png').convert('RGBA'),
+    'fire': Image.open(TEXT_PATH / 'IconNatureColorFire.png').convert('RGBA'),
+    'imaginary': Image.open(
+        TEXT_PATH / 'IconNatureColorImaginary.png'
+    ).convert('RGBA'),
+    'quantum': Image.open(TEXT_PATH / 'IconNatureColorQuantum.png').convert(
+        'RGBA'
     ),
-    "lightning": Image.open(TEXT_PATH / "IconNatureColorThunder.png").convert(
-        "RGBA"
+    'lightning': Image.open(TEXT_PATH / 'IconNatureColorThunder.png').convert(
+        'RGBA'
     ),
-    "wind": Image.open(TEXT_PATH / "IconNatureColorWind.png").convert("RGBA"),
-    "physical": Image.open(TEXT_PATH / "IconNaturePhysical.png").convert(
-        "RGBA"
+    'wind': Image.open(TEXT_PATH / 'IconNatureColorWind.png').convert('RGBA'),
+    'physical': Image.open(TEXT_PATH / 'IconNaturePhysical.png').convert(
+        'RGBA'
     ),
 }
 
@@ -304,17 +304,15 @@ async def draw_rogue_img(
             return '世界不能大于第七世界!'
         if floor not in detail_list:
             return '你还没有挑战该模拟宇宙!'
-    else:
-        if schedule_type == '3':
-            if raw_rogue_data['current_record']['basic']['finish_cnt'] == 0:
-                return '你还没有挑战本期模拟宇宙!\n' '可以使用[sr上期模拟宇宙]命令查询上期~'
-        else:
-            if raw_rogue_data['last_record']['basic']['finish_cnt'] == 0:
-                return '你还没有挑战上期模拟宇宙!\n' '可以使用[sr模拟宇宙]命令查询本期~'
+    elif schedule_type == '3':
+        if raw_rogue_data['current_record']['basic']['finish_cnt'] == 0:
+            return '你还没有挑战本期模拟宇宙!\n可以使用[sr上期模拟宇宙]命令查询上期~'
+    elif raw_rogue_data['last_record']['basic']['finish_cnt'] == 0:
+        return '你还没有挑战上期模拟宇宙!\n可以使用[sr模拟宇宙]命令查询本期~'
 
     # 获取背景图片各项参数
     based_w = 900
-    img = Image.new("RGB", (based_w, based_h), (10, 18, 49))
+    img = Image.new('RGB', (based_w, based_h), (10, 18, 49))
     img.paste(img_bg, (0, 0))
     # img = img.crop((0, 0, based_w, based_h))
     rogue_title = Image.open(TEXT_PATH / 'head.png')
@@ -389,31 +387,31 @@ async def draw_rogue_img(
     for index_floor, detail in enumerate(rogue_detail):
         if floor:
             if floor == detail['progress']:
-                index_floor = 0
+                index_floor = 0  # noqa: PLW2901
             else:
                 continue
 
         if detail['detail_h'] is None:
             continue
 
-        floor_pic = Image.open(TEXT_PATH / 'detail_bg.png').convert("RGBA")
+        floor_pic = Image.open(TEXT_PATH / 'detail_bg.png').convert('RGBA')
         floor_pic = floor_pic.resize((900, detail['detail_h']))
 
         floor_top_pic = Image.open(TEXT_PATH / 'floor_bg_top.png').convert(
-            "RGBA"
+            'RGBA'
         )
         floor_pic.paste(floor_top_pic, (0, 0), floor_top_pic)
 
         floor_center_pic = Image.open(
             TEXT_PATH / 'floor_bg_center.png'
-        ).convert("RGBA")
+        ).convert('RGBA')
         floor_center_pic = floor_center_pic.resize(
             (900, detail['detail_h'] - 170)
         )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
         floor_bot_pic = Image.open(TEXT_PATH / 'floor_bg_bot.png').convert(
-            "RGBA"
+            'RGBA'
         )
         floor_pic.paste(
             floor_bot_pic, (0, detail['detail_h'] - 70), floor_bot_pic
@@ -602,7 +600,7 @@ async def draw_rogue_locust_img(
 
     # 获取背景图片各项参数
     based_w = 900
-    img = Image.new("RGB", (based_w, based_h), (10, 18, 49))
+    img = Image.new('RGB', (based_w, based_h), (10, 18, 49))
     img.paste(img_bg, (0, 0))
     # img = img.crop((0, 0, based_w, based_h))
     rogue_title = Image.open(TEXT_PATH / 'head.png')
@@ -674,28 +672,28 @@ async def draw_rogue_locust_img(
         'mm',
     )
 
-    for index_floor, detail in enumerate(rogue_detail):
+    for _, detail in enumerate(rogue_detail):
         if detail['detail_h'] is None:
             continue
 
-        floor_pic = Image.open(TEXT_PATH / 'detail_bg.png').convert("RGBA")
+        floor_pic = Image.open(TEXT_PATH / 'detail_bg.png').convert('RGBA')
         floor_pic = floor_pic.resize((900, detail['detail_h']))
 
         floor_top_pic = Image.open(TEXT_PATH / 'floor_bg_top.png').convert(
-            "RGBA"
+            'RGBA'
         )
         floor_pic.paste(floor_top_pic, (0, 0), floor_top_pic)
 
         floor_center_pic = Image.open(
             TEXT_PATH / 'floor_bg_center.png'
-        ).convert("RGBA")
+        ).convert('RGBA')
         floor_center_pic = floor_center_pic.resize(
             (900, detail['detail_h'] - 170)
         )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
         floor_bot_pic = Image.open(TEXT_PATH / 'floor_bg_bot.png').convert(
-            "RGBA"
+            'RGBA'
         )
         floor_pic.paste(
             floor_bot_pic, (0, detail['detail_h'] - 70), floor_bot_pic
@@ -723,7 +721,7 @@ async def draw_rogue_locust_img(
             sr_font_22,
             'lm',
         )
-        if detail["fury"]["type"] == 1:
+        if detail['fury']['type'] == 1:
             floor_pic_draw.text(
                 (800, 120),
                 f'扰动等级:{detail["fury"]["point"]}',

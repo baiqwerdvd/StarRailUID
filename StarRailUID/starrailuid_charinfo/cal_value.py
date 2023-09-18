@@ -1,5 +1,5 @@
+from ..utils.excel.model import RelicMainAffixConfig, RelicSubAffixConfig
 from ..utils.map.SR_MAP_PATH import RelicId2MainAffixGroup
-from ..utils.excel.model import RelicSubAffixConfig, RelicMainAffixConfig
 
 
 async def cal_relic_main_affix(

@@ -2,12 +2,12 @@ from typing import List, Union
 
 from gsuid_core.logger import logger
 
-from .Avatar.Avatar import Avatar
-from .Weapon.Weapon import Weapon
-from .utils import merge_attribute
 from ..mono.Character import Character
+from .Avatar.Avatar import Avatar
 from .Base.model import DamageInstance
 from .Relic.Relic import RelicSet, SingleRelic
+from .utils import merge_attribute
+from .Weapon.Weapon import Weapon
 
 
 class RoleInstance:
@@ -153,21 +153,20 @@ class RoleInstance:
                     skill_multiplier = skill_multiplier + 0.9
                 else:
                     skill_multiplier = skill_multiplier + 0.3
+        elif self.raw_data.avatar.id_ in [1213, 1201]:
+            skill_multiplier = self.avatar.Normalnum(skill_type)
+            skill_type = 'Normal'
+        elif self.raw_data.avatar.id_ == 1005:
+            skill_multiplier = self.avatar.Ultra_num(skill_type)
+            if self.raw_data.avatar.rank >= 6:
+                skill_multiplier = skill_multiplier + 1.56
+        elif self.raw_data.avatar.id_ == 1205:
+            skill_multiplier = self.avatar.Normalnum(skill_type)
+        elif self.raw_data.avatar.id_ == 1212:
+            skill_multiplier = self.avatar.BPSkill_num(skill_type)
+            skill_type = 'BPSkill'
         else:
-            if self.raw_data.avatar.id_ in [1213, 1201]:
-                skill_multiplier = self.avatar.Normalnum(skill_type)
-                skill_type = 'Normal'
-            elif self.raw_data.avatar.id_ == 1005:
-                skill_multiplier = self.avatar.Ultra_num(skill_type)
-                if self.raw_data.avatar.rank >= 6:
-                    skill_multiplier = skill_multiplier + 1.56
-            elif self.raw_data.avatar.id_ == 1205:
-                skill_multiplier = self.avatar.Normalnum(skill_type)
-            elif self.raw_data.avatar.id_ == 1212:
-                skill_multiplier = self.avatar.BPSkill_num(skill_type)
-                skill_type = 'BPSkill'
-            else:
-                raise Exception('skill type error')
+            raise Exception('skill type error')
 
         logger.info(f'技能区总: {skill_multiplier}')
 
@@ -201,7 +200,7 @@ class RoleInstance:
             # 攻击加成
             if attr.__contains__('AttackAddedRatio'):
                 attr_name = attr.split('AttackAddedRatio')[0]
-                if attr_name == skill_type or attr_name == skill_info[3]:
+                if attr_name in (skill_type, skill_info[3]):
                     attack_added_ratio = self.attribute_bonus.get(
                         'AttackAddedRatio', 0
                     )
@@ -211,7 +210,7 @@ class RoleInstance:
             # 效果命中加成
             if attr.__contains__('StatusProbabilityBase'):
                 attr_name = attr.split('StatusProbabilityBase')[0]
-                if attr_name == skill_type or attr_name == skill_info[3]:
+                if attr_name in (skill_type, skill_info[3]):
                     status_probability = self.attribute_bonus.get(
                         'StatusProbabilityBase', 0
                     )
@@ -303,10 +302,7 @@ class RoleInstance:
             for attr in merged_attr:
                 if attr.__contains__('ResistancePenetration'):
                     attr_name = attr.split('ResistancePenetration')[0]
-                    if (
-                        attr_name == self.avatar.avatar_element
-                        or attr_name == 'AllDamage'
-                    ):
+                    if attr_name in (self.avatar.avatar_element, 'AllDamage'):
                         # 先默认触发
                         enemy_status_resistance = merged_attr[attr]
             resistance_area = 1.0 - (0 - enemy_status_resistance)
@@ -345,7 +341,7 @@ class RoleInstance:
             for attr in merged_attr:
                 if attr.__contains__('DmgAdd'):
                     attr_name = attr.split('DmgAdd')[0]
-                    if attr_name == skill_type or attr_name == skill_info[3]:
+                    if attr_name in (skill_type, skill_info[3]):
                         logger.info(
                             f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 伤害加成'
                         )
@@ -356,10 +352,7 @@ class RoleInstance:
             for attr in merged_attr:
                 if attr.__contains__('AddedRatio'):
                     attr_name = attr.split('AddedRatio')[0]
-                    if (
-                        attr_name == self.avatar.avatar_element
-                        or attr_name == 'AllDamage'
-                    ):
+                    if attr_name in (self.avatar.avatar_element, 'AllDamage'):
                         logger.info(
                             f'{attr} 对 {self.avatar.avatar_element} '
                             f'有 {merged_attr[attr]} 伤害加成'
@@ -378,7 +371,7 @@ class RoleInstance:
             for attr in merged_attr:
                 if attr.__contains__('_DmgRatio'):
                     skill_name = attr.split('_')[0]
-                    if skill_name == skill_type or skill_name == skill_info[3]:
+                    if skill_name in (skill_type, skill_info[3]):
                         logger.info(
                             f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 易伤加成'
                         )
@@ -398,10 +391,7 @@ class RoleInstance:
                 for attr in merged_attr:
                     if attr.__contains__('_CriticalDamageBase'):
                         skill_name = attr.split('_')[0]
-                        if (
-                            skill_name == skill_type
-                            or skill_name == skill_info[3]
-                        ):
+                        if skill_name in (skill_type, skill_info[3]):
                             logger.info(
                                 f'{attr} 对 {skill_type} 有 '
                                 f'{merged_attr[attr]} 爆伤加成'
@@ -418,7 +408,7 @@ class RoleInstance:
             for attr in merged_attr:
                 if attr.__contains__('_CriticalChance'):
                     skill_name = attr.split('_')[0]
-                    if skill_name == skill_type or skill_name == skill_info[3]:
+                    if skill_name in (skill_type, skill_info[3]):
                         logger.info(
                             f'{attr} 对 {skill_type} 有 '
                             f'{merged_attr[attr]} 暴击加成'

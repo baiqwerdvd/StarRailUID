@@ -1,18 +1,16 @@
 from pathlib import Path
-from typing import Union, Optional
+from typing import Optional, Union
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.image_tools import (
-    get_qq_avatar,
     draw_pic_with_ring,
+    get_qq_avatar,
 )
+from PIL import Image, ImageDraw
 
-from .utils import get_icon
-from ..utils.convert import GsCookie
-from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import AbyssAvatar
+from ..utils.convert import GsCookie
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
@@ -20,6 +18,8 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_42,
 )
+from ..utils.image.convert import convert_img
+from .utils import get_icon
 
 abyss_list = {
     '1': '琥珀恩赐其一',
@@ -38,28 +38,28 @@ TEXT_PATH = Path(__file__).parent / 'texture2D'
 white_color = (255, 255, 255)
 gray_color = (175, 175, 175)
 img_bg = Image.open(TEXT_PATH / 'bg.jpg')
-level_cover = Image.open(TEXT_PATH / 'level_cover.png').convert("RGBA")
-char_bg_4 = Image.open(TEXT_PATH / 'char4_bg.png').convert("RGBA")
-char_bg_5 = Image.open(TEXT_PATH / 'char5_bg.png').convert("RGBA")
+level_cover = Image.open(TEXT_PATH / 'level_cover.png').convert('RGBA')
+char_bg_4 = Image.open(TEXT_PATH / 'char4_bg.png').convert('RGBA')
+char_bg_5 = Image.open(TEXT_PATH / 'char5_bg.png').convert('RGBA')
 
-star_yes = Image.open(TEXT_PATH / 'star.png').convert("RGBA")
-star_gray = Image.open(TEXT_PATH / 'star_gray.png').convert("RGBA")
+star_yes = Image.open(TEXT_PATH / 'star.png').convert('RGBA')
+star_gray = Image.open(TEXT_PATH / 'star_gray.png').convert('RGBA')
 
 elements = {
-    "ice": Image.open(TEXT_PATH / "IconNatureColorIce.png").convert("RGBA"),
-    "fire": Image.open(TEXT_PATH / "IconNatureColorFire.png").convert("RGBA"),
-    "imaginary": Image.open(
-        TEXT_PATH / "IconNatureColorImaginary.png"
-    ).convert("RGBA"),
-    "quantum": Image.open(TEXT_PATH / "IconNatureColorQuantum.png").convert(
-        "RGBA"
+    'ice': Image.open(TEXT_PATH / 'IconNatureColorIce.png').convert('RGBA'),
+    'fire': Image.open(TEXT_PATH / 'IconNatureColorFire.png').convert('RGBA'),
+    'imaginary': Image.open(
+        TEXT_PATH / 'IconNatureColorImaginary.png'
+    ).convert('RGBA'),
+    'quantum': Image.open(TEXT_PATH / 'IconNatureColorQuantum.png').convert(
+        'RGBA'
     ),
-    "lightning": Image.open(TEXT_PATH / "IconNatureColorThunder.png").convert(
-        "RGBA"
+    'lightning': Image.open(TEXT_PATH / 'IconNatureColorThunder.png').convert(
+        'RGBA'
     ),
-    "wind": Image.open(TEXT_PATH / "IconNatureColorWind.png").convert("RGBA"),
-    "physical": Image.open(TEXT_PATH / "IconNaturePhysical.png").convert(
-        "RGBA"
+    'wind': Image.open(TEXT_PATH / 'IconNatureColorWind.png').convert('RGBA'),
+    'physical': Image.open(TEXT_PATH / 'IconNaturePhysical.png').convert(
+        'RGBA'
     ),
 }
 
@@ -234,7 +234,7 @@ async def draw_abyss_img(
     for index_floor, level in enumerate(raw_abyss_data['all_floor_detail']):
         if floor:
             if abyss_list[str(floor)] == level['name']:
-                index_floor = 0
+                index_floor = 0  # noqa: PLW2901
             else:
                 continue
         elif index_floor >= 3:

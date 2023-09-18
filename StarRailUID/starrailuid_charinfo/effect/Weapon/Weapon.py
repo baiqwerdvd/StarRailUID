@@ -1,9 +1,9 @@
 import json
-from typing import Dict
 from pathlib import Path
+from typing import Dict
 
-from ..Base.WeaponBase import BaseWeapon
 from ..Base.model import DamageInstanceWeapon
+from ..Base.WeaponBase import BaseWeapon
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:
@@ -65,7 +65,7 @@ class Swordplay(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者多次击中同一敌方目标时，每次造成的伤害提高8%，该效果最多叠加5层
+        # 当装备者多次击中同一敌方目标时, 每次造成的伤害提高8%, 该效果最多叠加5层
         return True
 
     async def weapon_ability(
@@ -392,7 +392,7 @@ class SeriousnessofBreakfast(BaseWeapon):
 
     async def check(self):
         # 使装备者造成伤害提高12%
-        # 每消灭1个敌方目标，装备者的攻击力提高4%，该效果最多叠加3层。
+        # 每消灭1个敌方目标, 装备者的攻击力提高4%, 该效果最多叠加3层。
         return True
 
     async def weapon_ability(
@@ -427,8 +427,8 @@ class NightontheMilkyWay(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 场上每有1个敌方目标，使装备者的攻击力提高9%
-        # 敌方目标的弱点被击破时，装备者造成的伤害提高30%
+        # 场上每有1个敌方目标, 使装备者的攻击力提高9%
+        # 敌方目标的弱点被击破时, 装备者造成的伤害提高30%
         return True
 
     async def weapon_ability(
@@ -466,7 +466,7 @@ class TodayIsAnotherPeacefulDay(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 根据装备者的能量上限，提高装备者造成的伤害：每点能量提高0.2%，最多计入160点
+        # 根据装备者的能量上限, 提高装备者造成的伤害: 每点能量提高0.2%, 最多计入160点
         pass
 
     async def weapon_ability(
@@ -494,7 +494,7 @@ class GeniusesRepose(BaseWeapon):
 
     async def check(self):
         # 使装备者攻击力提高16%
-        # 当装备者消灭敌方目标后，暴击伤害提高24%
+        # 当装备者消灭敌方目标后, 暴击伤害提高24%
         return True
 
     async def weapon_ability(
@@ -546,7 +546,7 @@ class TheBirthoftheSelf(BaseWeapon):
 
     async def check(self):
         # 追加攻击造成的伤害提高30%
-        # 若该敌方目标当前生命值百分比小于等于50%，则追加攻击造成的伤害额外提高30%。
+        # 若该敌方目标当前生命值百分比小于等于50%, 则追加攻击造成的伤害额外提高30%。
         return True
 
     async def weapon_ability(
@@ -606,7 +606,7 @@ class BrighterThantheSun(BaseWeapon):
 
     async def check(self):
         # 使装备者的暴击率提高18%
-        # 当装备者施放普攻时，获得1层【龙吟】，持续2回合。
+        # 当装备者施放普攻时, 获得1层【龙吟】, 持续2回合。
         # 每层【龙吟】使装备者的攻击力提高18%,【龙吟】最多叠加2层
         return True
 
@@ -635,8 +635,8 @@ class TheUnreachableSide(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者的暴击率提高30%，生命上限提高30%
-        # 当装备者受到攻击或装备者消耗自身生命值后，造成的伤害提高40%
+        # 装备者的暴击率提高30%, 生命上限提高30%
+        # 当装备者受到攻击或装备者消耗自身生命值后, 造成的伤害提高40%
         return True
 
     async def weapon_ability(
@@ -667,7 +667,7 @@ class SomethingIrreplaceable(BaseWeapon):
 
     async def check(self):
         # 使装备者的攻击力提高24%
-        # 当装备者消灭敌方目标或受到攻击后，造成的伤害提高24%
+        # 当装备者消灭敌方目标或受到攻击后, 造成的伤害提高24%
         return True
 
     async def weapon_ability(
@@ -697,8 +697,8 @@ class OntheFallofanAeon(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者施放攻击时，使装备者本场战斗中的攻击力提高8%，该效果最多叠加4层
-        # 当装备者击破敌方目标弱点后，造成的伤害提高12%
+        # 当装备者施放攻击时, 使装备者本场战斗中的攻击力提高8%, 该效果最多叠加4层
+        # 当装备者击破敌方目标弱点后, 造成的伤害提高12%
         return True
 
     async def weapon_ability(
@@ -753,7 +753,7 @@ class NowheretoRun(BaseWeapon):
         return attribute_bonus
 
 
-# 汪！散步时间！
+# 汪! 散步时间!
 class WoofWalkTime(BaseWeapon):
     weapon_base_attributes: Dict
 
@@ -799,7 +799,7 @@ class UndertheBlueSky(BaseWeapon):
 
     async def check(self):
         # 使装备者攻击力提高16%
-        # 当装备者消灭敌方目标后，暴击率提高12%
+        # 当装备者消灭敌方目标后, 暴击率提高12%
         return True
 
     async def weapon_ability(
@@ -833,7 +833,7 @@ class TheMolesWelcomeYou(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者施放普攻、战技或终结技攻击敌方目标后，
+        # 装备者施放普攻、战技或终结技攻击敌方目标后,
         # 分别获取一层【淘气值】。每层使装备者的攻击力提高12%。
         return True
 
@@ -862,7 +862,7 @@ class IncessantRain(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者对同时处于大于等于3个负面效果的敌方目标造成伤害时，暴击率提高12%
+        # 当装备者对同时处于大于等于3个负面效果的敌方目标造成伤害时, 暴击率提高12%
         # 持有【以太编码】的目标受到的伤害提高12%
         return True
 
@@ -899,7 +899,7 @@ class PatienceIsAllYouNeed(BaseWeapon):
 
     async def check(self):
         # 使装备者造成的伤害提高24%
-        # 装备者每次施放攻击后，速度提高4.8%，最多叠加3层。
+        # 装备者每次施放攻击后, 速度提高4.8%, 最多叠加3层。
         return True
 
     async def weapon_ability(
@@ -938,8 +938,8 @@ class IntheNameoftheWorld(BaseWeapon):
 
     async def check(self):
         # 使装备者对陷入负面效果的敌方目标造成的伤害提高24%
-        # 当装备者施放战技时，装备者此次攻击的效果命中提高18%
-        # 当装备者施放战技时，装备者此次攻击的攻击力提高24%。
+        # 当装备者施放战技时, 装备者此次攻击的效果命中提高18%
+        # 当装备者施放战技时, 装备者此次攻击的攻击力提高24%。
         return True
 
     async def weapon_ability(
@@ -990,7 +990,7 @@ class SolitaryHealing(BaseWeapon):
 
     async def check(self):
         # 使装备者的击破特攻提高20%
-        # 装备者施放终结技时，使装备者造成的持续伤害提高24%
+        # 装备者施放终结技时, 使装备者造成的持续伤害提高24%
         pass
 
     async def weapon_ability(
@@ -1010,7 +1010,7 @@ class BeforetheTutorialMissionStarts(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者攻击防御力被降低的敌方目标后，恢复4点能量。
+        # 当装备者攻击防御力被降低的敌方目标后, 恢复4点能量。
         pass
 
     async def weapon_ability(
@@ -1030,7 +1030,7 @@ class WeWillMeetAgain(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者施放普攻或战技后，
+        # 装备者施放普攻或战技后,
         # 对随机1个受到攻击的敌方目标造成等同于自身48%攻击力的附加伤害。
         pass
 
@@ -1129,7 +1129,7 @@ class GoodNightandSleepWell(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 敌方目标每承受1个负面效果，装备者对其造成的伤害提高12%，最多叠加3层
+        # 敌方目标每承受1个负面效果, 装备者对其造成的伤害提高12%, 最多叠加3层
         return True
 
     async def weapon_ability(
@@ -1159,7 +1159,7 @@ class SheAlreadyShutHerEyes(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者的生命值降低时，使我方全体造成的伤害提高15%
+        # 当装备者的生命值降低时, 使我方全体造成的伤害提高15%
         return True
 
     async def weapon_ability(
@@ -1189,7 +1189,7 @@ class MomentofVictory(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者受到攻击后，防御力额外提高24%
+        # 当装备者受到攻击后, 防御力额外提高24%
         return True
 
     async def weapon_ability(
@@ -1237,7 +1237,7 @@ class ThisIsMe(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者施放终结技时造成的伤害值提高，提高数值等同于装备者防御力的60%
+        # 装备者施放终结技时造成的伤害值提高, 提高数值等同于装备者防御力的60%
         pass
 
     async def weapon_ability(
@@ -1257,7 +1257,7 @@ class WeAreWildfire(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 战斗开始时，使我方全体受到的伤害降低8%
+        # 战斗开始时, 使我方全体受到的伤害降低8%
         pass
 
     async def weapon_ability(
@@ -1277,7 +1277,7 @@ class TrendoftheUniversalMarket(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者受到攻击后，有100%的基础概率使敌方目标陷入灼烧状态，
+        # 当装备者受到攻击后, 有100%的基础概率使敌方目标陷入灼烧状态,
         # 每回合造成等同于装备者40%防御力的持续伤害
         pass
 
@@ -1298,7 +1298,7 @@ class LandausChoice(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者受到攻击的概率提高，同时受到的伤害降低16%。
+        # 装备者受到攻击的概率提高, 同时受到的伤害降低16%。
         pass
 
     async def weapon_ability(
@@ -1318,7 +1318,7 @@ class DayOneofMyNewLife(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 进入战斗后，使我方全体的全属性抗性提高8%
+        # 进入战斗后, 使我方全体的全属性抗性提高8%
         pass
 
     async def weapon_ability(
@@ -1338,7 +1338,7 @@ class Pioneering(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 进入战斗后，使我方全体的全属性抗性提高8%
+        # 进入战斗后, 使我方全体的全属性抗性提高8%
         pass
 
     async def weapon_ability(
@@ -1358,7 +1358,7 @@ class Defense(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 进入战斗后，使我方全体的全属性抗性提高8%
+        # 进入战斗后, 使我方全体的全属性抗性提高8%
         pass
 
     async def weapon_ability(
@@ -1378,7 +1378,7 @@ class Amber(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者当前生命值百分比小于50%时，其防御力额外提高16%。
+        # 当装备者当前生命值百分比小于50%时, 其防御力额外提高16%。
         return True
 
     async def weapon_ability(
@@ -1406,7 +1406,7 @@ class MutualDemise(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者当前生命值百分比小于80%时，暴击率提高12%
+        # 装备者当前生命值百分比小于80%时, 暴击率提高12%
         return True
 
     async def weapon_ability(
@@ -1492,7 +1492,7 @@ class HiddenShadow(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 施放战技后，使装备者的下一次普攻对敌方目标造成等同于自身60%攻击力的附加伤害。
+        # 施放战技后, 使装备者的下一次普攻对敌方目标造成等同于自身60%攻击力的附加伤害。
         pass
 
     async def weapon_ability(
@@ -1542,7 +1542,7 @@ class Void(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 战斗开始时，使装备者的效果命中提高20%，持续3回合。
+        # 战斗开始时, 使装备者的效果命中提高20%, 持续3回合。
         return True
 
     async def weapon_ability(
@@ -1572,7 +1572,7 @@ class Sagacity(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者施放终结技时，攻击力提高24%，持续2回合。
+        # 当装备者施放终结技时, 攻击力提高24%, 持续2回合。
         return True
 
     async def weapon_ability(
@@ -1646,9 +1646,9 @@ class Thisbodyisasword(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当队友受到攻击或消耗生命值后，装备者获得1层【月蚀】，
+        # 当队友受到攻击或消耗生命值后, 装备者获得1层【月蚀】,
         # 最多叠加3层。每层【月蚀】使装备者下一次攻击造成的伤害提高14%。
-        # 叠满3层时，额外使该次攻击无视目标12%的防御力。该效果在装备者施放攻击后解除。
+        # 叠满3层时, 额外使该次攻击无视目标12%的防御力。该效果在装备者施放攻击后解除。
         pass
 
     async def weapon_ability(
@@ -1673,11 +1673,11 @@ class Thisbodyisasword(BaseWeapon):
         attribute_bonus[
             'AllResistancePenetration'
         ] = resistance_penetration + (
-            (
+
                 weapon_effect['23014']['Param']['ResistancePenetration'][
                     self.weapon_rank - 1
                 ]
-            )
+
         )
 
         return attribute_bonus
@@ -1859,5 +1859,4 @@ class Weapon:
             if weapon.id_ == 20000:
                 return Arrows(weapon)
             raise ValueError(f'未知武器id: {weapon.id_}')
-        else:
-            raise ValueError(f'不支持的武器种类: {weapon.id_}')
+        raise ValueError(f'不支持的武器种类: {weapon.id_}')
