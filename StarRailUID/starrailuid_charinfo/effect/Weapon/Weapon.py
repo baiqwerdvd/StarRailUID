@@ -220,7 +220,6 @@ class RiverFlowsinSpring(BaseWeapon):
             return attribute_bonus
         return attribute_bonus
 
-
 class OnlySilenceRemains(BaseWeapon):
     weapon_base_attributes: Dict
 
@@ -1658,7 +1657,6 @@ class Thisbodyisasword(BaseWeapon):
 
         return attribute_bonus
 
-
 # 如泥酣眠
 class SleepLiketheDead(BaseWeapon):
     weapon_base_attributes: Dict
@@ -1667,7 +1665,7 @@ class SleepLiketheDead(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者的普攻或战技伤害未造成暴击时, 使自身暴击率提高36%
+        # 当装备者的普攻或战技伤害未造成暴击时,使自身暴击率提高36%
         return True
 
     async def weapon_ability(
@@ -1685,7 +1683,6 @@ class SleepLiketheDead(BaseWeapon):
                 ]
             )
         return attribute_bonus
-
 
 class Weapon:
     @classmethod

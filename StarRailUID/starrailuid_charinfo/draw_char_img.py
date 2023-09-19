@@ -422,12 +422,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         desctexty = 115
         for desctext in desclist:
             desctexty = draw_text_by_line(
-                weapon_bg,
-                (210, desctexty),
-                desctext,
-                sr_font_24,
-                '#F9F9F9',
-                370,
+                weapon_bg, (210, desctexty), desctext, sr_font_24, '#F9F9F9', 370
             )
             desctexty += 28
         char_info.paste(weapon_bg, (0, 855), weapon_bg)
