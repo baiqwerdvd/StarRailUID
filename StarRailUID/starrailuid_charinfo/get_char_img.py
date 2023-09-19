@@ -20,8 +20,6 @@ from ..utils.map.SR_MAP_PATH import (
     EquipmentID2Rarity,
     rankId2Name,
     avatarId2Name,
-    avatarId2EnName,
-    avatarId2DamageType,
 )
 
 WEAPON_TO_INT = {
@@ -109,7 +107,11 @@ async def get_char_args(
             continue
 
         if '遗器' in part:
-            char_data = await get_fake_char_data(char_data, part.replace('遗器', '').replace(changeuid, ''), changeuid)
+            char_data = await get_fake_char_data(
+                char_data,
+                part.replace('遗器', '').replace(changeuid, ''),
+                changeuid,
+            )
             if isinstance(char_data, str):
                 return char_data
         else:
@@ -240,6 +242,7 @@ async def get_rank_list(
         rankTemp['rankName'] = rankId2Name[str(rank_id)]
         rank_temp.append(rankTemp)
     return rank_temp
+
 
 async def get_char(
     char_data: dict,

@@ -1680,6 +1680,7 @@ class Thisbodyisasword(BaseWeapon):
 
         return attribute_bonus
 
+
 # 如泥酣眠
 class SleepLiketheDead(BaseWeapon):
     weapon_base_attributes: Dict
@@ -1706,6 +1707,7 @@ class SleepLiketheDead(BaseWeapon):
                 ]
             )
         return attribute_bonus
+
 
 class Weapon:
     @classmethod
