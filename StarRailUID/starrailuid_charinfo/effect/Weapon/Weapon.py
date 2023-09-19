@@ -220,6 +220,7 @@ class RiverFlowsinSpring(BaseWeapon):
             return attribute_bonus
         return attribute_bonus
 
+
 class OnlySilenceRemains(BaseWeapon):
     weapon_base_attributes: Dict
 
