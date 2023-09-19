@@ -220,29 +220,6 @@ class RiverFlowsinSpring(BaseWeapon):
             return attribute_bonus
         return attribute_bonus
 
-
-class SleepLiketheDead(BaseWeapon):
-    weapon_base_attributes: Dict
-
-    def __init__(self, weapon: DamageInstanceWeapon):
-        super().__init__(weapon)
-
-    async def check(self):
-        # 当装备者的普攻或战技伤害未造成暴击时,使自身暴击率提高36%,持续1回合。
-        # 该效果每3回合可以触发1次。
-        return True
-
-    async def weapon_ability(
-        self,
-        Ultra_Use: float,
-        base_attr: Dict[str, float],
-        attribute_bonus: Dict[str, float],
-    ):
-        if await self.check():
-            return attribute_bonus
-        return attribute_bonus
-
-
 class OnlySilenceRemains(BaseWeapon):
     weapon_base_attributes: Dict
 
