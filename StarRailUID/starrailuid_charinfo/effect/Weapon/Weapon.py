@@ -1689,7 +1689,7 @@ class SleepLiketheDead(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者的普攻或战技伤害未造成暴击时，使自身暴击率提高36%
+        # 当装备者的普攻或战技伤害未造成暴击时, 使自身暴击率提高36%
         return True
 
     async def weapon_ability(
