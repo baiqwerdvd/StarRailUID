@@ -418,10 +418,14 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
             desc = desc.replace(f'#{i + 1}[f1]%', f'{temp!s}%')
         for i in range(len(desc_params)):
             desc = desc.replace(f'#{i + 1}[i]', str(desc_params[i]))
-        draw_text_by_line(
-            weapon_bg, (210, 115), desc, sr_font_24, '#F9F9F9', 350
-        )
-        char_info.paste(weapon_bg, (-10, 870), weapon_bg)
+        desclist = desc.split()
+        desctexty = 115
+        for desctext in desclist:
+            desctexty = draw_text_by_line(
+                weapon_bg, (210, desctexty), desctext, sr_font_24, '#F9F9F9', 370
+            )
+            desctexty += 28
+        char_info.paste(weapon_bg, (0, 855), weapon_bg)
     else:
         char_img_draw.text(
             (525, 1005),

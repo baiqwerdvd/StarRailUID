@@ -1680,6 +1680,32 @@ class Thisbodyisasword(BaseWeapon):
 
         return attribute_bonus
 
+# 如泥酣眠
+class SleepLiketheDead(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者的普攻或战技伤害未造成暴击时，使自身暴击率提高36%
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
+            attribute_bonus['CriticalChanceBase'] = (
+                critical_chance_base
+                + weapon_effect['23012']['Param']['CriticalChance'][
+                    self.weapon_rank - 1
+                ]
+            )
+        return attribute_bonus
 
 class Weapon:
     @classmethod
@@ -1744,6 +1770,8 @@ class Weapon:
             20006,
             23014,
         ]:
+            if weapon.id_ == 23012:
+                return SleepLiketheDead(weapon)
             if weapon.id_ == 23014:
                 return Thisbodyisasword(weapon)
             if weapon.id_ == 20006:

@@ -103,23 +103,13 @@ async def get_char_args(
         if index == 0:
             fake_name, talent_num = await get_fake_char_str(part)
             # 判断是否开启fake_char
-            if '遗器' in msg:
-                char_data = await get_fake_char_data(
-                    char_data, fake_name, changeuid
-                )
-            else:
-                char_data = await get_char_data(uid, fake_name)
+            char_data = await get_char_data(uid, fake_name)
             if isinstance(char_data, str):
                 return char_data
             continue
 
         if '遗器' in part:
-            fake_data = await get_char_data(
-                changeuid, part.replace('遗器', '').replace(changeuid, '')
-            )
-            if isinstance(fake_data, str):
-                return fake_data
-            char_data = await get_fake_char_data(fake_data, fake_name, uid)
+            char_data = await get_fake_char_data(char_data, part.replace('遗器', '').replace(changeuid, ''), changeuid)
             if isinstance(char_data, str):
                 return char_data
         else:
@@ -188,38 +178,13 @@ async def get_fake_weapon_str(msg: str) -> Tuple[str, Optional[int]]:
 
 
 async def get_fake_char_data(
-    char_data: Dict, fake_name: str, uid: str
+    char_data: Dict, change_name: str, changeuid: str
 ) -> Union[Dict, str]:
-    fake_name = await alias_to_char_name(fake_name)
-    original_data = await get_char_data(uid, fake_name)
+    original_data = await get_char_data(changeuid, change_name)
     if isinstance(original_data, str):
         return original_data
     if isinstance(original_data, Dict):
         char_data['RelicInfo'] = original_data['RelicInfo']
-        char_data['avatarAttributeBonus'] = original_data[
-            'avatarAttributeBonus'
-        ]
-        char_data['rankList'] = original_data['rankList']
-        char_data['avatarSkill'] = original_data['avatarSkill']
-        char_data['avatarExtraAbility'] = original_data['avatarExtraAbility']
-        char_data['equipmentInfo'] = original_data['equipmentInfo']
-        char_data['baseAttributes'] = original_data['baseAttributes']
-    char_data['uid'] = original_data['uid']
-    char_data['rank'] = original_data['rank']
-    char_data['nickName'] = original_data['nickName']
-    char_data['avatarRarity'] = original_data['avatarRarity']
-    char_data['avatarPromotion'] = original_data['avatarPromotion']
-    char_data['avatarName'] = fake_name
-    char_data['avatarId'] = await name_to_avatar_id(fake_name)
-    en_name: str = avatarId2EnName(char_data['avatarId'])  # type: ignore
-    char_data['avatarEnName'] = en_name
-    if str(char_data['avatarId']) in avatarId2DamageType:
-        char_data['avatarElement'] = avatarId2DamageType[
-            str(char_data['avatarId'])
-        ]
-    else:
-        return '要查询的角色不存在...'
-    char_data['avatarLevel'] = '80'
 
     return char_data
 
@@ -262,6 +227,19 @@ async def get_char_data(
     with Path.open(path, encoding='utf8') as fp:
         return json.load(fp)
 
+
+async def get_rank_list(
+    char_id: str,
+    talent_num: int,
+):
+    rank_temp = []
+    for index in range(talent_num):
+        rankTemp = {}
+        rank_id = int(str(char_id) + '0' + str(index + 1))
+        rankTemp['rankId'] = rank_id
+        rankTemp['rankName'] = rankId2Name[str(rank_id)]
+        rank_temp.append(rankTemp)
+    return rank_temp
 
 async def get_char(
     char_data: dict,
