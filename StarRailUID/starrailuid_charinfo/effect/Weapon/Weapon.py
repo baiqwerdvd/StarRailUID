@@ -220,6 +220,7 @@ class RiverFlowsinSpring(BaseWeapon):
             return attribute_bonus
         return attribute_bonus
 
+
 class OnlySilenceRemains(BaseWeapon):
     weapon_base_attributes: Dict
 
@@ -1657,6 +1658,7 @@ class Thisbodyisasword(BaseWeapon):
 
         return attribute_bonus
 
+
 # 如泥酣眠
 class SleepLiketheDead(BaseWeapon):
     weapon_base_attributes: Dict
@@ -1683,6 +1685,7 @@ class SleepLiketheDead(BaseWeapon):
                 ]
             )
         return attribute_bonus
+
 
 class Weapon:
     @classmethod
