@@ -7,6 +7,7 @@ import aiohttp
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 
+from ..utils.error_reply import get_error as get_error_msg
 from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
@@ -151,9 +152,10 @@ def get_error(img: Image.Image, uid: str, daily_data: int):
         fill=first_color,
         anchor='mm',
     )
+    error_text = get_error_msg(daily_data)
     img_draw.text(
         (350, 650),
-        f'错误码 {daily_data}',
+        f'{error_text} ，错误码{daily_data}',
         font=sr_font_26,
         fill=red_color,
         anchor='mm',
