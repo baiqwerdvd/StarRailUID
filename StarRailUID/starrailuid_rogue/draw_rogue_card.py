@@ -11,7 +11,7 @@ from gsuid_core.utils.image.image_tools import (
 )
 
 from .utils import get_icon
-from ..utils.convert import GsCookie
+from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
@@ -238,23 +238,10 @@ async def draw_rogue_img(
     floor: Optional[int] = None,
     schedule_type: str = '3',
 ) -> Union[bytes, str]:
-    # 获取Cookies
-    data = GsCookie()
-    # retcode = await data.get_cookie(uid)
-    # if retcode:
-    # return retcode
-    # raw_data = data.raw_data
-    raw_rogue_data = await data.get_rogue_data(uid, '3')
+    raw_rogue_data = await mys_api.get_rogue_info(uid, '3')
 
     if isinstance(raw_rogue_data, int):
         return get_error(raw_rogue_data)
-
-    # 获取数据
-    # if raw_data:
-    # char_data = raw_data['avatars']
-    # else:
-    # return '没有获取到角色数据'
-    # char_temp = {}
 
     # 计算背景图尺寸
     if schedule_type == '3':
@@ -531,13 +518,7 @@ async def draw_rogue_locust_img(
     qid: Union[str, int],
     uid: str,
 ) -> Union[bytes, str]:
-    # 获取Cookies
-    data = GsCookie()
-    # retcode = await data.get_cookie(uid)
-    # if retcode:
-    # return retcode
-    # raw_data = data.raw_data
-    raw_rogue_data = await data.get_rogue_locust_data(uid)
+    raw_rogue_data = await mys_api.get_rogue_locust_info(uid, '3')
 
     if isinstance(raw_rogue_data, int):
         return get_error(raw_rogue_data)

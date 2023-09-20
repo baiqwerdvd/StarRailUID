@@ -10,7 +10,7 @@ from gsuid_core.utils.image.image_tools import (
 )
 
 from .utils import get_icon
-from ..utils.convert import GsCookie
+from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import AbyssAvatar
 from ..utils.fonts.starrail_fonts import (
@@ -144,23 +144,10 @@ async def draw_abyss_img(
     floor: Optional[int] = None,
     schedule_type: str = '1',
 ) -> Union[bytes, str]:
-    # 获取Cookies
-    data = GsCookie()
-    # retcode = await data.get_cookie(uid)
-    # if retcode:
-    # return retcode
-    # raw_data = data.raw_data
-    raw_abyss_data = await data.get_spiral_abyss_data(uid, schedule_type)
+    raw_abyss_data = await mys_api.get_srspiral_abyss_info(uid, schedule_type)
 
     if isinstance(raw_abyss_data, int):
         return get_error(raw_abyss_data)
-
-    # 获取数据
-    # if raw_data:
-    # char_data = raw_data['avatars']
-    # else:
-    # return '没有获取到角色数据'
-    # char_temp = {}
 
     # 获取查询者数据
     if floor:
