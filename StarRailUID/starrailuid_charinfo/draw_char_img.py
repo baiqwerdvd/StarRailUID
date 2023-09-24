@@ -238,7 +238,10 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     )
     # 速度
     speed = int(char.base_attributes['speed'])
-    add_speed = int(char.add_attr.get('SpeedDelta', 0))
+    add_speed = int(
+        char.add_attr.get('SpeedDelta', 0)
+        + speed * char.add_attr.get('SpeedAddedRatio', 0)
+    )
     attr_bg_draw.text(
         (413, 31 + 48 * 3),
         f'{speed + add_speed}',
