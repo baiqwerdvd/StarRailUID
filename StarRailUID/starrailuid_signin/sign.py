@@ -25,12 +25,12 @@ async def sign_in(sr_uid: str) -> str:
         logger.warning(f'[SR签到] {sr_uid} 出错, 请检查Cookies是否过期!')
         return '签到失败...请检查Cookies是否过期!'
     # 检测是否已签到
-    if sign_info['is_sign']:
+    if sign_info.is_sign:
         logger.info(f'[SR签到] {sr_uid} 该用户今日已签到,跳过...')
         global already
         already += 1
-        day_of_month = int(sign_info['today'].split('-')[-1])
-        signed_count = int(sign_info['total_sign_day'])
+        day_of_month = int(sign_info.today.split('-')[-1])
+        signed_count = int(sign_info.total_sign_day)
         sign_missed = day_of_month - signed_count
         return f'今日已签到!本月漏签次数:{sign_missed}'
 
@@ -43,12 +43,12 @@ async def sign_in(sr_uid: str) -> str:
         if isinstance(sign_data, int):
             logger.warning(f'[SR签到] {sr_uid} 出错, 请检查Cookies是否过期!')
             return 'sr签到失败...请检查Cookies是否过期!'
-        if 'risk_code' in sign_data:
+        if sign_data.risk_code:
             # 出现校验码
-            if sign_data['risk_code'] == 5001:
+            if sign_data.risk_code == 5001:
                 if core_plugins_config.get_config('CaptchaPass').data:
-                    gt = sign_data['gt']
-                    ch = sign_data['challenge']
+                    gt = sign_data.gt
+                    ch = sign_data.challenge
                     vl, ch = await mys_api._pass(  # noqa: SLF001
                         gt, ch, Header
                     )
@@ -72,7 +72,7 @@ async def sign_in(sr_uid: str) -> str:
             else:
                 logger.info(f'[SR签到] [无感验证] {sr_uid} 该用户重试 {index} 次验证成功!')
             break
-        if (int(str(sr_uid)[0]) > 5) and (sign_data['data']['code'] == 'ok'):
+        if (int(str(sr_uid)[0]) > 5) and (sign_data.code == 'ok'):
             # 国际服签到无risk_code字段
             logger.info(f'[SR国际服签到] {sr_uid} 签到成功!')
             break
@@ -91,17 +91,17 @@ async def sign_in(sr_uid: str) -> str:
         logger.warning(f'[SR签到] {sr_uid} 出错, 请检查Cookies是否过期!')
         return 'sr签到失败...请检查Cookies是否过期!'
     # 获取签到奖励物品,拿旧的总签到天数 + 1 为新的签到天数,再 -1 即为今日奖励物品的下标
-    getitem = sign_list['awards'][int(sign_info['total_sign_day']) + 1 - 1]
-    get_im = f'本次sr签到获得{getitem["name"]}x{getitem["cnt"]}'
-    day_of_month = int(new_sign_info['today'].split('-')[-1])
-    signed_count = int(new_sign_info['total_sign_day'])
+    getitem = sign_list.awards[int(sign_info.total_sign_day) + 1 - 1]
+    get_im = f'本次sr签到获得{getitem.name}x{getitem.cnt}'
+    day_of_month = int(new_sign_info.today.split('-')[-1])
+    signed_count = int(new_sign_info.total_sign_day)
     sign_missed = day_of_month - signed_count
-    if new_sign_info['is_sign']:
+    if new_sign_info.is_sign:
         mes_im = 'sr签到成功'
     else:
         mes_im = 'sr签到失败...'
         sign_missed -= 1
-    sign_missed = sign_info.get('sign_cnt_missed') or sign_missed
+    sign_missed = sign_info.sign_cnt_missed or sign_missed
     im = f'{mes_im}!\n{get_im}\n本月漏签次数:{sign_missed}'
     logger.info(f'[SR签到] {sr_uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}')
     return im

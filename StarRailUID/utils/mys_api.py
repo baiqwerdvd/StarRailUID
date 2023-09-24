@@ -7,7 +7,8 @@ from typing import Any, Dict, Union, Literal, Optional
 import msgspec
 from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.database.models import GsUser
-from gsuid_core.utils.api.mys.models import MysSign, SignInfo, SignList
+
+# from gsuid_core.utils.api.mys.models import MysSign, SignList
 from gsuid_core.utils.api.mys.tools import (
     _random_int_ds,
     generate_os_ds,
@@ -17,7 +18,10 @@ from gsuid_core.utils.api.mys.tools import (
 from .api import srdbsqla
 from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
+    MysSign,
     GachaLog,
+    SignInfo,
+    SignList,
     AbyssData,
     RogueData,
     RoleIndex,

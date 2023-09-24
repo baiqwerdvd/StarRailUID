@@ -67,7 +67,7 @@ class RogueBaseType(Struct):
 class RogueBuffitems(Struct):
     id: int
     name: str
-    is_evoluted: str
+    is_evoluted: bool
     rank: int
 
 
@@ -88,16 +88,16 @@ class RogueRecordInfo(Struct):
     score: int
     final_lineup: List[RogueAvatar]
     base_type_list: List[RogueBaseType]
-    cached_avatars: str
+    cached_avatars: List[str]
     buffs: List[RogueBuffs]
     miracles: List[RogueMiracles]
     difficulty: int
     progress: int
-    detail_h: Union[int, None]
-    start_h: Union[int, None]
+    detail_h: Union[int, None] = None
+    start_h: Union[int, None] = None
 
-    def __setitem__(self, key: str, value: Any) -> None:
-        self.__dict__[key] = value
+    # def __setitem__(self, key: str, value: Any) -> None:
+    #     self.__dict__[key] = value
 
 
 class RogueBasic(Struct):
@@ -273,7 +273,7 @@ class MonthlyAward(Struct):
     uid: str
     region: str
     login_flag: bool
-    optional_month: List[int]
+    optional_month: List[str]
     month: str
     data_month: str
     month_data: MonthData

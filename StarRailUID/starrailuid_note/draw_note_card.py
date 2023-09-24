@@ -4,6 +4,7 @@ from typing import Union
 from datetime import datetime
 
 from PIL import Image, ImageDraw
+from msgspec import json as msgjson
 from gsuid_core.logger import logger
 
 from ..utils.mys_api import mys_api
@@ -62,10 +63,11 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     with Path.open(
         path / f'monthly_{current_year_mon}.json', 'w', encoding='utf-8'
     ) as f:
+        save_json_data = msgjson.format(msgjson.encode(data), indent=4)
         save_data = json.dumps(
             {
                 'data_time': now.strftime('%Y-%m-%d %H:%M:%S'),
-                'data': data,
+                'data': save_json_data.decode('utf-8'),
             },
             ensure_ascii=False,
         )
