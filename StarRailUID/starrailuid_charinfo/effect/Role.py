@@ -166,28 +166,12 @@ class RoleInstance:
             skill_multiplier = self.avatar.BPSkill_num(skill_type)
             skill_type = 'BPSkill'
         elif self.raw_data.avatar.id_ == 1112:
-            skill_multiplier = (
-                self.avatar.Ultra_num(skill_type) + self.avatar.BPSkill()
-            )
+            skill_multiplier = self.avatar.Ultra_num(skill_type) + self.avatar.BPSkill()
             skill_type = 'Talent'
         else:
             raise Exception('skill type error')
 
         logger.info(f'技能区总: {skill_multiplier}')
-
-        if self.raw_data.avatar.id_ == 1208:
-            logger.info('符玄战技【穷观阵】属性加成')
-            fx_cc_up = self.avatar.BPSkill_num('BPSkill_CC')
-            fx_hp_up = self.avatar.BPSkill_num('BPSkill_HP')
-            critical_chance_base = self.attribute_bonus.get(
-                'CriticalChanceBase', 0
-            )
-            self.attribute_bonus['CriticalChanceBase'] = (
-                critical_chance_base + fx_cc_up
-            )
-
-            hp_added_ratio = self.attribute_bonus.get('HPAddedRatio', 0)
-            self.attribute_bonus['HPAddedRatio'] = hp_added_ratio + fx_hp_up
 
         # 检查武器战斗生效的buff
         logger.info('检查武器战斗生效的buff')
@@ -306,20 +290,19 @@ class RoleInstance:
             enemy_status_resistance = 0.0
             for attr in merged_attr:
                 if attr.__contains__('ResistancePenetration'):
-                    # 检查是否有某一属性的抗性穿透
+                    #检查是否有某一属性的抗性穿透
                     attr_name = attr.split('ResistancePenetration')[0]
                     if attr_name in (self.avatar.avatar_element, 'AllDamage'):
-                        logger.info(f'{attr_name}属性有{merged_attr[attr]}穿透加成')
+                        logger.info(
+                            f'{attr_name}属性有{merged_attr[attr]}穿透加成'
+                        )
                         enemy_status_resistance += merged_attr[attr]
-                    # 检查是否有某一技能属性的抗性穿透
+                    #检查是否有某一技能属性的抗性穿透
                     skill_name = attr_name.split('_')[0]
                     skillattr_name = attr_name.split('_')[1]
-                    if skill_name in (
-                        skill_type,
-                        skill_info[3],
-                    ) and skillattr_name in (
-                        self.avatar.avatar_element,
-                        'AllDamage',
+                    if (
+                        skill_name in (skill_type, skill_info[3])
+                        and skillattr_name in (self.avatar.avatar_element, 'AllDamage')
                     ):
                         enemy_status_resistance += merged_attr[attr]
                         logger.info(
