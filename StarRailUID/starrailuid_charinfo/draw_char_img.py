@@ -795,7 +795,9 @@ async def get_relic_score(
             add_value = subValue * 0.3 * 0.5 * weight_dict['AttackDelta'] * 1.0
             relic_score += add_value
         if subProperty == 'DefenceDelta':
-            add_value = subValue * 0.3 * 0.5 * weight_dict['DefenceDelta'] * 1.0
+            add_value = (
+                subValue * 0.3 * 0.5 * weight_dict['DefenceDelta'] * 1.0
+            )
             relic_score += add_value
         if subProperty == 'HPDelta':
             add_value = subValue * 0.158 * 0.5 * weight_dict['HPDelta'] * 1.0
@@ -816,10 +818,7 @@ async def get_relic_score(
             relic_score += add_value
         if subProperty == 'BreakDamageAddedRatioBase':
             add_value = (
-                subValue
-                * 1.0
-                * weight_dict['BreakDamageAddedRatioBase']
-                * 100
+                subValue * 1.0 * weight_dict['BreakDamageAddedRatioBase'] * 100
             )
             relic_score += add_value
         if subProperty == 'StatusProbabilityBase':
