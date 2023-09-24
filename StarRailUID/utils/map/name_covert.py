@@ -30,6 +30,11 @@ async def alias_to_char_name(char_name: str) -> str:
             return alias_data['characters'][i][0]
     return char_name
 
+async def alias_to_weapon_name(weapon_name: str) -> str:
+    for i in alias_data['light_cones']:
+        if weapon_name in alias_data['light_cones'][i]:
+            return alias_data['light_cones'][i][0]
+    return weapon_name
 
 async def weapon_id_to_name(weapon_id: str) -> str:
     return EquipmentID2Name[weapon_id]

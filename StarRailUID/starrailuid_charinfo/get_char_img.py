@@ -14,6 +14,7 @@ from ..utils.map.name_covert import (
     name_to_avatar_id,
     name_to_weapon_id,
     alias_to_char_name,
+    alias_to_weapon_name,
 )
 from ..utils.map.SR_MAP_PATH import (
     Property2Name,
@@ -251,7 +252,13 @@ async def make_new_charinfo(
     char_data = {}
     char_data['uid'] = uid
     char_data['nickName'] = 'test'
-    char_data['avatarId'] = int(await name_to_avatar_id(fake_name))
+    char_id = await name_to_avatar_id(fake_name)
+    if char_id == '':
+        fake_name = await alias_to_char_name(fake_name)
+        if fake_name is False:
+            return '请输入正确的角色名'
+        char_id = await name_to_avatar_id(fake_name)
+    char_data['avatarId'] = int(char_id)
     char_data['avatarName'] = fake_name
     char_data['avatarElement'] = avatarId2DamageType[
         str(char_data['avatarId'])
@@ -440,6 +447,9 @@ async def get_char(
     if isinstance(weapon, str):
         # 处理武器
         equipmentid = await name_to_weapon_id(weapon)
+        if equipmentid == '':
+            weapon = await alias_to_weapon_name(weapon)
+            equipmentid = await name_to_weapon_id(weapon)
         equipment_info = {}
         equipment_info['equipmentID'] = int(equipmentid)
         equipment_info['equipmentName'] = EquipmentID2Name[str(equipmentid)]

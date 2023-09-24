@@ -103,7 +103,8 @@ async def send_char_info(bot: Bot, ev: Event):
 
 
 async def _get_char_info(bot: Bot, ev: Event, text: str):
-    msg = ''.join(re.findall('^[a-zA-Z0-9_\u4e00-\u9fa5]+$', text))
+    # msg = ''.join(re.findall('^[a-zA-Z0-9_\u4e00-\u9fa5]+$', text))
+    msg = text
     if not msg:
         return None
     # 获取角色名
