@@ -1687,7 +1687,7 @@ class SleepLiketheDead(BaseWeapon):
         return attribute_bonus
 
 
-# 烦恼着，幸福着
+# 烦恼着,幸福着
 class WorrisomeBlissf(BaseWeapon):
     weapon_base_attributes: Dict
 
@@ -1695,7 +1695,7 @@ class WorrisomeBlissf(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者施放追加攻击后，使目标陷入【温驯】状态，该效果最多叠加2层。我方目标击中【温驯】状态下的敌方目标时，每层【温驯】使造成的暴击伤害提高12%
+        # 装备者施放追加攻击后,使目标陷入【温驯】状态,该效果最多叠加2层.我方目标击中【温驯】状态下的敌方目标时,每层【温驯】使造成的暴击伤害提高12%
         return True
 
     async def weapon_ability(
