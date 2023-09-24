@@ -298,19 +298,20 @@ class RoleInstance:
                         logger.info(f'{attr_name}属性有{merged_attr[attr]}穿透加成')
                         enemy_status_resistance += merged_attr[attr]
                     # 检查是否有某一技能属性的抗性穿透
-                    skill_name = attr_name.split('_')[0]
-                    skillattr_name = attr_name.split('_')[1]
-                    if skill_name in (
-                        skill_type,
-                        skill_info[3],
-                    ) and skillattr_name in (
-                        self.avatar.avatar_element,
-                        'AllDamage',
-                    ):
-                        enemy_status_resistance += merged_attr[attr]
-                        logger.info(
-                            f'{skill_name}对{skillattr_name}属性有{merged_attr[attr]}穿透加成'
-                        )
+                    if attr_name.__contains__('_'):
+                        skill_name = attr_name.split('_')[0]
+                        skillattr_name = attr_name.split('_')[1]
+                        if skill_name in (
+                            skill_type,
+                            skill_info[3],
+                        ) and skillattr_name in (
+                            self.avatar.avatar_element,
+                            'AllDamage',
+                        ):
+                            enemy_status_resistance += merged_attr[attr]
+                            logger.info(
+                                f'{skill_name}对{skillattr_name}属性有{merged_attr[attr]}穿透加成'
+                            )
             resistance_area = 1.0 - (0 - enemy_status_resistance)
             logger.info(f'抗性区: {resistance_area}')
 
