@@ -230,8 +230,8 @@ class AbyssData(Struct):
     max_floor: str
     battle_num: int
     has_data: bool
-    max_floor_detail: bool
     all_floor_detail: List[AbyssFloorDetail]
+    max_floor_detail: bool | None = None
 
 
 ################

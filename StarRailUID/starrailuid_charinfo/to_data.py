@@ -68,7 +68,6 @@ async def api_to_dict(
         file.write(msgjson.format(msgjson.encode(PlayerDetailInfo), indent=4))
     with Path.open(path / 'rawData.json', 'wb') as file:
         file.write(msgjson.format(msgjson.encode(sr_data), indent=4))
-        # json.dump(sr_data, file, ensure_ascii=False)
 
     if sr_data.detailInfo is None:
         return f'SR_UID{sr_uid}刷新失败!未打开角色展柜!'
