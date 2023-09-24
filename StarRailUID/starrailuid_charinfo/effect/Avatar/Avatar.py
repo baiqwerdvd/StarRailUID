@@ -113,7 +113,7 @@ class Danhengil(BaseAvatar):
             self.eidolon_attribute['Normal_buff'] = 4
         if self.avatar_rank >= 6:
             self.extra_ability_attribute[
-                'Normal_ImaginaryResistancePenetration'
+                'Normal3_ImaginaryResistancePenetration'
             ] = 0.6
 
     def extra_ability(self):
@@ -424,7 +424,6 @@ class Jingliu(BaseAvatar):
             'UltraAttackAddedRatio'
         ] = attack_added_ratio
 
-
 class Topaz(BaseAvatar):
     Buff: BaseAvatarBuff
 
@@ -451,14 +450,9 @@ class Topaz(BaseAvatar):
         logger.info('托帕和账账对拥有火属性弱点的敌方目标造成的伤害提高15%。')
         self.extra_ability_attribute['AllDamageAddedRatio'] = 0.15
         logger.info('涨幅惊人暴击伤害提高')
-        self.extra_ability_attribute[
-            'Talent1_CriticalDamageBase'
-        ] = self.Ultra_num('Ultra_CD')
+        self.extra_ability_attribute['Talent1_CriticalDamageBase'] = self.Ultra_num('Ultra_CD')
         logger.info('【负债证明】状态,使其受到的追加攻击伤害提高')
-        self.extra_ability_attribute['TalentDmgAdd'] = self.BPSkill_num(
-            'BPSkill_add'
-        )
-
+        self.extra_ability_attribute['TalentDmgAdd'] = self.BPSkill_num('BPSkill_add')
 
 class Avatar:
     @classmethod
