@@ -155,7 +155,7 @@ def get_error(img: Image.Image, uid: str, daily_data: int):
     error_text = get_error_msg(daily_data)
     img_draw.text(
         (350, 650),
-        f'{error_text} ，错误码{daily_data}',
+        f'{error_text} ,错误码{daily_data}',
         font=sr_font_26,
         fill=red_color,
         anchor='mm',
