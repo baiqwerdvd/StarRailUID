@@ -1686,6 +1686,39 @@ class SleepLiketheDead(BaseWeapon):
             )
         return attribute_bonus
 
+# 烦恼着，幸福着
+class WorrisomeBlissf(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 装备者施放追加攻击后，使目标陷入【温驯】状态，该效果最多叠加2层。我方目标击中【温驯】状态下的敌方目标时，每层【温驯】使造成的暴击伤害提高12%
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        critical_chance_base = attribute_bonus.get('TalentDmgAdd', 0)
+        attribute_bonus['TalentDmgAdd'] = (
+            critical_chance_base
+            + weapon_effect['23016']['Param']['TalentDmgAdd'][
+                self.weapon_rank - 1
+            ]
+        )
+        if await self.check():
+            critical_chance_base = attribute_bonus.get('CriticalDamageBase', 0)
+            attribute_bonus['CriticalDamageBase'] = (
+                critical_chance_base
+                + weapon_effect['23016']['Param']['CriticalDamageBase'][
+                    self.weapon_rank - 1
+                ]
+            ) * 2
+        return attribute_bonus
 
 class Weapon:
     @classmethod
@@ -1749,7 +1782,10 @@ class Weapon:
             20013,
             20006,
             23014,
+            23016,
         ]:
+            if weapon.id_ == 23016:
+                return WorrisomeBlissf(weapon)
             if weapon.id_ == 23012:
                 return SleepLiketheDead(weapon)
             if weapon.id_ == 23014:

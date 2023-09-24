@@ -424,12 +424,43 @@ class Jingliu(BaseAvatar):
             'UltraAttackAddedRatio'
         ] = attack_added_ratio
 
+class Topaz(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['Talent_CriticalDamageBase'] = 0.5
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['Talent1_FireResistancePenetration'] = 0.1
+
+    def extra_ability(self):
+        logger.info('额外能力')
+        logger.info('托帕和账账对拥有火属性弱点的敌方目标造成的伤害提高15%。')
+        self.extra_ability_attribute['AllDamageAddedRatio'] = 0.15
+        logger.info('涨幅惊人暴击伤害提高')
+        self.extra_ability_attribute['Talent1_CriticalDamageBase'] = self.Ultra_num('Ultra_CD')
+        logger.info('【负债证明】状态,使其受到的追加攻击伤害提高')
+        self.extra_ability_attribute['TalentDmgAdd'] = self.BPSkill_num('BPSkill_add')
 
 class Avatar:
     @classmethod
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1112:
+            return Topaz(char, skills)
         if char.id_ == 1212:
             return Jingliu(char, skills)
         if char.id_ == 1201:

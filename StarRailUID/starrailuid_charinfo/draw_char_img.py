@@ -106,6 +106,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         1003,
         1201,
         1212,
+        1112,
     ]:
         skill_list = skill_dict[str(char.char_id)]['skillList']
         damage_len = len(skill_list)

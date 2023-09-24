@@ -31,6 +31,7 @@ async def cal(char_data: Dict):
         1003,
         1201,
         1212,
+        1112,
     ]:
         if char.char_id == 1213:
             for skill_type in [
@@ -45,6 +46,11 @@ async def cal(char_data: Dict):
                 skill_info_list.append(im_tmp)
         elif char.char_id == 1005:
             for skill_type in ['Normal', 'BPSkill', 'Ultra', 'DOT']:
+                role = RoleInstance(char)
+                im_tmp = await role.cal_damage(skill_type)
+                skill_info_list.append(im_tmp)
+        elif char.char_id == 1112:
+            for skill_type in ['Normal', 'BPSkill', 'Talent1']:
                 role = RoleInstance(char)
                 im_tmp = await role.cal_damage(skill_type)
                 skill_info_list.append(im_tmp)

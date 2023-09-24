@@ -165,6 +165,9 @@ class RoleInstance:
         elif self.raw_data.avatar.id_ == 1212:
             skill_multiplier = self.avatar.BPSkill_num(skill_type)
             skill_type = 'BPSkill'
+        elif self.raw_data.avatar.id_ == 1112:
+            skill_multiplier = self.avatar.Ultra_num(skill_type) + self.avatar.BPSkill()
+            skill_type = 'Talent'
         else:
             raise Exception('skill type error')
 
@@ -313,6 +316,14 @@ class RoleInstance:
                     )
                     resistance_area = resistance_area - (
                         0 - Normal_Penetration
+                    )
+            if self.raw_data.avatar.id_ == 1112:
+                if skill_info[3] == 'Talent1':
+                    Talent1_Penetration = merged_attr.get(
+                        'Talent1_FireResistancePenetration', 0
+                    )
+                    resistance_area = resistance_area - (
+                        0 - Talent1_Penetration
                     )
             logger.info(f'抗性区: {resistance_area}')
 
