@@ -19,7 +19,6 @@ from ..utils.map.SR_MAP_PATH import (
     RelicId2Rarity,
     AvatarRelicScore,
     avatarId2Name,
-    avatarId2DamageType,
 )
 from ..utils.resource.RESOURCE_PATH import (
     RELIC_PATH,
@@ -488,7 +487,6 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
             # 主属性
             main_value = relic['MainAffix']['Value']
             main_name: str = relic['MainAffix']['Name']
-            main_property: str = relic['MainAffix']['Property']
             main_level: int = relic['Level']
 
             if main_name in ['攻击力', '生命值', '防御力', '速度']:
@@ -530,21 +528,8 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 main_value,
                 char.char_name,
                 True,
+                relic['Type'],
             )
-            if main_property.__contains__('AddedRatio') and relic['Type'] == 5:
-                attr_name = main_property.split('AddedRatio')[0]
-                if attr_name == avatarId2DamageType[str(char.char_id)]:
-                    weight_dict = {}
-                    for item in AvatarRelicScore:
-                        if item['role'] == char.char_name:
-                            weight_dict = item
-                    add_value = (
-                        (main_value + 1)
-                        * 1
-                        * weight_dict.get('AttributeAddedRatio', 0)
-                        * 10
-                    )
-                    single_relic_score += add_value
             single_relic_score += main_value_score
             for index, i in enumerate(relic['SubAffixList']):
                 subName: str = i['Name']
@@ -553,7 +538,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 subProperty = i['Property']
 
                 tmp_score = await get_relic_score(
-                    subProperty, subValue, char.char_name, False
+                    subProperty, subValue, char.char_name, False, relic['Type']
                 )
                 single_relic_score += tmp_score
 
@@ -601,13 +586,13 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 relic_img, RELIC_POS[str(relic['Type'])], relic_img
             )
             relic_score += single_relic_score
-        if relic_score > 270:
+        if relic_score > 230:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconSSS.png')
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 240:
+        elif relic_score > 210:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconSS.png')
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 200:
+        elif relic_score > 180:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconS.png')
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
         elif relic_score > 150:
@@ -782,7 +767,7 @@ async def get_char_data(
 
 
 async def get_relic_score(
-    subProperty: str, subValue, char_name: str, is_main: bool
+    subProperty: str, subValue, char_name: str, is_main: bool, relicType: int
 ) -> float:
     relic_score = 0
     weight_dict = {}
@@ -791,54 +776,60 @@ async def get_relic_score(
             weight_dict = item
     if weight_dict == {}:
         return 0
-    if subProperty == 'CriticalDamageBase':
-        add_value = (subValue + 1) * 1 * weight_dict['CriticalDamageBase'] * 10
-        relic_score += add_value
-    if subProperty == 'CriticalChanceBase':
-        add_value = (subValue + 1) * 2 * weight_dict['CriticalChanceBase'] * 10
-        relic_score += add_value
-    if subProperty == 'AttackDelta' and not is_main:
-        add_value = subValue * 0.3 * 0.5 * weight_dict['AttackDelta'] * 0.1
-        relic_score += add_value
-    if subProperty == 'DefenceDelta' and not is_main:
-        add_value = subValue * 0.3 * 0.5 * weight_dict['DefenceDelta'] * 0.1
-        relic_score += add_value
-    if subProperty == 'HPDelta' and not is_main:
-        add_value = subValue * 0.3 * 0.5 * weight_dict['HPDelta'] * 0.1
-        relic_score += add_value
-    if subProperty == 'AttackAddedRatio':
-        add_value = (subValue + 1) * 1.5 * weight_dict['AttackAddedRatio'] * 10
-        relic_score += add_value
-    if subProperty == 'DefenceAddedRatio':
-        add_value = (
-            (subValue + 1) * 1.19 * weight_dict['DefenceAddedRatio'] * 10
-        )
-        relic_score += add_value
-    if subProperty == 'HPAddedRatio':
-        add_value = (subValue + 1) * 1.5 * weight_dict['HPAddedRatio'] * 10
-        relic_score += add_value
-    if subProperty == 'SpeedDelta' and not is_main:
-        add_value = subValue * 2.53 * weight_dict['SpeedDelta']
-        relic_score += add_value
-    elif subProperty == 'SpeedDelta' and is_main:
-        add_value = subValue * 2.53 * weight_dict['SpeedDelta'] * 0.1
-        relic_score += add_value
-    if subProperty == 'BreakDamageAddedRatioBase':
-        add_value = (
-            (subValue + 1)
-            * 1.0
-            * weight_dict['BreakDamageAddedRatioBase']
-            * 10
-        )
-        relic_score += add_value
-    if subProperty == 'StatusProbabilityBase':
-        add_value = (
-            (subValue + 1) * 1.49 * weight_dict['StatusProbabilityBase'] * 10
-        )
-        relic_score += add_value
-    if subProperty == 'StatusResistanceBase':
-        add_value = (
-            (subValue + 1) * 1.49 * weight_dict['StatusResistanceBase'] * 10
-        )
-        relic_score += add_value
+    if is_main:
+        if relicType in [3, 4, 5, 6]:
+            if subProperty.__contains__('AddedRatio') and relicType == 5:
+                subProperty = 'AttributeAddedRatio'
+            if weight_dict.get(subProperty, 0) > 0:
+                relic_score += 5.83
+            if relicType in [3, 5]:
+                relic_score += 10
+    else:
+        if subProperty == 'CriticalDamageBase':
+            add_value = subValue * 1 * weight_dict['CriticalDamageBase'] * 100
+            relic_score += add_value
+        if subProperty == 'CriticalChanceBase':
+            add_value = subValue * 2 * weight_dict['CriticalChanceBase'] * 100
+            relic_score += add_value
+        if subProperty == 'AttackDelta':
+            add_value = subValue * 0.3 * 0.5 * weight_dict['AttackDelta'] * 1.0
+            relic_score += add_value
+        if subProperty == 'DefenceDelta':
+            add_value = subValue * 0.3 * 0.5 * weight_dict['DefenceDelta'] * 1.0
+            relic_score += add_value
+        if subProperty == 'HPDelta':
+            add_value = subValue * 0.158 * 0.5 * weight_dict['HPDelta'] * 1.0
+            relic_score += add_value
+        if subProperty == 'AttackAddedRatio':
+            add_value = subValue * 1.5 * weight_dict['AttackAddedRatio'] * 100
+            relic_score += add_value
+        if subProperty == 'DefenceAddedRatio':
+            add_value = (
+                subValue * 1.19 * weight_dict['DefenceAddedRatio'] * 100
+            )
+            relic_score += add_value
+        if subProperty == 'HPAddedRatio':
+            add_value = subValue * 1.5 * weight_dict['HPAddedRatio'] * 100
+            relic_score += add_value
+        if subProperty == 'SpeedDelta':
+            add_value = subValue * 2.53 * weight_dict['SpeedDelta']
+            relic_score += add_value
+        if subProperty == 'BreakDamageAddedRatioBase':
+            add_value = (
+                subValue
+                * 1.0
+                * weight_dict['BreakDamageAddedRatioBase']
+                * 100
+            )
+            relic_score += add_value
+        if subProperty == 'StatusProbabilityBase':
+            add_value = (
+                subValue * 1.49 * weight_dict['StatusProbabilityBase'] * 100
+            )
+            relic_score += add_value
+        if subProperty == 'StatusResistanceBase':
+            add_value = (
+                subValue * 1.49 * weight_dict['StatusResistanceBase'] * 100
+            )
+            relic_score += add_value
     return relic_score
