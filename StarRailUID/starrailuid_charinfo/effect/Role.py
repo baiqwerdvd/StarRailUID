@@ -166,7 +166,9 @@ class RoleInstance:
             skill_multiplier = self.avatar.BPSkill_num(skill_type)
             skill_type = 'BPSkill'
         elif self.raw_data.avatar.id_ == 1112:
-            skill_multiplier = self.avatar.Ultra_num(skill_type) + self.avatar.BPSkill()
+            skill_multiplier = (
+                self.avatar.Ultra_num(skill_type) + self.avatar.BPSkill()
+            )
             skill_type = 'Talent'
         else:
             raise Exception('skill type error')

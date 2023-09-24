@@ -1686,6 +1686,7 @@ class SleepLiketheDead(BaseWeapon):
             )
         return attribute_bonus
 
+
 # 烦恼着，幸福着
 class WorrisomeBlissf(BaseWeapon):
     weapon_base_attributes: Dict
@@ -1719,6 +1720,7 @@ class WorrisomeBlissf(BaseWeapon):
                 ]
             ) * 2
         return attribute_bonus
+
 
 class Weapon:
     @classmethod
