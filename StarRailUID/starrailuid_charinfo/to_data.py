@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Dict, List, Union, Optional
 
 from httpx import ReadTimeout
+from msgspec import json as msgjson
 
 from ..utils.error_reply import UID_HINT
 from ..sruid_utils.api.mihomo import MihomoData
@@ -60,42 +61,38 @@ async def api_to_dict(
     elif sr_data is None:
         return []
 
-    PlayerDetailInfo = sr_data['detailInfo']
+    PlayerDetailInfo = sr_data.detailInfo
     path = PLAYER_PATH / str(sr_uid)
     path.mkdir(parents=True, exist_ok=True)
-    with Path.open(path / f'{sr_uid!s}.json', 'w', encoding='UTF-8') as file:
-        json.dump(PlayerDetailInfo, file, ensure_ascii=False)
-    with Path.open(path / 'rawData.json', 'w', encoding='UTF-8') as file:
-        json.dump(sr_data, file, ensure_ascii=False)
+    with Path.open(path / f'{sr_uid!s}.json', 'wb') as file:
+        file.write(msgjson.format(msgjson.encode(PlayerDetailInfo), indent=4))
+    with Path.open(path / 'rawData.json', 'wb') as file:
+        file.write(msgjson.format(msgjson.encode(sr_data), indent=4))
+        # json.dump(sr_data, file, ensure_ascii=False)
 
-    if 'detailInfo' not in sr_data:
+    if sr_data.detailInfo is None:
         return f'SR_UID{sr_uid}刷新失败!未打开角色展柜!'
 
     char_name_list = []
     char_id_list = []
     im = f'UID: {sr_uid} 的角色展柜刷新成功\n'
-    if PlayerDetailInfo.get('assistAvatarDetail'):
-        if (
-            PlayerDetailInfo['assistAvatarDetail']['avatarId']
-            not in char_id_list
-        ):
+    if PlayerDetailInfo.assistAvatarDetail:
+        if PlayerDetailInfo.assistAvatarDetail.avatarId not in char_id_list:
             char_dict, avatarName = await get_data(
-                PlayerDetailInfo['assistAvatarDetail'], sr_data, sr_uid
+                PlayerDetailInfo.assistAvatarDetail, sr_data, sr_uid
             )
             im += f'支援角色 {avatarName}\n'
             char_name_list.append(avatarName)
-            char_id_list.append(
-                PlayerDetailInfo['assistAvatarDetail']['avatarId']
-            )
-    if PlayerDetailInfo.get('avatarDetailList'):
+            char_id_list.append(PlayerDetailInfo.assistAvatarDetail.avatarId)
+    if PlayerDetailInfo.avatarDetailList:
         im += '星海同行'
-        if PlayerDetailInfo['avatarDetailList'] is not None:
-            for char in PlayerDetailInfo['avatarDetailList']:
-                if char['avatarId'] not in char_id_list:
+        if PlayerDetailInfo.avatarDetailList is not None:
+            for char in PlayerDetailInfo.avatarDetailList:
+                if char.avatarId not in char_id_list:
                     _, avatarName = await get_data(char, sr_data, sr_uid)
                     im += f' {avatarName}'
                     char_name_list.append(avatarName)
-                    char_id_list.append(char['avatarId'])
+                    char_id_list.append(char.avatarId)
 
     if not char_name_list:
         return f'UID: {sr_uid} 的角色展柜刷新失败!\n请检查UID是否正确或者角色展柜是否打开!'
@@ -104,33 +101,31 @@ async def api_to_dict(
 
 
 async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
-    PlayerDetailInfo = sr_data['detailInfo']
+    PlayerDetailInfo = sr_data.detailInfo
     path = PLAYER_PATH / str(sr_uid)
     # 处理基本信息
     char_data = {
         'uid': str(sr_uid),
-        'nickName': PlayerDetailInfo['nickname'],
-        'avatarId': char['avatarId'],
-        'avatarName': avatarId2Name[str(char['avatarId'])],
-        'avatarElement': avatarId2DamageType[str(char['avatarId'])],
-        'avatarRarity': avatarId2Rarity[str(char['avatarId'])],
-        'avatarPromotion': char.get('promotion', 0),
-        'avatarLevel': char['level'],
+        'nickName': PlayerDetailInfo.nickname,
+        'avatarId': char.avatarId,
+        'avatarName': avatarId2Name[str(char.avatarId)],
+        'avatarElement': avatarId2DamageType[str(char.avatarId)],
+        'avatarRarity': avatarId2Rarity[str(char.avatarId)],
+        'avatarPromotion': char.promotion,
+        'avatarLevel': char.level,
         'avatarSkill': [],
         'avatarExtraAbility': [],
         'avatarAttributeBonus': [],
         'RelicInfo': [],
     }
-    avatarName = avatarId2Name[str(char['avatarId'])]
-    char_data['avatarEnName'] = avatarId2EnName[str(char['avatarId'])]
+    avatarName = avatarId2Name[str(char.avatarId)]
+    char_data['avatarEnName'] = avatarId2EnName[str(char.avatarId)]
     # 处理技能
-    for behavior in char['skillTreeList']:
+    for behavior in char.skillTreeList:
         # 处理技能
-        if f'{char["avatarId"]}0' == str(behavior['pointId'])[0:5]:
+        if f'{char.avatarId}0' == str(behavior.pointId)[0:5]:
             skill_temp = {}
-            skill_temp['skillId'] = (
-                char['avatarId'] * 100 + behavior['pointId'] % 10
-            )
+            skill_temp['skillId'] = char.avatarId * 100 + behavior.pointId % 10
             skill_temp['skillName'] = skillId2Name[str(skill_temp['skillId'])]
             skill_temp['skillEffect'] = skillId2Effect[
                 str(skill_temp['skillId'])
@@ -138,24 +133,24 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
             skill_temp['skillAttackType'] = skillId2AttackType[
                 str(skill_temp['skillId'])
             ]
-            skill_temp['skillLevel'] = behavior['level']
+            skill_temp['skillLevel'] = behavior.level
             char_data['avatarSkill'].append(skill_temp)
 
         # 处理技能树中的额外能力
-        if f'{char["avatarId"]}1' == str(behavior['pointId'])[0:5]:
+        if f'{char.avatarId}1' == str(behavior.pointId)[0:5]:
             extra_ability_temp = {}
-            extra_ability_temp['extraAbilityId'] = behavior['pointId']
-            extra_ability_temp['extraAbilityLevel'] = behavior['level']
+            extra_ability_temp['extraAbilityId'] = behavior.pointId
+            extra_ability_temp['extraAbilityLevel'] = behavior.level
             char_data['avatarExtraAbility'].append(extra_ability_temp)
 
         # 处理技能树中的属性加成
-        if f'{char["avatarId"]}2' == str(behavior['pointId'])[0:5]:
+        if f'{char.avatarId}2' == str(behavior.pointId)[0:5]:
             attribute_bonus_temp = {}
-            attribute_bonus_temp['attributeBonusId'] = behavior['pointId']
-            attribute_bonus_temp['attributeBonusLevel'] = behavior['level']
-            status_add = characterSkillTree[str(char['avatarId'])][
-                str(behavior['pointId'])
-            ]['levels'][behavior['level'] - 1]['properties']
+            attribute_bonus_temp['attributeBonusId'] = behavior.pointId
+            attribute_bonus_temp['attributeBonusLevel'] = behavior.level
+            status_add = characterSkillTree[str(char.avatarId)][
+                str(behavior.pointId)
+            ]['levels'][behavior.level - 1]['properties']
             attribute_bonus_temp['statusAdd'] = {}
             if status_add:
                 for property_ in status_add:
@@ -173,23 +168,23 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
                     )
 
     # 处理遗器
-    if char.get('relicList'):
-        for relic in char['relicList']:
+    if char.relicList:
+        for relic in char.relicList:
             relic_temp = {}
-            relic_temp['relicId'] = relic['tid']
-            relic_temp['relicName'] = ItemId2Name[str(relic['tid'])]
-            relic_temp['SetId'] = int(RelicId2SetId[str(relic['tid'])])
+            relic_temp['relicId'] = relic.tid
+            relic_temp['relicName'] = ItemId2Name[str(relic.tid)]
+            relic_temp['SetId'] = int(RelicId2SetId[str(relic.tid)])
             relic_temp['SetName'] = SetId2Name[str(relic_temp['SetId'])]
-            relic_temp['Level'] = relic['level'] if 'level' in relic else 0
-            relic_temp['Type'] = relic['type']
+            relic_temp['Level'] = relic.level if relic.level else 0
+            relic_temp['Type'] = relic.type
 
             relic_temp['MainAffix'] = {}
-            relic_temp['MainAffix']['AffixID'] = relic['mainAffixId']
+            relic_temp['MainAffix']['AffixID'] = relic.mainAffixId
             affix_property, value = await cal_relic_main_affix(
-                relic_id=relic['tid'],
+                relic_id=relic.tid,
                 set_id=str(relic_temp['SetId']),
-                affix_id=relic['mainAffixId'],
-                relic_type=relic['type'],
+                affix_id=relic.mainAffixId,
+                relic_type=relic.type,
                 relic_level=relic_temp['Level'],
             )
             relic_temp['MainAffix']['Property'] = affix_property
@@ -197,21 +192,21 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
             relic_temp['MainAffix']['Value'] = value
 
             relic_temp['SubAffixList'] = []
-            if relic.get('subAffixList'):
-                for sub_affix in relic['subAffixList']:
+            if relic.subAffixList:
+                for sub_affix in relic.subAffixList:
                     sub_affix_temp = {}
-                    sub_affix_temp['SubAffixID'] = sub_affix['affixId']
+                    sub_affix_temp['SubAffixID'] = sub_affix.affixId
                     sub_affix_property, value = await cal_relic_sub_affix(
-                        relic_id=relic['tid'],
-                        affix_id=sub_affix['affixId'],
-                        cnt=sub_affix['cnt'],
-                        step=sub_affix['step'] if 'step' in sub_affix else 0,
+                        relic_id=relic.tid,
+                        affix_id=sub_affix.affixId,
+                        cnt=sub_affix.cnt,
+                        step=sub_affix.step if sub_affix.step else 0,
                     )
                     sub_affix_temp['Property'] = sub_affix_property
                     sub_affix_temp['Name'] = Property2Name[sub_affix_property]
-                    sub_affix_temp['Cnt'] = sub_affix['cnt']
+                    sub_affix_temp['Cnt'] = sub_affix.cnt
                     sub_affix_temp['Step'] = (
-                        sub_affix['step'] if 'step' in sub_affix else 0
+                        sub_affix.step if sub_affix.step else 0
                     )
                     sub_affix_temp['Value'] = value
                     relic_temp['SubAffixList'].append(sub_affix_temp)
@@ -219,11 +214,11 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
 
     # 处理命座
     rank_temp = []
-    if char.get('rank') and char['rank'] is not None:
-        char_data['rank'] = char['rank']
-        for index in range(char['rank']):
+    if char.rank and char.rank is not None:
+        char_data['rank'] = char.rank
+        for index in range(char.rank):
             rankTemp = {}
-            rank_id = int(str(char['avatarId']) + '0' + str(index + 1))
+            rank_id = int(str(char.avatarId) + '0' + str(index + 1))
             rankTemp['rankId'] = rank_id
             rankTemp['rankName'] = rankId2Name[str(rank_id)]
             rank_temp.append(rankTemp)
@@ -250,24 +245,24 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
 
     # 处理基础属性
     base_attributes = {}
-    avatar_promotion_base = AvatarPromotionConfig.Avatar[
-        str(char['avatarId'])
-    ][str(char.get('promotion', 0))]
+    avatar_promotion_base = AvatarPromotionConfig.Avatar[str(char.avatarId)][
+        str(char.promotion)
+    ]
 
     # 攻击力
     base_attributes['attack'] = (
         avatar_promotion_base.AttackBase.Value
-        + avatar_promotion_base.AttackAdd.Value * (char['level'] - 1)
+        + avatar_promotion_base.AttackAdd.Value * (char.level - 1)
     )
     # 防御力
     base_attributes['defence'] = (
         avatar_promotion_base.DefenceBase.Value
-        + avatar_promotion_base.DefenceAdd.Value * (char['level'] - 1)
+        + avatar_promotion_base.DefenceAdd.Value * (char.level - 1)
     )
     # 血量
     base_attributes['hp'] = (
         avatar_promotion_base.HPBase.Value
-        + avatar_promotion_base.HPAdd.Value * (char['level'] - 1)
+        + avatar_promotion_base.HPAdd.Value * (char.level - 1)
     )
     # 速度
     base_attributes['speed'] = avatar_promotion_base.SpeedBase.Value
@@ -287,42 +282,40 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
     # 处理武器
 
     equipment_info = {}
-    if char.get('equipment') and char['equipment'] is not None:
-        equipment_info['equipmentID'] = char['equipment']['tid']
+    if char.equipment and char.equipment is not None:
+        equipment_info['equipmentID'] = char.equipment.tid
         equipment_info['equipmentName'] = EquipmentID2Name[
-            str(char['equipment']['tid'])
+            str(char.equipment.tid)
         ]
 
-        equipment_info['equipmentLevel'] = char['equipment']['level']
-        equipment_info['equipmentPromotion'] = char['equipment'].get(
-            'promotion', 0
-        )
-        equipment_info['equipmentRank'] = char['equipment']['rank']
+        equipment_info['equipmentLevel'] = char.equipment.level
+        equipment_info['equipmentPromotion'] = char.equipment.promotion
+        equipment_info['equipmentRank'] = char.equipment.rank
         equipment_info['equipmentRarity'] = EquipmentID2Rarity[
-            str(char['equipment']['tid'])
+            str(char.equipment.tid)
         ]
         equipment_base_attributes = {}
         equipment_promotion_base = EquipmentPromotionConfig.Equipment[
-            str(char['equipment']['tid'])
+            str(char.equipment.tid)
         ][str(equipment_info['equipmentPromotion'])]
 
         # 生命值
         equipment_base_attributes['hp'] = (
             equipment_promotion_base.BaseHP.Value
             + equipment_promotion_base.BaseHPAdd.Value
-            * (char['equipment']['level'] - 1)
+            * (char.equipment.level - 1)
         )
         # 攻击力
         equipment_base_attributes['attack'] = (
             equipment_promotion_base.BaseAttack.Value
             + equipment_promotion_base.BaseAttackAdd.Value
-            * (char['equipment']['level'] - 1)
+            * (char.equipment.level - 1)
         )
         # 防御力
         equipment_base_attributes['defence'] = (
             equipment_promotion_base.BaseDefence.Value
             + equipment_promotion_base.BaseDefenceAdd.Value
-            * (char['equipment']['level'] - 1)
+            * (char.equipment.level - 1)
         )
         equipment_info['baseAttributes'] = equipment_base_attributes
 

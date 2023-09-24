@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from msgspec import convert
 from httpx import AsyncClient
 
 from ..utils import _HEADER
@@ -13,4 +14,4 @@ async def get_char_card_info(uid: str) -> MihomoData:
         timeout=30,
     ) as client:
         req = await client.get(f'/sr_info/{uid}')
-        return req.json()
+        return convert(req.json(), type=MihomoData)

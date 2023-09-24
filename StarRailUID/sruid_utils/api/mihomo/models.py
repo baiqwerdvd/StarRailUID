@@ -1,55 +1,56 @@
 from __future__ import annotations
 
-from typing import TypedDict
+from msgspec import Struct, field
 
 
-class MihomoData(TypedDict):
+class MihomoData(Struct):
     detailInfo: PlayerDetailInfo
 
 
-class Behavior(TypedDict):
+class Behavior(Struct):
     pointId: int
     level: int
 
 
-class Equipment(TypedDict):
+class Equipment(Struct):
     level: int
     tid: int
-    promotion: int | None
-    rank: int | None
+    promotion: int | None = field(default=0)
+    rank: int | None = field(default=0)
 
 
-class Relic(TypedDict):
+class Relic(Struct):
     subAffixList: list[SubAffix]
     tid: int
     mainAffixId: int
     type: int
+    level: int | None = field(default=0)
 
 
-class SubAffix(TypedDict):
+class SubAffix(Struct):
     affixId: int
     cnt: int
-    step: int
+    step: int | None = field(default=0)
 
 
-class Avatar(TypedDict):
+class Avatar(Struct):
     skillTreeList: list[Behavior]
-    rank: int | None
-    pos: int | None
     avatarId: int
     level: int
     equipment: Equipment | None
     relicList: list[Relic]
-    promotion: int
+    pos: int | None = field(default=0)
+    rank: int | None = field(default=0)
+    promotion: int | None = field(default=0)
 
 
-class Challenge(TypedDict):
+class Challenge(Struct):
     scheduleMaxLevel: int
-    MazeGroupIndex: int | None
-    PreMazeGroupIndex: int | None
+    MazeGroupIndex: int | None = None
+    PreMazeGroupIndex: int | None = None
 
 
-class PlayerSpaceInfo(TypedDict):
+class PlayerSpaceInfo(Struct):
     challengeInfo: Challenge
     maxRogueChallengeScore: int
     equipmentCount: int
@@ -57,7 +58,7 @@ class PlayerSpaceInfo(TypedDict):
     achievementCount: int
 
 
-class PlayerDetailInfo(TypedDict):
+class PlayerDetailInfo(Struct):
     assistAvatarDetail: Avatar
     platform: str
     isDisplayAvatar: bool
@@ -66,8 +67,8 @@ class PlayerDetailInfo(TypedDict):
     friendCount: int
     worldLevel: int
     nickname: str
-    Birthday: int | None
     level: int
     recordInfo: PlayerSpaceInfo | None
     headIcon: int
-    signature: str | None
+    signature: str | None = None
+    Birthday: int | None = None

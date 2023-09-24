@@ -117,12 +117,12 @@ async def _draw_rogue_buff(
             zb_list.append([m, n])
     jishu = 0
     for item in buffs:
-        if item['is_evoluted'] is True:
+        if item.is_evoluted is True:
             is_evoluted = 1
         else:
             is_evoluted = 0
         buff_bg = Image.open(
-            TEXT_PATH / f'zhufu_{item["rank"]}_{is_evoluted}.png'
+            TEXT_PATH / f'zhufu_{item.rank}_{is_evoluted}.png'
         )
         buff_bg = buff_bg.resize((233, 35))
         z_left = 90 + 240 * zb_list[jishu][1]
@@ -131,7 +131,7 @@ async def _draw_rogue_buff(
         floor_pic.paste(buff_bg, (z_left, z_top), mask=buff_bg)
         floor_pic_draw.text(
             (z_left + 115, z_top + 18),
-            item['name'],
+            item.name,
             font=sr_font_22,
             fill=white_color,
             anchor='mm',
@@ -155,7 +155,7 @@ async def _draw_rogue_blocks(
             zb_list.append([m, n])
     jishu = 0
     for block in blocks:
-        block_icon = Image.open(TEXT_PATH / f'{block["name"]}.png')
+        block_icon = Image.open(TEXT_PATH / f'{block.name}.png')
         z_left_bg = 90 + 357 * zb_list[jishu][1]
         z_top_bg = buff_height + 470 + 80 * zb_list[jishu][0]
         jishu = jishu + 1
@@ -164,7 +164,7 @@ async def _draw_rogue_blocks(
         floor_pic.paste(block_icon, (z_left_icon, z_top_icon), mask=block_icon)
         floor_pic_draw.text(
             (z_left_bg + 80, z_top_bg + 35),
-            f"{block['name']} x{block['num']}",
+            f'{block.name} x{block.num}',
             font=sr_font_22,
             fill=white_color,
             anchor='lm',
@@ -187,7 +187,7 @@ async def _draw_rogue_miracles(
             zb_list.append([m, n])
     jishu = 0
     for miracle in miracles:
-        miracles_icon = (await get_icon(miracle['icon'])).resize((80, 80))
+        miracles_icon = (await get_icon(miracle.icon)).resize((80, 80))
         z_left = 90 + 90 * zb_list[jishu][1]
         z_top = buff_height + 470 + 90 * zb_list[jishu][0]
         jishu = jishu + 1
@@ -205,9 +205,9 @@ async def _draw_rogue_card(
     # char_id = char['id']
     # # 确认角色头像路径
     # char_pic_path = CHAR_ICON_PATH / f'{char_id}.png'
-    char_bg = (char_bg_4 if char['rarity'] == 4 else char_bg_5).copy()
-    char_icon = (await get_icon(char['icon'])).resize((151, 170))
-    element_icon = elements[char['element']]
+    char_bg = (char_bg_4 if char.rarity == 4 else char_bg_5).copy()
+    char_icon = (await get_icon(char.icon)).resize((151, 170))
+    element_icon = elements[char.element]
     char_bg.paste(char_icon, (24, 16), mask=char_icon)
     char_bg.paste(level_cover, (0, 0), mask=level_cover)
     char_bg.paste(element_icon, (135, 30), mask=element_icon)
@@ -220,7 +220,7 @@ async def _draw_rogue_card(
     char_card_draw = ImageDraw.Draw(char_bg)
     char_card_draw.text(
         (100, 165),
-        f'等级 {char["level"]}',
+        f'等级 {char.level}',
         font=sr_font_22,
         fill=white_color,
         anchor='mm',
@@ -245,9 +245,9 @@ async def draw_rogue_img(
 
     # 计算背景图尺寸
     if schedule_type == '3':
-        rogue_detail = raw_rogue_data['current_record']['records']
+        rogue_detail = raw_rogue_data.current_record.records
     else:
-        rogue_detail = raw_rogue_data['last_record']['records']
+        rogue_detail = raw_rogue_data.last_record.records
 
     # 记录打的宇宙列表
     detail_list = []
@@ -256,23 +256,23 @@ async def draw_rogue_img(
         # 100+70+170
         # 头+底+角色
         detail_h = 340
-        progress = detail['progress']
+        progress = detail.progress
         detail_list.append(progress)
         # 祝福
-        if len(detail['base_type_list']) > 0:
+        if len(detail.base_type_list) > 0:
             buff_h = 60
-            for buff in detail['buffs']:
+            for buff in detail.buffs:
                 buff_h = buff_h + 50
-                buff_num = len(buff['items'])
+                buff_num = len(buff.items)
                 buff_h = buff_h + math.ceil(buff_num / 3) * 55
         else:
             buff_h = 0
         detail_h = detail_h + buff_h
 
         # 奇物
-        if len(detail['miracles']) > 0:
+        if len(detail.miracles) > 0:
             miracles_h = 60
-            miracles_num = len(detail['miracles'])
+            miracles_num = len(detail.miracles)
             miracles_h = miracles_h + math.ceil(miracles_num / 8) * 90
         else:
             miracles_h = 0
@@ -292,9 +292,9 @@ async def draw_rogue_img(
         if floor not in detail_list:
             return '你还没有挑战该模拟宇宙!'
     elif schedule_type == '3':
-        if raw_rogue_data['current_record']['basic']['finish_cnt'] == 0:
+        if raw_rogue_data.current_record.basic.finish_cnt == 0:
             return '你还没有挑战本期模拟宇宙!\n可以使用[sr上期模拟宇宙]命令查询上期~'
-    elif raw_rogue_data['last_record']['basic']['finish_cnt'] == 0:
+    elif raw_rogue_data.last_record.basic.finish_cnt == 0:
         return '你还没有挑战上期模拟宇宙!\n可以使用[sr模拟宇宙]命令查询本期~'
 
     # 获取背景图片各项参数
@@ -326,7 +326,7 @@ async def draw_rogue_img(
     # 技能树激活
     img_draw.text(
         (165, 569),
-        f'{raw_rogue_data["basic_info"]["unlocked_skill_points"]}',
+        f'{raw_rogue_data.basic_info.unlocked_skill_points}',
         white_color,
         sr_font_42,
         'mm',
@@ -342,7 +342,7 @@ async def draw_rogue_img(
     # 奇物解锁
     img_draw.text(
         (450, 569),
-        f'{raw_rogue_data["basic_info"]["unlocked_miracle_num"]}',
+        f'{raw_rogue_data.basic_info.unlocked_miracle_num}',
         white_color,
         sr_font_42,
         'mm',
@@ -358,7 +358,7 @@ async def draw_rogue_img(
     # 祝福解锁
     img_draw.text(
         (730, 569),
-        f'{raw_rogue_data["basic_info"]["unlocked_buff_num"]}',
+        f'{raw_rogue_data.basic_info.unlocked_buff_num}',
         white_color,
         sr_font_42,
         'mm',
@@ -373,16 +373,16 @@ async def draw_rogue_img(
 
     for index_floor, detail in enumerate(rogue_detail):
         if floor:
-            if floor == detail['progress']:
+            if floor == detail.progress:
                 index_floor = 0  # noqa: PLW2901
             else:
                 continue
 
-        if detail['detail_h'] is None:
+        if detail.detail_h is None:
             continue
 
         floor_pic = Image.open(TEXT_PATH / 'detail_bg.png').convert('RGBA')
-        floor_pic = floor_pic.resize((900, detail['detail_h']))
+        floor_pic = floor_pic.resize((900, detail.detail_h))
 
         floor_top_pic = Image.open(TEXT_PATH / 'floor_bg_top.png').convert(
             'RGBA'
@@ -393,7 +393,7 @@ async def draw_rogue_img(
             TEXT_PATH / 'floor_bg_center.png'
         ).convert('RGBA')
         floor_center_pic = floor_center_pic.resize(
-            (900, detail['detail_h'] - 170)
+            (900, detail.detail_h - 170)
         )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
@@ -401,16 +401,16 @@ async def draw_rogue_img(
             'RGBA'
         )
         floor_pic.paste(
-            floor_bot_pic, (0, detail['detail_h'] - 70), floor_bot_pic
+            floor_bot_pic, (0, detail.detail_h - 70), floor_bot_pic
         )
 
-        floor_name = progresslist[detail['progress']]
-        difficulty_name = difficultylist[detail['difficulty']]
+        floor_name = progresslist[detail.progress]
+        difficulty_name = difficultylist[detail.difficulty]
 
-        time_array = detail['finish_time']
-        time_str = f"{time_array['year']}-{time_array['month']}"
-        time_str = f"{time_str}-{time_array['day']}"
-        time_str = f"{time_str} {time_array['hour']}:{time_array['minute']}"
+        time_array = detail.finish_time
+        time_str = f'{time_array.year}-{time_array.month}'
+        time_str = f'{time_str}-{time_array.day}'
+        time_str = f'{time_str} {time_array.hour}:{time_array.minute}'
         floor_pic_draw = ImageDraw.Draw(floor_pic)
         floor_pic_draw.text(
             (450, 60),
@@ -428,14 +428,14 @@ async def draw_rogue_img(
         )
         floor_pic_draw.text(
             (800, 120),
-            f'当前积分:{detail["score"]}',
+            f'当前积分:{detail.score}',
             gray_color,
             sr_font_22,
             'rm',
         )
 
         # 角色
-        for index_char, char in enumerate(detail['final_lineup']):
+        for index_char, char in enumerate(detail.final_lineup):
             # 获取命座
             # if char["id"] in char_temp:
             # talent_num = char_temp[char["id"]]
@@ -456,7 +456,7 @@ async def draw_rogue_img(
 
         # 祝福
         buff_height = 0
-        if len(detail['base_type_list']) > 0:
+        if len(detail.base_type_list) > 0:
             floor_pic_draw.text(
                 (93, 370),
                 '获得祝福',
@@ -465,10 +465,10 @@ async def draw_rogue_img(
                 'lm',
             )
             floor_pic.paste(content_center, (0, 390), content_center)
-            for buff in detail['buffs']:
-                buff_icon = bufflist[buff['base_type']['id']]
-                buff_name = buff['base_type']['name']
-                buffs = buff['items']
+            for buff in detail.buffs:
+                buff_icon = bufflist[buff.base_type.id]
+                buff_name = buff.base_type.name
+                buffs = buff.items
                 draw_height = await _draw_rogue_buff(
                     buffs,
                     buff_icon,
@@ -479,7 +479,7 @@ async def draw_rogue_img(
                 buff_height = buff_height + draw_height
 
         # 奇物
-        if len(detail['miracles']) > 0:
+        if len(detail.miracles) > 0:
             floor_pic_draw.text(
                 (93, 370 + buff_height + 60),
                 '获得奇物',
@@ -491,15 +491,15 @@ async def draw_rogue_img(
                 content_center, (0, 370 + buff_height + 80), content_center
             )
             await _draw_rogue_miracles(
-                detail['miracles'],
+                detail.miracles,
                 floor_pic,
                 buff_height,
             )
 
-        if detail['start_h'] is None:
+        if detail.start_h is None:
             continue
 
-        img.paste(floor_pic, (0, detail['start_h']), floor_pic)
+        img.paste(floor_pic, (0, detail.start_h), floor_pic)
         # await _draw_floor_card(
         # level_star,
         # floor_pic,
@@ -531,7 +531,7 @@ async def draw_rogue_locust_img(
     # char_temp = {}
 
     # 计算背景图尺寸
-    rogue_detail = raw_rogue_data['detail']['records']
+    rogue_detail = raw_rogue_data.detail.records
 
     # 记录打的宇宙列表
     # detail_list = []
@@ -542,20 +542,20 @@ async def draw_rogue_locust_img(
         detail_h = 340
 
         # 祝福
-        if len(detail['base_type_list']) > 0:
+        if len(detail.base_type_list) > 0:
             buff_h = 60
-            for buff in detail['buffs']:
+            for buff in detail.buffs:
                 buff_h = buff_h + 50
-                buff_num = len(buff['items'])
+                buff_num = len(buff.items)
                 buff_h = buff_h + math.ceil(buff_num / 3) * 55
         else:
             buff_h = 0
         detail_h = detail_h + buff_h
 
         # 奇物
-        if len(detail['miracles']) > 0:
+        if len(detail.miracles) > 0:
             miracles_h = 60
-            miracles_num = len(detail['miracles'])
+            miracles_num = len(detail.miracles)
             miracles_h = miracles_h + math.ceil(miracles_num / 8) * 90
         else:
             miracles_h = 0
@@ -563,9 +563,9 @@ async def draw_rogue_locust_img(
 
         # 事件
         blocks_h = 0
-        if len(detail['blocks']) > 0:
+        if len(detail.blocks) > 0:
             blocks_h = 60
-            blocks_num = len(detail['blocks'])
+            blocks_num = len(detail.blocks)
             blocks_h = blocks_h + math.ceil(blocks_num / 2) * 80
         else:
             blocks_num = 0
@@ -608,7 +608,7 @@ async def draw_rogue_locust_img(
     # 行者之道激活
     img_draw.text(
         (165, 569),
-        f'{raw_rogue_data["basic"]["cnt"]["narrow"]}',
+        f'{raw_rogue_data.basic.cnt.narrow}',
         white_color,
         sr_font_42,
         'mm',
@@ -624,7 +624,7 @@ async def draw_rogue_locust_img(
     # 奇物解锁
     img_draw.text(
         (450, 569),
-        f'{raw_rogue_data["basic"]["cnt"]["miracle"]}',
+        f'{raw_rogue_data.basic.cnt.miracle}',
         white_color,
         sr_font_42,
         'mm',
@@ -640,7 +640,7 @@ async def draw_rogue_locust_img(
     # 事件解锁
     img_draw.text(
         (730, 569),
-        f'{raw_rogue_data["basic"]["cnt"]["event"]}',
+        f'{raw_rogue_data.basic.cnt.event}',
         white_color,
         sr_font_42,
         'mm',
@@ -654,11 +654,11 @@ async def draw_rogue_locust_img(
     )
 
     for _, detail in enumerate(rogue_detail):
-        if detail['detail_h'] is None:
+        if detail.detail_h is None:
             continue
 
         floor_pic = Image.open(TEXT_PATH / 'detail_bg.png').convert('RGBA')
-        floor_pic = floor_pic.resize((900, detail['detail_h']))
+        floor_pic = floor_pic.resize((900, detail.detail_h))
 
         floor_top_pic = Image.open(TEXT_PATH / 'floor_bg_top.png').convert(
             'RGBA'
@@ -669,7 +669,7 @@ async def draw_rogue_locust_img(
             TEXT_PATH / 'floor_bg_center.png'
         ).convert('RGBA')
         floor_center_pic = floor_center_pic.resize(
-            (900, detail['detail_h'] - 170)
+            (900, detail.detail_h - 170)
         )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
@@ -677,16 +677,16 @@ async def draw_rogue_locust_img(
             'RGBA'
         )
         floor_pic.paste(
-            floor_bot_pic, (0, detail['detail_h'] - 70), floor_bot_pic
+            floor_bot_pic, (0, detail.detail_h - 70), floor_bot_pic
         )
 
-        floor_name = detail['name']
-        difficulty_name = difficultylist[detail['difficulty']]
+        floor_name = detail.name
+        difficulty_name = difficultylist[detail.difficulty]
 
-        time_array = detail['finish_time']
-        time_str = f"{time_array['year']}-{time_array['month']}"
-        time_str = f"{time_str}-{time_array['day']}"
-        time_str = f"{time_str} {time_array['hour']}:{time_array['minute']}"
+        time_array = detail.finish_time
+        time_str = f'{time_array.year}-{time_array.month}'
+        time_str = f'{time_str}-{time_array.day}'
+        time_str = f'{time_str} {time_array.hour}:{time_array.minute}'
         floor_pic_draw = ImageDraw.Draw(floor_pic)
         floor_pic_draw.text(
             (450, 60),
@@ -702,10 +702,10 @@ async def draw_rogue_locust_img(
             sr_font_22,
             'lm',
         )
-        if detail['fury']['type'] == 1:
+        if detail.fury.type == 1:
             floor_pic_draw.text(
                 (800, 120),
-                f'扰动等级:{detail["fury"]["point"]}',
+                f'扰动等级:{detail.fury.point}',
                 gray_color,
                 sr_font_22,
                 'rm',
@@ -713,14 +713,14 @@ async def draw_rogue_locust_img(
         else:
             floor_pic_draw.text(
                 (800, 120),
-                f'位面紊乱倒计时:{detail["fury"]["point"]}',
+                f'位面紊乱倒计时:{detail.fury.point}',
                 gray_color,
                 sr_font_22,
                 'rm',
             )
 
         # 角色
-        for index_char, char in enumerate(detail['final_lineup']):
+        for index_char, char in enumerate(detail.final_lineup):
             # 获取命座
             # if char["id"] in char_temp:
             # talent_num = char_temp[char["id"]]
@@ -741,7 +741,7 @@ async def draw_rogue_locust_img(
 
         # 祝福
         buff_height = 0
-        if len(detail['base_type_list']) > 0:
+        if len(detail.base_type_list) > 0:
             floor_pic_draw.text(
                 (93, 370),
                 '获得祝福',
@@ -750,10 +750,10 @@ async def draw_rogue_locust_img(
                 'lm',
             )
             floor_pic.paste(content_center, (0, 390), content_center)
-            for buff in detail['buffs']:
-                buff_icon = bufflist[buff['base_type']['id']]
-                buff_name = buff['base_type']['name']
-                buffs = buff['items']
+            for buff in detail.buffs:
+                buff_icon = bufflist[buff.base_type.id]
+                buff_name = buff.base_type.name
+                buffs = buff.items
                 draw_height = await _draw_rogue_buff(
                     buffs,
                     buff_icon,
@@ -765,7 +765,7 @@ async def draw_rogue_locust_img(
 
         # 奇物
         miracles_height = buff_height
-        if len(detail['miracles']) > 0:
+        if len(detail.miracles) > 0:
             floor_pic_draw.text(
                 (93, 370 + miracles_height + 60),
                 '获得奇物',
@@ -777,7 +777,7 @@ async def draw_rogue_locust_img(
                 content_center, (0, 370 + miracles_height + 80), content_center
             )
             draw_height = await _draw_rogue_miracles(
-                detail['miracles'],
+                detail.miracles,
                 floor_pic,
                 miracles_height,
             )
@@ -786,7 +786,7 @@ async def draw_rogue_locust_img(
 
         # 事件
         blocks_height = miracles_height
-        if len(detail['blocks']) > 0:
+        if len(detail.blocks) > 0:
             floor_pic_draw.text(
                 (93, 370 + blocks_height + 60),
                 '通过区域类型',
@@ -798,17 +798,17 @@ async def draw_rogue_locust_img(
                 content_center, (0, 370 + blocks_height + 80), content_center
             )
             draw_height = await _draw_rogue_blocks(
-                detail['blocks'],
+                detail.blocks,
                 floor_pic,
                 blocks_height,
             )
             blocks_height = blocks_height + 80
             blocks_height = blocks_height + draw_height
 
-        if detail['start_h'] is None:
+        if detail.start_h is None:
             continue
 
-        img.paste(floor_pic, (0, detail['start_h']), floor_pic)
+        img.paste(floor_pic, (0, detail.start_h), floor_pic)
         # await _draw_floor_card(
         # level_star,
         # floor_pic,

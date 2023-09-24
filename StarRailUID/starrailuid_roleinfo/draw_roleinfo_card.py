@@ -59,17 +59,17 @@ async def _draw_card_1(
     sr_uid: str, role_basic_info: RoleBasicInfo, stats: Stats
 ) -> Image.Image:
     # 名称
-    nickname = role_basic_info['nickname']
+    nickname = role_basic_info.nickname
 
     # 基本状态
-    active_days = stats['active_days']
-    avater_num = stats['avatar_num']
-    achievement_num = stats['achievement_num']
-    chest_num = stats['chest_num']
-    level = role_basic_info['level']
+    active_days = stats.active_days
+    avater_num = stats.avatar_num
+    achievement_num = stats.achievement_num
+    chest_num = stats.chest_num
+    level = role_basic_info.level
 
     # 忘却之庭
-    abyss_process = stats['abyss_process']
+    abyss_process = stats.abyss_process
 
     img_bg1 = bg1.copy()
     bg1_draw = ImageDraw.Draw(img_bg1)
@@ -137,22 +137,22 @@ async def _draw_card_1(
 async def _draw_avatar_card(
     avatar: AvatarListItem, equips: Dict[int, Optional[str]]
 ) -> Image.Image:
-    char_bg = (char_bg_4 if avatar['rarity'] == 4 else char_bg_5).copy()
+    char_bg = (char_bg_4 if avatar.rarity == 4 else char_bg_5).copy()
     char_draw = ImageDraw.Draw(char_bg)
-    char_icon = await get_icon(avatar['icon'])
-    element_icon = elements[avatar['element']]
+    char_icon = await get_icon(avatar.icon)
+    element_icon = elements[avatar.element]
 
     char_bg.paste(char_icon, (4, 8), mask=char_icon)
     char_bg.paste(element_icon, (81, 10), mask=element_icon)
 
-    if equip := equips[avatar['id']]:
+    if equip := equips[avatar.id]:
         char_bg.paste(circle, (0, 0), mask=circle)
         equip_icon = (await get_icon(equip)).resize((48, 48))
         char_bg.paste(equip_icon, (9, 80), mask=equip_icon)
 
     char_draw.text(
         (60, 146),
-        _lv(avatar['level']),
+        _lv(avatar.level),
         font=sr_font_24,
         fill=color_color,
         anchor='mm',
@@ -208,19 +208,19 @@ async def draw_role_card(sr_uid: str) -> Union[bytes, str]:
     if isinstance(role_index, int):
         return get_error(role_index)
 
-    stats = role_index['stats']
-    avatars = role_index['avatar_list']
+    stats = role_index.stats
+    avatars = role_index.avatar_list
 
-    detail = await mys_api.get_avatar_info(sr_uid, avatars[0]['id'])
+    detail = await mys_api.get_avatar_info(sr_uid, avatars[0].id)
     if isinstance(detail, int):
         return get_error(detail)
 
     # 角色武器
-    details = detail['avatar_list']
+    details = detail.avatar_list
     equips: Dict[int, Optional[str]] = {}
     for detail in details:
-        equip = detail['equip']
-        equips[detail['id']] = equip['icon'] if equip is not None else None
+        equip = detail.equip
+        equips[detail.id] = equip.icon if equip is not None else None
 
     # 绘制总图
     img1, img2 = await asyncio.gather(

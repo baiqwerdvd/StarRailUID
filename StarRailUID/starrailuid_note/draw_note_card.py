@@ -96,19 +96,19 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     role_basic_info = await mys_api.get_role_basic_info(sr_uid)
     if isinstance(role_basic_info, int):
         return get_error(role_basic_info)
-    nickname = role_basic_info['nickname']
+    nickname = role_basic_info.nickname
 
-    day_hcoin = data['day_data']['current_hcoin']
-    day_rails_pass = data['day_data']['current_rails_pass']
+    day_hcoin = data.day_data.current_hcoin
+    day_rails_pass = data.day_data.current_rails_pass
     lastday_hcoin = 0
     lastday_rails_pass = 0
     if int(sr_uid[0]) < 6:
-        lastday_hcoin = data['day_data']['last_hcoin']
-        lastday_rails_pass = data['day_data']['last_rails_pass']
-    month_hcoin = data['month_data']['current_hcoin']
-    month_rails_pass = data['month_data']['current_rails_pass']
-    lastmonth_hcoin = data['month_data']['last_hcoin']
-    lastmonth_rails_pass = data['month_data']['last_rails_pass']
+        lastday_hcoin = data.day_data.last_hcoin
+        lastday_rails_pass = data.day_data.last_rails_pass
+    month_hcoin = data.month_data.current_hcoin
+    month_rails_pass = data.month_data.current_rails_pass
+    lastmonth_hcoin = data.month_data.last_hcoin
+    lastmonth_rails_pass = data.month_data.last_rails_pass
 
     day_hcoin_str = await int_carry(day_hcoin)
     day_rails_pass_str = await int_carry(day_rails_pass)
@@ -214,21 +214,21 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     )
     xy = ((0, 0), (2100, 2100))
     temp = -90
-    if not data['month_data']['group_by']:
+    if not data.month_data.group_by:
         pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         pie_image_draw.ellipse(xy, fill=(128, 128, 128))
     else:
         pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
-        for _index, i in enumerate(data['month_data']['group_by']):
+        for _index, i in enumerate(data.month_data.group_by):
             pie_image_draw.pieslice(
                 xy,
                 temp,
-                temp + (i['percent'] / 100) * 360,
-                COLOR_MAP[i['action_name']],
+                temp + (i.percent / 100) * 360,
+                COLOR_MAP[i.action_name],
             )
-            temp = temp + (i['percent'] / 100) * 360
+            temp = temp + (i.percent / 100) * 360
     # 绘制蒙版圆形
     new_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
     pie_image_draw.ellipse((150, 150, 1950, 1950), fill=(255, 255, 255, 0))
@@ -241,16 +241,14 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     if last_monthly_data:
         pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
-        for _index, i in enumerate(
-            last_monthly_data['month_data']['group_by']
-        ):
+        for _index, i in enumerate(last_monthly_data.month_data.group_by):
             pie_image_draw.pieslice(
                 xy,
                 temp,
-                temp + (i['percent'] / 100) * 360,
-                COLOR_MAP[i['action_name']],
+                temp + (i.percent / 100) * 360,
+                COLOR_MAP[i.action_name],
             )
-            temp = temp + (i['percent'] / 100) * 360
+            temp = temp + (i.percent / 100) * 360
     else:
         pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)

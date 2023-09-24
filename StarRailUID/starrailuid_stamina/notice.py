@@ -54,7 +54,7 @@ async def all_check(
             if srconfig.get_config('CrazyNotice').data:
                 if not await check(mode, raw_data, push_data[f'{mode}_value']):
                     await sqla.update_push_data(
-                        uid, {f'{mode}_is_push': 'off'}
+                        uid, bot_id, {f'{mode}_is_push': 'off'}
                     )
                 continue
         # 准备推送
@@ -73,7 +73,9 @@ async def all_check(
                         msg_dict[bot_id]['direct'][user_id] = NOTICE[mode]
                     else:
                         msg_dict[bot_id]['direct'][user_id] += NOTICE[mode]
-                    await sqla.update_push_data(uid, {f'{mode}_is_push': 'on'})
+                    await sqla.update_push_data(
+                        uid, bot_id, {f'{mode}_is_push': 'on'}
+                    )
                 # 群号推送到群聊
                 else:
                     # 初始化
@@ -85,21 +87,23 @@ async def all_check(
                         msg_dict[bot_id]['group'][gid][user_id] = NOTICE[mode]
                     else:
                         msg_dict[bot_id]['group'][gid][user_id] += NOTICE[mode]
-                    await sqla.update_push_data(uid, {f'{mode}_is_push': 'on'})
+                    await sqla.update_push_data(
+                        uid, bot_id, {f'{mode}_is_push': 'on'}
+                    )
     return msg_dict
 
 
 async def check(mode: str, data: DailyNoteData, limit: int) -> bool:
     if mode == 'resin':
-        if data['current_stamina'] >= limit:
+        if data.current_stamina >= limit:
             return True
-        if data['current_stamina'] >= data['max_stamina']:
+        if data.current_stamina >= data.max_stamina:
             return True
         return False
     if mode == 'go':
-        for i in data['expeditions']:
-            if i['status'] == 'Ongoing':
-                if int(i['remaining_time']) <= limit * 60:
+        for i in data.expeditions:
+            if i.status == 'Ongoing':
+                if i.remaining_time <= limit * 60:
                     return True
             else:
                 return True

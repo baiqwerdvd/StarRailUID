@@ -24,38 +24,36 @@ async def get_stamina_text(uid: str) -> str:
         dailydata = await mys_api.get_daily_data(uid)
         if isinstance(dailydata, int):
             return get_error(dailydata)
-        max_stamina = dailydata['max_stamina']
+        max_stamina = dailydata.max_stamina
         rec_time = ''
-        current_stamina = dailydata['current_stamina']
+        current_stamina = dailydata.current_stamina
         if current_stamina < 160:
             stamina_recover_time = seconds2hours(
-                dailydata['stamina_recover_time']
+                dailydata.stamina_recover_time
             )
             next_stamina_rec_time = seconds2hours(
                 8 * 60
                 - (
-                    (dailydata['max_stamina'] - dailydata['current_stamina'])
+                    (dailydata.max_stamina - dailydata.current_stamina)
                     * 8
                     * 60
-                    - int(dailydata['stamina_recover_time'])
+                    - dailydata.stamina_recover_time
                 )
             )
             rec_time = f' ({next_stamina_rec_time}/{stamina_recover_time})'
 
-        accepted_epedition_num = dailydata['accepted_expedition_num']
-        total_expedition_num = dailydata['total_expedition_num']
+        accepted_epedition_num = dailydata.accepted_expedition_num
+        total_expedition_num = dailydata.total_expedition_num
         finished_expedition_num = 0
         expedition_info: List[str] = []
-        for expedition in dailydata['expeditions']:
-            expedition_name = expedition['name']
+        for expedition in dailydata.expeditions:
+            expedition_name = expedition.name
 
-            if expedition['status'] == 'Finished':
+            if expedition.status == 'Finished':
                 expedition_info.append(f'{expedition_name} 探索完成')
                 finished_expedition_num += 1
             else:
-                remaining_time: str = seconds2hours(
-                    expedition['remaining_time']
-                )
+                remaining_time: str = seconds2hours(expedition.remaining_time)
                 expedition_info.append(
                     f'{expedition_name} 剩余时间{remaining_time}'
                 )

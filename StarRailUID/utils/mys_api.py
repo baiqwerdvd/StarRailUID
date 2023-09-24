@@ -2,8 +2,9 @@ import copy
 import time
 import random
 from string import digits, ascii_letters
-from typing import Any, Dict, Union, Literal, Optional, cast
+from typing import Any, Dict, Union, Literal, Optional
 
+import msgspec
 from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.database.models import GsUser
 from gsuid_core.utils.api.mys.models import MysSign, SignInfo, SignList
@@ -56,8 +57,7 @@ class MysApi(_MysApi):
     ) -> Optional[str]:
         if mode == 'RANDOM':
             return await GsUser.get_random_cookie(uid, game_name='sr')
-        else:
-            return await GsUser.get_user_cookie_by_uid(uid, game_name='sr')
+        return await GsUser.get_user_cookie_by_uid(uid, game_name='sr')
 
     async def get_stoken(self, uid: str) -> Optional[str]:
         return await GsUser.get_user_stoken_by_uid(uid, 'sr')
@@ -125,7 +125,8 @@ class MysApi(_MysApi):
                 'STAR_RAIL_NOTE_URL', uid, header=self._HEADER
             )
         if isinstance(data, Dict):
-            data = cast(DailyNoteData, data['data'])
+            data = msgspec.convert(data['data'], type=DailyNoteData)
+            # data = cast(DailyNoteData, data['data'])
         return data
 
     async def get_widget_stamina_data(
@@ -155,7 +156,8 @@ class MysApi(_MysApi):
             _API['STAR_RAIL_WIDGRT_URL'], 'GET', header
         )
         if isinstance(data, Dict):
-            data = cast(WidgetStamina, data['data'])
+            data = msgspec.convert(data['data'], type=WidgetStamina)
+            # data = cast(WidgetStamina, data['data'])
         return data
 
     async def get_role_index(self, uid: str) -> Union[RoleIndex, int]:
@@ -182,7 +184,8 @@ class MysApi(_MysApi):
                 'STAR_RAIL_INDEX_URL', uid, header=self._HEADER
             )
         if isinstance(data, Dict):
-            data = cast(RoleIndex, data['data'])
+            data = msgspec.convert(data['data'], type=RoleIndex)
+            # data = cast(RoleIndex, data['data'])
         return data
 
     async def get_gacha_log_by_link_in_authkey(
@@ -233,7 +236,8 @@ class MysApi(_MysApi):
             },
         )
         if isinstance(data, Dict):
-            data = cast(GachaLog, data['data'])
+            data = msgspec.convert(data['data'], type=GachaLog)
+            # data = cast(GachaLog, data['data'])
         return data
 
     async def get_avatar_info(
@@ -271,7 +275,8 @@ class MysApi(_MysApi):
                 header=self._HEADER,
             )
         if isinstance(data, Dict):
-            data = cast(AvatarInfo, data['data'])
+            data = msgspec.convert(data['data'], type=AvatarInfo)
+            # data = cast(AvatarInfo, data['data'])
         return data
 
     async def get_sign_list(self, uid) -> Union[SignList, int]:
@@ -291,7 +296,8 @@ class MysApi(_MysApi):
             'STAR_RAIL_SIGN_LIST_URL', is_os, params
         )
         if isinstance(data, Dict):
-            data = cast(SignList, data['data'])
+            data = msgspec.convert(data['data'], type=SignList)
+            # data = cast(SignList, data['data'])
         return data
 
     async def get_sign_info(self, uid) -> Union[SignInfo, int]:
@@ -322,7 +328,8 @@ class MysApi(_MysApi):
             'STAR_RAIL_SIGN_INFO_URL', is_os, params, header
         )
         if isinstance(data, Dict):
-            data = cast(SignInfo, data['data'])
+            data = msgspec.convert(data['data'], type=SignInfo)
+            # data = cast(SignInfo, data['data'])
         return data
 
     async def get_srspiral_abyss_info(
@@ -367,7 +374,8 @@ class MysApi(_MysApi):
                 header=self._HEADER,
             )
         if isinstance(data, Dict):
-            data = cast(AbyssData, data['data'])
+            data = msgspec.convert(data['data'], type=AbyssData)
+            # data = cast(AbyssData, data['data'])
         return data
 
     async def get_rogue_info(
@@ -390,7 +398,8 @@ class MysApi(_MysApi):
             header=self._HEADER,
         )
         if isinstance(data, Dict):
-            data = cast(RogueData, data['data'])
+            data = msgspec.convert(data['data'], type=RogueData)
+            # data = cast(RogueData, data['data'])
         return data
 
     async def get_rogue_locust_info(
@@ -411,7 +420,8 @@ class MysApi(_MysApi):
             header=self._HEADER,
         )
         if isinstance(data, Dict):
-            data = cast(RogueLocustData, data['data'])
+            data = msgspec.convert(data['data'], type=RogueLocustData)
+            # data = cast(RogueLocustData, data['data'])
         return data
 
     async def mys_sign(
@@ -457,7 +467,8 @@ class MysApi(_MysApi):
                 },
             )
         if isinstance(data, Dict):
-            data = cast(MysSign, data['data'])
+            data = msgspec.convert(data['data'], type=MysSign)
+            # data = cast(MysSign, data['data'])
         return data
 
     async def get_award(self, sr_uid, month) -> Union[MonthlyAward, int]:
@@ -487,7 +498,8 @@ class MysApi(_MysApi):
                 use_proxy=True,
             )
         if isinstance(data, Dict):
-            data = cast(MonthlyAward, data['data'])
+            data = msgspec.convert(data['data'], type=MonthlyAward)
+            # data = cast(MonthlyAward, data['data'])
         return data
 
     async def get_role_basic_info(
@@ -497,7 +509,8 @@ class MysApi(_MysApi):
             'STAR_RAIL_ROLE_BASIC_INFO_URL', sr_uid, header=self._HEADER
         )
         if isinstance(data, Dict):
-            data = cast(RoleBasicInfo, data['data'])
+            data = msgspec.convert(data['data'], type=RoleBasicInfo)
+            # data = cast(RoleBasicInfo, data['data'])
         return data
 
 

@@ -62,18 +62,18 @@ async def _draw_task_img(
     char: Optional[Expedition],
 ):
     if char is not None:
-        expedition_name = char['name']
-        remaining_time: str = seconds2hours(char['remaining_time'])
+        expedition_name = char.name
+        remaining_time: str = seconds2hours(char.remaining_time)
         note_travel_img = note_travel_bg.copy()
         for i in range(2):
-            avatar_url = char['avatars'][i]
+            avatar_url = char.avatars[i]
             image = await download_image(avatar_url)
             char_pic = image.convert('RGBA').resize(
                 (40, 40), Image.Resampling.LANCZOS  # type: ignore
             )
             note_travel_img.paste(char_pic, (495 + 68 * i, 20), char_pic)
         img.paste(note_travel_img, (0, 790 + index * 80), note_travel_img)
-        if char['status'] == 'Finished':
+        if char.status == 'Finished':
             status_mark = '待收取'
         else:
             status_mark = str(remaining_time)
@@ -155,7 +155,7 @@ def get_error(img: Image.Image, uid: str, daily_data: int):
     error_text = get_error_msg(daily_data)
     img_draw.text(
         (350, 650),
-        f'{error_text} ,错误码{daily_data}',
+        f'{error_text}, 错误码{daily_data}',
         font=sr_font_26,
         fill=red_color,
         anchor='mm',
@@ -191,15 +191,15 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
         role_basic_info = await mys_api.get_role_basic_info(sr_uid)
         if isinstance(role_basic_info, int):
             return get_error(img, sr_uid, role_basic_info)
-        nickname = role_basic_info['nickname']
-        level = role_basic_info['level']
+        nickname = role_basic_info.nickname
+        level = role_basic_info.level
     else:
         nickname = '开拓者'
         level = '0'
 
     # 开拓力
-    stamina = daily_data['current_stamina']
-    max_stamina = daily_data['max_stamina']
+    stamina = daily_data.current_stamina
+    max_stamina = daily_data.max_stamina
     stamina_str = f'{stamina}/{max_stamina}'
     stamina_percent = stamina / max_stamina
     if stamina_percent > 0.8:
@@ -207,7 +207,7 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
     else:
         stamina_color = second_color
     stamina_recovery_time = await seconds2hours_zhcn(
-        daily_data['stamina_recover_time']
+        daily_data.stamina_recover_time
     )
 
     img.paste(note_bg, (0, 0), note_bg)
@@ -217,8 +217,8 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
     task_task = []
     for i in range(4):
         char = (
-            daily_data['expeditions'][i]
-            if i < len(daily_data['expeditions'])
+            daily_data.expeditions[i]
+            if i < len(daily_data.expeditions)
             else None
         )
         task_task.append(_draw_task_img(img, img_draw, i, char))

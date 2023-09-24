@@ -34,10 +34,10 @@ async def get_new_gachalog_by_link(
                 )
                 if isinstance(data, int):
                     return {}
-                data = data['list']
+                data = data.list
                 if not data:
                     break
-                end_id = data[-1]['id']
+                end_id = data[-1].id
                 if data[-1] in full_data[gacha_name] and not is_force:
                     for item in data:
                         if item not in full_data[gacha_name]:
@@ -46,9 +46,7 @@ async def get_new_gachalog_by_link(
                     temp = []
                     break
                 if len(full_data[gacha_name]) >= 1:
-                    if int(data[-1]['id']) <= int(
-                        full_data[gacha_name][0]['id']
-                    ):
+                    if int(data[-1].id) <= int(full_data[gacha_name][0]['id']):
                         full_data[gacha_name].extend(data)
                     else:
                         full_data[gacha_name][0:0] = data

@@ -78,9 +78,9 @@ async def _draw_abyss_card(
     # char_id = char['id']
     # # 确认角色头像路径
     # char_pic_path = CHAR_ICON_PATH / f'{char_id}.png'
-    char_bg = (char_bg_4 if char['rarity'] == 4 else char_bg_5).copy()
-    char_icon = (await get_icon(char['icon'])).resize((151, 170))
-    element_icon = elements[char['element']]
+    char_bg = (char_bg_4 if char.rarity == 4 else char_bg_5).copy()
+    char_icon = (await get_icon(char.icon)).resize((151, 170))
+    element_icon = elements[char.element]
     char_bg.paste(char_icon, (24, 16), mask=char_icon)
     char_bg.paste(level_cover, (0, 0), mask=level_cover)
     char_bg.paste(element_icon, (135, 30), mask=element_icon)
@@ -93,7 +93,7 @@ async def _draw_abyss_card(
     char_card_draw = ImageDraw.Draw(char_bg)
     char_card_draw.text(
         (100, 165),
-        f'等级 {char["level"]}',
+        f'等级 {char.level}',
         font=sr_font_22,
         fill=white_color,
         anchor='mm',
@@ -154,12 +154,12 @@ async def draw_abyss_img(
         floor_num = 1
         if floor > 10:
             return '楼层不能大于10层!'
-        if len(raw_abyss_data['all_floor_detail']) < floor:
+        if len(raw_abyss_data.all_floor_detail) < floor:
             return '你还没有挑战该层!'
     else:
-        if raw_abyss_data['max_floor'] == '':
+        if raw_abyss_data.max_floor == '':
             return '你还没有挑战本期深渊!\n可以使用[sr上期深渊]命令查询上期~'
-        floor_num = len(raw_abyss_data['all_floor_detail'])
+        floor_num = len(raw_abyss_data.all_floor_detail)
 
     # 获取背景图片各项参数
     based_w = 900
@@ -193,7 +193,7 @@ async def draw_abyss_img(
     # 最深抵达
     img_draw.text(
         (220, 565),
-        f'{raw_abyss_data["max_floor"]}',
+        f'{raw_abyss_data.max_floor}',
         white_color,
         sr_font_34,
         'lm',
@@ -201,7 +201,7 @@ async def draw_abyss_img(
     # 挑战次数
     img_draw.text(
         (220, 612),
-        f'{raw_abyss_data["battle_num"]}',
+        f'{raw_abyss_data.battle_num}',
         white_color,
         sr_font_34,
         'lm',
@@ -212,34 +212,35 @@ async def draw_abyss_img(
 
     img_draw.text(
         (695, 590),
-        f'{raw_abyss_data["star_num"]}/30',
+        f'{raw_abyss_data.star_num}/30',
         white_color,
         sr_font_42,
         'lm',
     )
 
-    for index_floor, level in enumerate(raw_abyss_data['all_floor_detail']):
+    for index_floor, level in enumerate(raw_abyss_data.all_floor_detail):
         if floor:
-            if abyss_list[str(floor)] == level['name']:
+            if abyss_list[str(floor)] == level.name:
                 index_floor = 0  # noqa: PLW2901
             else:
                 continue
         elif index_floor >= 3:
             break
         floor_pic = Image.open(TEXT_PATH / 'floor_bg.png')
-        level_star = level['star_num']
-        floor_name = level['name']
-        round_num = level['round_num']
+        level_star = level.star_num
+        floor_name = level.name
+        round_num = level.round_num
+        node_1 = level.node_1
+        node_2 = level.node_2
         for index_part in [0, 1]:
             node_num = index_part + 1
-            node = f'node_{node_num}'
-            # 节点1
-            time_array = level[node]['challenge_time']
-            time_str = f"{time_array['year']}-{time_array['month']}"
-            time_str = f"{time_str}-{time_array['day']}"
-            time_str = (
-                f"{time_str} {time_array['hour']}:{time_array['minute']}:00"
-            )
+            if node_num == 1:
+                time_array = node_1[-1].challenge_time
+            else:
+                time_array = node_2[-1].challenge_time
+            time_str = f'{time_array.year}-{time_array.month}'
+            time_str = f'{time_str}-{time_array.day}'
+            time_str = f'{time_str} {time_array.hour}:{time_array.minute}:00'
             floor_pic_draw = ImageDraw.Draw(floor_pic)
             floor_pic_draw.text(
                 (112, 120 + index_part * 219),
@@ -255,8 +256,12 @@ async def draw_abyss_img(
                 sr_font_22,
                 'lm',
             )
+            if node_num == 1:
+                avatars_array = node_1[-1]
+            else:
+                avatars_array = node_2[-1]
 
-            for index_char, char in enumerate(level[node]['avatars']):
+            for index_char, char in enumerate(avatars_array.avatars):
                 # 获取命座
                 # if char["id"] in char_temp:
                 # talent_num = char_temp[char["id"]]

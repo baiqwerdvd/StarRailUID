@@ -1,11 +1,13 @@
-from typing import Any, Dict, List, Union, TypedDict
+from typing import Any, Dict, List, Union
+
+from msgspec import Struct
 
 ################
 # 抽卡记录相关 #
 ################
 
 
-class SingleGachaLog(TypedDict):
+class SingleGachaLog(Struct):
     uid: str
     gacha_id: str
     gacha_type: str
@@ -19,7 +21,7 @@ class SingleGachaLog(TypedDict):
     id: str
 
 
-class GachaLog(TypedDict):
+class GachaLog(Struct):
     page: str
     size: str
     list: List[SingleGachaLog]
@@ -27,7 +29,7 @@ class GachaLog(TypedDict):
     region_time_zone: int
 
 
-class RoleBasicInfo(TypedDict):
+class RoleBasicInfo(Struct):
     avatar: str
     nickname: str
     region: str
@@ -39,7 +41,7 @@ class RoleBasicInfo(TypedDict):
 ################
 
 
-class RogueTime(TypedDict):
+class RogueTime(Struct):
     year: int
     month: int
     day: int
@@ -48,7 +50,7 @@ class RogueTime(TypedDict):
     second: int
 
 
-class RogueAvatar(TypedDict):
+class RogueAvatar(Struct):
     id: int
     icon: str
     level: int
@@ -56,31 +58,31 @@ class RogueAvatar(TypedDict):
     element: str
 
 
-class RogueBaseType(TypedDict):
+class RogueBaseType(Struct):
     id: int
     name: str
     cnt: int
 
 
-class RogueBuffitems(TypedDict):
+class RogueBuffitems(Struct):
     id: int
     name: str
     is_evoluted: str
     rank: int
 
 
-class RogueMiracles(TypedDict):
+class RogueMiracles(Struct):
     id: int
     name: str
     icon: str
 
 
-class RogueBuffs(TypedDict):
+class RogueBuffs(Struct):
     base_type: RogueBaseType
     items: List[RogueBuffitems]
 
 
-class RogueRecordInfo(TypedDict):
+class RogueRecordInfo(Struct):
     name: str
     finish_time: RogueTime
     score: int
@@ -94,60 +96,63 @@ class RogueRecordInfo(TypedDict):
     detail_h: Union[int, None]
     start_h: Union[int, None]
 
+    def __setitem__(self, key: str, value: Any) -> None:
+        self.__dict__[key] = value
 
-class RogueBasic(TypedDict):
+
+class RogueBasic(Struct):
     id: int
     finish_cnt: int
     schedule_begin: RogueTime
     schedule_end: RogueTime
 
 
-class RogueRecord(TypedDict):
+class RogueRecord(Struct):
     basic: RogueBasic
     records: List[RogueRecordInfo]
 
 
-class RogueBasicInfo(TypedDict):
+class RogueBasicInfo(Struct):
     unlocked_buff_num: int
     unlocked_miracle_num: int
     unlocked_skill_points: int
 
 
-class LocustCntInfo(TypedDict):
+class LocustCntInfo(Struct):
     narrow: int
     miracle: int
     event: int
 
 
-class LocustDestinyInfo(TypedDict):
+class LocustDestinyInfo(Struct):
     id: int
     desc: str
     level: int
 
 
-class LocustBasicInfo(TypedDict):
+class LocustBasicInfo(Struct):
     cnt: LocustCntInfo
     destiny: List[LocustDestinyInfo]
 
 
-class RoleInfo(TypedDict):
+class RoleInfo(Struct):
     server: str
     nickname: str
     level: int
 
 
-class LocustBlocks(TypedDict):
+class LocustBlocks(Struct):
     block_id: int
     name: str
     num: int
 
 
-class LocustFury(TypedDict):
+class LocustFury(Struct):
     type: int
     point: str
 
 
-class LocustRecordInfo(TypedDict):
+class LocustRecordInfo(Struct):
     name: str
     finish_time: RogueTime
     final_lineup: List[RogueAvatar]
@@ -162,19 +167,22 @@ class LocustRecordInfo(TypedDict):
     detail_h: Union[int, None]
     start_h: Union[int, None]
 
+    def __setitem__(self, key: str, value: Any) -> None:
+        self.__dict__[key] = value
 
-class LocustRecord(TypedDict):
+
+class LocustRecord(Struct):
     records: List[LocustRecordInfo]
 
 
-class RogueData(TypedDict):
+class RogueData(Struct):
     role: RoleInfo
     basic_info: RogueBasicInfo
     current_record: RogueRecord
     last_record: RogueRecord
 
 
-class RogueLocustData(TypedDict):
+class RogueLocustData(Struct):
     role: RoleInfo
     basic: LocustBasicInfo
     detail: LocustRecord
@@ -185,7 +193,7 @@ class RogueLocustData(TypedDict):
 ################
 
 
-class AbyssTime(TypedDict):
+class AbyssTime(Struct):
     year: int
     month: int
     day: int
@@ -193,7 +201,7 @@ class AbyssTime(TypedDict):
     minute: int
 
 
-class AbyssAvatar(TypedDict):
+class AbyssAvatar(Struct):
     id: int
     level: int
     icon: str
@@ -201,12 +209,12 @@ class AbyssAvatar(TypedDict):
     element: str
 
 
-class AbyssNodeDetail(TypedDict):
+class AbyssNodeDetail(Struct):
     challenge_time: AbyssTime
     avatars: List[AbyssAvatar]
 
 
-class AbyssFloorDetail(TypedDict):
+class AbyssFloorDetail(Struct):
     name: str
     round_num: int
     star_num: int
@@ -214,7 +222,7 @@ class AbyssFloorDetail(TypedDict):
     node_2: List[AbyssNodeDetail]
 
 
-class AbyssData(TypedDict):
+class AbyssData(Struct):
     schedule_id: int
     begin_time: AbyssTime
     end_time: AbyssTime
@@ -231,27 +239,27 @@ class AbyssData(TypedDict):
 ################
 
 
-class DataText(TypedDict):
+class DataText(Struct):
     type: str
     key: str
     mi18n_key: str
 
 
-class DayData(TypedDict):
+class DayData(Struct):
     current_hcoin: int
     current_rails_pass: int
     last_hcoin: int
     last_rails_pass: int
 
 
-class GroupBy(TypedDict):
+class GroupBy(Struct):
     action: str
     num: int
     percent: int
     action_name: str
 
 
-class MonthData(TypedDict):
+class MonthData(Struct):
     current_hcoin: int
     current_rails_pass: int
     last_hcoin: int
@@ -261,7 +269,7 @@ class MonthData(TypedDict):
     group_by: List[GroupBy]
 
 
-class MonthlyAward(TypedDict):
+class MonthlyAward(Struct):
     uid: str
     region: str
     login_flag: bool
@@ -278,14 +286,14 @@ class MonthlyAward(TypedDict):
 ################
 # 实时便签 #
 ################
-class Expedition(TypedDict):
+class Expedition(Struct):
     avatars: List[str]  # 头像Url
     status: str
     remaining_time: int
     name: str
 
 
-class DailyNoteData(TypedDict):
+class DailyNoteData(Struct):
     current_stamina: int
     max_stamina: int
     stamina_recover_time: int
@@ -294,7 +302,7 @@ class DailyNoteData(TypedDict):
     expeditions: List[Expedition]
 
 
-class WidgetStamina(TypedDict):
+class WidgetStamina(Struct):
     current_stamina: int
     max_stamina: int
     stamina_recover_time: int
@@ -314,7 +322,7 @@ class WidgetStamina(TypedDict):
 ################
 # 签到相关 #
 ################
-class MysSign(TypedDict):
+class MysSign(Struct):
     code: str
     risk_code: int
     gt: str
@@ -323,7 +331,7 @@ class MysSign(TypedDict):
     is_risk: bool
 
 
-class SignInfo(TypedDict):
+class SignInfo(Struct):
     total_sign_day: int
     today: str
     is_sign: bool
@@ -333,13 +341,13 @@ class SignInfo(TypedDict):
     short_sign_day: int
 
 
-class SignAward(TypedDict):
+class SignAward(Struct):
     icon: str
     name: str
     cnt: int
 
 
-class SignExtraAward(TypedDict):
+class SignExtraAward(Struct):
     has_extra_award: bool
     start_time: str
     end_time: str
@@ -348,7 +356,7 @@ class SignExtraAward(TypedDict):
     end_timestamp: str
 
 
-class SignList(TypedDict):
+class SignList(Struct):
     month: int
     awards: List[SignAward]
     biz: str
@@ -361,7 +369,7 @@ class SignList(TypedDict):
 ####################
 
 
-class Stats(TypedDict):
+class Stats(Struct):
     active_days: int
     avatar_num: int
     achievement_num: int
@@ -369,7 +377,7 @@ class Stats(TypedDict):
     abyss_process: str
 
 
-class AvatarListItem(TypedDict):
+class AvatarListItem(Struct):
     id: int
     level: int
     name: str
@@ -380,7 +388,7 @@ class AvatarListItem(TypedDict):
     is_chosen: bool
 
 
-class RoleIndex(TypedDict):
+class RoleIndex(Struct):
     stats: Stats
     avatar_list: List[AvatarListItem]
 
@@ -390,7 +398,7 @@ class RoleIndex(TypedDict):
 ################
 
 
-class Equip(TypedDict):
+class Equip(Struct):
     id: int
     level: int
     rank: int
@@ -399,7 +407,7 @@ class Equip(TypedDict):
     icon: str
 
 
-class RelicsItem(TypedDict):
+class RelicsItem(Struct):
     id: int
     level: int
     pos: int
@@ -409,7 +417,7 @@ class RelicsItem(TypedDict):
     rarity: int
 
 
-class RanksItem(TypedDict):
+class RanksItem(Struct):
     id: int
     pos: int
     name: str
@@ -418,7 +426,7 @@ class RanksItem(TypedDict):
     is_unlocked: bool
 
 
-class AvatarListItemDetail(TypedDict):
+class AvatarListItemDetail(Struct):
     id: int
     level: int
     name: str
@@ -433,7 +441,7 @@ class AvatarListItemDetail(TypedDict):
     ranks: List[RanksItem]
 
 
-class AvatarInfo(TypedDict):
+class AvatarInfo(Struct):
     avatar_list: List[AvatarListItemDetail]
     equip_wiki: Dict[str, str]
     relic_wiki: Dict
