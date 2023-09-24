@@ -166,9 +166,7 @@ class RoleInstance:
             skill_multiplier = self.avatar.BPSkill_num(skill_type)
             skill_type = 'BPSkill'
         elif self.raw_data.avatar.id_ == 1112:
-            skill_multiplier = (
-                self.avatar.Ultra_num(skill_type) + self.avatar.BPSkill()
-            )
+            skill_multiplier = self.avatar.Ultra_num(skill_type) + self.avatar.BPSkill()
             skill_type = 'Talent'
         else:
             raise Exception('skill type error')
@@ -306,27 +304,25 @@ class RoleInstance:
             enemy_status_resistance = 0.0
             for attr in merged_attr:
                 if attr.__contains__('ResistancePenetration'):
+                    #检查是否有某一属性的抗性穿透
                     attr_name = attr.split('ResistancePenetration')[0]
                     if attr_name in (self.avatar.avatar_element, 'AllDamage'):
-                        # 先默认触发
-                        enemy_status_resistance = merged_attr[attr]
+                        logger.info(
+                            f'{attr_name}属性有{merged_attr[attr]}穿透加成'
+                        )
+                        enemy_status_resistance += merged_attr[attr]
+                    #检查是否有某一技能属性的抗性穿透
+                    skill_name = attr_name.split('_')[0]
+                    skillattr_name = attr_name.split('_')[1]
+                    if (
+                        skill_name in (skill_type, skill_info[3])
+                        and skillattr_name in (self.avatar.avatar_element, 'AllDamage')
+                    ):
+                        enemy_status_resistance += merged_attr[attr]
+                        logger.info(
+                            f'{skill_name}对{skillattr_name}属性有{merged_attr[attr]}穿透加成'
+                        )
             resistance_area = 1.0 - (0 - enemy_status_resistance)
-            if self.raw_data.avatar.id_ == 1213:
-                if skill_info[2] == 7:
-                    Normal_Penetration = merged_attr.get(
-                        'Normal_ImaginaryResistancePenetration', 0
-                    )
-                    resistance_area = resistance_area - (
-                        0 - Normal_Penetration
-                    )
-            if self.raw_data.avatar.id_ == 1112:
-                if skill_info[3] == 'Talent1':
-                    Talent1_Penetration = merged_attr.get(
-                        'Talent1_FireResistancePenetration', 0
-                    )
-                    resistance_area = resistance_area - (
-                        0 - Talent1_Penetration
-                    )
             logger.info(f'抗性区: {resistance_area}')
 
             # 防御区
