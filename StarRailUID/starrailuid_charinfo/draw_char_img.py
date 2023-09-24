@@ -782,8 +782,8 @@ async def get_relic_score(
                 subProperty = 'AttributeAddedRatio'
             if weight_dict.get(subProperty, 0) > 0:
                 relic_score += 5.83
-            if relicType in [3, 5]:
-                relic_score += 10
+                if relicType in [3, 5]:
+                    relic_score += 10
     else:
         if subProperty == 'CriticalDamageBase':
             add_value = subValue * 1 * weight_dict['CriticalDamageBase'] * 100
