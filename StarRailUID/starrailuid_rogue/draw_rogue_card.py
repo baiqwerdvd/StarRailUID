@@ -1,7 +1,7 @@
 import math
 from pathlib import Path
 from typing import List, Union, Optional
-
+import msgspec
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
@@ -252,6 +252,8 @@ async def draw_rogue_img(
     # 记录打的宇宙列表
     detail_list = []
     based_h = 700
+    detail_h_list = []
+    based_h_list = []
     for index_floor, detail in enumerate(rogue_detail):
         # 100+70+170
         # 头+底+角色
@@ -277,14 +279,15 @@ async def draw_rogue_img(
         else:
             miracles_h = 0
         detail_h = detail_h + miracles_h
-        rogue_detail[index_floor]['detail_h'] = detail_h
-        rogue_detail[index_floor]['start_h'] = based_h
+        detail_h_list.append(detail_h)
+        based_h_list.append(based_h)
         if floor:
             if progress == floor:
                 pass
             else:
                 detail_h = 0
         based_h = based_h + detail_h
+    
     # 获取查询者数据
     if floor:
         if floor > 7:
@@ -378,11 +381,11 @@ async def draw_rogue_img(
             else:
                 continue
 
-        if detail.detail_h is None:
+        if detail_h_list[index_floor] is None:
             continue
 
         floor_pic = Image.open(TEXT_PATH / 'detail_bg.png').convert('RGBA')
-        floor_pic = floor_pic.resize((900, detail.detail_h))
+        floor_pic = floor_pic.resize((900, detail_h_list[index_floor]))
 
         floor_top_pic = Image.open(TEXT_PATH / 'floor_bg_top.png').convert(
             'RGBA'
@@ -393,7 +396,7 @@ async def draw_rogue_img(
             TEXT_PATH / 'floor_bg_center.png'
         ).convert('RGBA')
         floor_center_pic = floor_center_pic.resize(
-            (900, detail.detail_h - 170)
+            (900, detail_h_list[index_floor] - 170)
         )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
@@ -401,7 +404,7 @@ async def draw_rogue_img(
             'RGBA'
         )
         floor_pic.paste(
-            floor_bot_pic, (0, detail.detail_h - 70), floor_bot_pic
+            floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic
         )
 
         floor_name = progresslist[detail.progress]
@@ -496,10 +499,10 @@ async def draw_rogue_img(
                 buff_height,
             )
 
-        if detail.start_h is None:
+        if based_h_list[index_floor] is None:
             continue
 
-        img.paste(floor_pic, (0, detail.start_h), floor_pic)
+        img.paste(floor_pic, (0, based_h_list[index_floor]), floor_pic)
         # await _draw_floor_card(
         # level_star,
         # floor_pic,
@@ -536,6 +539,8 @@ async def draw_rogue_locust_img(
     # 记录打的宇宙列表
     # detail_list = []
     based_h = 700
+    detail_h_list = []
+    based_h_list = []
     for index_floor, detail in enumerate(rogue_detail):
         # 100+70+170
         # 头+底+角色
@@ -570,9 +575,8 @@ async def draw_rogue_locust_img(
         else:
             blocks_num = 0
         detail_h = detail_h + blocks_h
-
-        rogue_detail[index_floor]['detail_h'] = detail_h
-        rogue_detail[index_floor]['start_h'] = based_h
+        detail_h_list.append(detail_h)
+        based_h_list.append(based_h)
         based_h = based_h + detail_h
 
     # 获取查询者数据
@@ -653,12 +657,12 @@ async def draw_rogue_locust_img(
         'mm',
     )
 
-    for _, detail in enumerate(rogue_detail):
-        if detail.detail_h is None:
+    for index_floor, detail in enumerate(rogue_detail):
+        if detail_h_list[index_floor] is None:
             continue
 
         floor_pic = Image.open(TEXT_PATH / 'detail_bg.png').convert('RGBA')
-        floor_pic = floor_pic.resize((900, detail.detail_h))
+        floor_pic = floor_pic.resize((900, detail_h_list[index_floor]))
 
         floor_top_pic = Image.open(TEXT_PATH / 'floor_bg_top.png').convert(
             'RGBA'
@@ -669,7 +673,7 @@ async def draw_rogue_locust_img(
             TEXT_PATH / 'floor_bg_center.png'
         ).convert('RGBA')
         floor_center_pic = floor_center_pic.resize(
-            (900, detail.detail_h - 170)
+            (900, detail_h_list[index_floor] - 170)
         )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
@@ -677,7 +681,7 @@ async def draw_rogue_locust_img(
             'RGBA'
         )
         floor_pic.paste(
-            floor_bot_pic, (0, detail.detail_h - 70), floor_bot_pic
+            floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic
         )
 
         floor_name = detail.name
@@ -805,10 +809,10 @@ async def draw_rogue_locust_img(
             blocks_height = blocks_height + 80
             blocks_height = blocks_height + draw_height
 
-        if detail.start_h is None:
+        if based_h_list[index_floor] is None:
             continue
 
-        img.paste(floor_pic, (0, detail.start_h), floor_pic)
+        img.paste(floor_pic, (0, based_h_list[index_floor]), floor_pic)
         # await _draw_floor_card(
         # level_star,
         # floor_pic,

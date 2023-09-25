@@ -161,14 +161,13 @@ class LocustRecordInfo(Struct):
     buffs: List[RogueBuffs]
     miracles: List[RogueMiracles]
     blocks: List[LocustBlocks]
-    worm_weak: Union[str, str]
     difficulty: int
     fury: LocustFury
-    detail_h: Union[int, None]
-    start_h: Union[int, None]
+    detail_h: Union[int, None] = None
+    start_h: Union[int, None] = None
 
-    def __setitem__(self, key: str, value: Any) -> None:
-        self.__dict__[key] = value
+    # def __setitem__(self, key: str, value: Any) -> None:
+        # self.__dict__[key] = value
 
 
 class LocustRecord(Struct):
@@ -218,8 +217,8 @@ class AbyssFloorDetail(Struct):
     name: str
     round_num: int
     star_num: int
-    node_1: List[AbyssNodeDetail]
-    node_2: List[AbyssNodeDetail]
+    node_1: AbyssNodeDetail
+    node_2: AbyssNodeDetail
 
 
 class AbyssData(Struct):

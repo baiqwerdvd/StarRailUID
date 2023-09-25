@@ -235,9 +235,9 @@ async def draw_abyss_img(
         for index_part in [0, 1]:
             node_num = index_part + 1
             if node_num == 1:
-                time_array = node_1[-1].challenge_time
+                time_array = node_1.challenge_time
             else:
-                time_array = node_2[-1].challenge_time
+                time_array = node_2.challenge_time
             time_str = f'{time_array.year}-{time_array.month}'
             time_str = f'{time_str}-{time_array.day}'
             time_str = f'{time_str} {time_array.hour}:{time_array.minute}:00'
@@ -257,9 +257,9 @@ async def draw_abyss_img(
                 'lm',
             )
             if node_num == 1:
-                avatars_array = node_1[-1]
+                avatars_array = node_1
             else:
-                avatars_array = node_2[-1]
+                avatars_array = node_2
 
             for index_char, char in enumerate(avatars_array.avatars):
                 # 获取命座
