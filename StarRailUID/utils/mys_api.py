@@ -412,6 +412,7 @@ class MysApi(_MysApi):
         ck: Optional[str] = None,
     ) -> Union[RogueLocustData, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
+        ck = await self.get_ck(uid, 'OWNER')
         data = await self.simple_mys_req(
             'ROGUE_LOCUST_INFO_URL',
             uid,
