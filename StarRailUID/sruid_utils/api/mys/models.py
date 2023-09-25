@@ -231,7 +231,7 @@ class AbyssData(Struct):
     battle_num: int
     has_data: bool
     all_floor_detail: List[AbyssFloorDetail]
-    max_floor_detail: bool | None = None
+    max_floor_detail: Union[bool, None] = None
 
 
 ################
