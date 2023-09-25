@@ -1,7 +1,6 @@
 import math
 from pathlib import Path
 from typing import List, Union, Optional
-
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
@@ -254,7 +253,7 @@ async def draw_rogue_img(
     based_h = 700
     detail_h_list = []
     based_h_list = []
-    for index_floor, detail in enumerate(rogue_detail):
+    for detail in rogue_detail:
         # 100+70+170
         # 头+底+角色
         detail_h = 340
@@ -287,7 +286,7 @@ async def draw_rogue_img(
             else:
                 detail_h = 0
         based_h = based_h + detail_h
-
+    
     # 获取查询者数据
     if floor:
         if floor > 7:
@@ -541,7 +540,7 @@ async def draw_rogue_locust_img(
     based_h = 700
     detail_h_list = []
     based_h_list = []
-    for index_floor, detail in enumerate(rogue_detail):
+    for detail in rogue_detail:
         # 100+70+170
         # 头+底+角色
         detail_h = 340
