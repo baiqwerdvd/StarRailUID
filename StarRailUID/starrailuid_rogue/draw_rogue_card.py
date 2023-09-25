@@ -1,6 +1,7 @@
 import math
 from pathlib import Path
 from typing import List, Union, Optional
+
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
@@ -286,7 +287,7 @@ async def draw_rogue_img(
             else:
                 detail_h = 0
         based_h = based_h + detail_h
-    
+
     # 获取查询者数据
     if floor:
         if floor > 7:
