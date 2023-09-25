@@ -167,7 +167,7 @@ class LocustRecordInfo(Struct):
     start_h: Union[int, None] = None
 
     # def __setitem__(self, key: str, value: Any) -> None:
-        # self.__dict__[key] = value
+    # self.__dict__[key] = value
 
 
 class LocustRecord(Struct):
