@@ -139,7 +139,7 @@ async def _draw_avatar_card(
 ) -> Image.Image:
     char_bg = (char_bg_4 if avatar.rarity == 4 else char_bg_5).copy()
     char_draw = ImageDraw.Draw(char_bg)
-    char_icon = await get_icon(avatar.icon)
+    char_icon = (await get_icon(avatar.icon)).resize((110, 120))
     element_icon = elements[avatar.element]
 
     char_bg.paste(char_icon, (4, 8), mask=char_icon)
