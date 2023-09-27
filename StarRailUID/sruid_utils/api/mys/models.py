@@ -56,6 +56,7 @@ class RogueAvatar(Struct):
     level: int
     rarity: int
     element: str
+    rank: int
 
 
 class RogueBaseType(Struct):
