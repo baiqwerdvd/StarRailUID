@@ -1,7 +1,6 @@
 import math
 from pathlib import Path
 from typing import List, Union, Optional
-
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
@@ -33,6 +32,7 @@ img_bg = Image.open(TEXT_PATH / 'bg.jpg')
 level_cover = Image.open(TEXT_PATH / 'level_cover.png').convert('RGBA')
 char_bg_4 = Image.open(TEXT_PATH / 'char4_bg.png').convert('RGBA')
 char_bg_5 = Image.open(TEXT_PATH / 'char5_bg.png').convert('RGBA')
+rank_bg = Image.open(TEXT_PATH / 'rank_bg.png').convert('RGBA')
 content_center = Image.open(TEXT_PATH / 'center.png').convert('RGBA')
 
 elements = {
@@ -210,7 +210,7 @@ async def _draw_rogue_card(
     element_icon = elements[char.element]
     char_bg.paste(char_icon, (24, 16), mask=char_icon)
     char_bg.paste(level_cover, (0, 0), mask=level_cover)
-    char_bg.paste(element_icon, (135, 30), mask=element_icon)
+    char_bg.paste(element_icon, (35, 25), mask=element_icon)
     # 不存在自动下载
     # if not char_pic_path.exists():
     # await create_single_char_card(char_id)
@@ -218,6 +218,15 @@ async def _draw_rogue_card(
     # talent_pic = talent_pic.resize((90, 45))
     # char_card.paste(talent_pic, (137, 260), talent_pic)
     char_card_draw = ImageDraw.Draw(char_bg)
+    if char.rank > 0:
+        char_bg.paste(rank_bg, (150, 16), mask=rank_bg)
+        char_card_draw.text(
+            (162, 31),
+            f'{char.rank}',
+            font=sr_font_22,
+            fill=white_color,
+            anchor='mm',
+        )
     char_card_draw.text(
         (100, 165),
         f'等级 {char.level}',
@@ -287,7 +296,7 @@ async def draw_rogue_img(
             else:
                 detail_h = 0
         based_h = based_h + detail_h
-
+    
     # 获取查询者数据
     if floor:
         if floor > 7:
