@@ -3,10 +3,13 @@ import asyncio
 from pathlib import Path
 from urllib import parse
 from datetime import datetime
-from typing import Dict, Optional
+from typing import Dict, List, Optional
+
+import msgspec
 
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from ..sruid_utils.api.mys.models import SingleGachaLog
 
 gacha_type_meta_data = {
     '群星跃迁': ['1'],
@@ -19,6 +22,7 @@ gacha_type_meta_data = {
 async def get_new_gachalog_by_link(
     uid: str, gacha_url: str, full_data: Dict, is_force: bool
 ):
+    full_data = msgspec.convert(full_data, type=Dict[str, List[SingleGachaLog]])
     temp = []
     for gacha_name in gacha_type_meta_data:
         for gacha_type in gacha_type_meta_data[gacha_name]:
@@ -46,7 +50,7 @@ async def get_new_gachalog_by_link(
                     temp = []
                     break
                 if len(full_data[gacha_name]) >= 1:
-                    if int(data[-1].id) <= int(full_data[gacha_name][0]['id']):
+                    if int(data[-1].id) <= int(full_data[gacha_name][0].id):
                         full_data[gacha_name].extend(data)
                     else:
                         full_data[gacha_name][0:0] = data
@@ -137,7 +141,7 @@ async def save_gachalogs(
     result['weapon_gacha_num'] = len(raw_data['光锥跃迁'])
     for i in ['群星跃迁', '角色跃迁', '光锥跃迁']:
         if len(raw_data[i]) > 1:
-            raw_data[i].sort(key=lambda x: (-int(x['id'])))
+            raw_data[i].sort(key=lambda x: (-int(x.id)))
     result['data'] = raw_data
 
     # 计算数据
@@ -148,8 +152,9 @@ async def save_gachalogs(
     all_add = normal_add + char_add + weapon_add + begin_gacha_add
 
     # 保存文件
+    result = msgspec.to_builtins(result)
     with Path.open(gachalogs_path, 'w', encoding='UTF-8') as file:
-        json.dump(result, file, ensure_ascii=False)
+        json.dump(result, file, indent=2, ensure_ascii=False)
 
     # 回复文字
     if all_add == 0:
