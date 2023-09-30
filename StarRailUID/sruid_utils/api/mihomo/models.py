@@ -23,7 +23,7 @@ class Relic(Struct):
     tid: int
     mainAffixId: int
     type: int
-    subAffixList: list[SubAffix] | None
+    subAffixList: list[SubAffix] | None = None
     level: int | None = field(default=0)
 
 
