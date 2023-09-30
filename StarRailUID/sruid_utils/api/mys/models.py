@@ -97,9 +97,6 @@ class RogueRecordInfo(Struct):
     detail_h: Union[int, None] = None
     start_h: Union[int, None] = None
 
-    # def __setitem__(self, key: str, value: Any) -> None:
-    #     self.__dict__[key] = value
-
 
 class RogueBasic(Struct):
     id: int

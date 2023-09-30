@@ -20,10 +20,10 @@ class Equipment(Struct):
 
 
 class Relic(Struct):
-    subAffixList: list[SubAffix]
     tid: int
     mainAffixId: int
     type: int
+    subAffixList: list[SubAffix] | None
     level: int | None = field(default=0)
 
 
