@@ -112,7 +112,12 @@ async def save_gachalogs(
             uid, gacha_url, gachalogs_history, is_force
         )
     else:
-        new_data = {'始发跃迁': [], '群星跃迁': [], '角色跃迁': [], '光锥跃迁': []}
+        new_data = {
+            '始发跃迁': [],
+            '群星跃迁': [],
+            '角色跃迁': [],
+            '光锥跃迁': [],
+        }
         if gachalogs_history:
             for i in ['始发跃迁', '群星跃迁', '角色跃迁', '光锥跃迁']:
                 for item in raw_data[i]:
@@ -128,7 +133,12 @@ async def save_gachalogs(
     if raw_data == {} or not raw_data:
         return '请给出正确的抽卡记录链接或链接已失效'
 
-    temp_data = {'始发跃迁': [], '群星跃迁': [], '角色跃迁': [], '光锥跃迁': []}
+    temp_data = {
+        '始发跃迁': [],
+        '群星跃迁': [],
+        '角色跃迁': [],
+        '光锥跃迁': [],
+    }
     for i in ['始发跃迁', '群星跃迁', '角色跃迁', '光锥跃迁']:
         for item in raw_data[i]:
             if item not in temp_data[i]:

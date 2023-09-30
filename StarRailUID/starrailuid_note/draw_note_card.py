@@ -124,7 +124,8 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     img = monthly_bg.copy()
     avatar_img = avatar_default.copy()
     char_pic = avatar_img.convert('RGBA').resize(
-        (125, 125), Image.Resampling.LANCZOS  # type: ignore
+        (125, 125),
+        Image.Resampling.LANCZOS,  # type: ignore
     )
     img.paste(char_pic, (115, 133), char_pic)
     img_draw = ImageDraw.Draw(img)

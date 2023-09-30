@@ -27,7 +27,12 @@ async def send_bind_card(bot: Bot, ev: Event):
 
 
 @sv_user_info.on_command(
-    (f'{PREFIX}绑定uid', f'{PREFIX}切换uid', f'{PREFIX}删除uid', f'{PREFIX}解绑uid')
+    (
+        f'{PREFIX}绑定uid',
+        f'{PREFIX}切换uid',
+        f'{PREFIX}删除uid',
+        f'{PREFIX}解绑uid',
+    )
 )
 async def send_link_uid_msg(bot: Bot, ev: Event):
     await bot.logger.info('sr开始执行[绑定/解绑用户信息]')

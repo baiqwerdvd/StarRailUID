@@ -69,7 +69,8 @@ async def _draw_task_img(
             avatar_url = char.avatars[i]
             image = await download_image(avatar_url)
             char_pic = image.convert('RGBA').resize(
-                (40, 40), Image.Resampling.LANCZOS  # type: ignore
+                (40, 40),
+                Image.Resampling.LANCZOS,  # type: ignore
             )
             note_travel_img.paste(char_pic, (495 + 68 * i, 20), char_pic)
         img.paste(note_travel_img, (0, 790 + index * 80), note_travel_img)
