@@ -80,10 +80,13 @@ class Swordplay(BaseWeapon):
             )
             attribute_bonus['AllDamageAddedRatio'] = (
                 all_damage_added_ratio
-                + weapon_effect['21010']['Param']['AllDamageAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            ) * 5
+                + (
+                    weapon_effect['21010']['Param']['AllDamageAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 5
+            )
         return attribute_bonus
 
 
@@ -390,10 +393,13 @@ class SeriousnessofBreakfast(BaseWeapon):
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = (
                 attack_added_ratio
-                + weapon_effect['21027']['Param']['AttackAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            ) * 3
+                + (
+                    weapon_effect['21027']['Param']['AttackAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 3
+            )
         return attribute_bonus
 
 
@@ -456,10 +462,13 @@ class TodayIsAnotherPeacefulDay(BaseWeapon):
         all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
         attribute_bonus['AllDamageAddedRatio'] = (
             all_damage_added_ratio
-            + weapon_effect['21034']['Param']['AllDamageAddedRatio'][
-                self.weapon_rank - 1
-            ]
-        ) * Ultra_Use
+            + (
+                weapon_effect['21034']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+            * Ultra_Use
+        )
         return attribute_bonus
 
 
@@ -598,10 +607,13 @@ class BrighterThantheSun(BaseWeapon):
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = (
                 attack_added_ratio
-                + weapon_effect['23015']['Param']['AttackAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            ) * 2
+                + (
+                    weapon_effect['23015']['Param']['AttackAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 2
+            )
         return attribute_bonus
 
 
@@ -689,10 +701,13 @@ class OntheFallofanAeon(BaseWeapon):
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = (
                 attack_added_ratio
-                + weapon_effect['24000']['Param']['AttackAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            ) * 4
+                + (
+                    weapon_effect['24000']['Param']['AttackAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 4
+            )
             all_damage_added_ratio = attribute_bonus.get(
                 'AllDamageAddedRatio', 0
             )
@@ -825,10 +840,13 @@ class TheMolesWelcomeYou(BaseWeapon):
             attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
             attribute_bonus['AttackAddedRatio'] = (
                 attack_added_ratio
-                + weapon_effect['21005']['Param']['AttackAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            ) * 3
+                + (
+                    weapon_effect['21005']['Param']['AttackAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 3
+            )
         return attribute_bonus
 
 
@@ -900,10 +918,13 @@ class PatienceIsAllYouNeed(BaseWeapon):
             speed_added_ratio = attribute_bonus.get('SpeedAddedRatio', 0)
             attribute_bonus['SpeedAddedRatio'] = (
                 speed_added_ratio
-                + weapon_effect['23006']['Param']['SpeedAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            ) * 3
+                + (
+                    weapon_effect['23006']['Param']['SpeedAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 3
+            )
         return attribute_bonus
 
 
@@ -1122,10 +1143,13 @@ class GoodNightandSleepWell(BaseWeapon):
             )
             attribute_bonus['AllDamageAddedRatio'] = (
                 all_damage_added_ratio
-                + weapon_effect['21001']['Param']['AllDamageAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            ) * 3
+                + (
+                    weapon_effect['21001']['Param']['AllDamageAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 3
+            )
         return attribute_bonus
 
 
@@ -1152,10 +1176,13 @@ class SheAlreadyShutHerEyes(BaseWeapon):
             )
             attribute_bonus['AllDamageAddedRatio'] = (
                 all_damage_added_ratio
-                + weapon_effect['23011']['Param']['AllDamageAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            ) * 3
+                + (
+                    weapon_effect['23011']['Param']['AllDamageAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 3
+            )
         return attribute_bonus
 
 
@@ -1643,7 +1670,8 @@ class Thisbodyisasword(BaseWeapon):
                     self.weapon_rank - 1
                 ]
             )
-        ) * 3
+            * 3
+        )
 
         resistance_penetration = attribute_bonus.get(
             'AllResistancePenetration', 0
@@ -1715,10 +1743,13 @@ class WorrisomeBlissf(BaseWeapon):
             critical_chance_base = attribute_bonus.get('CriticalDamageBase', 0)
             attribute_bonus['CriticalDamageBase'] = (
                 critical_chance_base
-                + weapon_effect['23016']['Param']['CriticalDamageBase'][
-                    self.weapon_rank - 1
-                ]
-            ) * 2
+                + (
+                    weapon_effect['23016']['Param']['CriticalDamageBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 2
+            )
         return attribute_bonus
 
 

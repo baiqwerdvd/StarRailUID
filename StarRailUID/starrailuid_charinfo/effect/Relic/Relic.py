@@ -162,9 +162,7 @@ class Relic107(BaseRelicSetSkill):
     ):
         if self.pieces4:
             e_dmg = attribute_bonus.get('BPSkillDmgAdd', 0)
-            q_dmg = attribute_bonus.get('UltraSkillDmgAdd', 0)
             attribute_bonus['BPSkillDmgAdd'] = e_dmg + 0.12000000011175871
-            attribute_bonus['UltraSkillDmgAdd'] = q_dmg + 0.12000000011175871
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             fire_added_ratio = attribute_bonus.get('FireAddedRatio', 0)
             attribute_bonus['FireAddedRatio'] = (
