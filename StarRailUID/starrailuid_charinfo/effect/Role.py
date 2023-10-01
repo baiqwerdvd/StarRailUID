@@ -295,9 +295,7 @@ class RoleInstance:
                     # 检查是否有某一属性的抗性穿透
                     attr_name = attr.split('ResistancePenetration')[0]
                     if attr_name in (self.avatar.avatar_element, 'AllDamage'):
-                        logger.info(
-                            f'{attr_name}属性有{merged_attr[attr]}穿透加成'
-                        )
+                        logger.info(f'{attr_name}属性有{merged_attr[attr]}穿透加成')
                         enemy_status_resistance += merged_attr[attr]
                     # 检查是否有某一技能属性的抗性穿透
                     if attr_name.__contains__('_'):
