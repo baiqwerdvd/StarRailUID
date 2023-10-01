@@ -77,16 +77,13 @@ class BaseRelicSetSkill:
             if status_add:
                 set_property = status_add.Property
                 set_value = status_add.Value
+                if set_property != '':
+                    relic_set_attribute[set_property] = relic_set_attribute.get(set_property, 0) + set_value
         if self.pieces4:
             status_add = RelicSetSkill.RelicSet[str(self.setId)]['4']
             if status_add:
                 set_property = status_add.Property
                 set_value = status_add.Value
-        if set_property != '':
-            if set_property in relic_set_attribute:
-                relic_set_attribute[set_property] = (
-                    relic_set_attribute[set_property] + set_value
-                )
-            else:
-                relic_set_attribute[set_property] = set_value
+                if set_property != '':
+                    relic_set_attribute[set_property] = relic_set_attribute.get(set_property, 0) + set_value
         return relic_set_attribute
