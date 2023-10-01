@@ -53,10 +53,7 @@ class Character:
         for equip_ability in equip_ability_property:
             property_type = equip_ability['PropertyType']
             value = equip_ability['Value']['Value']
-            if property_type in self.add_attr:
-                self.add_attr[property_type] += value
-            else:
-                self.add_attr[property_type] = value
+            self.add_attr[property_type] = value + self.add_attr.get(property_type, 0)
 
     async def get_char_attribute_bonus(self):
         attribute_bonus = self.attribute_bonus
@@ -64,10 +61,7 @@ class Character:
             status_add = bonus['statusAdd']
             bonus_property = status_add['property']
             value = status_add['value']
-            if bonus_property in self.add_attr:
-                self.add_attr[bonus_property] += value
-            else:
-                self.add_attr[bonus_property] = value
+            self.add_attr[bonus_property] = value + self.add_attr.get(bonus_property, 0)
 
     async def get_relic_info(self):
         # 计算圣遗物效果
@@ -77,24 +71,15 @@ class Character:
             # 处理主属性
             relic_property = relic['MainAffix']['Property']
             property_value = relic['MainAffix']['Value']
-            if relic_property in self.add_attr:
-                self.add_attr[relic_property] = (
-                    self.add_attr[relic_property] + property_value
-                )
-            else:
-                self.add_attr[relic_property] = property_value
+            self.add_attr[relic_property] = property_value + self.add_attr.get(relic_property, 0)
             # 处理副词条
             for sub in relic['SubAffixList']:
                 sub_property = sub['Property']
                 sub_value = sub['Value']
-                if sub_property in self.add_attr:
-                    self.add_attr[sub_property] = (
-                        self.add_attr[sub_property] + sub_value
-                    )
-                else:
-                    self.add_attr[sub_property] = sub_value
+                self.add_attr[sub_property] = sub_value + self.add_attr.get(sub_property, 0)
         # 处理套装属性
         set_id_dict = Counter(set_id_list)
+        # logger.info(set_id_dict.most_common())
         for item in set_id_dict.most_common():
             set_property = ''
             set_id = item[0]
@@ -105,18 +90,15 @@ class Character:
                 if status_add:
                     set_property = status_add.Property
                     set_value = status_add.Value
+                    if set_property != '':
+                        self.add_attr[set_property] = set_value + self.add_attr.get(set_property, 0)
             if count == 4:
                 status_add = RelicSetSkill.RelicSet[str(set_id)]['4']
                 if status_add:
                     set_property = status_add.Property
                     set_value = status_add.Value
-            if set_property != '':
-                if set_property in self.add_attr:
-                    self.add_attr[set_property] = (
-                        self.add_attr[set_property] + set_value
-                    )
-                else:
-                    self.add_attr[set_property] = set_value
+                    if set_property != '':
+                        self.add_attr[set_property] = set_value + self.add_attr.get(set_property, 0)
 
-        logger.info(json.dumps(self.base_attributes))
-        logger.info(json.dumps(self.add_attr))
+        # logger.info(json.dumps(self.base_attributes))
+        # logger.info(json.dumps(self.add_attr))
