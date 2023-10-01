@@ -1,7 +1,6 @@
 from typing import Dict, List
 from collections import Counter
 
-
 from ...utils.map.SR_MAP_PATH import RelicSetSkill, EquipmentID2AbilityProperty
 
 
