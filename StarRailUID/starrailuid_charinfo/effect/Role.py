@@ -1,5 +1,6 @@
 from typing import List, Union
-
+import json
+from pathlib import Path
 from gsuid_core.logger import logger
 
 from .Avatar.Avatar import Avatar
@@ -9,7 +10,9 @@ from ..mono.Character import Character
 from .Base.model import DamageInstance
 from .Relic.Relic import RelicSet, SingleRelic
 
-
+Excel_path = Path(__file__).parent
+with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
+    skill_dict = json.load(f)
 class RoleInstance:
     def __init__(self, raw_data: Character):
         self.raw_data = DamageInstance(raw_data)
@@ -122,57 +125,17 @@ class RoleInstance:
         logger.info(skill_type)
         # 技能区
         skill_info = self.avatar.Skill_Info(skill_type)
-        if skill_type == 'Normal':
-            skill_multiplier = self.avatar.Normal()
-            if (
-                self.raw_data.avatar.id_ == 1004
-                and self.raw_data.avatar.rank >= 1
-            ):
-                skill_multiplier = skill_multiplier + (skill_multiplier * 0.5)
-        elif skill_type == 'BPSkill':
-            skill_multiplier = self.avatar.BPSkill()
-            if (
-                self.raw_data.avatar.id_ == 1004
-                and self.raw_data.avatar.rank >= 1
-            ):
-                skill_multiplier = skill_multiplier + (skill_multiplier * 0.8)
-        elif skill_type == 'Ultra':
-            if self.raw_data.avatar.id_ == 1107:
-                skill_multiplier = self.avatar.Talent() + self.avatar.Ultra()
-            elif (
-                self.raw_data.avatar.id_ == 1006
-                and self.raw_data.avatar.rank >= 4
-            ):
-                skill_multiplier = self.avatar.Ultra() + 1
-            else:
-                skill_multiplier = self.avatar.Ultra()
-        elif skill_type == 'Talent':
-            skill_multiplier = self.avatar.Talent()
-            if self.raw_data.avatar.id_ == 1209:
-                if self.raw_data.avatar.rank >= 1:
-                    skill_multiplier = skill_multiplier + 0.9
-                else:
-                    skill_multiplier = skill_multiplier + 0.3
-        elif self.raw_data.avatar.id_ in [1213, 1201]:
-            skill_multiplier = self.avatar.Normalnum(skill_type)
-            skill_type = 'Normal'
-        elif self.raw_data.avatar.id_ == 1005:
-            skill_multiplier = self.avatar.Ultra_num(skill_type)
-            if self.raw_data.avatar.rank >= 6:
-                skill_multiplier = skill_multiplier + 1.56
-        elif self.raw_data.avatar.id_ == 1205:
-            skill_multiplier = self.avatar.Normalnum(skill_type)
-        elif self.raw_data.avatar.id_ == 1212:
-            skill_multiplier = self.avatar.BPSkill_num(skill_type)
-            skill_type = 'BPSkill'
-        elif self.raw_data.avatar.id_ == 1112:
-            skill_multiplier = (
-                self.avatar.Ultra_num(skill_type) + self.avatar.BPSkill()
-            )
-            skill_type = 'Talent'
-        else:
-            raise Exception('skill type error')
-
+        skill_multiplier = self.avatar.Skill_num(skill_info[4], skill_type)
+        # 检查是否有对某一个技能的倍率加成
+        for attr in self.attribute_bonus:
+            if attr.__contains__('SkillAdd'):
+                skill_name = attr.split('SkillAdd')[0]
+                if skill_name in (skill_type, skill_info[3]):
+                    logger.info(
+                        f'{skill_name}对{skill_type}有{self.attribute_bonus[attr]}倍率加成'
+                    )
+                    skill_multiplier = skill_multiplier + self.attribute_bonus[attr]
+        
         logger.info(f'技能区总: {skill_multiplier}')
 
         # 检查武器战斗生效的buff
@@ -184,7 +147,15 @@ class RoleInstance:
             Ultra_Use, self.base_attr, self.attribute_bonus
         )
         logger.info(self.attribute_bonus)
-
+        logger.info('检查遗器套装战斗生效的buff')
+        for set_skill in self.relic_set.SetSkill:
+            self.attribute_bonus = await set_skill.set_skill_ability(
+                self.base_attr, self.attribute_bonus
+            )
+        if self.attribute_bonus is None:
+            raise Exception('attribute_bonus is None')
+        logger.info(self.attribute_bonus)
+        
         # 检查是否有对某一个技能的属性加成
         logger.info('检查是否有对某一个技能的属性加成')
         for attr in self.attribute_bonus:
@@ -208,14 +179,7 @@ class RoleInstance:
                     self.attribute_bonus['StatusProbabilityBase'] = (
                         status_probability + self.attribute_bonus[attr]
                     )
-        logger.info(self.attribute_bonus)
-        logger.info('检查遗器套装战斗生效的buff')
-        for set_skill in self.relic_set.SetSkill:
-            self.attribute_bonus = await set_skill.set_skill_ability(
-                self.base_attr, self.attribute_bonus
-            )
-        if self.attribute_bonus is None:
-            raise Exception('attribute_bonus is None')
+        
         merged_attr = await merge_attribute(
             self.base_attr, self.attribute_bonus
         )
@@ -251,33 +215,26 @@ class RoleInstance:
             hp_num = 0
             if self.raw_data.avatar.id_ in [1205, 1208]:
                 hp_num = merged_attr['hp']
-                if skill_type == 'Normal':
-                    if self.raw_data.avatar.id_ == 1208:
-                        hp_multiplier = self.avatar.Normalnum('Normal_HP')
-                elif skill_type == 'Normal1':
-                    hp_multiplier = self.avatar.Normalnum('Normal1_HP')
-                    skill_type = 'Normal'
-                elif skill_type == 'Ultra':
-                    hp_multiplier = self.avatar.Ultra_num('Ultra_HP')
-                    if (
-                        self.raw_data.avatar.rank >= 1
-                        and self.raw_data.avatar.id_ == 1205
-                    ):
-                        hp_multiplier += 0.9
-                    if (
-                        self.raw_data.avatar.rank >= 6
-                        and self.raw_data.avatar.id_ == 1208
-                    ):
-                        hp_multiplier += 1.2
-                elif skill_type == 'Talent':
-                    hp_multiplier = self.avatar.Talent_num('Talent_HP')
+                skill_type_hp = skill_type + '_HP'
+                if skill_type_hp in skill_dict[str(self.raw_data.avatar.id_)]:
+                    hp_multiplier = self.avatar.Skill_num(skill_info[4], skill_type_hp)
+                else:
+                    hp_multiplier = 0
+                for attr in self.attribute_bonus:
+                    if attr.__contains__('HpSkillAdd'):
+                        skill_name = attr.split('HpSkillAdd')[0]
+                        if skill_name in (skill_type, skill_info[3]):
+                            logger.info(
+                                f'{skill_name}对{skill_type}有{self.attribute_bonus[attr]}倍率加成'
+                            )
+                            hp_multiplier = hp_multiplier + self.attribute_bonus[attr]
+                    
+                if skill_type == 'Talent':
                     if (
                         self.raw_data.avatar.rank >= 6
                         and self.raw_data.avatar.id_ == 1205
                     ):
                         damage_add = hp_num * 0.5
-                else:
-                    hp_multiplier = 0
                 attack = (skill_multiplier * attack) + (hp_multiplier * hp_num)
                 skill_multiplier = 1
                 logger.info(f'混伤区: {attack}')
@@ -510,15 +467,6 @@ class RoleInstance:
                 damage_cd_z = damage_cd_z * 1.8
                 damage_qw_z = damage_qw_z * 1.8
                 damage_tz_z = damage_tz_z * 1.8
-
-            if (
-                self.raw_data.avatar.id_ == 1212
-                and self.raw_data.avatar.rank >= 1
-            ):
-                if skill_info[3] == 'BPSkill1' or skill_info[3] == 'Ultra':
-                    damage_cd_z = damage_cd_z * 1.8
-                    damage_qw_z = damage_qw_z * 1.8
-                    damage_tz_z = damage_tz_z * 1.8
 
             if self.avatar.avatar_element == 'Thunder':
                 element_area = 0

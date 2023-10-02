@@ -46,16 +46,7 @@ TEXT_PATH = Path(__file__).parent / 'texture2D'
 
 bg_img = Image.open(TEXT_PATH / 'bg.png')
 white_color = (213, 213, 213)
-NUM_MAP = {
-    0: '零',
-    1: '一',
-    2: '二',
-    3: '三',
-    4: '四',
-    5: '五',
-    6: '六',
-    7: '七',
-}
+NUM_MAP = {0: '零', 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七'}
 
 RANK_MAP = {
     1: '_rank1.png',
@@ -99,23 +90,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         return char_data
     char = await cal_char_info(char_data)
     damage_len = 0
-    if char.char_id in [
-        1102,
-        1204,
-        1107,
-        1213,
-        1006,
-        1005,
-        1205,
-        1208,
-        1104,
-        1209,
-        1004,
-        1003,
-        1201,
-        1212,
-        1112,
-    ]:
+    if str(char.char_id) in skill_dict:
         skill_list = skill_dict[str(char.char_id)]['skillList']
         damage_len = len(skill_list)
     bg_height = 0

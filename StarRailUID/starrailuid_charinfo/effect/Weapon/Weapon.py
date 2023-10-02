@@ -737,12 +737,6 @@ class NowheretoRun(BaseWeapon):
         base_attr: Dict[str, float],
         attribute_bonus: Dict[str, float],
     ):
-        # attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
-        # attribute_bonus['AttackAddedRatio'] = attack_added_ratio + mp.mpf(
-        # weapon_effect['21033']['Param']['AttackAddedRatio'][
-        # self.weapon_rank - 1
-        # ]
-        # )
         return attribute_bonus
 
 

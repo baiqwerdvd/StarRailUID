@@ -87,6 +87,7 @@ class Clara(BaseAvatar):
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('史瓦罗的反击造成的伤害提高30%')
+        self.extra_ability_attribute['Talent1SkillAdd'] = self.Skill_num('Talent', 'Talent')
         self.extra_ability_attribute['TalentDmgAdd'] = 0.3
         self.extra_ability_attribute['UltraDmgAdd'] = 0.3
 
@@ -138,6 +139,8 @@ class Silverwolf(BaseAvatar):
         pass
 
     def eidolons(self):
+        if self.avatar_rank >= 4:
+            self.extra_ability_attribute['UltraSkillAdd'] = 1
         if self.avatar_rank >= 6:
             self.extra_ability_attribute['AllDamageAddedRatio'] = 1
 
@@ -177,6 +180,8 @@ class Kafka(BaseAvatar):
             self.extra_ability_attribute['DOTDmgAdd'] = 0.3
         if self.avatar_rank >= 2:
             self.extra_ability_attribute['DOTDmgAdd'] = 0.55
+        if self.avatar_rank >= 6:
+            self.extra_ability_attribute['DOTSkillAdd'] = 1.56
 
     def extra_ability(self):
         pass
@@ -198,6 +203,8 @@ class Blade(BaseAvatar):
         pass
 
     def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['UltraHpSkillAdd'] = 0.9
         if self.avatar_rank >= 2:
             self.eidolon_attribute['CriticalChanceBase'] = 0.15
 
@@ -228,6 +235,8 @@ class Fuxuan(BaseAvatar):
     def eidolons(self):
         if self.avatar_rank >= 1:
             self.eidolon_attribute['CriticalDamageBase'] = 0.3
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['UltraHpSkillAdd'] = 1.2
 
     def extra_ability(self):
         logger.info('符玄战技【穷观阵】属性加成')
@@ -277,6 +286,9 @@ class Yanqing(BaseAvatar):
         pass
 
     def eidolons(self):
+        self.eidolon_attribute['TalentSkillAdd'] = 0.3
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['TalentSkillAdd'] = 0.9
         if self.avatar_rank >= 4:
             self.eidolon_attribute['IceResistancePenetration'] = 0.15
 
@@ -312,7 +324,9 @@ class Welt(BaseAvatar):
         pass
 
     def eidolons(self):
-        pass
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['NormalSkillAdd'] = self.Skill_num('Normal', 'Normal') * 0.5
+            self.eidolon_attribute['BPSkillSkillAdd'] = self.Skill_num('BPSkill', 'BPSkill') * 0.8
 
     def extra_ability(self):
         logger.info('额外能力')
@@ -400,6 +414,8 @@ class Jingliu(BaseAvatar):
     def eidolons(self):
         if self.avatar_rank >= 1:
             self.eidolon_attribute['CriticalDamageBase'] = 0.24
+            self.extra_ability_attribute['UltraSkillAdd'] = 1
+            self.extra_ability_attribute['BPSkill1SkillAdd'] = 1
         if self.avatar_rank >= 2:
             self.eidolon_attribute['BPSkill1DmgAdd'] = 0.8
         if self.avatar_rank >= 4:
@@ -453,6 +469,7 @@ class Topaz(BaseAvatar):
             self.eidolon_attribute['Talent1_FireResistancePenetration'] = 0.1
 
     def extra_ability(self):
+        self.extra_ability_attribute['Talent1SkillAdd'] = self.Skill_num('Ultra', 'Talent1')
         logger.info('额外能力')
         logger.info('托帕和账账对拥有火属性弱点的敌方目标造成的伤害提高15%。')
         self.extra_ability_attribute['AllDamageAddedRatio'] = 0.15
@@ -465,6 +482,31 @@ class Topaz(BaseAvatar):
             'BPSkill_add'
         )
 
+class Guinaifen(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 2:
+            self.eidolon_attribute['DOTSkillAdd'] = 0.4
+
+    def extra_ability(self):
+        self.extra_ability_attribute['AllDamageAddedRatio'] = 0.2
+        if self.avatar_rank >= 6:
+            self.extra_ability_attribute['DmgRatio'] = self.Talent_num('Talent') * 4
+        else:
+            self.extra_ability_attribute['DmgRatio'] = self.Talent_num('Talent') * 3
 
 class Avatar:
     @classmethod
@@ -501,4 +543,6 @@ class Avatar:
             return JingYuan(char, skills)
         if char.id_ == 1107:
             return Clara(char, skills)
+        if char.id_ == 1210:
+            return Guinaifen(char, skills)
         raise Exception('不支持的角色')
