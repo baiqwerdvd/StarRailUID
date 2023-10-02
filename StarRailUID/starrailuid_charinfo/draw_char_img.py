@@ -46,7 +46,16 @@ TEXT_PATH = Path(__file__).parent / 'texture2D'
 
 bg_img = Image.open(TEXT_PATH / 'bg.png')
 white_color = (213, 213, 213)
-NUM_MAP = {0: '零', 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七'}
+NUM_MAP = {
+    0: '零',
+    1: '一',
+    2: '二',
+    3: '三',
+    4: '四',
+    5: '五',
+    6: '六',
+    7: '七',
+}
 
 RANK_MAP = {
     1: '_rank1.png',
