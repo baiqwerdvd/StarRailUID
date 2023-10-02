@@ -25,7 +25,6 @@ async def cal(char_data: Dict):
     if str(char.char_id) in skill_dict:
         skill_list = skill_dict[str(char.char_id)]['skillList']
         skill_list = skill_list.keys()
-        print(skill_list)
         for skill_type in skill_list:
             role = RoleInstance(char)
             im_tmp = await role.cal_damage(skill_type)
