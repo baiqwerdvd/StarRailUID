@@ -1,14 +1,14 @@
 import json
-from pathlib import Path
 from abc import abstractmethod
+from pathlib import Path
 from typing import List, Union
 
 import msgspec
 from msgspec import Struct
 
-from .SkillBase import BaseSkills
 from ....utils.excel.model import AvatarPromotionConfig
-from .model import DamageInstanceSkill, DamageInstanceAvatar
+from .model import DamageInstanceAvatar, DamageInstanceSkill
+from .SkillBase import BaseSkills
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -110,7 +110,8 @@ class BaseAvatar:
         skill_info = skill_dict[str(self.avatar_id)]['skillList'][skill_type]
         return msgspec.convert(skill_info, type=List[Union[str, int]])
 
-    def Skill_num(self, skill: str, skill_type: str):
+    def Skill_num(self, skill: Union[str, int], skill_type: str):
+        skill_level = 0
         if skill == 'Normal':
             skill_level = self.Skill.Normal_.level - 1
         if skill == 'BPSkill':
