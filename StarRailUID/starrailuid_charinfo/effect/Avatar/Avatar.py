@@ -87,7 +87,9 @@ class Clara(BaseAvatar):
     def extra_ability(self):
         logger.info('额外能力')
         logger.info('史瓦罗的反击造成的伤害提高30%')
-        self.extra_ability_attribute['Talent1SkillAdd'] = self.Skill_num('Talent', 'Talent')
+        self.extra_ability_attribute['Talent1SkillAdd'] = self.Skill_num(
+            'Talent', 'Talent'
+        )
         self.extra_ability_attribute['TalentDmgAdd'] = 0.3
         self.extra_ability_attribute['UltraDmgAdd'] = 0.3
 
@@ -325,8 +327,12 @@ class Welt(BaseAvatar):
 
     def eidolons(self):
         if self.avatar_rank >= 1:
-            self.eidolon_attribute['NormalSkillAdd'] = self.Skill_num('Normal', 'Normal') * 0.5
-            self.eidolon_attribute['BPSkillSkillAdd'] = self.Skill_num('BPSkill', 'BPSkill') * 0.8
+            self.eidolon_attribute['NormalSkillAdd'] = (
+                self.Skill_num('Normal', 'Normal') * 0.5
+            )
+            self.eidolon_attribute['BPSkillSkillAdd'] = (
+                self.Skill_num('BPSkill', 'BPSkill') * 0.8
+            )
 
     def extra_ability(self):
         logger.info('额外能力')
@@ -469,7 +475,9 @@ class Topaz(BaseAvatar):
             self.eidolon_attribute['Talent1_FireResistancePenetration'] = 0.1
 
     def extra_ability(self):
-        self.extra_ability_attribute['Talent1SkillAdd'] = self.Skill_num('Ultra', 'Talent1')
+        self.extra_ability_attribute['Talent1SkillAdd'] = self.Skill_num(
+            'Ultra', 'Talent1'
+        )
         logger.info('额外能力')
         logger.info('托帕和账账对拥有火属性弱点的敌方目标造成的伤害提高15%。')
         self.extra_ability_attribute['AllDamageAddedRatio'] = 0.15
@@ -481,6 +489,7 @@ class Topaz(BaseAvatar):
         self.extra_ability_attribute['TalentDmgAdd'] = self.BPSkill_num(
             'BPSkill_add'
         )
+
 
 class Guinaifen(BaseAvatar):
     Buff: BaseAvatarBuff
@@ -504,9 +513,14 @@ class Guinaifen(BaseAvatar):
     def extra_ability(self):
         self.extra_ability_attribute['AllDamageAddedRatio'] = 0.2
         if self.avatar_rank >= 6:
-            self.extra_ability_attribute['DmgRatio'] = self.Talent_num('Talent') * 4
+            self.extra_ability_attribute['DmgRatio'] = (
+                self.Talent_num('Talent') * 4
+            )
         else:
-            self.extra_ability_attribute['DmgRatio'] = self.Talent_num('Talent') * 3
+            self.extra_ability_attribute['DmgRatio'] = (
+                self.Talent_num('Talent') * 3
+            )
+
 
 class Avatar:
     @classmethod

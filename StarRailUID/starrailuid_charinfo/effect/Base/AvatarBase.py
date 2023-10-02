@@ -109,7 +109,7 @@ class BaseAvatar:
     def Skill_Info(self, skill_type: str):
         skill_info = skill_dict[str(self.avatar_id)]['skillList'][skill_type]
         return msgspec.convert(skill_info, type=List[Union[str, int]])
-    
+
     def Skill_num(self, skill: str, skill_type: str):
         if skill == 'Normal':
             skill_level = self.Skill.Normal_.level - 1
@@ -121,7 +121,7 @@ class BaseAvatar:
             skill_level = self.Skill.Talent_.level - 1
         skill_info = skill_dict[str(self.avatar_id)][skill_type][skill_level]
         return msgspec.convert(skill_info, type=float)
-    
+
     def Normalnum(self, skill_type: str):
         skill_info = skill_dict[str(self.avatar_id)][skill_type][
             self.Skill.Normal_.level - 1

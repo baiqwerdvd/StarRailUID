@@ -1,12 +1,14 @@
 import json
 from pathlib import Path
-
 from typing import Dict, List, Union
+
 from .effect.Role import RoleInstance
 from .mono.Character import Character
+
 Excel_path = Path(__file__).parent / 'effect'
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
+
 
 async def cal_char_info(char_data: Dict):
     char: Character = Character(char_data)

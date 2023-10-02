@@ -1,6 +1,7 @@
-from typing import List, Union
 import json
 from pathlib import Path
+from typing import List, Union
+
 from gsuid_core.logger import logger
 
 from .Avatar.Avatar import Avatar
@@ -13,6 +14,8 @@ from .Relic.Relic import RelicSet, SingleRelic
 Excel_path = Path(__file__).parent
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
+
+
 class RoleInstance:
     def __init__(self, raw_data: Character):
         self.raw_data = DamageInstance(raw_data)
@@ -134,8 +137,10 @@ class RoleInstance:
                     logger.info(
                         f'{skill_name}对{skill_type}有{self.attribute_bonus[attr]}倍率加成'
                     )
-                    skill_multiplier = skill_multiplier + self.attribute_bonus[attr]
-        
+                    skill_multiplier = (
+                        skill_multiplier + self.attribute_bonus[attr]
+                    )
+
         logger.info(f'技能区总: {skill_multiplier}')
 
         # 检查武器战斗生效的buff
@@ -155,7 +160,7 @@ class RoleInstance:
         if self.attribute_bonus is None:
             raise Exception('attribute_bonus is None')
         logger.info(self.attribute_bonus)
-        
+
         # 检查是否有对某一个技能的属性加成
         logger.info('检查是否有对某一个技能的属性加成')
         for attr in self.attribute_bonus:
@@ -179,7 +184,7 @@ class RoleInstance:
                     self.attribute_bonus['StatusProbabilityBase'] = (
                         status_probability + self.attribute_bonus[attr]
                     )
-        
+
         merged_attr = await merge_attribute(
             self.base_attr, self.attribute_bonus
         )
@@ -217,7 +222,9 @@ class RoleInstance:
                 hp_num = merged_attr['hp']
                 skill_type_hp = skill_type + '_HP'
                 if skill_type_hp in skill_dict[str(self.raw_data.avatar.id_)]:
-                    hp_multiplier = self.avatar.Skill_num(skill_info[4], skill_type_hp)
+                    hp_multiplier = self.avatar.Skill_num(
+                        skill_info[4], skill_type_hp
+                    )
                 else:
                     hp_multiplier = 0
                 for attr in self.attribute_bonus:
@@ -227,8 +234,10 @@ class RoleInstance:
                             logger.info(
                                 f'{skill_name}对{skill_type}有{self.attribute_bonus[attr]}倍率加成'
                             )
-                            hp_multiplier = hp_multiplier + self.attribute_bonus[attr]
-                    
+                            hp_multiplier = (
+                                hp_multiplier + self.attribute_bonus[attr]
+                            )
+
                 if skill_type == 'Talent':
                     if (
                         self.raw_data.avatar.rank >= 6
