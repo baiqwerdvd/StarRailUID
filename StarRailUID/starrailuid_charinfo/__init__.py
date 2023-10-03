@@ -95,7 +95,7 @@ async def send_char_info(bot: Bot, ev: Event):
     elif isinstance(im, Image.Image):
         await bot.send(await convert_img(im))
     elif isinstance(im, bytes):
-        await bot.send(await convert_img(im))
+        await bot.send(im)
     elif im is None:
         return
     else:
