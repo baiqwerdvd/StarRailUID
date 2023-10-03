@@ -1,7 +1,6 @@
 from typing import Dict, List
 from collections import Counter
 
-
 from ...utils.map.SR_MAP_PATH import RelicSetSkill, EquipmentID2AbilityProperty
 
 
@@ -97,18 +96,18 @@ class Character:
                     set_property = status_add.Property
                     set_value = status_add.Value
                     if set_property != '':
-                        self.add_attr[set_property] = (
-                            set_value + self.add_attr.get(set_property, 0)
-                        )
+                        self.add_attr[
+                            set_property
+                        ] = set_value + self.add_attr.get(set_property, 0)
             if count == 4:
                 status_add = RelicSetSkill.RelicSet[str(set_id)]['4']
                 if status_add:
                     set_property = status_add.Property
                     set_value = status_add.Value
                     if set_property != '':
-                        self.add_attr[set_property] = (
-                            set_value + self.add_attr.get(set_property, 0)
-                        )
+                        self.add_attr[
+                            set_property
+                        ] = set_value + self.add_attr.get(set_property, 0)
 
         # logger.info(json.dumps(self.base_attributes))
         # logger.info(json.dumps(self.add_attr))

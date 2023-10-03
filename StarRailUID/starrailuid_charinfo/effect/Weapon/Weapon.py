@@ -269,19 +269,16 @@ class BeforeDawn(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
-        attribute_bonus['BPSkillDmgAdd'] = (
-            bp_skill_dmg_add
-            + (weapon_effect['23010']['Param']['e_dmg'][self.weapon_rank - 1])
+        attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
+            weapon_effect['23010']['Param']['e_dmg'][self.weapon_rank - 1]
         )
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
-        attribute_bonus['UltraDmgAdd'] = (
-            ultra_dmg_add
-            + (weapon_effect['23010']['Param']['r_dmg'][self.weapon_rank - 1])
+        attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
+            weapon_effect['23010']['Param']['r_dmg'][self.weapon_rank - 1]
         )
         talent_dmg_add = attribute_bonus.get('TalentDmgAdd', 0)
-        attribute_bonus['TalentDmgAdd'] = (
-            talent_dmg_add
-            + (weapon_effect['23010']['Param']['t_dmg'][self.weapon_rank - 1])
+        attribute_bonus['TalentDmgAdd'] = talent_dmg_add + (
+            weapon_effect['23010']['Param']['t_dmg'][self.weapon_rank - 1]
         )
         return attribute_bonus
 
@@ -495,13 +492,10 @@ class GeniusesRepose(BaseWeapon):
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalDamageBase', 0)
-            attribute_bonus['CriticalDamageBase'] = (
-                critical_chance_base
-                + (
-                    weapon_effect['21020']['Param']['CriticalDamageBase'][
-                        self.weapon_rank - 1
-                    ]
-                )
+            attribute_bonus['CriticalDamageBase'] = critical_chance_base + (
+                weapon_effect['21020']['Param']['CriticalDamageBase'][
+                    self.weapon_rank - 1
+                ]
             )
         return attribute_bonus
 
@@ -524,9 +518,8 @@ class MaketheWorldClamor(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
-        attribute_bonus['UltraDmgAdd'] = (
-            ultra_dmg_add
-            + (weapon_effect['21013']['Param']['r_dmg'][self.weapon_rank - 1])
+        attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
+            weapon_effect['21013']['Param']['r_dmg'][self.weapon_rank - 1]
         )
         return attribute_bonus
 
@@ -551,13 +544,8 @@ class TheBirthoftheSelf(BaseWeapon):
     ):
         if await self.check():
             talent_dmg_add = attribute_bonus.get('TalentDmgAdd', 0)
-            attribute_bonus['TalentDmgAdd'] = (
-                talent_dmg_add
-                + (
-                    weapon_effect['21006']['Param']['t_dmg'][
-                        self.weapon_rank - 1
-                    ]
-                )
+            attribute_bonus['TalentDmgAdd'] = talent_dmg_add + (
+                weapon_effect['21006']['Param']['t_dmg'][self.weapon_rank - 1]
             )
             return attribute_bonus
         return attribute_bonus
@@ -1485,14 +1473,12 @@ class CollapsingSky(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
-        attribute_bonus['NormalDmgAdd'] = (
-            normal_dmg_add
-            + (weapon_effect['20002']['Param']['a_dmg'][self.weapon_rank - 1])
+        attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
+            weapon_effect['20002']['Param']['a_dmg'][self.weapon_rank - 1]
         )
         bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
-        attribute_bonus['BPSkillDmgAdd'] = (
-            bp_skill_dmg_add
-            + (weapon_effect['20002']['Param']['e_dmg'][self.weapon_rank - 1])
+        attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
+            weapon_effect['20002']['Param']['e_dmg'][self.weapon_rank - 1]
         )
         return attribute_bonus
 
@@ -1645,9 +1631,8 @@ class DataBank(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
-        attribute_bonus['UltraDmgAdd'] = (
-            ultra_dmg_add
-            + (weapon_effect['20006']['Param']['r_dmg'][self.weapon_rank - 1])
+        attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
+            weapon_effect['20006']['Param']['r_dmg'][self.weapon_rank - 1]
         )
         return attribute_bonus
 
@@ -1685,13 +1670,12 @@ class Thisbodyisasword(BaseWeapon):
         resistance_penetration = attribute_bonus.get(
             'AllResistancePenetration', 0
         )
-        attribute_bonus['AllResistancePenetration'] = (
-            resistance_penetration
-            + (
-                weapon_effect['23014']['Param']['ResistancePenetration'][
-                    self.weapon_rank - 1
-                ]
-            )
+        attribute_bonus[
+            'AllResistancePenetration'
+        ] = resistance_penetration + (
+            weapon_effect['23014']['Param']['ResistancePenetration'][
+                self.weapon_rank - 1
+            ]
         )
 
         return attribute_bonus
