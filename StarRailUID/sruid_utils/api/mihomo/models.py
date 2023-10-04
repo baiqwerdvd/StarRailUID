@@ -23,7 +23,7 @@ class Relic(Struct):
     tid: int
     mainAffixId: int
     type: int
-    subAffixList: list[SubAffix] | None = None
+    subAffixList: list[SubAffix] | None = field(default=[])
     level: int | None = field(default=0)
 
 
@@ -38,14 +38,14 @@ class Avatar(Struct):
     avatarId: int
     level: int
     equipment: Equipment | None = None
-    relicList: list[Relic] | None = None
+    relicList: list[Relic] | None = field(default=[])
     pos: int | None = field(default=0)
     rank: int | None = field(default=0)
     promotion: int | None = field(default=0)
 
 
 class Challenge(Struct):
-    scheduleMaxLevel: int
+    scheduleMaxLevel: int | None = None
     MazeGroupIndex: int | None = None
     PreMazeGroupIndex: int | None = None
 
