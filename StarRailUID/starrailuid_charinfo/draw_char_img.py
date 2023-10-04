@@ -4,14 +4,29 @@ import textwrap
 from pathlib import Path
 from typing import Dict, Union
 
+from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
-from PIL import Image, ImageDraw
 
+from .to_data import api_to_dict
 from ..utils.error_reply import CHAR_HINT
-from ..utils.excel.read_excel import light_cone_ranks
+from .cal_damage import cal, cal_char_info
 from ..utils.fonts.first_world import fw_font_28
+from ..utils.excel.read_excel import light_cone_ranks
+from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
+from ..utils.map.SR_MAP_PATH import (
+    RelicId2Rarity,
+    AvatarRelicScore,
+    avatarId2Name,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    RELIC_PATH,
+    SKILL_PATH,
+    PLAYER_PATH,
+    WEAPON_PATH,
+    CHAR_PORTRAIT_PATH,
+)
 from ..utils.fonts.starrail_fonts import (
     sr_font_18,
     sr_font_20,
@@ -22,21 +37,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
-from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
-from ..utils.map.SR_MAP_PATH import (
-    AvatarRelicScore,
-    RelicId2Rarity,
-    avatarId2Name,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_PORTRAIT_PATH,
-    PLAYER_PATH,
-    RELIC_PATH,
-    SKILL_PATH,
-    WEAPON_PATH,
-)
-from .cal_damage import cal, cal_char_info
-from .to_data import api_to_dict
 
 Excel_path = Path(__file__).parent / 'effect'
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -99,7 +99,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         return char_data
     char = await cal_char_info(char_data)
     damage_len = 0
-    if char.char_id in skill_dict:
+    if str(char.char_id) in skill_dict:
         skill_list = skill_dict[str(char.char_id)]['skillList']
         damage_len = len(skill_list)
     bg_height = 0

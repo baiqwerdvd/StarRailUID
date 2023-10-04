@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Union
 
-from .effect.damageCal import DamageCalculator
+from .effect.Role import RoleInstance
 from .mono.Character import Character
 
 Excel_path = Path(__file__).parent / 'effect'
@@ -26,7 +26,8 @@ async def cal(char_data: Dict):
         skill_list = skill_dict[str(char.char_id)]['skillList']
         skill_list = skill_list.keys()
         for skill_type in skill_list:
-            im_tmp = await DamageCalculator(char).cal_damage(skill_type)
+            role = RoleInstance(char)
+            im_tmp = await role.cal_damage(skill_type)
             skill_info_list.append(im_tmp)
         return skill_info_list
     return '角色伤害计算未完成'

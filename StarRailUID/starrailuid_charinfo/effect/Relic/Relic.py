@@ -240,6 +240,7 @@ class Relic110(BaseRelicSetSkill):
     ):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             logger.info('ModifyActionDelay')
+            pass
         return attribute_bonus
 
 
@@ -262,6 +263,7 @@ class Relic111(BaseRelicSetSkill):
     ):
         if self.pieces4 and await self.check(base_attr, attribute_bonus):
             logger.info('ModifySPNew')
+            pass
         return attribute_bonus
 
 
