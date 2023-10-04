@@ -38,7 +38,7 @@ class Avatar(Struct):
     avatarId: int
     level: int
     equipment: Equipment | None = None
-    relicList: list[Relic] | None = None
+    relicList: list[Relic] | None = field(default=[])
     pos: int | None = field(default=0)
     rank: int | None = field(default=0)
     promotion: int | None = field(default=0)

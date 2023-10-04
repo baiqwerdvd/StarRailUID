@@ -1,14 +1,14 @@
 import json
-from pathlib import Path
 from abc import abstractmethod
-from typing import List, Union
+from pathlib import Path
+from typing import List, Tuple, Union
 
 import msgspec
 from msgspec import Struct
 
-from .SkillBase import BaseSkills
 from ....utils.excel.model import AvatarPromotionConfig
-from .model import DamageInstanceSkill, DamageInstanceAvatar
+from .model import DamageInstanceAvatar, DamageInstanceSkill
+from .SkillBase import BaseSkills
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -24,7 +24,7 @@ class BaseAvatarAttribute(Struct):
     CriticalDamageBase: float
     BaseAggro: float
 
-    def items(self):
+    def items(self) -> List[Tuple[str, float]]:
         return [
             ('attack', self.attack),
             ('defence', self.defence),
