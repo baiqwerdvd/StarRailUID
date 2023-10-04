@@ -1,10 +1,6 @@
-from __future__ import annotations
+from typing import List, Union
 
 from msgspec import Struct, field
-
-
-class MihomoData(Struct):
-    detailInfo: PlayerDetailInfo
 
 
 class Behavior(Struct):
@@ -15,39 +11,39 @@ class Behavior(Struct):
 class Equipment(Struct):
     level: int
     tid: int
-    promotion: int | None = field(default=0)
-    rank: int | None = field(default=0)
+    promotion: Union[int, None] = field(default=0)
+    rank: Union[int, None] = field(default=0)
+
+
+class SubAffix(Struct):
+    affixId: int
+    cnt: int
+    step: Union[int, None] = field(default=0)
 
 
 class Relic(Struct):
     tid: int
     mainAffixId: int
     type: int
-    subAffixList: list[SubAffix] | None = field(default=[])
-    level: int | None = field(default=0)
-
-
-class SubAffix(Struct):
-    affixId: int
-    cnt: int
-    step: int | None = field(default=0)
+    subAffixList: Union[List[SubAffix], None] = field(default=[])
+    level: Union[int, None] = field(default=0)
 
 
 class Avatar(Struct):
-    skillTreeList: list[Behavior]
+    skillTreeList: List[Behavior]
     avatarId: int
     level: int
-    equipment: Equipment | None = None
-    relicList: list[Relic] | None = field(default=[])
-    pos: int | None = field(default=0)
-    rank: int | None = field(default=0)
-    promotion: int | None = field(default=0)
+    equipment: Union[Equipment, None] = None
+    relicList: Union[List[Relic], None] = field(default=[])
+    pos: Union[int, None] = field(default=0)
+    rank: Union[int, None] = field(default=0)
+    promotion: Union[int, None] = field(default=0)
 
 
 class Challenge(Struct):
-    scheduleMaxLevel: int | None = None
-    MazeGroupIndex: int | None = None
-    PreMazeGroupIndex: int | None = None
+    scheduleMaxLevel: Union[int, None] = None
+    MazeGroupIndex: Union[int, None] = None
+    PreMazeGroupIndex: Union[int, None] = None
 
 
 class PlayerSpaceInfo(Struct):
@@ -62,13 +58,17 @@ class PlayerDetailInfo(Struct):
     assistAvatarDetail: Avatar
     platform: str
     isDisplayAvatar: bool
-    avatarDetailList: list[Avatar] | None
+    avatarDetailList: Union[List[Avatar], None]
     uid: int
     friendCount: int
     worldLevel: int
     nickname: str
     level: int
-    recordInfo: PlayerSpaceInfo | None
+    recordInfo: Union[PlayerSpaceInfo, None]
     headIcon: int
-    signature: str | None = None
-    Birthday: int | None = None
+    signature: Union[str, None] = None
+    Birthday: Union[int, None] = None
+
+
+class MihomoData(Struct):
+    detailInfo: PlayerDetailInfo
