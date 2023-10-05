@@ -1,13 +1,11 @@
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Dict
+from typing import Dict
 
 from gsuid_core.logger import logger
 
+from ....utils.map.model.RelicSetSkill import RelicSetStatusAdd
 from ....utils.map.SR_MAP_PATH import RelicSetSkill
 from .model import DamageInstanceRelic
-
-if TYPE_CHECKING:
-    from ....utils.map.model.RelicSetSkill import RelicSetStatusAdd
 
 
 class SingleRelic:
