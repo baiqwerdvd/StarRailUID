@@ -1,14 +1,15 @@
 import json
 from pathlib import Path
+from typing import Dict
 
 from gsuid_core.logger import logger
 
-from .Weapon.Weapon import Weapon
 from ..mono.Character import Character
-from .Base.model import DamageInstance
-from .Base.AvatarBase import BaseAvatarinfo
-from .Relic.Relic import RelicSet, SingleRelic
 from .AvatarDamage.AvatarDamage import AvatarDamage
+from .Base.AvatarBase import BaseAvatarinfo
+from .Base.model import DamageInstance
+from .Relic.Relic import RelicSet, SingleRelic
+from .Weapon.Weapon import Weapon
 
 Excel_path = Path(__file__).parent
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -33,6 +34,17 @@ class AvatarInstance:
         self.cal_avatar_eidolon_add()
         self.cal_weapon_attr_add()
 
+    def merge_attribute_bonus(self, add_attribute: Dict[str, float]):
+        for attribute in add_attribute:
+            if attribute in self.attribute_bonus:
+                self.attribute_bonus[
+                    attribute
+                ] += add_attribute[attribute]
+            else:
+                self.attribute_bonus[
+                    attribute
+                ] = add_attribute[attribute]
+
     def cal_role_base_attr(self):
         logger.info('cal_role_base_attr')
         base_attr: dict[str, float] = {}
@@ -56,47 +68,15 @@ class AvatarInstance:
         for relic_type in self.relic_set.__dict__:
             if type(self.relic_set.__dict__[relic_type]) == SingleRelic:
                 relic: SingleRelic = self.relic_set.__dict__[relic_type]
-                for attribute in relic.relic_attribute_bonus:
-                    if attribute in self.attribute_bonus:
-                        self.attribute_bonus[
-                            attribute
-                        ] += relic.relic_attribute_bonus[attribute]
-                    else:
-                        self.attribute_bonus[
-                            attribute
-                        ] = relic.relic_attribute_bonus[attribute]
+                self.merge_attribute_bonus(relic.relic_attribute_bonus)
 
         # 套装面板加成属性
         for set_skill in self.relic_set.SetSkill:
-            for attribute in set_skill.relicSetAttribute:
-                if attribute in self.attribute_bonus:
-                    self.attribute_bonus[
-                        attribute
-                    ] += set_skill.relicSetAttribute[attribute]
-                else:
-                    self.attribute_bonus[
-                        attribute
-                    ] = set_skill.relicSetAttribute[attribute]
+            self.merge_attribute_bonus(set_skill.relicSetAttribute)
 
     def cal_avatar_eidolon_add(self):
-        for attribute in self.avatardamage.eidolon_attribute:
-            if attribute in self.attribute_bonus:
-                self.attribute_bonus[
-                    attribute
-                ] += self.avatardamage.eidolon_attribute[attribute]
-            else:
-                self.attribute_bonus[
-                    attribute
-                ] = self.avatardamage.eidolon_attribute[attribute]
-        for attribute in self.avatardamage.extra_ability_attribute:
-            if attribute in self.attribute_bonus:
-                self.attribute_bonus[
-                    attribute
-                ] += self.avatardamage.extra_ability_attribute[attribute]
-            else:
-                self.attribute_bonus[
-                    attribute
-                ] = self.avatardamage.extra_ability_attribute[attribute]
+        self.merge_attribute_bonus(self.avatardamage.eidolon_attribute)
+        self.merge_attribute_bonus(self.avatardamage.extra_ability_attribute)
 
     def cal_avatar_attr_add(self):
         attribute_bonus = self.avatar.avatar_attribute_bonus
@@ -111,15 +91,7 @@ class AvatarInstance:
                     self.attribute_bonus[bonus_property] = value
 
     def cal_weapon_attr_add(self):
-        for attribute in self.weapon.weapon_attribute:
-            if attribute in self.attribute_bonus:
-                self.attribute_bonus[
-                    attribute
-                ] += self.weapon.weapon_attribute[attribute]
-            else:
-                self.attribute_bonus[attribute] = self.weapon.weapon_attribute[
-                    attribute
-                ]
+        self.merge_attribute_bonus(self.weapon.weapon_attribute)
 
     async def gat_damage(self):
         logger.info('base_attr')

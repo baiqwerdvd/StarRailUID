@@ -1,11 +1,11 @@
-from typing import Dict
 from abc import abstractmethod
+from typing import Dict, List, Tuple
 
 from msgspec import Struct
 
-from .model import DamageInstanceWeapon
 from ....utils.excel.model import EquipmentPromotionConfig
 from ....utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty
+from .model import DamageInstanceWeapon
 
 
 class BaseWeaponAttribute(Struct):
@@ -13,7 +13,7 @@ class BaseWeaponAttribute(Struct):
     attack: float
     defence: float
 
-    def items(self):
+    def items(self) -> List[Tuple[str, float]]:
         return [
             ('hp', self.hp),
             ('attack', self.attack),

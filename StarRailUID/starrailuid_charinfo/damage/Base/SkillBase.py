@@ -1,12 +1,21 @@
 import json
-from typing import List
 from pathlib import Path
+from typing import List
 
-from .model import DamageInstanceSkill, DamageInstanceAvatar
+from .model import DamageInstanceAvatar, DamageInstanceSkill
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
+
+
+skill_types = {
+    'Normal': 'Normal_',
+    'BPSkill': 'BPSkill_',
+    'Ultra': 'Ultra_',
+    'Maze': 'Maze_',
+    '': 'Talent_'
+}
 
 
 class SingleSkill:
@@ -28,18 +37,9 @@ class BaseSkills:
     ):
         for skill in skills:
             skill_attack_type = skill.skillAttackType
-            if skill_attack_type == 'Normal':
-                cls.Normal_ = SingleSkill(skill)
-            elif skill_attack_type == 'BPSkill':
-                cls.BPSkill_ = SingleSkill(skill)
-            elif skill_attack_type == 'Ultra':
-                cls.Ultra_ = SingleSkill(skill)
-            elif skill_attack_type == 'Maze':
-                cls.Maze_ = SingleSkill(skill)
-            elif skill_attack_type == '':
-                cls.Talent_ = SingleSkill(skill)
-            else:
+            if skill_attack_type not in skill_types:
                 raise ValueError(
                     f'Unknown skillAttackType: {skill_attack_type}'
                 )
+            setattr(cls, skill_types[skill_attack_type], SingleSkill(skill))
         return cls

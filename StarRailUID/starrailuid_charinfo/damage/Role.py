@@ -28,7 +28,9 @@ async def calculate_damage(
     logger.info(f'Attack: {attack}')
 
     damage_reduction = calculate_damage_reduction(level)
-    resistance_area = calculate_resistance_area(merged_attr, element)
+    resistance_area = calculate_resistance_area(
+        merged_attr, skill_type, add_skill_type, element
+    )
     defence_multiplier = calculate_defence_multiplier(level, merged_attr)
     injury_area = calculate_injury_area(
         merged_attr, skill_type, add_skill_type, element
@@ -111,13 +113,33 @@ def calculate_damage_reduction(level: int):
     return 1 - enemy_damage_reduction
 
 
-def calculate_resistance_area(merged_attr: Dict[str, float], element: str):
-    enemy_status_resistance = sum(
-        merged_attr.get(attr, 0)
-        for attr in merged_attr
-        if 'ResistancePenetration' in attr
-    )
-    return 1.0 - max(0, -enemy_status_resistance)
+def calculate_resistance_area(
+    merged_attr: Dict[str, float],
+    skill_type: str,
+    add_skill_type: str,
+    element: str,
+):
+    enemy_status_resistance = 0.0
+    for attr in merged_attr:
+        if 'ResistancePenetration' in attr:
+            # 检查是否有某一属性的抗性穿透
+            attr_name = attr.split('ResistancePenetration')[0]
+            if attr_name in (element, 'AllDamage'):
+                logger.info(f'{attr_name}属性有{merged_attr[attr]}穿透加成')
+                enemy_status_resistance += merged_attr[attr]
+            # 检查是否有某一技能属性的抗性穿透
+            skill_name, skillattr_name = (
+                attr_name.split('_', 1) if '_' in attr_name else (None, None)
+            )
+            if skill_name in (
+                skill_type,
+                add_skill_type,
+            ) and skillattr_name in (element, 'AllDamage'):
+                enemy_status_resistance += merged_attr[attr]
+                logger.info(
+                    f'{skill_name}对{skillattr_name}属性有{merged_attr[attr]}穿透加成'
+                )
+    return 1.0 - (0 - enemy_status_resistance)
 
 
 def calculate_defence_multiplier(

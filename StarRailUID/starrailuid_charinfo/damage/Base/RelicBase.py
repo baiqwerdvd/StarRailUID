@@ -1,10 +1,13 @@
-from typing import Dict
 from abc import abstractmethod
+from typing import TYPE_CHECKING, Dict
 
 from gsuid_core.logger import logger
 
-from .model import DamageInstanceRelic
 from ....utils.map.SR_MAP_PATH import RelicSetSkill
+from .model import DamageInstanceRelic
+
+if TYPE_CHECKING:
+    from ....utils.map.model.RelicSetSkill import RelicSetStatusAdd
 
 
 class SingleRelic:
@@ -69,25 +72,24 @@ class BaseRelicSetSkill:
         ...
 
     def set_skill_property_ability(self):
-        set_property = ''
-        set_value = 0
+
+        def add_relic_set_attribute(status_add: RelicSetStatusAdd):
+            set_property = status_add.Property
+            set_value = status_add.Value
+            if set_property != '':
+                relic_set_attribute[set_property] = (
+                    relic_set_attribute.get(set_property, 0) + set_value
+                )
+
         relic_set_attribute: Dict[str, float] = {}
         if self.pieces2:
             status_add = RelicSetSkill.RelicSet[str(self.setId)]['2']
             if status_add:
-                set_property = status_add.Property
-                set_value = status_add.Value
-                if set_property != '':
-                    relic_set_attribute[set_property] = (
-                        relic_set_attribute.get(set_property, 0) + set_value
-                    )
+                add_relic_set_attribute(status_add)
+
         if self.pieces4:
             status_add = RelicSetSkill.RelicSet[str(self.setId)]['4']
             if status_add:
-                set_property = status_add.Property
-                set_value = status_add.Value
-                if set_property != '':
-                    relic_set_attribute[set_property] = (
-                        relic_set_attribute.get(set_property, 0) + set_value
-                    )
+                add_relic_set_attribute(status_add)
+
         return relic_set_attribute

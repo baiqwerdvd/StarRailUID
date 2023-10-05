@@ -1,9 +1,9 @@
 import json
-from typing import Dict
 from pathlib import Path
+from typing import Dict
 
-from ..Base.WeaponBase import BaseWeapon
 from ..Base.model import DamageInstanceWeapon
+from ..Base.WeaponBase import BaseWeapon
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:
@@ -1698,14 +1698,15 @@ class SleepLiketheDead(BaseWeapon):
         base_attr: Dict[str, float],
         attribute_bonus: Dict[str, float],
     ):
-        if await self.check():
-            critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
-            attribute_bonus['CriticalChanceBase'] = (
-                critical_chance_base
-                + weapon_effect['23012']['Param']['CriticalChance'][
-                    self.weapon_rank - 1
-                ]
-            )
+        if not await self.check():
+            return attribute_bonus
+        critical_chance_base = attribute_bonus.get('CriticalChanceBase', 0)
+        attribute_bonus['CriticalChanceBase'] = (
+            critical_chance_base
+            + weapon_effect['23012']['Param']['CriticalChance'][
+                self.weapon_rank - 1
+            ]
+        )
         return attribute_bonus
 
 
