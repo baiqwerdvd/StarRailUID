@@ -32,7 +32,7 @@ async def calculate_damage(
         merged_attr, skill_type, add_skill_type, element
     )
     defence_multiplier = calculate_defence_multiplier(level, merged_attr)
-    injury_area = calculate_injury_area(
+    injury_area, element_area = calculate_injury_area(
         merged_attr, skill_type, add_skill_type, element
     )
     damage_ratio = calculate_damage_ratio(
@@ -79,6 +79,7 @@ async def calculate_damage(
         damage_reduction,
         expected_damage,
         element,
+        element_area
     )
 
     skill_info_list = [damage_cd, damage_qw, damage_tz]
@@ -158,6 +159,7 @@ def calculate_injury_area(
     element: str,
 ):
     injury_area = 0.0
+    element_area = 0.0
     for attr in merged_attr:
         if 'DmgAdd' in attr and attr.split('DmgAdd')[0] in (
             skill_type,
@@ -165,12 +167,15 @@ def calculate_injury_area(
         ):
             injury_area += merged_attr[attr]
     for attr in merged_attr:
-        if 'AddedRatio' in attr and attr.split('AddedRatio')[0] in (
+        attr_name = attr.split('DmgAdd')[0]
+        if 'AddedRatio' in attr and attr_name in (
             element,
             'AllDamage',
         ):
+            if attr_name == element:
+                element_area += merged_attr[attr]
             injury_area += merged_attr[attr]
-    return injury_area + 1
+    return injury_area + 1, element_area
 
 
 def calculate_damage_ratio(
@@ -221,10 +226,10 @@ def calculate_critical_chance(
 
 
 def calculate_expected_damage(
-    critical_chance: float,
-    critical_damage: float,
+    critical_chance_base: float,
+    critical_damage_base: float,
 ):
-    return critical_chance * critical_damage + 1
+    return critical_chance_base * critical_damage_base + 1
 
 
 def calculate_damage_cd(
@@ -279,6 +284,7 @@ def calculate_damage_tz(
     damage_reduction: float,
     expected_damage: float,
     element: str,
+    element_area: float
 ):
     injury_add_tz = 0.0
     attack_tz = attack + attack * (1 + 2.144) + 0
