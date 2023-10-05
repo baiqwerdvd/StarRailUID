@@ -4,6 +4,7 @@ from typing import Dict, List, Union
 
 from .effect.Role import RoleInstance
 from .mono.Character import Character
+from .damage.Avatar import AvatarInstance
 
 Excel_path = Path(__file__).parent / 'effect'
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -31,3 +32,9 @@ async def cal(char_data: Dict):
             skill_info_list.append(im_tmp)
         return skill_info_list
     return '角色伤害计算未完成'
+
+async def cal_info(char_data: Dict):
+    char = await cal_char_info(char_data)
+    avatar = AvatarInstance(char)
+    skill_info_list = await avatar.gat_damage()
+    return skill_info_list
