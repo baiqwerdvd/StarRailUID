@@ -3,9 +3,9 @@ from typing import Dict, List
 
 from gsuid_core.logger import logger
 
-from ..Role import demage_num
 from ..Base.AvatarBase import BaseAvatar, BaseAvatarBuff
-from ..Base.model import DamageInstanceSkill, DamageInstanceAvatar
+from ..Base.model import DamageInstanceAvatar, DamageInstanceSkill
+from ..Role import calculate_damage
 
 
 class Seele(BaseAvatar):
@@ -51,7 +51,7 @@ class Seele(BaseAvatar):
         skill_info_list = []
         # 计算普攻伤害
         skill_multiplier = self.Skill_num('Normal', 'Normal')
-        damagelist1 = await demage_num(
+        damagelist1 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'Normal',
@@ -64,7 +64,7 @@ class Seele(BaseAvatar):
 
         # 计算战技伤害
         skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
-        damagelist2 = await demage_num(
+        damagelist2 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'BPSkill',
@@ -77,7 +77,7 @@ class Seele(BaseAvatar):
 
         # 计算大招伤害
         skill_multiplier = self.Skill_num('Ultra', 'Ultra')
-        damagelist3 = await demage_num(
+        damagelist3 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'Ultra',
@@ -94,7 +94,7 @@ class Seele(BaseAvatar):
         add_attr_bonus['ignore_defence'] = 0.45 + add_attr_bonus.get(
             'ignore_defence', 0
         )
-        damagelist4 = await demage_num(
+        damagelist4 = await calculate_damage(
             base_attr,
             add_attr_bonus,
             'Ultra',
@@ -147,7 +147,7 @@ class JingYuan(BaseAvatar):
         skill_info_list = []
         # 计算普攻伤害
         skill_multiplier = self.Skill_num('Normal', 'Normal')
-        damagelist1 = await demage_num(
+        damagelist1 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'Normal',
@@ -160,7 +160,7 @@ class JingYuan(BaseAvatar):
 
         # 计算战技伤害
         skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
-        damagelist2 = await demage_num(
+        damagelist2 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'BPSkill',
@@ -173,7 +173,7 @@ class JingYuan(BaseAvatar):
 
         # 计算大招伤害
         skill_multiplier = self.Skill_num('Ultra', 'Ultra')
-        damagelist3 = await demage_num(
+        damagelist3 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'Ultra',
@@ -186,7 +186,7 @@ class JingYuan(BaseAvatar):
 
         # 神君
         skill_multiplier = self.Skill_num('Talent', 'Talent')
-        damagelist4 = await demage_num(
+        damagelist4 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'Talent',
@@ -234,7 +234,7 @@ class Welt(BaseAvatar):
         skill_info_list = []
         # 计算普攻伤害
         skill_multiplier = self.Skill_num('Normal', 'Normal')
-        damagelist1 = await demage_num(
+        damagelist1 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'Normal',
@@ -248,7 +248,7 @@ class Welt(BaseAvatar):
         # 计算战技伤害
         attnum = 3
         skill_multiplier = self.Skill_num('BPSkill', 'BPSkill') / attnum
-        damagelist2 = await demage_num(
+        damagelist2 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'BPSkill',
@@ -266,7 +266,7 @@ class Welt(BaseAvatar):
 
         # 计算大招伤害
         skill_multiplier = self.Skill_num('Ultra', 'Ultra')
-        damagelist3 = await demage_num(
+        damagelist3 = await calculate_damage(
             base_attr,
             attribute_bonus,
             'Ultra',
@@ -279,7 +279,7 @@ class Welt(BaseAvatar):
 
         if self.avatar_rank >= 1:
             skill_multiplier = self.Skill_num('Normal', 'Normal') * 0.5
-            damagelist4 = await demage_num(
+            damagelist4 = await calculate_damage(
                 base_attr,
                 attribute_bonus,
                 'Normal',
@@ -294,7 +294,7 @@ class Welt(BaseAvatar):
             skill_info_list.append({'name': '强化普攻', 'damagelist': damagelist4})
 
             skill_multiplier = (self.Skill_num('BPSkill', 'BPSkill') / 3) * 0.8
-            damagelist5 = await demage_num(
+            damagelist5 = await calculate_damage(
                 base_attr,
                 attribute_bonus,
                 'BPSkill',
