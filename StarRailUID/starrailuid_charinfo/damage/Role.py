@@ -1,11 +1,19 @@
-import json
-from pathlib import Path
 from typing import List, Union
 
 from gsuid_core.logger import logger
+
 from .utils import merge_attribute
 
-async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, element, skill_multiplier, level):
+
+async def demage_num(
+    base_attr,
+    attribute_bonus,
+    skill_type,
+    add_skill_type,
+    element,
+    skill_multiplier,
+    level,
+):
     logger.info(f'技能区: {skill_multiplier}')
     logger.info(f'skill_type: {skill_type}')
     logger.info(f'level: {level}')
@@ -18,9 +26,7 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
         if attr.__contains__('AttackAddedRatio'):
             attr_name = attr.split('AttackAddedRatio')[0]
             if attr_name in (skill_type, add_skill_type):
-                attack_added_ratio = attribute_bonus.get(
-                    'AttackAddedRatio', 0
-                )
+                attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
                 attribute_bonus['AttackAddedRatio'] = (
                     attack_added_ratio + attribute_bonus[attr]
                 )
@@ -41,9 +47,7 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
     attack = merged_attr.get('attack', 0)
     logger.info(f'攻击力: {attack}')
     damage_add = 0
-    hp_multiplier = 0
-    hp_num = 0
-    
+
     # 模拟 同属性弱点 同等级 的怪物
     # 韧性条减伤
     enemy_damage_reduction = 0.1
@@ -62,7 +66,10 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
             if attr_name.__contains__('_'):
                 skill_name = attr_name.split('_')[0]
                 skillattr_name = attr_name.split('_')[1]
-                if skill_name in (skill_type, add_skill_type) and skillattr_name in (element, 'AllDamage'):
+                if skill_name in (
+                    skill_type,
+                    add_skill_type,
+                ) and skillattr_name in (element, 'AllDamage'):
                     enemy_status_resistance += merged_attr[attr]
                     logger.info(
                         f'{skill_name}对{skillattr_name}属性有{merged_attr[attr]}穿透加成'
@@ -79,9 +86,7 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
             ignore_defence = 1 - merged_attr[attr]
             break
     logger.info(f'ignore_defence {ignore_defence}')
-    enemy_defence = (
-        level * 10 + 200
-    ) * ignore_defence
+    enemy_defence = (level * 10 + 200) * ignore_defence
     defence_multiplier = (level * 10 + 200) / (
         level * 10 + 200 + enemy_defence
     )
@@ -107,8 +112,7 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
             attr_name = attr.split('AddedRatio')[0]
             if attr_name in (element, 'AllDamage'):
                 logger.info(
-                    f'{attr} 对 {element} '
-                    f'有 {merged_attr[attr]} 伤害加成'
+                    f'{attr} 对 {element} 有 {merged_attr[attr]} 伤害加成'
                 )
                 if attr_name == element:
                     element_area += merged_attr[attr]
@@ -146,8 +150,7 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
                 skill_name = attr.split('_')[0]
                 if skill_name in (skill_type, add_skill_type):
                     logger.info(
-                        f'{attr} 对 {skill_type} 有 '
-                        f'{merged_attr[attr]} 爆伤加成'
+                        f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 爆伤加成'
                     )
                     critical_damage_base += merged_attr[attr]
     critical_damage = critical_damage_base + 1
@@ -163,8 +166,7 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
             skill_name = attr.split('_')[0]
             if skill_name in (skill_type, add_skill_type):
                 logger.info(
-                    f'{attr} 对 {skill_type} 有 '
-                    f'{merged_attr[attr]} 暴击加成'
+                    f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 暴击加成'
                 )
                 critical_chance_base += merged_attr[attr]
     critical_chance_base = min(1, critical_chance_base)
@@ -173,11 +175,11 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
     # 期望伤害
     qiwang_damage = (critical_chance_base * critical_damage_base) + 1
     logger.info(f'暴击期望: {qiwang_damage}')
-    
+
     attack_tz = 0.0
     injury_add = 0.0
     critical_damage_add = 0
-    
+
     damage_cd = (
         attack
         * skill_multiplier
@@ -202,25 +204,20 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
         + damage_add
     )
 
-
     attr_value_tz: float = base_attr.get('attack', 0)
     attribute_atk = attribute_bonus.get('AttackDelta', 0)
     attack_tz = (
         attr_value_tz
         + attr_value_tz
-        * (
-            1
-            + attribute_bonus.get('AttackAddedRatio', 0)
-            + 2.144
-        )
+        * (1 + attribute_bonus.get('AttackAddedRatio', 0) + 2.144)
         + attribute_atk
     )
 
     injury_add_tz = 0
-    
+
     if element == 'Imaginary':
         injury_add_tz = 0.12
-    
+
     damage_tz = (
         attack_tz
         * skill_multiplier
@@ -233,8 +230,6 @@ async def demage_num(base_attr, attribute_bonus, skill_type, add_skill_type, ele
         * 10
         + damage_add
     )
-
-
 
     if element == 'Thunder':
         element_area = 0

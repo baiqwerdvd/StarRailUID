@@ -33,8 +33,8 @@ async def cal(char_data: Dict):
         return skill_info_list
     return '角色伤害计算未完成'
 
+
 async def cal_info(char_data: Dict):
     char = await cal_char_info(char_data)
     avatar = AvatarInstance(char)
-    skill_info_list = await avatar.gat_damage()
-    return skill_info_list
+    return await avatar.gat_damage()

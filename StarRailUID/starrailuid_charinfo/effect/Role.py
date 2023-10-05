@@ -19,7 +19,7 @@ with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
 class RoleInstance:
     def __init__(self, raw_data: Character):
         self.raw_data = DamageInstance(raw_data)
-        
+
         self.avatar = Avatar.create(self.raw_data.avatar, self.raw_data.skill)
         self.weapon = Weapon.create(self.raw_data.weapon)
         self.relic_set = RelicSet().create(self.raw_data.relic)

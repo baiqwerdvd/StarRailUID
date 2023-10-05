@@ -1,16 +1,14 @@
 import json
 from pathlib import Path
-from typing import List, Union
 
 from gsuid_core.logger import logger
 
-from .Base.AvatarBase import BaseAvatarinfo
-from .AvatarDamage.AvatarDamage import AvatarDamage
 from .Weapon.Weapon import Weapon
-from .utils import merge_attribute
 from ..mono.Character import Character
 from .Base.model import DamageInstance
+from .Base.AvatarBase import BaseAvatarinfo
 from .Relic.Relic import RelicSet, SingleRelic
+from .AvatarDamage.AvatarDamage import AvatarDamage
 
 Excel_path = Path(__file__).parent
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -20,7 +18,9 @@ with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
 class AvatarInstance:
     def __init__(self, raw_data: Character):
         self.raw_data = DamageInstance(raw_data)
-        self.avatardamage = AvatarDamage.create(self.raw_data.avatar, self.raw_data.skill)
+        self.avatardamage = AvatarDamage.create(
+            self.raw_data.avatar, self.raw_data.skill
+        )
         self.avatar = BaseAvatarinfo(self.raw_data.avatar)
         self.weapon = Weapon.create(self.raw_data.weapon)
         self.relic_set = RelicSet().create(self.raw_data.relic)
@@ -77,7 +77,7 @@ class AvatarInstance:
                     self.attribute_bonus[
                         attribute
                     ] = set_skill.relicSetAttribute[attribute]
-    
+
     def cal_avatar_eidolon_add(self):
         for attribute in self.avatardamage.eidolon_attribute:
             if attribute in self.attribute_bonus:
@@ -97,7 +97,7 @@ class AvatarInstance:
                 self.attribute_bonus[
                     attribute
                 ] = self.avatardamage.extra_ability_attribute[attribute]
-    
+
     def cal_avatar_attr_add(self):
         attribute_bonus = self.avatar.avatar_attribute_bonus
         if attribute_bonus:
@@ -126,7 +126,7 @@ class AvatarInstance:
         logger.info(self.base_attr)
         logger.info('attribute_bonus')
         logger.info(self.attribute_bonus)
-        
+
         logger.info('检查武器战斗生效的buff')
         Ultra_Use = self.avatar.Ultra_Use()
         logger.info('Ultra_Use')
@@ -143,10 +143,7 @@ class AvatarInstance:
         if self.attribute_bonus is None:
             raise Exception('attribute_bonus is None')
         logger.info(self.attribute_bonus)
-        
-        return await self.avatardamage.getdamage(self.base_attr, self.attribute_bonus)
 
-
-    
-    
-    
+        return await self.avatardamage.getdamage(
+            self.base_attr, self.attribute_bonus
+        )

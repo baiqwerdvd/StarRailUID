@@ -59,10 +59,9 @@ class BaseAvatarBuff:
     async def extra_ability(self):
         ...
 
+
 class BaseAvatarinfo:
-    def __init__(
-        self, char: DamageInstanceAvatar
-    ):
+    def __init__(self, char: DamageInstanceAvatar):
         self.avatar_id = char.id_
         self.avatar_level = char.level
         self.avatar_rank = char.rank
@@ -102,10 +101,11 @@ class BaseAvatarinfo:
             # 嘲讽
             BaseAggro=promotion.BaseAggro.Value,
         )
-    
+
     def Ultra_Use(self):
         skill_info = skill_dict[str(self.avatar_id)]['Ultra_Use'][0]
         return msgspec.convert(skill_info, type=float)
+
 
 class BaseAvatar:
     def __init__(
@@ -152,11 +152,11 @@ class BaseAvatar:
             # 嘲讽
             BaseAggro=promotion.BaseAggro.Value,
         )
-    
+
     def Skill_Info(self, skill_type: str):
         skill_info = skill_dict[str(self.avatar_id)]['skillList'][skill_type]
         return msgspec.convert(skill_info, type=List[Union[str, int]])
-    
+
     def Skill_num(self, skill: Union[str, int], skill_type: str):
         skill_level = 0
         if skill == 'Normal':
