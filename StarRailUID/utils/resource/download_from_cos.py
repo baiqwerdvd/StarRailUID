@@ -81,7 +81,9 @@ async def download_all_file_from_cos():
                         or not Path.stat(path).st_size
                         or not is_diff
                     ):
-                        logger.info(f'[cos]开始下载[{resource_type}]_[{name}]...')
+                        logger.info(
+                            f'[cos]开始下载[{resource_type}]_[{name}]...'
+                        )
                         temp_num += 1
                         if isinstance(url, int):
                             logger.error(
@@ -119,4 +121,6 @@ async def download_all_file_from_cos():
                 await _download(TASKS)
         await _download(TASKS)
         if count := len(failed_list):
-            logger.error(f'[cos]仍有{count}个文件未下载,请使用命令 `下载全部资源` 重新下载')
+            logger.error(
+                f'[cos]仍有{count}个文件未下载,请使用命令 `下载全部资源` 重新下载'
+            )

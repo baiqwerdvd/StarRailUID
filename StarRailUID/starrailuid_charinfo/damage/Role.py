@@ -320,7 +320,7 @@ def calculate_damage_tz(
     # logger.info(f'attack_tz: {attack_tz}')
     if element == 'Imaginary':
         injury_add_tz = 0.12
-    damage_tz = (
+    return (
         attack_tz
         * skill_multiplier
         * damage_ratio
@@ -331,5 +331,3 @@ def calculate_damage_tz(
         * (critical_damage + 1.794)
         * 10
     )
-    damage_tz
-    return damage_tz

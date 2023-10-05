@@ -23,7 +23,6 @@ from ..utils.api import get_sqla
 
 
 async def get_user_card(bot_id: str, user_id: str):
-    pass
     sqla = get_sqla(bot_id)
     return await sqla.get_bind_uid_list(user_id)
     # w, h = 750, len(uid_list) * 750 + 470

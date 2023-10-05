@@ -3,9 +3,9 @@ from typing import Dict, List
 
 from gsuid_core.logger import logger
 
-from ..Role import calculate_damage
 from ..Base.AvatarBase import BaseAvatar, BaseAvatarBuff
-from ..Base.model import DamageInstanceSkill, DamageInstanceAvatar
+from ..Base.model import DamageInstanceAvatar, DamageInstanceSkill
+from ..Role import calculate_damage
 
 
 class Seele(BaseAvatar):
@@ -117,7 +117,9 @@ class Seele(BaseAvatar):
             self.avatar_level,
         )
         damagelist4[2] += damage3
-        skill_info_list.append({'name': '银狼降防终结技', 'damagelist': damagelist4})
+        skill_info_list.append(
+            {'name': '银狼降防终结技', 'damagelist': damagelist4}
+        )
 
         logger.info(skill_info_list)
         return skill_info_list
@@ -148,7 +150,9 @@ class JingYuan(BaseAvatar):
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('【神君】下回合的攻击段数大于等于6段, 则其下回合的暴击伤害提高25%。')
+        logger.info(
+            '【神君】下回合的攻击段数大于等于6段, 则其下回合的暴击伤害提高25%。'
+        )
         self.extra_ability_attribute['CriticalDamageBase'] = 0.25
         logger.info('施放战技后, 暴击率提升10%')
         self.extra_ability_attribute['CriticalChanceBase'] = 0.1
@@ -223,7 +227,9 @@ class JingYuan(BaseAvatar):
             self.avatar_level,
         )
         damagelist4[2] += damage3
-        skill_info_list.append({'name': '10层神君伤害', 'damagelist': damagelist4})
+        skill_info_list.append(
+            {'name': '10层神君伤害', 'damagelist': damagelist4}
+        )
 
         logger.info(skill_info_list)
         return skill_info_list
@@ -249,7 +255,9 @@ class Welt(BaseAvatar):
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('施放终结技时, 有100%基础概率使目标受到的伤害提高12%, 持续2回合。')
+        logger.info(
+            '施放终结技时, 有100%基础概率使目标受到的伤害提高12%, 持续2回合。'
+        )
         self.extra_ability_attribute['DmgRatio'] = 0.12
         logger.info('对被弱点击破的敌方目标造成的伤害提高20')
         self.extra_ability_attribute['AllDamageAddedRatio'] = 0.20
@@ -333,7 +341,9 @@ class Welt(BaseAvatar):
             damagelist4[1] = damagelist1[1] + damagelist4[1]
             damagelist4[2] = damagelist1[2] + damagelist4[2]
             damagelist4[2] += damage3
-            skill_info_list.append({'name': '强化普攻', 'damagelist': damagelist4})
+            skill_info_list.append(
+                {'name': '强化普攻', 'damagelist': damagelist4}
+            )
 
             skill_multiplier = (self.Skill_num('BPSkill', 'BPSkill') / 3) * 0.8
             damagelist5 = await calculate_damage(
@@ -349,7 +359,9 @@ class Welt(BaseAvatar):
             damagelist5[1] = damagelist2[1] + damagelist5[1]
             damagelist5[2] = damagelist2[2] + damagelist5[2]
             damagelist5[2] += damage3
-            skill_info_list.append({'name': '强化战技', 'damagelist': damagelist5})
+            skill_info_list.append(
+                {'name': '强化战技', 'damagelist': damagelist5}
+            )
 
         logger.info(skill_info_list)
         return skill_info_list
@@ -378,7 +390,9 @@ class Danhengil(BaseAvatar):
 
     def extra_ability(self):
         logger.info('额外能力')
-        logger.info('对拥有虚数属性弱点的敌方目标造成伤害时, 暴击伤害提高24%。')
+        logger.info(
+            '对拥有虚数属性弱点的敌方目标造成伤害时, 暴击伤害提高24%。'
+        )
         self.extra_ability_attribute['CriticalDamageBase'] = 0.24
 
     async def getdamage(
@@ -406,18 +420,18 @@ class Danhengil(BaseAvatar):
         damage_c = 0
         damage_e = 0
         damage_a = 0
+        add_attr_bonus: Dict[str, float] = {}
         for i in range(1, 3):
             add_attr_bonus = copy.deepcopy(attribute_bonus)
             damage_buff = min(max_buff, start_buff + (i - 1) * add_buff)
-            add_attr_bonus[
-                'AllDamageAddedRatio'
-            ] = damage_buff * injury_add + add_attr_bonus.get(
-                'AllDamageAddedRatio', 0
+            add_attr_bonus['AllDamageAddedRatio'] = (
+                damage_buff * injury_add
+                + add_attr_bonus.get('AllDamageAddedRatio', 0)
             )
             if self.avatar_rank >= 4:
-                add_attr_bonus[
-                    'CriticalDamageBase'
-                ] = critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+                add_attr_bonus['CriticalDamageBase'] = (
+                    critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+                )
             damage1, damage2, damage3 = await calculate_damage(
                 base_attr,
                 add_attr_bonus,
@@ -449,18 +463,18 @@ class Danhengil(BaseAvatar):
         damage_c = 0
         damage_e = 0
         damage_a = 0
+        add_attr_bonus: Dict[str, float] = {}
         for i in range(1, 4):
             add_attr_bonus = copy.deepcopy(attribute_bonus)
             damage_buff = min(max_buff, start_buff + (i - 1) * add_buff)
-            add_attr_bonus[
-                'AllDamageAddedRatio'
-            ] = damage_buff * injury_add + add_attr_bonus.get(
-                'AllDamageAddedRatio', 0
+            add_attr_bonus['AllDamageAddedRatio'] = (
+                damage_buff * injury_add
+                + add_attr_bonus.get('AllDamageAddedRatio', 0)
             )
             if self.avatar_rank >= 4:
-                add_attr_bonus[
-                    'CriticalDamageBase'
-                ] = critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+                add_attr_bonus['CriticalDamageBase'] = (
+                    critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+                )
             damage1, damage2, damage3 = await calculate_damage(
                 base_attr,
                 add_attr_bonus,
@@ -492,26 +506,23 @@ class Danhengil(BaseAvatar):
         damage_c = 0
         damage_e = 0
         damage_a = 0
+        add_attr_bonus: Dict[str, float] = {}
         for i in range(1, 6):
             add_attr_bonus = copy.deepcopy(attribute_bonus)
             damage_buff = min(max_buff, start_buff + (i - 1) * add_buff)
-            add_attr_bonus[
-                'AllDamageAddedRatio'
-            ] = damage_buff * injury_add + add_attr_bonus.get(
-                'AllDamageAddedRatio', 0
+            add_attr_bonus['AllDamageAddedRatio'] = (
+                damage_buff * injury_add
+                + add_attr_bonus.get('AllDamageAddedRatio', 0)
             )
             if self.avatar_rank >= 4:
-                add_attr_bonus[
-                    'CriticalDamageBase'
-                ] = critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
-            else:
-                if i >= 4:
-                    critical_buff = (i - 3) * critical_damage_add
-                    add_attr_bonus[
-                        'CriticalDamageBase'
-                    ] = critical_buff + add_attr_bonus.get(
-                        'CriticalDamageBase', 0
-                    )
+                add_attr_bonus['CriticalDamageBase'] = (
+                    critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+                )
+            elif i >= 4:
+                critical_buff = (i - 3) * critical_damage_add
+                add_attr_bonus['CriticalDamageBase'] = (
+                    critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+                )
             damage1, damage2, damage3 = await calculate_damage(
                 base_attr,
                 add_attr_bonus,
@@ -543,26 +554,23 @@ class Danhengil(BaseAvatar):
         damage_c = 0
         damage_e = 0
         damage_a = 0
+        add_attr_bonus: Dict[str, float] = {}
         for i in range(1, 8):
             add_attr_bonus = copy.deepcopy(attribute_bonus)
             damage_buff = min(max_buff, start_buff + (i - 1) * add_buff)
-            add_attr_bonus[
-                'AllDamageAddedRatio'
-            ] = damage_buff * injury_add + add_attr_bonus.get(
-                'AllDamageAddedRatio', 0
+            add_attr_bonus['AllDamageAddedRatio'] = (
+                damage_buff * injury_add
+                + add_attr_bonus.get('AllDamageAddedRatio', 0)
             )
             if self.avatar_rank >= 4:
-                add_attr_bonus[
-                    'CriticalDamageBase'
-                ] = critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
-            else:
-                if i >= 4:
-                    critical_buff = (i - 3) * critical_damage_add
-                    add_attr_bonus[
-                        'CriticalDamageBase'
-                    ] = critical_buff + add_attr_bonus.get(
-                        'CriticalDamageBase', 0
-                    )
+                add_attr_bonus['CriticalDamageBase'] = (
+                    critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+                )
+            elif i >= 4:
+                critical_buff = (i - 3) * critical_damage_add
+                add_attr_bonus['CriticalDamageBase'] = (
+                    critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+                )
             damage1, damage2, damage3 = await calculate_damage(
                 base_attr,
                 add_attr_bonus,
@@ -594,18 +602,18 @@ class Danhengil(BaseAvatar):
         damage_c = 0
         damage_e = 0
         damage_a = 0
-        for i in range(1, 4):
+        add_attr_bonus: Dict[str, float] = {}
+        for _ in range(1, 4):
             add_attr_bonus = copy.deepcopy(attribute_bonus)
             damage_buff = min(max_buff, 10)
-            add_attr_bonus[
-                'AllDamageAddedRatio'
-            ] = damage_buff * injury_add + add_attr_bonus.get(
-                'AllDamageAddedRatio', 0
+            add_attr_bonus['AllDamageAddedRatio'] = (
+                damage_buff * injury_add
+                + add_attr_bonus.get('AllDamageAddedRatio', 0)
             )
             critical_buff = 4 * critical_damage_add
-            add_attr_bonus[
-                'CriticalDamageBase'
-            ] = critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+            add_attr_bonus['CriticalDamageBase'] = (
+                critical_buff + add_attr_bonus.get('CriticalDamageBase', 0)
+            )
             damage1, damage2, damage3 = await calculate_damage(
                 base_attr,
                 add_attr_bonus,

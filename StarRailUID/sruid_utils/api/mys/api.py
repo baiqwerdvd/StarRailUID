@@ -13,14 +13,22 @@ STAR_RAIL_SIGN_EXTRA_INFO_URL = f"{OLD_URL}/event/luna/extra_info"
 STAR_RAIL_SIGN_EXTRA_REWARD_URL = f"{OLD_URL}/event/luna/extra_reward"
 STAR_RAIL_SIGN_URL = f"{OLD_URL}/event/luna/sign"
 STAR_RAIL_SIGN_URL_OS = f"{OS_URL}/event/luna/os/sign"
-STAR_RAIL_MONTH_INFO_URL = f"{OLD_URL}/event/srledger/month_info"  # 开拓阅历接口
+STAR_RAIL_MONTH_INFO_URL = (
+    f"{OLD_URL}/event/srledger/month_info"
+)  # 开拓阅历接口
 STAR_RAIL_MONTH_DETAIL_URL = (
     f"{OLD_URL}/event/srledger/month_detail"  # 开拓阅历详情接口
 )
 
-STAR_RAIL_NOTE_URL = f"{NEW_URL}/game_record/app/hkrpg/api/note"  # 实时便签接口
-STAR_RAIL_NOTE_URL_OS = f"{OS_INFO_URL}/game_record/hkrpg/api/note"  # OS实时便签接口
-STAR_RAIL_INDEX_URL = f"{NEW_URL}/game_record/app/hkrpg/api/index"  # 角色橱窗接口
+STAR_RAIL_NOTE_URL = (
+    f"{NEW_URL}/game_record/app/hkrpg/api/note"
+)  # 实时便签接口
+STAR_RAIL_NOTE_URL_OS = (
+    f"{OS_INFO_URL}/game_record/hkrpg/api/note"
+)  # OS实时便签接口
+STAR_RAIL_INDEX_URL = (
+    f"{NEW_URL}/game_record/app/hkrpg/api/index"
+)  # 角色橱窗接口
 STAR_RAIL_INDEX_URL_OS = (
     f"{OS_INFO_URL}/game_record/hkrpg/api/index"  # OS角色橱窗接口
 )
@@ -41,7 +49,9 @@ STAR_RAIL_AVATAR_INFO_URL_OS = (
 CHALLENGE_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/challenge"
 CHALLENGE_INFO_URL_OS = f"{OS_INFO_URL}/game_record/hkrpg/api/challenge"
 
-ROGUE_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/rogue"  # 角色模拟宇宙信息接口
+ROGUE_INFO_URL = (
+    f"{NEW_URL}/game_record/app/hkrpg/api/rogue"
+)  # 角色模拟宇宙信息接口
 ROGUE_LOCUST_INFO_URL = (
     f"{NEW_URL}/game_record/app/hkrpg/api/rogue_locust"  # 角色寰宇蝗灾信息接口
 )
