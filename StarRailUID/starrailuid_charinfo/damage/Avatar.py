@@ -94,10 +94,10 @@ class AvatarInstance:
         self.merge_attribute_bonus(self.weapon.weapon_attribute)
 
     async def gat_damage(self):
-        logger.info('base_attr')
-        logger.info(self.base_attr)
-        logger.info('attribute_bonus')
-        logger.info(self.attribute_bonus)
+        # logger.info('base_attr')
+        # logger.info(self.base_attr)
+        # logger.info('attribute_bonus')
+        # logger.info(self.attribute_bonus)
 
         logger.info('检查武器战斗生效的buff')
         Ultra_Use = self.avatar.Ultra_Use()
