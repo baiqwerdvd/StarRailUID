@@ -3,9 +3,9 @@ from typing import Dict, List, Tuple
 
 from msgspec import Struct
 
+from .model import DamageInstanceWeapon
 from ....utils.excel.model import EquipmentPromotionConfig
 from ....utils.map.SR_MAP_PATH import EquipmentID2AbilityProperty
-from .model import DamageInstanceWeapon
 
 
 class BaseWeaponAttribute(Struct):

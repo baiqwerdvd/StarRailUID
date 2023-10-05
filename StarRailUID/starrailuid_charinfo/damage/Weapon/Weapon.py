@@ -1,9 +1,9 @@
 import json
-from pathlib import Path
 from typing import Dict
+from pathlib import Path
 
-from ..Base.model import DamageInstanceWeapon
 from ..Base.WeaponBase import BaseWeapon
+from ..Base.model import DamageInstanceWeapon
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:

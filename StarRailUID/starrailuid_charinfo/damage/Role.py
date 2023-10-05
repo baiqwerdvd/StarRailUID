@@ -31,30 +31,30 @@ async def calculate_damage(
 
     damage_reduction = calculate_damage_reduction(level)
     logger.info(f'韧性区: {damage_reduction}')
-    
+
     resistance_area = calculate_resistance_area(
         merged_attr, skill_type, add_skill_type, element
     )
     logger.info(f'抗性区: {resistance_area}')
-    
+
     defence_multiplier = calculate_defence_multiplier(level, merged_attr)
     logger.info(f'防御区: {defence_multiplier}')
-    
+
     injury_area, element_area = calculate_injury_area(
         merged_attr, skill_type, add_skill_type, element
     )
     logger.info(f'增伤区: {injury_area}')
-    
+
     damage_ratio = calculate_damage_ratio(
         merged_attr, skill_type, add_skill_type
     )
     logger.info(f'易伤区: {damage_ratio}')
-    
+
     critical_damage = calculate_critical_damage(
         merged_attr, skill_type, add_skill_type
     )
     logger.info(f'爆伤区: {critical_damage}')
-    
+
     critical_chance = calculate_critical_chance(
         merged_attr, skill_type, add_skill_type
     )
@@ -150,10 +150,13 @@ def calculate_resistance_area(
             if '_' in attr_name:
                 skill_name = attr_name.split('_')[0]
                 skillattr_name = attr_name.split('_')[1]
-                if skill_name == add_skill_type and skillattr_name in (element, 'AllDamage'):
+                if skill_name == add_skill_type and skillattr_name in (
+                    element,
+                    'AllDamage',
+                ):
                     enemy_status_resistance += merged_attr[attr]
                     # logger.info(
-                        # f'{skill_name}对{skillattr_name}属性有{merged_attr[attr]}穿透加成'
+                    # f'{skill_name}对{skillattr_name}属性有{merged_attr[attr]}穿透加成'
                     # )
     return 1.0 - (0 - enemy_status_resistance)
 
@@ -183,16 +186,16 @@ def calculate_injury_area(
             add_skill_type,
         ):
             # logger.info(
-                # f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 伤害加成'
+            # f'{attr} 对 {skill_type} 有 {merged_attr[attr]} 伤害加成'
             # )
             injury_area += merged_attr[attr]
-        
+
         if 'AddedRatio' in attr and attr_name in (
             element,
             'AllDamage',
         ):
             # logger.info(
-                # f'{attr} 对 {element} 属性有 {merged_attr[attr]} 伤害加成'
+            # f'{attr} 对 {element} 属性有 {merged_attr[attr]} 伤害加成'
             # )
             if attr_name == element:
                 element_area += merged_attr[attr]
@@ -312,7 +315,7 @@ def calculate_damage_tz(
     base_attr: Dict[str, float],
 ):
     injury_add_tz = 0.0
-    
+
     attack_tz = attack + 355 + base_attr['attack'] * 2.334
     # logger.info(f'attack_tz: {attack_tz}')
     if element == 'Imaginary':

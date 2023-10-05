@@ -1,11 +1,11 @@
-from abc import abstractmethod
 from typing import Dict
+from abc import abstractmethod
 
 from gsuid_core.logger import logger
 
-from ....utils.map.model.RelicSetSkill import RelicSetStatusAdd
-from ....utils.map.SR_MAP_PATH import RelicSetSkill
 from .model import DamageInstanceRelic
+from ....utils.map.SR_MAP_PATH import RelicSetSkill
+from ....utils.map.model.RelicSetSkill import RelicSetStatusAdd
 
 
 class SingleRelic:
@@ -70,7 +70,6 @@ class BaseRelicSetSkill:
         ...
 
     def set_skill_property_ability(self):
-
         def add_relic_set_attribute(status_add: RelicSetStatusAdd):
             set_property = status_add.Property
             set_value = status_add.Value

@@ -20,9 +20,16 @@ async def merge_attribute(
                 merged_attr[attr] += base_attr[attr] * value
             else:
                 merged_attr[attribute] = attribute_bonus[attribute]
-        elif attribute in ['ignore_defence', 'Atk_buff', 'Normal_buff', 'shield_added_ratio']:
+        elif attribute in [
+            'ignore_defence',
+            'Atk_buff',
+            'Normal_buff',
+            'shield_added_ratio',
+        ]:
             merged_attr[attribute] = base_attr.get(attribute, 0) + value
-        elif attribute.endswith(('ResistancePenetration', 'DmgAdd', 'DmgRatio')):
+        elif attribute.endswith(
+            ('ResistancePenetration', 'DmgAdd', 'DmgRatio')
+        ):
             merged_attr[attribute] = base_attr.get(attribute, 0) + value
         elif attribute.endswith('Base'):
             merged_attr[attribute] = base_attr.get(attribute, 0) + value

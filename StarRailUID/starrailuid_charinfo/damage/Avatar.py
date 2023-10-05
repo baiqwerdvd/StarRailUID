@@ -1,15 +1,15 @@
 import json
-from pathlib import Path
 from typing import Dict
+from pathlib import Path
 
 from gsuid_core.logger import logger
 
-from ..mono.Character import Character
-from .AvatarDamage.AvatarDamage import AvatarDamage
-from .Base.AvatarBase import BaseAvatarinfo
-from .Base.model import DamageInstance
-from .Relic.Relic import RelicSet, SingleRelic
 from .Weapon.Weapon import Weapon
+from ..mono.Character import Character
+from .Base.model import DamageInstance
+from .Base.AvatarBase import BaseAvatarinfo
+from .Relic.Relic import RelicSet, SingleRelic
+from .AvatarDamage.AvatarDamage import AvatarDamage
 
 Excel_path = Path(__file__).parent
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -37,13 +37,9 @@ class AvatarInstance:
     def merge_attribute_bonus(self, add_attribute: Dict[str, float]):
         for attribute in add_attribute:
             if attribute in self.attribute_bonus:
-                self.attribute_bonus[
-                    attribute
-                ] += add_attribute[attribute]
+                self.attribute_bonus[attribute] += add_attribute[attribute]
             else:
-                self.attribute_bonus[
-                    attribute
-                ] = add_attribute[attribute]
+                self.attribute_bonus[attribute] = add_attribute[attribute]
 
     def cal_role_base_attr(self):
         logger.info('cal_role_base_attr')
