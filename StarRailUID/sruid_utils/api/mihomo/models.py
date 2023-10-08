@@ -9,8 +9,8 @@ class Behavior(Struct):
 
 
 class Equipment(Struct):
-    level: int
-    tid: int
+    level: Union[int, None] = field(default=0)
+    tid: Union[int, None] = None
     promotion: Union[int, None] = field(default=0)
     rank: Union[int, None] = field(default=0)
 
