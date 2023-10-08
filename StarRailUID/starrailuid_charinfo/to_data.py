@@ -281,7 +281,7 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
     # 处理武器
 
     equipment_info = {}
-    if char.equipment and char.equipment is not None:
+    if char.equipment and char.equipment.tid is not None:
         equipment_info['equipmentID'] = char.equipment.tid
         equipment_info['equipmentName'] = EquipmentID2Name[
             str(char.equipment.tid)
