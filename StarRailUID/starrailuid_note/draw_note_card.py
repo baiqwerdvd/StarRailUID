@@ -1,17 +1,18 @@
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Union
-from datetime import datetime
 
-from PIL import Image, ImageDraw
-from msgspec import json as msgjson
 from gsuid_core.logger import logger
+from msgspec import json as msgjson
+from PIL import Image, ImageDraw
 
-from ..utils.mys_api import mys_api
+from ..sruid_utils.api.mys.models import MonthlyAward
 from ..utils.error_reply import get_error
-from ..utils.image.convert import convert_img
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.fonts.starrail_fonts import sr_font_20, sr_font_28, sr_font_34
+from ..utils.image.convert import convert_img
+from ..utils.mys_api import mys_api
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 
@@ -84,7 +85,9 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     if last_monthly_path.exists():
         with Path.open(last_monthly_path, encoding='utf-8') as f:
             last_monthly_data = json.load(f)
-            last_monthly_data = last_monthly_data['data']
+            last_monthly_data = msgjson.decode(
+                last_monthly_data['data'], type=MonthlyAward
+            )
     else:
         add_month = ''
         if int(last_month) < 10:
@@ -93,6 +96,21 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         last_monthly_data = await mys_api.get_award(sr_uid, find_last_month)
         if isinstance(last_monthly_data, int):
             return get_error(last_monthly_data)
+        # 保存上月数据
+        with Path.open(
+            path / f'monthly_{last_year_mon}.json', 'w', encoding='utf-8'
+        ) as f:
+            save_json_data = msgjson.format(
+                msgjson.encode(last_monthly_data), indent=4
+            )
+            save_data = json.dumps(
+                {
+                    'data_time': now.strftime('%Y-%m-%d %H:%M:%S'),
+                    'data': save_json_data.decode('utf-8'),
+                },
+                ensure_ascii=False,
+            )
+            f.write(save_data)
 
     # nickname and level
     role_basic_info = await mys_api.get_role_basic_info(sr_uid)
