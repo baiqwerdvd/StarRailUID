@@ -41,7 +41,7 @@ class HakushHsrCharacterSkill(Struct):
     Level: Dict[str, HakushHsrCharacterSkillLevel]
 
 
-class HakushHsrCharacterMaterial(Struct):
+class HakushHsrMaterial(Struct):
     ItemID: int
     ItemNum: int
 
@@ -56,7 +56,7 @@ class HakushHsrCharacterSkillTree(Struct):
     DefaultUnlock: bool
     Icon: str
     LevelUpSkillID: List[int]
-    MaterialList: List[Union[HakushHsrCharacterMaterial, None]]
+    MaterialList: List[Union[HakushHsrMaterial, None]]
     MaxLevel: int
     ParamList: List[float]
     PointID: int
@@ -81,7 +81,7 @@ class HakushHsrCharacterStats(Struct):
     CriticalChance: float
     CriticalDamage: float
     BaseAggro: float
-    Cost: List[Union[HakushHsrCharacterMaterial, None]]
+    Cost: List[Union[HakushHsrMaterial, None]]
 
 
 class HakushHsrCharacterRelicProperty(Struct):
@@ -110,3 +110,58 @@ class HakushHsrCharacter(Struct):
     SkillTrees: Dict[str, Dict[str, HakushHsrCharacterSkillTree]]
     Stats: Dict[str, HakushHsrCharacterStats]
     Relics: HakushHsrCharacterRelic
+
+
+class LightconeRefinementLevel(Struct):
+    ParamList: List[float]
+
+
+class HakushHsrLightconeRefinement(Struct):
+    Desc: str
+    Level: Dict[str, LightconeRefinementLevel]
+    Name: str
+
+
+class HakushHsrLightconeStat(Struct):
+    BaseAttack: float
+    BaseAttackAdd: float
+    BaseDefence: float
+    BaseDefenceAdd: float
+    BaseHP: float
+    BaseHPAdd: float
+    EquipmentID: int
+    MaxLevel: int
+    PromotionCostList: List[HakushHsrMaterial]
+    PlayerLevelRequire: Union[int, None] = None
+    WorldLevelRequire: Union[int, None] = None
+
+
+class HakushHsrLightcone(Struct):
+    Name: str
+    Desc: str
+    Rarity: str
+    BaseType: str
+    Refinements: HakushHsrLightconeRefinement
+    Stats: List[HakushHsrLightconeStat]
+
+
+class HakushHsrCharacterIndex(Struct):
+    icon: str
+    rank: str
+    baseType: str
+    damageType: str
+    en: str
+    desc: str
+    kr: str
+    cn: str
+    jp: str
+
+
+class HakushHsrLightconeIndex(Struct):
+    rank: str
+    baseType: str
+    en: str
+    desc: str
+    kr: str
+    cn: str
+    jp: str
