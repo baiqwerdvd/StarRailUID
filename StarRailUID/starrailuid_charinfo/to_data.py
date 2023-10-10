@@ -1,35 +1,35 @@
 import json
 from pathlib import Path
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Optional, Union
 
 from httpx import ReadTimeout
 from msgspec import json as msgjson
 
-from ..utils.error_reply import UID_HINT
 from ..sruid_utils.api.mihomo import MihomoData
 from ..sruid_utils.api.mihomo.models import Avatar
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..sruid_utils.api.mihomo.requests import get_char_card_info
-from .cal_value import cal_relic_sub_affix, cal_relic_main_affix
+from ..utils.error_reply import UID_HINT
 from ..utils.excel.model import AvatarPromotionConfig, EquipmentPromotionConfig
 from ..utils.map.SR_MAP_PATH import (
-    SetId2Name,
+    AvatarRankSkillUp,
+    EquipmentID2Name,
+    EquipmentID2Rarity,
     ItemId2Name,
     Property2Name,
     RelicId2SetId,
-    EquipmentID2Name,
-    AvatarRankSkillUp,
-    EquipmentID2Rarity,
-    rankId2Name,
-    skillId2Name,
-    avatarId2Name,
-    skillId2Effect,
+    SetId2Name,
+    avatarId2DamageType,
     avatarId2EnName,
+    avatarId2Name,
     avatarId2Rarity,
     characterSkillTree,
+    rankId2Name,
     skillId2AttackType,
-    avatarId2DamageType,
+    skillId2Effect,
+    skillId2Name,
 )
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from .cal_value import cal_relic_main_affix, cal_relic_sub_affix
 
 
 async def api_to_dict(
@@ -298,23 +298,23 @@ async def get_data(char: Avatar, sr_data: MihomoData, sr_uid: str):
             str(char.equipment.tid)
         ][str(equipment_info['equipmentPromotion'])]
 
+        equipment_level = char.equipment.level if char.equipment.level else 1
         # 生命值
         equipment_base_attributes['hp'] = (
             equipment_promotion_base.BaseHP.Value
-            + equipment_promotion_base.BaseHPAdd.Value
-            * (char.equipment.level - 1)
+            + equipment_promotion_base.BaseHPAdd.Value * (equipment_level - 1)
         )
         # 攻击力
         equipment_base_attributes['attack'] = (
             equipment_promotion_base.BaseAttack.Value
             + equipment_promotion_base.BaseAttackAdd.Value
-            * (char.equipment.level - 1)
+            * (equipment_level - 1)
         )
         # 防御力
         equipment_base_attributes['defence'] = (
             equipment_promotion_base.BaseDefence.Value
             + equipment_promotion_base.BaseDefenceAdd.Value
-            * (char.equipment.level - 1)
+            * (equipment_level - 1)
         )
         equipment_info['baseAttributes'] = equipment_base_attributes
 

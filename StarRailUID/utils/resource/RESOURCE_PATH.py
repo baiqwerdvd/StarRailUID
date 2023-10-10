@@ -23,13 +23,13 @@ SKILL_PATH = RESOURCE_PATH / 'skill'
 TEMP_PATH = RESOURCE_PATH / 'temp'
 CHAR_PREVIEW_PATH = RESOURCE_PATH / 'character_preview'
 
-WIKI_LIGHT_CONE_PATH = WIKI_PATH / 'lightcone'
-WIKI_MATERIAL_FOR_ROLE = WIKI_PATH / 'material for role'
-WIKI_RELIC_PATH = WIKI_PATH / 'relic'
-WIKI_ROLE_PATH = WIKI_PATH / 'role'
+WIKI_LIGHT_CONE_PATH = WIKI_PATH / 'light_cone'
+WIKI_MATERIAL_FOR_ROLE = WIKI_PATH / 'character_material'
+WIKI_RELIC_PATH = WIKI_PATH / 'relic_set'
+WIKI_ROLE_PATH = WIKI_PATH / 'character_overview'
 
-GUIDE_LIGHT_CONE_PATH = GUIDE_PATH / 'lightcone'
-GUIDE_CHARACTER_PATH = GUIDE_PATH / 'character'
+GUIDE_LIGHT_CONE_PATH = GUIDE_PATH / 'light_cone'
+GUIDE_CHARACTER_PATH = GUIDE_PATH / 'character_overview'
 
 TEXT2D_PATH = Path(__file__).parent / 'texture2d'
 

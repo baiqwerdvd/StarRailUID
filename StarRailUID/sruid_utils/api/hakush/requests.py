@@ -12,25 +12,29 @@ from .model import (
 )
 
 
-async def get_character_data(uid: str) -> Union[HakushHsrCharacter, None]:
+async def get_character_data(
+    avatar_id: str,
+) -> Union[HakushHsrCharacter, None]:
     async with AsyncClient(
         base_url='https://api.hakush.in/hsr/data',
         headers=_HEADER,
         timeout=30,
     ) as client:
-        req = await client.get(f'/cn/character/{uid}.json')
+        req = await client.get(f'/cn/character/{avatar_id}.json')
         if req.status_code == 200:
             return convert(req.json(), type=HakushHsrCharacter)
         return None
 
 
-async def get_lightcone_data(uid: str) -> Union[HakushHsrLightcone, None]:
+async def get_lightcone_data(
+    lightcone_id: str,
+) -> Union[HakushHsrLightcone, None]:
     async with AsyncClient(
         base_url='https://api.hakush.in/hsr/data',
         headers=_HEADER,
         timeout=30,
     ) as client:
-        req = await client.get(f'/cn/lightcone/{uid}.json')
+        req = await client.get(f'/cn/lightcone/{lightcone_id}.json')
         if req.status_code == 200:
             return convert(req.json(), type=HakushHsrLightcone)
         return None

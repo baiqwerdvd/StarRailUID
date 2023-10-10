@@ -1,10 +1,18 @@
 from .SR_MAP_PATH import (
-    EquipmentID2Name,
     EquipmentID2EnName,
+    EquipmentID2Name,
+    SetId2Name,
     alias_data,
     avatarId2Name,
     avatarId2Rarity,
 )
+
+
+async def name_to_relic_set_id(name: str):
+    for set_name in SetId2Name:
+        if set_name == name:
+            return SetId2Name[set_name]
+    return None
 
 
 async def avatar_id_to_name(avatar_id: str) -> str:
