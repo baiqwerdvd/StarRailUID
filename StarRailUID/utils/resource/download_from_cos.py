@@ -93,11 +93,11 @@ async def download_all_file_from_cos():
                                 download_file(
                                     url, res_type, resource_type, name, sess
                                 ),
-                                timeout=60,
+                                timeout=600,
                             )
                         )
                         # await download_file(url, FILE_TO_PATH[file], name)
-                        if len(TASKS) >= 10:
+                        if len(TASKS) >= 5:
                             await _download(TASKS)
                 await _download(TASKS)
                 if temp_num == 0:
@@ -112,10 +112,10 @@ async def download_all_file_from_cos():
             TASKS.append(
                 asyncio.wait_for(
                     download_file(url, res_type, resource_type, name, sess),
-                    timeout=60,
+                    timeout=600,
                 )
             )
-            if len(TASKS) >= 10:
+            if len(TASKS) >= 5:
                 await _download(TASKS)
         await _download(TASKS)
         if count := len(failed_list):
