@@ -1668,10 +1668,10 @@ class Thisbodyisasword(BaseWeapon):
         )
 
         resistance_penetration = attribute_bonus.get(
-            'AllResistancePenetration', 0
+            'AllDamageResistancePenetration', 0
         )
         attribute_bonus[
-            'AllResistancePenetration'
+            'AllDamageResistancePenetration'
         ] = resistance_penetration + (
             weapon_effect['23014']['Param']['ResistancePenetration'][
                 self.weapon_rank - 1
