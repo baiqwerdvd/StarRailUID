@@ -22,16 +22,16 @@ from ..utils.fonts.starrail_fonts import (
 )
 
 abyss_list = {
-    '1': '琥珀恩赐其一',
-    '2': '琥珀恩赐其二',
-    '3': '琥珀恩赐其三',
-    '4': '琥珀恩赐其四',
-    '5': '琥珀恩赐其五',
-    '6': '琥珀恩赐其六',
-    '7': '琥珀恩赐其七',
-    '8': '琥珀恩赐其八',
-    '9': '琥珀恩赐其九',
-    '10': '琥珀恩赐其十',
+    '1': '一',
+    '2': '二',
+    '3': '三',
+    '4': '四',
+    '5': '五',
+    '6': '六',
+    '7': '七',
+    '8': '八',
+    '9': '九',
+    '10': '十',
 }
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
@@ -229,7 +229,7 @@ async def draw_abyss_img(
 
     for index_floor, level in enumerate(raw_abyss_data.all_floor_detail):
         if floor:
-            if abyss_list[str(floor)] == level.name:
+            if abyss_list[str(floor)] == level.name.split('其')[1]:
                 index_floor = 0  # noqa: PLW2901
             else:
                 continue
