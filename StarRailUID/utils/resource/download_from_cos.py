@@ -104,6 +104,7 @@ async def check_use():
         )
     if tag == '[cos]':
         await download_all_file_from_cos()
+    return 'sr全部资源下载完成!'
 
 
 async def download_all_file_from_cos():
