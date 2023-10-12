@@ -248,12 +248,12 @@ async def download_all_file(
                 size = size.replace('\r\n', '')
                 file_path = path / name
                 if file_path.exists():
-                    is_diff = size == str(Path.stat(path).st_size)
+                    is_diff = size == str(Path.stat(file_path).st_size)
                 else:
                     is_diff = True
                 if (
                     not file_path.exists()
-                    or not Path.stat(path).st_size
+                    or not Path.stat(file_path).st_size
                     or not is_diff
                 ):
                     logger.info(
