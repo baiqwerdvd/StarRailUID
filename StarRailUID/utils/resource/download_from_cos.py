@@ -220,7 +220,6 @@ async def download_all_file(
     BASE_URL: str, TAG: str, plugin_name: str, EPATH_MAP: Dict[str, Path]
 ):
     PLUGIN_RES = f'{BASE_URL}/{plugin_name}'
-    logger.info(PLUGIN_RES)
 
     TASKS = []
     async with ClientSession(
