@@ -10,6 +10,7 @@ from gsuid_core.utils.database.models import GsUser
 
 # from gsuid_core.utils.api.mys.models import MysSign, SignList
 from gsuid_core.utils.api.mys.tools import (
+    mys_version,
     _random_int_ds,
     generate_os_ds,
     get_web_ds_token,
@@ -440,7 +441,7 @@ class MysApi(_MysApi):
         if int(str(uid)[0]) < 6:
             HEADER = copy.deepcopy(self._HEADER)
             HEADER['Cookie'] = ck
-            HEADER['x-rpc-app_version'] = '2.44.1'
+            HEADER['x-rpc-app_version'] = mys_version
             HEADER['x-rpc-client_type'] = '5'
             HEADER['X_Requested_With'] = 'com.mihoyo.hyperion'
             HEADER['DS'] = get_web_ds_token(True)
