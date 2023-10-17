@@ -1,7 +1,7 @@
 from .SR_MAP_PATH import (
-    EquipmentID2EnName,
-    EquipmentID2Name,
     SetId2Name,
+    EquipmentID2Name,
+    EquipmentID2EnName,
     alias_data,
     avatarId2Name,
     avatarId2Rarity,
