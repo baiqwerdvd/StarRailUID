@@ -3,7 +3,7 @@ from typing import Dict, List
 
 from gsuid_core.logger import logger
 
-from ..Role import calculate_damage
+from ..Role import calculate_damage, calculate_shield, calculate_heal
 from ..Base.AvatarBase import BaseAvatar, BaseAvatarBuff
 from ..Base.model import DamageInstanceSkill, DamageInstanceAvatar
 
@@ -1285,8 +1285,18 @@ class Fuxuan(BaseAvatar):
             self.avatar_level,
             1,
         )
-        damagelist2[2] += damage3
+        damagelist2[2] += damage2
         skill_info_list.append({'name': '终结技', 'damagelist': damagelist2})
+        
+        # 计算终结技治疗
+        damagelist3 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            0.05,
+            133,
+        )
+        skill_info_list.append({'name': '终结技治疗', 'damagelist': damagelist3})
         
         return skill_info_list
 
@@ -1919,18 +1929,560 @@ class Guinaifen(BaseAvatar):
         skill_info_list.append({'name': '单次持续伤害', 'damagelist': damagelist4})
         
         return skill_info_list
-    
+
+class Gepard(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        pass
+
+    def extra_ability(self):
+        pass
+        
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+        
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+        
+        # 计算终结技护盾
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        skill_num = self.Skill_num('Ultra', 'Ultra_G')
+        damagelist3 = await calculate_shield(
+            base_attr,
+            attribute_bonus,
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '终结技(护盾)', 'damagelist': damagelist3})
+        
+        return skill_info_list
+
+class Luocha(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['AttackAddedRatio'] = 0.2
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['ResistancePenetration'] = 0.2
+
+    def extra_ability(self):
+        pass
+        
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+        
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist2})
+        
+        # 计算战技治疗
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        skill_num = self.Skill_num('BPSkill', 'BPSkill_G')
+        damagelist3 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            skill_multiplier,
+            skill_num,
+            1,
+        )
+        skill_info_list.append({'name': '战技治疗量', 'damagelist': damagelist3})
+        if self.avatar_rank >= 2:
+            add_attr_bonus = copy.deepcopy(attribute_bonus)
+            add_attr_bonus['HealRatioBase'] = add_attr_bonus.get('HealRatioBase', 0) + 0.3
+            damagelist4 = await calculate_heal(
+                base_attr,
+                add_attr_bonus,
+                'BPSkill',
+                skill_multiplier,
+                skill_num,
+                1,
+            )
+            skill_info_list.append({'name': '战技治疗量(生命<50%)(2魂)', 'damagelist': damagelist4})
+            
+            damagelist5 = await calculate_shield(
+                base_attr,
+                attribute_bonus,
+                0.18,
+                240,
+                1,
+            )
+            skill_info_list.append({'name': '战技护盾量(生命>50%)(2魂)', 'damagelist': damagelist5})
+        
+        # 计算天赋治疗量
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        skill_num = self.Skill_num('Talent', 'Talent_G')
+        damagelist6 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            skill_multiplier,
+            skill_num,
+            1,
+        )
+        skill_info_list.append({'name': '天赋治疗量', 'damagelist': damagelist6})
+        
+        # 计算技能树额外能力治疗量
+        damagelist7 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            0.07,
+            93,
+            1,
+        )
+        skill_info_list.append({'name': '技能树治疗量', 'damagelist': damagelist7})
+        
+        return skill_info_list
+
+class Bailu(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 2:
+            self.eidolon_attribute['HealRatioBase'] = 0.15
+        if self.avatar_rank >= 4:
+            self.eidolon_attribute['AllDamageAddedRatio'] = 0.3
+
+    def extra_ability(self):
+        self.extra_ability_attribute['HPAddedRatio'] = 0.10
+        
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+        
+        # 计算战技治疗
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        skill_num = self.Skill_num('BPSkill', 'BPSkill_G')
+        damagelist2 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            skill_multiplier,
+            skill_num,
+        )
+        heal_num = damagelist2[0]
+        for i in range(1, 3):
+            beilv = 1 - (i * 0.15)
+            damagelist2[0] = damagelist2[0] + heal_num * beilv
+        skill_info_list.append({'name': '战技治疗量', 'damagelist': damagelist2})
+        
+        # 计算终结技治疗量
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        skill_num = self.Skill_num('Ultra', 'Ultra_G')
+        damagelist3 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '终结技治疗量', 'damagelist': damagelist3})
+        
+        # 计算天赋生息治疗量
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        skill_num = self.Skill_num('Talent', 'Talent_G')
+        damagelist4 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'Talent',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '天赋[生息]治疗量', 'damagelist': damagelist4})
+        
+        # 计算天赋复活治疗量
+        skill_multiplier = self.Skill_num('Talent', 'Talent1')
+        skill_num = self.Skill_num('Talent', 'Talent1_G')
+        damagelist5 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'Talent',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '天赋[复活]治疗量', 'damagelist': damagelist5})
+        
+        return skill_info_list
+
+class Lynx(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['HealRatioBase'] = 0.2
+
+    def extra_ability(self):
+        pass
+        
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        # 计算战技生命上限
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill_HP')
+        skill_num = self.Skill_num('BPSkill', 'BPSkill_HP_G')
+        if self.avatar_rank >= 6:
+            skill_multiplier += 0.06
+        hp = base_attr['hp'] * (1 + attribute_bonus['HPAddedRatio']) + attribute_bonus['HPDelta']
+        hp_add = hp * skill_multiplier + skill_num
+        attribute_bonus['HPDelta'] = attribute_bonus.get('HPDelta', 0) + hp_add
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal_HP')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+            1,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+        
+        # 计算战技治疗
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        skill_num = self.Skill_num('BPSkill', 'BPSkill_G')
+        damagelist2 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '战技治疗量', 'damagelist': damagelist2})
+        damagelist3 = []
+        damagelist3.append(hp_add)
+        skill_info_list.append({'name': '[求生反应]生命上限', 'damagelist': damagelist3})
+        
+        # 计算终结技治疗量
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        skill_num = self.Skill_num('Ultra', 'Ultra_G')
+        damagelist4 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '终结技治疗量', 'damagelist': damagelist4})
+        
+        # 计算天赋治疗量
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        skill_num = self.Skill_num('Talent', 'Talent_G')
+        damagelist5 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'Talent',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '天赋缓回治疗量', 'damagelist': damagelist5})
+        
+        # 计算天赋求生反应治疗量
+        skill_multiplier = self.Skill_num('Talent', 'Talent1') + self.Skill_num('Talent', 'Talent')
+        skill_num = self.Skill_num('Talent', 'Talent1_G') + self.Skill_num('Talent', 'Talent_G')
+        damagelist6 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'Talent',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '天赋[求生反应]缓回治疗量', 'damagelist': damagelist6})
+        
+        return skill_info_list
+
+class Natasha(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        pass
+
+    def extra_ability(self):
+        self.extra_ability_attribute['HealRatioBase'] = 0.1 + self.Skill_num('Talent', 'Talent')
+        
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        if self.avatar_rank >= 6:
+            damagelist_add = await calculate_damage(
+                base_attr,
+                attribute_bonus,
+                'Normal',
+                'Normal',
+                self.avatar_element,
+                0.4,
+                self.avatar_level,
+                1,
+            )
+            damagelist1[0] += damagelist_add[0]
+            damagelist1[1] += damagelist_add[1]
+            damagelist1[2] += damagelist_add[2]
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+        
+        # 计算战技治疗
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        skill_num = self.Skill_num('BPSkill', 'BPSkill_G')
+        damagelist2 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '战技治疗量', 'damagelist': damagelist2})
+        
+        # 计算战技缓回治疗量
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill1')
+        skill_num = self.Skill_num('BPSkill', 'BPSkill1_G')
+        damagelist3 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '战技缓回治疗量', 'damagelist': damagelist3})
+        
+        # 计算终结技治疗量
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        skill_num = self.Skill_num('Ultra', 'Ultra_G')
+        damagelist4 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '终结技治疗量', 'damagelist': damagelist4})
+        
+        return skill_info_list
+
 class AvatarDamage:
     @classmethod
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1105:
+            return Natasha(char, skills)
+        if char.id_ == 1110:
+            return Lynx(char, skills)
+        if char.id_ == 1211:
+            return Bailu(char, skills)
+        if char.id_ == 1203:
+            return Luocha(char, skills)
         if char.id_ == 1210:
             return Guinaifen(char, skills)
         if char.id_ == 1302:
             return Argenti(char, skills)
         if char.id_ == 1112:
             return Topaz(char, skills)
+        if char.id_ == 1104:
+            return Gepard(char, skills)
         if char.id_ == 1005:
             return Kafka(char, skills)
         if char.id_ == 1201:

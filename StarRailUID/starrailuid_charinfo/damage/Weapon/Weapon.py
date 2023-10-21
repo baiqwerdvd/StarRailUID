@@ -1777,188 +1777,672 @@ class AnInstanceBeforeAGaze(BaseWeapon):
             )
         return attribute_bonus
 
+# 时节不居
+class TimeWaitsforNoOne(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者对我方目标提供治疗时，记录治疗量。当任意我方目标施放攻击后，根据记录治疗量的36%，对随机1个受到攻击的敌方目标造成基于装备者属性的附加伤害
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 棺的回响
+class EchoesoftheCoffin(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者施放终结技后，使我方全体速度提高12点，持续1回合。
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            speed_delta = attribute_bonus.get('SpeedDelta', 0)
+            attribute_bonus['SpeedDelta'] = (
+                speed_delta
+                + (
+                    weapon_effect['23008']['Param']['speed'][
+                        self.weapon_rank - 1
+                    ]
+                )
+            )
+        return attribute_bonus
+
+# 惊魂夜
+class NightofFright(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者为我方目标提供治疗时，使该目标的攻击力提高2.3%，该效果最多叠加5层
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            attack_added_ratio = attribute_bonus.get('AttackAddedRatio', 0)
+            attribute_bonus['AttackAddedRatio'] = (
+                attack_added_ratio
+                + (
+                    weapon_effect['23017']['Param']['AttackAddedRatio'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * 5
+            )
+        return attribute_bonus
+
+# 一场术后对话
+class PostOpConversation(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 在施放终结技时治疗量提高12%。
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            Ultra_HealRatioBase = attribute_bonus.get('Ultra_HealRatioBase', 0)
+            attribute_bonus['Ultra_HealRatioBase'] = (
+                Ultra_HealRatioBase
+                + (
+                    weapon_effect['21000']['Param']['Ultra_HealRatioBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
+            )
+        return attribute_bonus
+
+# 同一种心情
+class SharedFeeling(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 在施放战技时为我方全体恢复2点能量。
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 此时恰好
+class PerfectTiming(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 使装备者的治疗量提高，提高数值等同于效果抵抗的33%，最多使治疗量提高15%。
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            StatusResistance = attribute_bonus.get('StatusResistance', 0)
+            HealRatioBase_maxadd = weapon_effect['21000']['Param']['HealRatioBase'][self.weapon_rank - 1]
+            HealRatioBaseadd = StatusResistance * weapon_effect['21000']['Param']['StatusResistance'][self.weapon_rank - 1]
+            HealRatioBase = attribute_bonus.get('HealRatioBase', 0)
+            attribute_bonus['HealRatioBase'] = HealRatioBase + min(HealRatioBaseadd, HealRatioBase_maxadd)
+        return attribute_bonus
+
+# 等价交换
+class QuidProQuo(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 随机为1个当前能量百分比小于50%的我方其他目标恢复8点能量。
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 暖夜不会漫长
+class WarmthShortensColdNights(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 施放普攻或战技后，为我方全体回复等同于各自生命上限2%的生命值。
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 嘿，我在这儿
+class HeyOverHere(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者施放战技时，治疗量提高16%，持续2回合。
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            HealRatioBase = attribute_bonus.get('HealRatioBase', 0)
+            attribute_bonus['HealRatioBase'] = (
+                HealRatioBase
+                + (
+                    weapon_effect['22001']['Param']['HealRatioBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
+            )
+        return attribute_bonus
+
+# 物穰
+class Cornucopia(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 装备者施放战技和终结技时，治疗量提高12%。
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            Ultra_HealRatioBase = attribute_bonus.get('Ultra_HealRatioBase', 0)
+            attribute_bonus['Ultra_HealRatioBase'] = (
+                Ultra_HealRatioBase
+                + (
+                    weapon_effect['20001']['Param']['HealRatioBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
+            )
+            BPSkill_HealRatioBase = attribute_bonus.get('BPSkill_HealRatioBase', 0)
+            attribute_bonus['BPSkill_HealRatioBase'] = (
+                BPSkill_HealRatioBase
+                + (
+                    weapon_effect['20001']['Param']['HealRatioBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
+            )
+        return attribute_bonus
+
+# 嘉果
+class FineFruit(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 战斗开始时，立即为我方全体恢复6点能量。
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 蕃息
+class Multiplication(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 战斗开始时，立即为我方全体恢复6点能量。
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 但战斗还未结束
+class ButtheBattleIsnotOver(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者施放战技后，使下一个行动的我方【其他目标】造成的伤害提高30%
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 记忆中的模样
+class MemoriesofthePast(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 装备者施放攻击后，额外恢复4点能量
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 与行星相会
+class PlanetaryRendezvous(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当我方目标造成与装备者相同属性的伤害时，造成的伤害提高12%。
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
+        attribute_bonus['AllDamageAddedRatio'] = (
+            all_damage_added_ratio
+            + (
+                weapon_effect['21011']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        )
+        return attribute_bonus
+
+# 舞！舞！舞！
+class DanceDanceDance(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者施放终结技后，我方全体行动提前16%。
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 过往未来
+class PastandFuture(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 使下一个行动的我方【其他目标】造成的伤害提高16%
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 镂月裁云之意
+class CarvetheMoonWeavetheClouds(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 在战斗开始时以及当装备者回合开始时，随机生效1个效果
+        # 使我方全体攻击力提高10%
+        # 使我方全体暴击伤害提高12%
+        # 暂时固定只算攻击
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        AttackAddedRatio = attribute_bonus.get('AttackAddedRatio', 0)
+        attribute_bonus['AttackAddedRatio'] = (
+            AttackAddedRatio
+            + (
+                weapon_effect['21032']['Param']['AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        )
+        return attribute_bonus
+
+# 齐颂
+class Chorus(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 进入战斗后，使我方全体的攻击力提高8%
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        AttackAddedRatio = attribute_bonus.get('AttackAddedRatio', 0)
+        attribute_bonus['AttackAddedRatio'] = (
+            AttackAddedRatio
+            + (
+                weapon_effect['20005']['Param']['AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
+        )
+        return attribute_bonus
+
+# 轮契
+class MeshingCogs(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 使装备者施放攻击或受到攻击后，额外恢复4点能量
+        pass
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        return attribute_bonus
+
+# 调和
+class Mediation(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者施放终结技后，使我方全体速度提高12点，持续1回合。
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            speed_delta = attribute_bonus.get('SpeedDelta', 0)
+            attribute_bonus['SpeedDelta'] = (
+                speed_delta
+                + (
+                    weapon_effect['20019']['Param']['speed'][
+                        self.weapon_rank - 1
+                    ]
+                )
+            )
+        return attribute_bonus
+
 class Weapon:
     @classmethod
     def create(cls, weapon: DamageInstanceWeapon):
-        if weapon.id_ in [
-            23018,
-            23011,
-            23007,
-            21005,
-            21019,
-            21026,
-            21033,
-            24000,
-            23002,
-            23009,
-            23015,
-            21012,
-            21006,
-            21013,
-            21027,
-            21020,
-            21034,
-            23000,
-            23010,
-            23001,
-            21003,
-            23012,
-            24001,
-            21024,
-            21017,
-            20014,
-            20007,
-            21010,
-            21031,
-            20000,
-            23006,
-            23004,
-            24003,
-            22000,
-            21029,
-            21022,
-            21015,
-            21008,
-            21001,
-            23005,
-            24002,
-            21030,
-            21023,
-            21016,
-            21009,
-            21002,
-            20017,
-            20010,
-            20003,
-            20016,
-            20009,
-            20002,
-            20018,
-            20011,
-            20004,
-            20020,
-            20013,
-            20006,
-            23014,
-            23016,
-        ]:
-            if weapon.id_ == 23018:
-                return AnInstanceBeforeAGaze(weapon)
-            if weapon.id_ == 23016:
-                return WorrisomeBlissf(weapon)
-            if weapon.id_ == 23012:
-                return SleepLiketheDead(weapon)
-            if weapon.id_ == 23014:
-                return Thisbodyisasword(weapon)
-            if weapon.id_ == 20006:
-                return DataBank(weapon)
-            if weapon.id_ == 20013:
-                return Passkey(weapon)
-            if weapon.id_ == 20020:
-                return Sagacity(weapon)
-            if weapon.id_ == 20004:
-                return Void(weapon)
-            if weapon.id_ == 20011:
-                return Loop(weapon)
-            if weapon.id_ == 20018:
-                return HiddenShadow(weapon)
-            if weapon.id_ == 20002:
-                return CollapsingSky(weapon)
-            if weapon.id_ == 20009:
-                return ShatteredHome(weapon)
-            if weapon.id_ == 20016:
-                return MutualDemise(weapon)
-            if weapon.id_ == 20003:
-                return Amber(weapon)
-            if weapon.id_ == 20010:
-                return Defense(weapon)
-            if weapon.id_ == 20017:
-                return Pioneering(weapon)
-            if weapon.id_ == 21002:
-                return DayOneofMyNewLife(weapon)
-            if weapon.id_ == 21009:
-                return LandausChoice(weapon)
-            if weapon.id_ == 21016:
-                return TrendoftheUniversalMarket(weapon)
-            if weapon.id_ == 21023:
-                return WeAreWildfire(weapon)
-            if weapon.id_ == 21030:
-                return ThisIsMe(weapon)
-            if weapon.id_ == 24002:
-                return TextureofMemories(weapon)
-            if weapon.id_ == 23005:
-                return MomentofVictory(weapon)
-            if weapon.id_ == 23011:
-                return SheAlreadyShutHerEyes(weapon)
-            if weapon.id_ == 21001:
-                return GoodNightandSleepWell(weapon)
-            if weapon.id_ == 21008:
-                return EyesofthePrey(weapon)
-            if weapon.id_ == 21015:
-                return ResolutionShinesAsPearlsofSweat(weapon)
-            if weapon.id_ == 21022:
-                return Fermata(weapon)
-            if weapon.id_ == 21029:
-                return WeWillMeetAgain(weapon)
-            if weapon.id_ == 22000:
-                return BeforetheTutorialMissionStarts(weapon)
-            if weapon.id_ == 24003:
-                return SolitaryHealing(weapon)
-            if weapon.id_ == 23004:
-                return IntheNameoftheWorld(weapon)
-            if weapon.id_ == 23006:
-                return PatienceIsAllYouNeed(weapon)
-            if weapon.id_ == 23007:
-                return IncessantRain(weapon)
-            if weapon.id_ == 21005:
-                return TheMolesWelcomeYou(weapon)
-            if weapon.id_ == 21019:
-                return UndertheBlueSky(weapon)
-            if weapon.id_ == 21026:
-                return WoofWalkTime(weapon)
-            if weapon.id_ == 21033:
-                return NowheretoRun(weapon)
-            if weapon.id_ == 24000:
-                return OntheFallofanAeon(weapon)
-            if weapon.id_ == 23002:
-                return SomethingIrreplaceable(weapon)
-            if weapon.id_ == 23009:
-                return TheUnreachableSide(weapon)
-            if weapon.id_ == 23015:
-                return BrighterThantheSun(weapon)
-            if weapon.id_ == 21012:
-                return ASecretVow(weapon)
-            if weapon.id_ == 21006:
-                return TheBirthoftheSelf(weapon)
-            if weapon.id_ == 21013:
-                return MaketheWorldClamor(weapon)
-            if weapon.id_ == 21020:
-                return GeniusesRepose(weapon)
-            if weapon.id_ == 21027:
-                return SeriousnessofBreakfast(weapon)
-            if weapon.id_ == 21034:
-                return TodayIsAnotherPeacefulDay(weapon)
-            if weapon.id_ == 23000:
-                return NightontheMilkyWay(weapon)
-            if weapon.id_ == 23010:
-                return BeforeDawn(weapon)
-            if weapon.id_ == 24001:
-                return CruisingintheStellarSea(weapon)
-            if weapon.id_ == 23001:
-                return IntheNight(weapon)
-            if weapon.id_ == 21003:
-                return OnlySilenceRemains(weapon)
-            if weapon.id_ == 21024:
-                return RiverFlowsinSpring(weapon)
-            if weapon.id_ == 20014:
-                return Adversarial(weapon)
-            if weapon.id_ == 20007:
-                return DartingArrow(weapon)
-            if weapon.id_ == 21010:
-                return Swordplay(weapon)
-            if weapon.id_ == 21031:
-                return ReturntoDarkness(weapon)
-            if weapon.id_ == 20000:
-                return Arrows(weapon)
-            raise ValueError(f'未知武器id: {weapon.id_}')
-        raise ValueError(f'不支持的武器种类: {weapon.id_}')
+        if weapon.id_ == 20019:
+            return Mediation(weapon)
+        if weapon.id_ == 20012:
+            return MeshingCogs(weapon)
+        if weapon.id_ == 20005:
+            return Chorus(weapon)
+        if weapon.id_ == 21032:
+            return CarvetheMoonWeavetheClouds(weapon)
+        if weapon.id_ == 21025:
+            return PastandFuture(weapon)
+        if weapon.id_ == 21018:
+            return DanceDanceDance(weapon)
+        if weapon.id_ == 21011:
+            return PlanetaryRendezvous(weapon)
+        if weapon.id_ == 21004:
+            return MemoriesofthePast(weapon)
+        if weapon.id_ == 23003:
+            return ButtheBattleIsnotOver(weapon)
+        if weapon.id_ == 20015:
+            return Multiplication(weapon)
+        if weapon.id_ == 20008:
+            return FineFruit(weapon)
+        if weapon.id_ == 20001:
+            return Cornucopia(weapon)
+        if weapon.id_ == 22001:
+            return HeyOverHere(weapon)
+        if weapon.id_ == 21028:
+            return WarmthShortensColdNights(weapon)
+        if weapon.id_ == 21021:
+            return QuidProQuo(weapon)
+        if weapon.id_ == 21014:
+            return PerfectTiming(weapon)
+        if weapon.id_ == 21007:
+            return SharedFeeling(weapon)
+        if weapon.id_ == 21000:
+            return PostOpConversation(weapon)
+        if weapon.id_ == 23017:
+            return NightofFright(weapon)
+        if weapon.id_ == 23008:
+            return EchoesoftheCoffin(weapon)
+        if weapon.id_ == 23013:
+            return TimeWaitsforNoOne(weapon)
+        if weapon.id_ == 23018:
+            return AnInstanceBeforeAGaze(weapon)
+        if weapon.id_ == 23016:
+            return WorrisomeBlissf(weapon)
+        if weapon.id_ == 23012:
+            return SleepLiketheDead(weapon)
+        if weapon.id_ == 23014:
+            return Thisbodyisasword(weapon)
+        if weapon.id_ == 20006:
+            return DataBank(weapon)
+        if weapon.id_ == 20013:
+            return Passkey(weapon)
+        if weapon.id_ == 20020:
+            return Sagacity(weapon)
+        if weapon.id_ == 20004:
+            return Void(weapon)
+        if weapon.id_ == 20011:
+            return Loop(weapon)
+        if weapon.id_ == 20018:
+            return HiddenShadow(weapon)
+        if weapon.id_ == 20002:
+            return CollapsingSky(weapon)
+        if weapon.id_ == 20009:
+            return ShatteredHome(weapon)
+        if weapon.id_ == 20016:
+            return MutualDemise(weapon)
+        if weapon.id_ == 20003:
+            return Amber(weapon)
+        if weapon.id_ == 20010:
+            return Defense(weapon)
+        if weapon.id_ == 20017:
+            return Pioneering(weapon)
+        if weapon.id_ == 21002:
+            return DayOneofMyNewLife(weapon)
+        if weapon.id_ == 21009:
+            return LandausChoice(weapon)
+        if weapon.id_ == 21016:
+            return TrendoftheUniversalMarket(weapon)
+        if weapon.id_ == 21023:
+            return WeAreWildfire(weapon)
+        if weapon.id_ == 21030:
+            return ThisIsMe(weapon)
+        if weapon.id_ == 24002:
+            return TextureofMemories(weapon)
+        if weapon.id_ == 23005:
+            return MomentofVictory(weapon)
+        if weapon.id_ == 23011:
+            return SheAlreadyShutHerEyes(weapon)
+        if weapon.id_ == 21001:
+            return GoodNightandSleepWell(weapon)
+        if weapon.id_ == 21008:
+            return EyesofthePrey(weapon)
+        if weapon.id_ == 21015:
+            return ResolutionShinesAsPearlsofSweat(weapon)
+        if weapon.id_ == 21022:
+            return Fermata(weapon)
+        if weapon.id_ == 21029:
+            return WeWillMeetAgain(weapon)
+        if weapon.id_ == 22000:
+            return BeforetheTutorialMissionStarts(weapon)
+        if weapon.id_ == 24003:
+            return SolitaryHealing(weapon)
+        if weapon.id_ == 23004:
+            return IntheNameoftheWorld(weapon)
+        if weapon.id_ == 23006:
+            return PatienceIsAllYouNeed(weapon)
+        if weapon.id_ == 23007:
+            return IncessantRain(weapon)
+        if weapon.id_ == 21005:
+            return TheMolesWelcomeYou(weapon)
+        if weapon.id_ == 21019:
+            return UndertheBlueSky(weapon)
+        if weapon.id_ == 21026:
+            return WoofWalkTime(weapon)
+        if weapon.id_ == 21033:
+            return NowheretoRun(weapon)
+        if weapon.id_ == 24000:
+            return OntheFallofanAeon(weapon)
+        if weapon.id_ == 23002:
+            return SomethingIrreplaceable(weapon)
+        if weapon.id_ == 23009:
+            return TheUnreachableSide(weapon)
+        if weapon.id_ == 23015:
+            return BrighterThantheSun(weapon)
+        if weapon.id_ == 21012:
+            return ASecretVow(weapon)
+        if weapon.id_ == 21006:
+            return TheBirthoftheSelf(weapon)
+        if weapon.id_ == 21013:
+            return MaketheWorldClamor(weapon)
+        if weapon.id_ == 21020:
+            return GeniusesRepose(weapon)
+        if weapon.id_ == 21027:
+            return SeriousnessofBreakfast(weapon)
+        if weapon.id_ == 21034:
+            return TodayIsAnotherPeacefulDay(weapon)
+        if weapon.id_ == 23000:
+            return NightontheMilkyWay(weapon)
+        if weapon.id_ == 23010:
+            return BeforeDawn(weapon)
+        if weapon.id_ == 24001:
+            return CruisingintheStellarSea(weapon)
+        if weapon.id_ == 23001:
+            return IntheNight(weapon)
+        if weapon.id_ == 21003:
+            return OnlySilenceRemains(weapon)
+        if weapon.id_ == 21024:
+            return RiverFlowsinSpring(weapon)
+        if weapon.id_ == 20014:
+            return Adversarial(weapon)
+        if weapon.id_ == 20007:
+            return DartingArrow(weapon)
+        if weapon.id_ == 21010:
+            return Swordplay(weapon)
+        if weapon.id_ == 21031:
+            return ReturntoDarkness(weapon)
+        if weapon.id_ == 20000:
+            return Arrows(weapon)
+        raise ValueError(f'未知武器id: {weapon.id_}')

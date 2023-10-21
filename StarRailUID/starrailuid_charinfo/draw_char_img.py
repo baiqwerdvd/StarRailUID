@@ -661,30 +661,40 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 sr_font_26,
                 'lm',
             )
-            damage1 = math.floor(damage_info['damagelist'][0])  # type: ignore
-            char_img_draw.text(
-                (370, 2048 + damage_num * 48),
-                f'{damage1}',
-                white_color,
-                sr_font_26,
-                'lm',
-            )
-            damage2 = math.floor(damage_info['damagelist'][1])  # type: ignore
-            char_img_draw.text(
-                (560, 2048 + damage_num * 48),
-                f'{damage2}',
-                white_color,
-                sr_font_26,
-                'lm',
-            )
-            damage3 = math.floor(damage_info['damagelist'][2])  # type: ignore
-            char_img_draw.text(
-                (750, 2048 + damage_num * 48),
-                f'{damage3}',
-                white_color,
-                sr_font_26,
-                'lm',
-            )
+            if len(damage_info['damagelist']) == 3:
+                damage1 = math.floor(damage_info['damagelist'][0])  # type: ignore
+                char_img_draw.text(
+                    (370, 2048 + damage_num * 48),
+                    f'{damage1}',
+                    white_color,
+                    sr_font_26,
+                    'lm',
+                )
+                damage2 = math.floor(damage_info['damagelist'][1])  # type: ignore
+                char_img_draw.text(
+                    (560, 2048 + damage_num * 48),
+                    f'{damage2}',
+                    white_color,
+                    sr_font_26,
+                    'lm',
+                )
+                damage3 = math.floor(damage_info['damagelist'][2])  # type: ignore
+                char_img_draw.text(
+                    (750, 2048 + damage_num * 48),
+                    f'{damage3}',
+                    white_color,
+                    sr_font_26,
+                    'lm',
+                )
+            else:
+                damage = math.floor(damage_info['damagelist'][0])  # type: ignore
+                char_img_draw.text(
+                    (560, 2048 + damage_num * 48),
+                    f'{damage}',
+                    white_color,
+                    sr_font_26,
+                    'lm',
+                )
 
     if char_change == 1:
         char_img_draw.text(

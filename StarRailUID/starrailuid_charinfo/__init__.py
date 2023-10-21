@@ -7,7 +7,7 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 
-from .cal_damage import cal, cal_info
+from .cal_damage import cal_info
 from .to_card import api_to_card
 from ..utils.convert import get_uid
 from ..utils.sr_prefix import PREFIX
@@ -21,33 +21,6 @@ sv_char_info_config = SV('sr面板设置', pm=2)
 sv_get_char_info = SV('sr面板查询', priority=10)
 sv_get_sr_original_pic = SV('sr查看面板原图', priority=5)
 sv_char_damage_cal = SV('sr伤害计算')
-
-
-@sv_char_damage_cal.on_prefix(f'{PREFIX}伤害计算')
-async def send_damage_msg(bot: Bot, ev: Event):
-    msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', ev.text))
-    if not msg:
-        return None
-    await bot.logger.info('开始执行[角色伤害计算]')
-    # 获取uid
-    sr_uid = await get_uid(bot, ev)
-    if sr_uid is None:
-        return await bot.send(UID_HINT)
-    await bot.logger.info(f'[角色伤害计算]uid: {sr_uid}')
-    char_name = ' '.join(re.findall('[\u4e00-\u9fa5]+', msg))
-
-    char_data = await get_char_data(sr_uid, char_name)
-    if isinstance(char_data, str):
-        return await bot.send(char_data)
-    im_list = []
-    im = await cal(char_data)
-    for info_im in im:
-        con = f"{info_im[0]}"
-        con = f"{con} 暴击伤害{info_im[1]} 期望伤害{info_im[2]} 满配辅助末日兽伤害{info_im[3]}"
-        im_list.append(con)
-    await bot.send(im_list)
-    return None
-
 
 @sv_get_char_info.on_prefix(f'{PREFIX}查询')
 async def send_char_info(bot: Bot, ev: Event):
