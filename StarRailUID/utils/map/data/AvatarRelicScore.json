@@ -502,5 +502,41 @@
         "StatusProbabilityBase": 1.0,
         "StatusResistanceBase": 0.0,
         "AttributeAddedRatio": 1
+    },
+	{
+        "role": "托帕&账账",
+        "HPDelta": 0.0,
+        "HPAddedRatio": 0.0,
+        "AttackDelta": 0.75,
+        "AttackAddedRatio": 0.75,
+        "DefenceDelta": 0.0,
+        "DefenceAddedRatio": 0.0,
+        "SpeedDelta": 0.75,
+        "CriticalChanceBase": 1,
+        "CriticalDamageBase": 1,
+        "BreakDamageAddedRatioBase": 0.0,
+        "HealRatio": 0,
+        "SPRatio": 0.5,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.0,
+        "AttributeAddedRatio": 1
+    },
+	{
+        "role": "银枝",
+        "HPDelta": 0.0,
+        "HPAddedRatio": 0.0,
+        "AttackDelta": 0.75,
+        "AttackAddedRatio": 0.75,
+        "DefenceDelta": 0.0,
+        "DefenceAddedRatio": 0.0,
+        "SpeedDelta": 0.75,
+        "CriticalChanceBase": 1,
+        "CriticalDamageBase": 1,
+        "BreakDamageAddedRatioBase": 0.0,
+        "HealRatio": 0,
+        "SPRatio": 0.5,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.0,
+        "AttributeAddedRatio": 1
     }
 ]

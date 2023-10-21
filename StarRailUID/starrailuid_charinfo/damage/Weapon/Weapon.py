@@ -1,9 +1,9 @@
 import json
-from typing import Dict
 from pathlib import Path
+from typing import Dict
 
-from ..Base.WeaponBase import BaseWeapon
 from ..Base.model import DamageInstanceWeapon
+from ..Base.WeaponBase import BaseWeapon
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:
@@ -1668,10 +1668,10 @@ class Thisbodyisasword(BaseWeapon):
         )
 
         resistance_penetration = attribute_bonus.get(
-            'AllResistancePenetration', 0
+            'AllDamageResistancePenetration', 0
         )
         attribute_bonus[
-            'AllResistancePenetration'
+            'AllDamageResistancePenetration'
         ] = resistance_penetration + (
             weapon_effect['23014']['Param']['ResistancePenetration'][
                 self.weapon_rank - 1
@@ -1747,11 +1747,41 @@ class WorrisomeBlissf(BaseWeapon):
             )
         return attribute_bonus
 
+# 片刻，留在眼底
+class AnInstanceBeforeAGaze(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者施放终结技时，根据装备者的能量上限，提高装备者终结技造成的伤害：每点能量提高0.36%，最多计入180点。
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            critical_chance_base = attribute_bonus.get('UltraDmgAdd', 0)
+            attribute_bonus['UltraDmgAdd'] = (
+                critical_chance_base
+                + (
+                    weapon_effect['23018']['Param']['r_dmg'][
+                        self.weapon_rank - 1
+                    ]
+                )
+                * Ultra_Use
+            )
+        return attribute_bonus
 
 class Weapon:
     @classmethod
     def create(cls, weapon: DamageInstanceWeapon):
         if weapon.id_ in [
+            23018,
             23011,
             23007,
             21005,
@@ -1812,6 +1842,8 @@ class Weapon:
             23014,
             23016,
         ]:
+            if weapon.id_ == 23018:
+                return AnInstanceBeforeAGaze(weapon)
             if weapon.id_ == 23016:
                 return WorrisomeBlissf(weapon)
             if weapon.id_ == 23012:

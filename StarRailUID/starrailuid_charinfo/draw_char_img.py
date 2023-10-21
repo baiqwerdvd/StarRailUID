@@ -3,7 +3,7 @@ import math
 import textwrap
 from pathlib import Path
 from typing import Dict, Union
-
+import copy
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
@@ -11,7 +11,7 @@ from gsuid_core.utils.image.image_tools import draw_text_by_line
 
 from .to_data import api_to_dict
 from ..utils.error_reply import CHAR_HINT
-from .cal_damage import cal, cal_char_info
+from .cal_damage import cal, cal_char_info, cal_info
 from ..utils.fonts.first_world import fw_font_28
 from ..utils.excel.read_excel import light_cone_ranks
 from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
@@ -38,7 +38,7 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_38,
 )
 
-Excel_path = Path(__file__).parent / 'effect'
+Excel_path = Path(__file__).parent / 'damage'
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
 
@@ -100,8 +100,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     char = await cal_char_info(char_data)
     damage_len = 0
     if str(char.char_id) in skill_dict:
-        skill_list = skill_dict[str(char.char_id)]['skillList']
-        damage_len = len(skill_list)
+        damage_data = copy.deepcopy(char_data)
+        damage_list = await cal_info(damage_data)
+        damage_len = len(damage_list)
     bg_height = 0
     if damage_len > 0:
         bg_height = 48 * (1 + damage_len) + 48
@@ -360,7 +361,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         weapon_bg = Image.open(TEXT_PATH / 'weapon_bg.png')
         weapon_id = char.equipment['equipmentID']
         weapon_img = Image.open(WEAPON_PATH / f'{weapon_id}.png').resize(
-            (190, 180)
+            (170, 180)
         )
         weapon_bg.paste(weapon_img, (20, 90), weapon_img)
         weapon_bg_draw = ImageDraw.Draw(weapon_bg)
@@ -610,7 +611,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if damage_len > 0:
         damage_title_img = Image.open(TEXT_PATH / 'base_info_pure.png')
         char_info.paste(damage_title_img, (0, 2028), damage_title_img)
-        damage_list = await cal(char_data)
+        # damage_list = await cal(char_data)
         # 写伤害
         char_img_draw.text(
             (55, 2048),
@@ -655,12 +656,12 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
             )
             char_img_draw.text(
                 (55, 2048 + damage_num * 48),
-                f'{damage_info[0]}',
+                f'{damage_info["name"]}',
                 white_color,
                 sr_font_26,
                 'lm',
             )
-            damage1 = math.floor(damage_info[1])  # type: ignore
+            damage1 = math.floor(damage_info['damagelist'][0])  # type: ignore
             char_img_draw.text(
                 (370, 2048 + damage_num * 48),
                 f'{damage1}',
@@ -668,7 +669,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 sr_font_26,
                 'lm',
             )
-            damage2 = math.floor(damage_info[2])  # type: ignore
+            damage2 = math.floor(damage_info['damagelist'][1])  # type: ignore
             char_img_draw.text(
                 (560, 2048 + damage_num * 48),
                 f'{damage2}',
@@ -676,7 +677,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 sr_font_26,
                 'lm',
             )
-            damage3 = math.floor(damage_info[3])  # type: ignore
+            damage3 = math.floor(damage_info['damagelist'][2])  # type: ignore
             char_img_draw.text(
                 (750, 2048 + damage_num * 48),
                 f'{damage3}',

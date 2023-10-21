@@ -7,7 +7,7 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 
-from .cal_damage import cal_info
+from .cal_damage import cal, cal_info
 from .to_card import api_to_card
 from ..utils.convert import get_uid
 from ..utils.sr_prefix import PREFIX
@@ -40,10 +40,10 @@ async def send_damage_msg(bot: Bot, ev: Event):
     if isinstance(char_data, str):
         return await bot.send(char_data)
     im_list = []
-    im = await cal_info(char_data)
+    im = await cal(char_data)
     for info_im in im:
-        con = f"{info_im['name']}"
-        con = f"{con} 暴击伤害{info_im['damagelist'][0]} 期望伤害{info_im['damagelist'][1]} 满配辅助末日兽伤害{info_im['damagelist'][2]}"
+        con = f"{info_im[0]}"
+        con = f"{con} 暴击伤害{info_im[1]} 期望伤害{info_im[2]} 满配辅助末日兽伤害{info_im[3]}"
         im_list.append(con)
     await bot.send(im_list)
     return None

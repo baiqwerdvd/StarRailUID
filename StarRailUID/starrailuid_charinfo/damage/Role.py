@@ -1,5 +1,5 @@
 from typing import Dict
-
+import copy
 from gsuid_core.logger import logger
 
 from .utils import merge_attribute
@@ -13,20 +13,25 @@ async def calculate_damage(
     element: str,
     skill_multiplier: float,
     level: int,
+    is_hp = 0,
 ):
     logger.info(f'Skill Multiplier: {skill_multiplier}')
     logger.info(f'Skill Type: {skill_type}')
     logger.info(f'Level: {level}')
     # logger.info(f'attribute_bonus: {attribute_bonus}')
-
-    attribute_bonus = apply_attribute_bonus(
-        attribute_bonus, skill_type, add_skill_type
+    
+    add_attr_bonus = copy.deepcopy(attribute_bonus)
+    
+    add_attr_bonus = apply_attribute_bonus(
+        add_attr_bonus, skill_type, add_skill_type
     )
 
-    merged_attr = await merge_attribute(base_attr, attribute_bonus)
+    merged_attr = await merge_attribute(base_attr, add_attr_bonus)
     # logger.info(f'merged_attr: {merged_attr}')
-
-    attack = merged_attr.get('attack', 0)
+    if is_hp == 1:
+        attack = merged_attr.get('hp', 0)
+    else:
+        attack = merged_attr.get('attack', 0)
     logger.info(f'Attack: {attack}')
 
     damage_reduction = calculate_damage_reduction(level)
@@ -110,21 +115,21 @@ async def calculate_damage(
 
 
 def apply_attribute_bonus(
-    attribute_bonus: Dict[str, float],
+    add_attr_bonus: Dict[str, float],
     skill_type: str,
     add_skill_type: str,
 ):
     # Apply attribute bonuses to attack and status probability
-    for attr in attribute_bonus:
+    for attr in add_attr_bonus:
         if 'AttackAddedRatio' in attr and attr.split('AttackAddedRatio')[
             0
         ] in (skill_type, add_skill_type):
-            attribute_bonus['AttackAddedRatio'] += attribute_bonus[attr]
+            add_attr_bonus['AttackAddedRatio'] += add_attr_bonus[attr]
         if 'StatusProbabilityBase' in attr and attr.split(
             'StatusProbabilityBase'
         )[0] in (skill_type, add_skill_type):
-            attribute_bonus['StatusProbabilityBase'] += attribute_bonus[attr]
-    return attribute_bonus
+            add_attr_bonus['StatusProbabilityBase'] += add_attr_bonus[attr]
+    return add_attr_bonus
 
 
 def calculate_damage_reduction(level: int):
