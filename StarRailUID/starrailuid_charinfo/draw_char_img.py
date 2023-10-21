@@ -612,8 +612,6 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if damage_len > 0:
         damage_title_img = Image.open(TEXT_PATH / 'base_info_pure.png')
         char_info.paste(damage_title_img, (0, 2028), damage_title_img)
-        damage_list = []
-        # damage_list = await cal(char_data)
         # 写伤害
         char_img_draw.text(
             (55, 2048),
