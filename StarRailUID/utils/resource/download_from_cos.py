@@ -2,33 +2,33 @@ import asyncio
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
-from bs4 import BeautifulSoup
-from msgspec import json as msgjson
-from gsuid_core.logger import logger
+from aiohttp import ClientTimeout, TCPConnector
 from aiohttp.client import ClientSession
-from aiohttp import TCPConnector, ClientTimeout
-from gsuid_core.utils.download_resource.download_file import download
+from bs4 import BeautifulSoup
+from gsuid_core.logger import logger
 from gsuid_core.utils.download_resource.download_core import check_url
+from gsuid_core.utils.download_resource.download_file import download
+from msgspec import json as msgjson
 
 from .download_url import download_file
 from .RESOURCE_PATH import (
-    WIKI_PATH,
+    CHAR_ICON_PATH,
+    CHAR_PORTRAIT_PATH,
+    CHAR_PREVIEW_PATH,
+    CONSUMABLE_PATH,
+    ELEMENT_PATH,
+    GUIDE_CHARACTER_PATH,
+    GUIDE_LIGHT_CONE_PATH,
     GUIDE_PATH,
     RELIC_PATH,
+    RESOURCE_PATH,
     SKILL_PATH,
     WEAPON_PATH,
-    ELEMENT_PATH,
-    RESOURCE_PATH,
-    CHAR_ICON_PATH,
-    WIKI_ROLE_PATH,
-    CONSUMABLE_PATH,
-    WIKI_RELIC_PATH,
-    CHAR_PREVIEW_PATH,
-    CHAR_PORTRAIT_PATH,
-    GUIDE_CHARACTER_PATH,
     WIKI_LIGHT_CONE_PATH,
-    GUIDE_LIGHT_CONE_PATH,
     WIKI_MATERIAL_FOR_ROLE,
+    WIKI_PATH,
+    WIKI_RELIC_PATH,
+    WIKI_ROLE_PATH,
 )
 
 with Path.open(
@@ -45,15 +45,15 @@ async def find_fastest_url(urls: Dict[str, str]):
     for tag in urls:
         tasks.append(asyncio.create_task(check_url(tag, urls[tag])))
 
-    results: list[tuple[str, str, float]] = await asyncio.gather(
-        *tasks, return_exceptions=True
-    )
+    results: list[
+        tuple[str, str, float] | BaseException
+    ] = await asyncio.gather(*tasks, return_exceptions=True)
     fastest_tag = ''
     fastest_url = None
     fastest_time = float('inf')
 
     for result in results:
-        if isinstance(result, Exception):
+        if isinstance(result, BaseException):
             continue
         tag, url, elapsed_time = result
         if elapsed_time < fastest_time:
