@@ -89,7 +89,7 @@ class RogueRecordInfo(Struct):
     score: int
     final_lineup: List[RogueAvatar]
     base_type_list: List[RogueBaseType]
-    cached_avatars: List[str]
+    cached_avatars: List[RogueAvatar]
     buffs: List[RogueBuffs]
     miracles: List[RogueMiracles]
     difficulty: int
