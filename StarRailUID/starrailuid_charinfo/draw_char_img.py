@@ -302,7 +302,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         if rank < char.char_rank:
             rank_img = Image.open(
                 SKILL_PATH / f'{char.char_id}{RANK_MAP[rank + 1]}'
-            ).resize((50, 50))
+            ).convert('RGBA').resize((50, 50))
             rank_bg.paste(rank_img, (19, 19), rank_img)
             char_info.paste(rank_bg, (20 + rank * 80, 630), rank_bg)
         else:
@@ -328,7 +328,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         skill_img = Image.open(
             SKILL_PATH / f'{char.char_id}_'
             f'{skill_type_map[skill["skillAttackType"]][1]}.png'
-        ).resize((55, 55))
+        ).convert('RGBA').resize((55, 55))
         skill_panel_img.paste(skill_img, (18, 15), skill_img)
         skill_panel_img.paste(skill_attr_img, (80, 10), skill_attr_img)
         skill_panel_img_draw = ImageDraw.Draw(skill_panel_img)
@@ -781,13 +781,13 @@ async def get_relic_score(
     if weight_dict == {}:
         return 0
     if is_main:
+        elementlist = ['Quantum', 'Thunder', 'Wind', 'Physical', 'Imaginary', 'Ice', 'Fire']
         if relicType in [3, 4, 5, 6]:
             if subProperty.__contains__('AddedRatio') and relicType == 5:
-                subProperty = 'AttributeAddedRatio'
+                if subProperty.split('AddedRatio')[0] in elementlist:
+                    subProperty = 'AttributeAddedRatio'
             if weight_dict.get(subProperty, 0) > 0:
                 relic_score += 5.83
-                if relicType in [3, 5]:
-                    relic_score += 10
     else:
         if subProperty == 'CriticalDamageBase':
             add_value = subValue * 1 * weight_dict['CriticalDamageBase'] * 100
