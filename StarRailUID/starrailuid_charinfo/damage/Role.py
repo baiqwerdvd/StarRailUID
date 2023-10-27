@@ -1,8 +1,10 @@
-from typing import Dict
 import copy
+from typing import Dict
+
 from gsuid_core.logger import logger
 
 from .utils import merge_attribute
+
 
 async def calculate_heal(
     base_attr: Dict[str, float],
@@ -10,11 +12,11 @@ async def calculate_heal(
     skill_type: str,
     skill_multiplier: float,
     skill_num: float,
-    is_atk = 0,
+    is_atk=0,
 ):
     add_attr_bonus = copy.deepcopy(attribute_bonus)
     merged_attr = await merge_attribute(base_attr, add_attr_bonus)
-    
+
     if is_atk == 1:
         hp = merged_attr.get('attack', 0)
     else:
@@ -29,23 +31,21 @@ async def calculate_heal(
     heal_ratio = heal_ratio_base + 1
     logger.info(f'治疗量加成: {heal_ratio}')
 
-    heal_num = (
-        hp * skill_multiplier + skill_num
-    ) * heal_ratio
+    heal_num = (hp * skill_multiplier + skill_num) * heal_ratio
 
-    skill_info_list = [heal_num]
-    return skill_info_list
+    return [heal_num]
+
 
 async def calculate_shield(
     base_attr: Dict[str, float],
     attribute_bonus: Dict[str, float],
     skill_multiplier: float,
     skill_num: float,
-    is_atk = 0,
+    is_atk=0,
 ):
     add_attr_bonus = copy.deepcopy(attribute_bonus)
     merged_attr = await merge_attribute(base_attr, add_attr_bonus)
-    
+
     if is_atk == 1:
         defence = merged_attr.get('attack', 0)
     else:
@@ -57,13 +57,11 @@ async def calculate_shield(
     shield_added = shield_added_ratio + 1
     logger.info(f'护盾加成: {shield_added}')
 
-    defence_num = (
-        defence * skill_multiplier + skill_num
-    ) * shield_added
+    defence_num = (defence * skill_multiplier + skill_num) * shield_added
 
-    skill_info_list = [defence_num]
-    return skill_info_list
-    
+    return [defence_num]
+
+
 async def calculate_damage(
     base_attr: Dict[str, float],
     attribute_bonus: Dict[str, float],
@@ -72,15 +70,15 @@ async def calculate_damage(
     element: str,
     skill_multiplier: float,
     level: int,
-    is_hp = 0,
+    is_hp=0,
 ):
     logger.info(f'Skill Multiplier: {skill_multiplier}')
     logger.info(f'Skill Type: {skill_type}')
     logger.info(f'Level: {level}')
     # logger.info(f'attribute_bonus: {attribute_bonus}')
-    
+
     add_attr_bonus = copy.deepcopy(attribute_bonus)
-    
+
     add_attr_bonus = apply_attribute_bonus(
         add_attr_bonus, skill_type, add_skill_type
     )

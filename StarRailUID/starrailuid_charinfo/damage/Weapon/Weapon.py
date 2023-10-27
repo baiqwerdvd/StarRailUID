@@ -1,9 +1,9 @@
 import json
-from pathlib import Path
 from typing import Dict
+from pathlib import Path
 
-from ..Base.model import DamageInstanceWeapon
 from ..Base.WeaponBase import BaseWeapon
+from ..Base.model import DamageInstanceWeapon
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:
@@ -1747,6 +1747,7 @@ class WorrisomeBlissf(BaseWeapon):
             )
         return attribute_bonus
 
+
 # 片刻，留在眼底
 class AnInstanceBeforeAGaze(BaseWeapon):
     weapon_base_attributes: Dict
@@ -1777,6 +1778,7 @@ class AnInstanceBeforeAGaze(BaseWeapon):
             )
         return attribute_bonus
 
+
 # 时节不居
 class TimeWaitsforNoOne(BaseWeapon):
     weapon_base_attributes: Dict
@@ -1795,6 +1797,7 @@ class TimeWaitsforNoOne(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         return attribute_bonus
+
 
 # 棺的回响
 class EchoesoftheCoffin(BaseWeapon):
@@ -1815,15 +1818,11 @@ class EchoesoftheCoffin(BaseWeapon):
     ):
         if await self.check():
             speed_delta = attribute_bonus.get('SpeedDelta', 0)
-            attribute_bonus['SpeedDelta'] = (
-                speed_delta
-                + (
-                    weapon_effect['23008']['Param']['speed'][
-                        self.weapon_rank - 1
-                    ]
-                )
+            attribute_bonus['SpeedDelta'] = speed_delta + (
+                weapon_effect['23008']['Param']['speed'][self.weapon_rank - 1]
             )
         return attribute_bonus
+
 
 # 惊魂夜
 class NightofFright(BaseWeapon):
@@ -1855,6 +1854,7 @@ class NightofFright(BaseWeapon):
             )
         return attribute_bonus
 
+
 # 一场术后对话
 class PostOpConversation(BaseWeapon):
     weapon_base_attributes: Dict
@@ -1874,15 +1874,13 @@ class PostOpConversation(BaseWeapon):
     ):
         if await self.check():
             Ultra_HealRatioBase = attribute_bonus.get('Ultra_HealRatioBase', 0)
-            attribute_bonus['Ultra_HealRatioBase'] = (
-                Ultra_HealRatioBase
-                + (
-                    weapon_effect['21000']['Param']['Ultra_HealRatioBase'][
-                        self.weapon_rank - 1
-                    ]
-                )
+            attribute_bonus['Ultra_HealRatioBase'] = Ultra_HealRatioBase + (
+                weapon_effect['21000']['Param']['Ultra_HealRatioBase'][
+                    self.weapon_rank - 1
+                ]
             )
         return attribute_bonus
+
 
 # 同一种心情
 class SharedFeeling(BaseWeapon):
@@ -1903,6 +1901,7 @@ class SharedFeeling(BaseWeapon):
     ):
         return attribute_bonus
 
+
 # 此时恰好
 class PerfectTiming(BaseWeapon):
     weapon_base_attributes: Dict
@@ -1922,11 +1921,21 @@ class PerfectTiming(BaseWeapon):
     ):
         if await self.check():
             StatusResistance = attribute_bonus.get('StatusResistance', 0)
-            HealRatioBase_maxadd = weapon_effect['21000']['Param']['HealRatioBase'][self.weapon_rank - 1]
-            HealRatioBaseadd = StatusResistance * weapon_effect['21000']['Param']['StatusResistance'][self.weapon_rank - 1]
+            HealRatioBase_maxadd = weapon_effect['21000']['Param'][
+                'HealRatioBase'
+            ][self.weapon_rank - 1]
+            HealRatioBaseadd = (
+                StatusResistance
+                * weapon_effect['21000']['Param']['StatusResistance'][
+                    self.weapon_rank - 1
+                ]
+            )
             HealRatioBase = attribute_bonus.get('HealRatioBase', 0)
-            attribute_bonus['HealRatioBase'] = HealRatioBase + min(HealRatioBaseadd, HealRatioBase_maxadd)
+            attribute_bonus['HealRatioBase'] = HealRatioBase + min(
+                HealRatioBaseadd, HealRatioBase_maxadd
+            )
         return attribute_bonus
+
 
 # 等价交换
 class QuidProQuo(BaseWeapon):
@@ -1947,6 +1956,7 @@ class QuidProQuo(BaseWeapon):
     ):
         return attribute_bonus
 
+
 # 暖夜不会漫长
 class WarmthShortensColdNights(BaseWeapon):
     weapon_base_attributes: Dict
@@ -1965,6 +1975,7 @@ class WarmthShortensColdNights(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         return attribute_bonus
+
 
 # 嘿，我在这儿
 class HeyOverHere(BaseWeapon):
@@ -1985,15 +1996,13 @@ class HeyOverHere(BaseWeapon):
     ):
         if await self.check():
             HealRatioBase = attribute_bonus.get('HealRatioBase', 0)
-            attribute_bonus['HealRatioBase'] = (
-                HealRatioBase
-                + (
-                    weapon_effect['22001']['Param']['HealRatioBase'][
-                        self.weapon_rank - 1
-                    ]
-                )
+            attribute_bonus['HealRatioBase'] = HealRatioBase + (
+                weapon_effect['22001']['Param']['HealRatioBase'][
+                    self.weapon_rank - 1
+                ]
             )
         return attribute_bonus
+
 
 # 物穰
 class Cornucopia(BaseWeapon):
@@ -2014,24 +2023,23 @@ class Cornucopia(BaseWeapon):
     ):
         if await self.check():
             Ultra_HealRatioBase = attribute_bonus.get('Ultra_HealRatioBase', 0)
-            attribute_bonus['Ultra_HealRatioBase'] = (
-                Ultra_HealRatioBase
-                + (
-                    weapon_effect['20001']['Param']['HealRatioBase'][
-                        self.weapon_rank - 1
-                    ]
-                )
+            attribute_bonus['Ultra_HealRatioBase'] = Ultra_HealRatioBase + (
+                weapon_effect['20001']['Param']['HealRatioBase'][
+                    self.weapon_rank - 1
+                ]
             )
-            BPSkill_HealRatioBase = attribute_bonus.get('BPSkill_HealRatioBase', 0)
-            attribute_bonus['BPSkill_HealRatioBase'] = (
-                BPSkill_HealRatioBase
-                + (
-                    weapon_effect['20001']['Param']['HealRatioBase'][
-                        self.weapon_rank - 1
-                    ]
-                )
+            BPSkill_HealRatioBase = attribute_bonus.get(
+                'BPSkill_HealRatioBase', 0
+            )
+            attribute_bonus[
+                'BPSkill_HealRatioBase'
+            ] = BPSkill_HealRatioBase + (
+                weapon_effect['20001']['Param']['HealRatioBase'][
+                    self.weapon_rank - 1
+                ]
             )
         return attribute_bonus
+
 
 # 嘉果
 class FineFruit(BaseWeapon):
@@ -2052,6 +2060,7 @@ class FineFruit(BaseWeapon):
     ):
         return attribute_bonus
 
+
 # 蕃息
 class Multiplication(BaseWeapon):
     weapon_base_attributes: Dict
@@ -2070,6 +2079,7 @@ class Multiplication(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         return attribute_bonus
+
 
 # 但战斗还未结束
 class ButtheBattleIsnotOver(BaseWeapon):
@@ -2090,6 +2100,7 @@ class ButtheBattleIsnotOver(BaseWeapon):
     ):
         return attribute_bonus
 
+
 # 记忆中的模样
 class MemoriesofthePast(BaseWeapon):
     weapon_base_attributes: Dict
@@ -2109,6 +2120,7 @@ class MemoriesofthePast(BaseWeapon):
     ):
         return attribute_bonus
 
+
 # 与行星相会
 class PlanetaryRendezvous(BaseWeapon):
     weapon_base_attributes: Dict
@@ -2127,15 +2139,13 @@ class PlanetaryRendezvous(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
-        attribute_bonus['AllDamageAddedRatio'] = (
-            all_damage_added_ratio
-            + (
-                weapon_effect['21011']['Param']['AllDamageAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            )
+        attribute_bonus['AllDamageAddedRatio'] = all_damage_added_ratio + (
+            weapon_effect['21011']['Param']['AllDamageAddedRatio'][
+                self.weapon_rank - 1
+            ]
         )
         return attribute_bonus
+
 
 # 舞！舞！舞！
 class DanceDanceDance(BaseWeapon):
@@ -2156,6 +2166,7 @@ class DanceDanceDance(BaseWeapon):
     ):
         return attribute_bonus
 
+
 # 过往未来
 class PastandFuture(BaseWeapon):
     weapon_base_attributes: Dict
@@ -2174,6 +2185,7 @@ class PastandFuture(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         return attribute_bonus
+
 
 # 镂月裁云之意
 class CarvetheMoonWeavetheClouds(BaseWeapon):
@@ -2196,15 +2208,13 @@ class CarvetheMoonWeavetheClouds(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         AttackAddedRatio = attribute_bonus.get('AttackAddedRatio', 0)
-        attribute_bonus['AttackAddedRatio'] = (
-            AttackAddedRatio
-            + (
-                weapon_effect['21032']['Param']['AttackAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            )
+        attribute_bonus['AttackAddedRatio'] = AttackAddedRatio + (
+            weapon_effect['21032']['Param']['AttackAddedRatio'][
+                self.weapon_rank - 1
+            ]
         )
         return attribute_bonus
+
 
 # 齐颂
 class Chorus(BaseWeapon):
@@ -2224,15 +2234,13 @@ class Chorus(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         AttackAddedRatio = attribute_bonus.get('AttackAddedRatio', 0)
-        attribute_bonus['AttackAddedRatio'] = (
-            AttackAddedRatio
-            + (
-                weapon_effect['20005']['Param']['AttackAddedRatio'][
-                    self.weapon_rank - 1
-                ]
-            )
+        attribute_bonus['AttackAddedRatio'] = AttackAddedRatio + (
+            weapon_effect['20005']['Param']['AttackAddedRatio'][
+                self.weapon_rank - 1
+            ]
         )
         return attribute_bonus
+
 
 # 轮契
 class MeshingCogs(BaseWeapon):
@@ -2253,6 +2261,7 @@ class MeshingCogs(BaseWeapon):
     ):
         return attribute_bonus
 
+
 # 调和
 class Mediation(BaseWeapon):
     weapon_base_attributes: Dict
@@ -2272,15 +2281,11 @@ class Mediation(BaseWeapon):
     ):
         if await self.check():
             speed_delta = attribute_bonus.get('SpeedDelta', 0)
-            attribute_bonus['SpeedDelta'] = (
-                speed_delta
-                + (
-                    weapon_effect['20019']['Param']['speed'][
-                        self.weapon_rank - 1
-                    ]
-                )
+            attribute_bonus['SpeedDelta'] = speed_delta + (
+                weapon_effect['20019']['Param']['speed'][self.weapon_rank - 1]
             )
         return attribute_bonus
+
 
 class Weapon:
     @classmethod

@@ -5,14 +5,29 @@ import textwrap
 from pathlib import Path
 from typing import Dict, Union
 
+from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
-from PIL import Image, ImageDraw
 
+from .to_data import api_to_dict
 from ..utils.error_reply import CHAR_HINT
-from ..utils.excel.read_excel import light_cone_ranks
+from .cal_damage import cal_info, cal_char_info
 from ..utils.fonts.first_world import fw_font_28
+from ..utils.excel.read_excel import light_cone_ranks
+from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
+from ..utils.map.SR_MAP_PATH import (
+    RelicId2Rarity,
+    AvatarRelicScore,
+    avatarId2Name,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    RELIC_PATH,
+    SKILL_PATH,
+    PLAYER_PATH,
+    WEAPON_PATH,
+    CHAR_PORTRAIT_PATH,
+)
 from ..utils.fonts.starrail_fonts import (
     sr_font_18,
     sr_font_20,
@@ -23,21 +38,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
-from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
-from ..utils.map.SR_MAP_PATH import (
-    AvatarRelicScore,
-    RelicId2Rarity,
-    avatarId2Name,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_PORTRAIT_PATH,
-    PLAYER_PATH,
-    RELIC_PATH,
-    SKILL_PATH,
-    WEAPON_PATH,
-)
-from .cal_damage import cal_char_info, cal_info
-from .to_data import api_to_dict
 
 Excel_path = Path(__file__).parent / 'damage'
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
@@ -300,9 +300,11 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         rank_bg = Image.open(TEXT_PATH / 'mz_bg.png')
         rank_no_bg = Image.open(TEXT_PATH / 'mz_no_bg.png')
         if rank < char.char_rank:
-            rank_img = Image.open(
-                SKILL_PATH / f'{char.char_id}{RANK_MAP[rank + 1]}'
-            ).convert('RGBA').resize((50, 50))
+            rank_img = (
+                Image.open(SKILL_PATH / f'{char.char_id}{RANK_MAP[rank + 1]}')
+                .convert('RGBA')
+                .resize((50, 50))
+            )
             rank_bg.paste(rank_img, (19, 19), rank_img)
             char_info.paste(rank_bg, (20 + rank * 80, 630), rank_bg)
         else:
@@ -325,10 +327,14 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     for skill in char.char_skill:
         skill_attr_img = Image.open(TEXT_PATH / f'skill_attr{i + 1}.png')
         skill_panel_img = Image.open(TEXT_PATH / 'skill_panel.png')
-        skill_img = Image.open(
-            SKILL_PATH / f'{char.char_id}_'
-            f'{skill_type_map[skill["skillAttackType"]][1]}.png'
-        ).convert('RGBA').resize((55, 55))
+        skill_img = (
+            Image.open(
+                SKILL_PATH / f'{char.char_id}_'
+                f'{skill_type_map[skill["skillAttackType"]][1]}.png'
+            )
+            .convert('RGBA')
+            .resize((55, 55))
+        )
         skill_panel_img.paste(skill_img, (18, 15), skill_img)
         skill_panel_img.paste(skill_attr_img, (80, 10), skill_attr_img)
         skill_panel_img_draw = ImageDraw.Draw(skill_panel_img)
@@ -781,7 +787,15 @@ async def get_relic_score(
     if weight_dict == {}:
         return 0
     if is_main:
-        elementlist = ['Quantum', 'Thunder', 'Wind', 'Physical', 'Imaginary', 'Ice', 'Fire']
+        elementlist = [
+            'Quantum',
+            'Thunder',
+            'Wind',
+            'Physical',
+            'Imaginary',
+            'Ice',
+            'Fire',
+        ]
         if relicType in [3, 4, 5, 6]:
             if subProperty.__contains__('AddedRatio') and relicType == 5:
                 if subProperty.split('AddedRatio')[0] in elementlist:
