@@ -662,6 +662,8 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,jetbrains+all,python,data
 
+.pdm-python
+
 ### CI ###
 result.txt
 upload_file.py
