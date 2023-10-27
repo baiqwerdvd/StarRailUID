@@ -1,8 +1,8 @@
-import json
-from pathlib import Path
-from typing import Dict, List, Union
+from typing import Dict
+
 from .mono.Character import Character
 from .damage.Avatar import AvatarInstance
+
 
 async def cal_char_info(char_data: Dict):
     char: Character = Character(char_data)
@@ -10,6 +10,7 @@ async def cal_char_info(char_data: Dict):
     await char.get_char_attribute_bonus()
     await char.get_relic_info()
     return char
+
 
 async def cal_info(char_data: Dict):
     char = await cal_char_info(char_data)
