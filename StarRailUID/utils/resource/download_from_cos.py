@@ -2,33 +2,33 @@ import asyncio
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
-from aiohttp import ClientTimeout, TCPConnector
-from aiohttp.client import ClientSession
 from bs4 import BeautifulSoup
-from gsuid_core.logger import logger
-from gsuid_core.utils.download_resource.download_core import check_url
-from gsuid_core.utils.download_resource.download_file import download
 from msgspec import json as msgjson
+from gsuid_core.logger import logger
+from aiohttp.client import ClientSession
+from aiohttp import TCPConnector, ClientTimeout
+from gsuid_core.utils.download_resource.download_file import download
+from gsuid_core.utils.download_resource.download_core import check_url
 
 from .download_url import download_file
 from .RESOURCE_PATH import (
-    CHAR_ICON_PATH,
-    CHAR_PORTRAIT_PATH,
-    CHAR_PREVIEW_PATH,
-    CONSUMABLE_PATH,
-    ELEMENT_PATH,
-    GUIDE_CHARACTER_PATH,
-    GUIDE_LIGHT_CONE_PATH,
+    WIKI_PATH,
     GUIDE_PATH,
     RELIC_PATH,
-    RESOURCE_PATH,
     SKILL_PATH,
     WEAPON_PATH,
-    WIKI_LIGHT_CONE_PATH,
-    WIKI_MATERIAL_FOR_ROLE,
-    WIKI_PATH,
-    WIKI_RELIC_PATH,
+    ELEMENT_PATH,
+    RESOURCE_PATH,
+    CHAR_ICON_PATH,
     WIKI_ROLE_PATH,
+    CONSUMABLE_PATH,
+    WIKI_RELIC_PATH,
+    CHAR_PREVIEW_PATH,
+    CHAR_PORTRAIT_PATH,
+    GUIDE_CHARACTER_PATH,
+    WIKI_LIGHT_CONE_PATH,
+    GUIDE_LIGHT_CONE_PATH,
+    WIKI_MATERIAL_FOR_ROLE,
 )
 
 with Path.open(
@@ -49,7 +49,7 @@ async def find_fastest_url(urls: Dict[str, str]):
         tuple[str, str, float] | BaseException
     ] = await asyncio.gather(*tasks, return_exceptions=True)
     fastest_tag = ''
-    fastest_url = None
+    fastest_url = ''
     fastest_time = float('inf')
 
     for result in results:
@@ -68,8 +68,9 @@ async def check_speed():
     logger.info('[GsCore资源下载]测速中...')
 
     URL_LIB = {
-        '[qxqx]': 'https://kr-arm.qxqx.me',
         '[cos]': 'http://182.43.43.40:8765',
+        '[qianxu-jp]': 'https://jp.qxqx.me',
+        '[qianxu-kr]': 'https://kr-arm.qxqx.me',
     }
 
     TAG, BASE_URL = await find_fastest_url(URL_LIB)
@@ -78,12 +79,12 @@ async def check_speed():
 
 
 async def check_use():
-    tag, _ = await check_speed()
-    logger.info(tag, _)
-    if tag == '[qxqx]':
+    tag, url = await check_speed()
+    logger.info(tag, url)
+    if tag != '[cos]':
         await download_all_file(
-            'https://kr-arm.qxqx.me',
-            '[qxqx]',
+            url,
+            tag,
             'StarRailUID',
             {
                 'resource/character': CHAR_ICON_PATH,
@@ -102,7 +103,7 @@ async def check_use():
                 'wiki/character_overview': WIKI_ROLE_PATH,
             },
         )
-    if tag == '[cos]':
+    else:
         await download_all_file_from_cos()
     return 'sr全部资源下载完成!'
 
