@@ -581,19 +581,19 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 relic_img, RELIC_POS[str(relic['Type'])], relic_img
             )
             relic_score += single_relic_score
-        if relic_score > 230:
+        if relic_score > 210:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconSSS.png')
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 210:
+        elif relic_score > 190:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconSS.png')
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 180:
+        elif relic_score > 160:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconS.png')
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 150:
+        elif relic_score > 130:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconA.png')
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 100:
+        elif relic_score > 80:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconB.png')
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
         elif relic_score > 0:

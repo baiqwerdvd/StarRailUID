@@ -848,6 +848,40 @@ class Clara(BaseAvatar):
         damagelist4[2] += damage3
         skill_info_list.append({'name': '强化反击', 'damagelist': damagelist4})
         
+        # 计算1+1托帕反击伤害
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        add_attr_bonus = copy.deepcopy(attribute_bonus)
+        add_attr_bonus['Talent_DmgRatio'] = add_attr_bonus.get('Talent_DmgRatio', 0) + 0.5
+        add_attr_bonus['Talent_CriticalDamageBase'] = add_attr_bonus.get('Talent_CriticalDamageBase', 0) + 0.74
+        damagelist5 = await calculate_damage(
+            base_attr,
+            add_attr_bonus,
+            'Talent',
+            'Talent',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist5[2] += damage3
+        skill_info_list.append({'name': '(1+1托帕)反击', 'damagelist': damagelist5})
+        
+        # 计算反击伤害
+        skill_multiplier = self.Skill_num('Talent', 'Talent') + self.Skill_num('Ultra', 'Talent1')
+        add_attr_bonus = copy.deepcopy(attribute_bonus)
+        add_attr_bonus['Talent_DmgRatio'] = add_attr_bonus.get('Talent_DmgRatio', 0) + 0.5
+        add_attr_bonus['Talent_CriticalDamageBase'] = add_attr_bonus.get('Talent_CriticalDamageBase', 0) + 0.74
+        damagelist6 = await calculate_damage(
+            base_attr,
+            add_attr_bonus,
+            'Talent',
+            'Talent',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist6[2] += damage3
+        skill_info_list.append({'name': '(1+1托帕)强化反击', 'damagelist': damagelist6})
+        
         return skill_info_list
     
 class Silverwolf(BaseAvatar):
@@ -1761,7 +1795,7 @@ class Topaz(BaseAvatar):
             'Talent1_CriticalDamageBase'
         ] = self.Skill_num('Ultra', 'Ultra_CD')
         logger.info('【负债证明】状态,使其受到的追加攻击伤害提高')
-        self.extra_ability_attribute['TalentDmgAdd'] = self.Skill_num(
+        self.extra_ability_attribute['Talent_DmgRatio'] = self.Skill_num(
             'BPSkill', 'BPSkill_add'
         )
     
@@ -2462,11 +2496,121 @@ class Natasha(BaseAvatar):
         
         return skill_info_list
 
+class Mar7th(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        pass
+
+    def extra_ability(self):
+        pass
+        
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+        
+        # 计算战技护盾
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        skill_num = self.Skill_num('BPSkill', 'BPSkill_G')
+        damagelist2 = await calculate_shield(
+            base_attr,
+            attribute_bonus,
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '战技护盾量', 'damagelist': damagelist2})
+        
+        # 计算终结技
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist3})
+        
+        # 计算追加攻击
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        damagelist4 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Talent',
+            'Talent',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist4[2] += damage3
+        if self.avatar_rank >= 4:
+            defence = base_attr['defence'] * (1 + attribute_bonus['DefenceAddedRatio']) + attribute_bonus['DefenceDelta']
+            damage_add = defence * 0.3
+            damagelist4[0] += damage_add
+            damagelist4[1] += damage_add
+            damagelist4[2] += damage_add
+        skill_info_list.append({'name': '追加攻击', 'damagelist': damagelist4})
+        
+        # 计算2命护盾
+        if self.avatar_rank >= 2:
+            damagelist5 = await calculate_shield(
+                base_attr,
+                attribute_bonus,
+                0.24,
+                320,
+            )
+            skill_info_list.append({'name': '开场护盾(2命)', 'damagelist': damagelist5})
+        
+        return skill_info_list
+
 class AvatarDamage:
     @classmethod
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1001:
+            return Mar7th(char, skills)
         if char.id_ == 1105:
             return Natasha(char, skills)
         if char.id_ == 1110:
