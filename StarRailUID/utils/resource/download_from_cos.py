@@ -2,33 +2,33 @@ import asyncio
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
-from bs4 import BeautifulSoup
-from msgspec import json as msgjson
-from gsuid_core.logger import logger
+from aiohttp import ClientTimeout, TCPConnector
 from aiohttp.client import ClientSession
-from aiohttp import TCPConnector, ClientTimeout
+from bs4 import BeautifulSoup
+from gsuid_core.logger import logger
+from gsuid_core.utils.download_resource.download_core import find_fastest_url
 from gsuid_core.utils.download_resource.download_file import download
-from gsuid_core.utils.download_resource.download_core import check_url
+from msgspec import json as msgjson
 
 from .download_url import download_file
 from .RESOURCE_PATH import (
-    WIKI_PATH,
+    CHAR_ICON_PATH,
+    CHAR_PORTRAIT_PATH,
+    CHAR_PREVIEW_PATH,
+    CONSUMABLE_PATH,
+    ELEMENT_PATH,
+    GUIDE_CHARACTER_PATH,
+    GUIDE_LIGHT_CONE_PATH,
     GUIDE_PATH,
     RELIC_PATH,
+    RESOURCE_PATH,
     SKILL_PATH,
     WEAPON_PATH,
-    ELEMENT_PATH,
-    RESOURCE_PATH,
-    CHAR_ICON_PATH,
-    WIKI_ROLE_PATH,
-    CONSUMABLE_PATH,
-    WIKI_RELIC_PATH,
-    CHAR_PREVIEW_PATH,
-    CHAR_PORTRAIT_PATH,
-    GUIDE_CHARACTER_PATH,
     WIKI_LIGHT_CONE_PATH,
-    GUIDE_LIGHT_CONE_PATH,
     WIKI_MATERIAL_FOR_ROLE,
+    WIKI_PATH,
+    WIKI_RELIC_PATH,
+    WIKI_ROLE_PATH,
 )
 
 with Path.open(
@@ -38,30 +38,6 @@ with Path.open(
         f.read(),
         type=Dict[str, Dict[str, Dict[str, Dict[str, Union[str, int]]]]],
     )
-
-
-async def find_fastest_url(urls: Dict[str, str]):
-    tasks = []
-    for tag in urls:
-        tasks.append(asyncio.create_task(check_url(tag, urls[tag])))
-
-    results: list[
-        tuple[str, str, float] | BaseException
-    ] = await asyncio.gather(*tasks, return_exceptions=True)
-    fastest_tag = ''
-    fastest_url = ''
-    fastest_time = float('inf')
-
-    for result in results:
-        if isinstance(result, BaseException):
-            continue
-        tag, url, elapsed_time = result
-        if elapsed_time < fastest_time:
-            fastest_url = url
-            fastest_time = elapsed_time
-            fastest_tag = tag
-
-    return fastest_tag, fastest_url
 
 
 async def check_speed():
@@ -171,7 +147,9 @@ async def download_all_file_from_cos():
                         or not Path.stat(path).st_size
                         or not is_diff
                     ):
-                        logger.info(f'[cos]开始下载[{resource_type}]_[{name}]...')
+                        logger.info(
+                            f'[cos]开始下载[{resource_type}]_[{name}]...'
+                        )
                         temp_num += 1
                         if isinstance(url, int):
                             logger.error(
@@ -209,7 +187,9 @@ async def download_all_file_from_cos():
                 await _download(TASKS)
         await _download(TASKS)
         if count := len(failed_list):
-            logger.error(f'[cos]仍有{count}个文件未下载,请使用命令 `下载全部资源` 重新下载')
+            logger.error(
+                f'[cos]仍有{count}个文件未下载,请使用命令 `下载全部资源` 重新下载'
+            )
 
 
 async def _get_url(url: str, sess: ClientSession):
@@ -236,7 +216,9 @@ async def download_all_file(
             pre_data = content_bs.find_all('pre')[0]
             data_list = pre_data.find_all('a')
             size_list = list(content_bs.strings)
-            logger.info(f'{TAG} 数据库 {endpoint} 中存在 {len(data_list)} 个内容!')
+            logger.info(
+                f'{TAG} 数据库 {endpoint} 中存在 {len(data_list)} 个内容!'
+            )
 
             temp_num = 0
             for index, data in enumerate(data_list):

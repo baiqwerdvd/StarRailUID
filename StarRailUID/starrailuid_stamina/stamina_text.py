@@ -5,12 +5,12 @@ from gsuid_core.logger import logger
 from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
 
-daily_im = '''*数据刷新可能存在一定延迟,请以当前游戏实际数据为准
+daily_im = """*数据刷新可能存在一定延迟,请以当前游戏实际数据为准
 ==============
 开拓力:{}/{}{}
 委托执行:
 总数/完成/上限:{}/{}/{}
-{}'''
+{}"""
 
 
 def seconds2hours(seconds: int) -> str:

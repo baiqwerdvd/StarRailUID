@@ -40,9 +40,9 @@ async def get_lightcone_data(
         return None
 
 
-async def get_character_index() -> Union[
-    Dict[str, HakushHsrCharacterIndex], None
-]:
+async def get_character_index() -> (
+    Union[Dict[str, HakushHsrCharacterIndex], None]
+):
     async with AsyncClient(
         base_url='https://api.hakush.in/hsr/data',
         headers=_HEADER,
@@ -54,9 +54,9 @@ async def get_character_index() -> Union[
         return None
 
 
-async def get_lightcone_index() -> Union[
-    Dict[str, HakushHsrLightconeIndex], None
-]:
+async def get_lightcone_index() -> (
+    Union[Dict[str, HakushHsrLightconeIndex], None]
+):
     async with AsyncClient(
         base_url='https://api.hakush.in/hsr/data',
         headers=_HEADER,

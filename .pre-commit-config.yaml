@@ -12,11 +12,6 @@ repos:
     hooks:
       - id: isort
 
-  - repo: https://github.com/psf/black
-    rev: 23.1.0
-    hooks:
-      - id: black
-
   - repo: https://github.com/pycqa/flake8
     rev: 6.0.0
     hooks:
@@ -29,19 +24,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.0.289
+    rev: "v0.1.2"
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
-
-  # - repo: https://github.com/pdm-project/pdm
-  #   rev: 2.9.2
-  #   hooks:
-  #     - id: pdm-lock-check
-
-  # - repo: https://github.com/pdm-project/pdm
-  #   rev: 2.9.2
-  #   hooks:
-  #     - id: pdm-export
-  #       args: ["-o", "requirements.txt", "--without-hashes"]
-  #       files: ^pdm.lock$

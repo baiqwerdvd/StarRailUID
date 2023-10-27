@@ -1,13 +1,13 @@
-from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.sv import SV
+from gsuid_core.utils.database.models import GsUser
 
-from .note_text import award
-from ..utils.api import get_sqla
 from ..utils.convert import get_uid
-from ..utils.sr_prefix import PREFIX
 from ..utils.error_reply import UID_HINT
+from ..utils.sr_prefix import PREFIX
 from .draw_note_card import draw_note_img
+from .note_text import award
 
 sv_get_monthly_data = SV('sr查询月历')
 
@@ -15,8 +15,7 @@ sv_get_monthly_data = SV('sr查询月历')
 # 群聊内 每月统计 功能
 @sv_get_monthly_data.on_fullmatch(f'{PREFIX}每月统计')
 async def send_monthly_data(bot: Bot, ev: Event):
-    sqla = get_sqla(ev.bot_id)
-    sr_uid = await sqla.get_bind_sruid(ev.user_id)
+    sr_uid = await GsUser.get_bind_sruid(ev.user_id)
     if sr_uid is None:
         return UID_HINT
     await bot.send(await award(sr_uid))

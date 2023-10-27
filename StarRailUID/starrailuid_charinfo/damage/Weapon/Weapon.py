@@ -1,9 +1,9 @@
 import json
-from typing import Dict
 from pathlib import Path
+from typing import Dict
 
-from ..Base.WeaponBase import BaseWeapon
 from ..Base.model import DamageInstanceWeapon
+from ..Base.WeaponBase import BaseWeapon
 
 path = Path(__file__).parent.parent
 with Path.open(path / 'Excel' / 'weapon_effect.json', encoding='utf-8') as f:
@@ -269,16 +269,19 @@ class BeforeDawn(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
-        attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
-            weapon_effect['23010']['Param']['e_dmg'][self.weapon_rank - 1]
+        attribute_bonus['BPSkillDmgAdd'] = (
+            bp_skill_dmg_add
+            + (weapon_effect['23010']['Param']['e_dmg'][self.weapon_rank - 1])
         )
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
-        attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
-            weapon_effect['23010']['Param']['r_dmg'][self.weapon_rank - 1]
+        attribute_bonus['UltraDmgAdd'] = (
+            ultra_dmg_add
+            + (weapon_effect['23010']['Param']['r_dmg'][self.weapon_rank - 1])
         )
         talent_dmg_add = attribute_bonus.get('TalentDmgAdd', 0)
-        attribute_bonus['TalentDmgAdd'] = talent_dmg_add + (
-            weapon_effect['23010']['Param']['t_dmg'][self.weapon_rank - 1]
+        attribute_bonus['TalentDmgAdd'] = (
+            talent_dmg_add
+            + (weapon_effect['23010']['Param']['t_dmg'][self.weapon_rank - 1])
         )
         return attribute_bonus
 
@@ -492,10 +495,13 @@ class GeniusesRepose(BaseWeapon):
     ):
         if await self.check():
             critical_chance_base = attribute_bonus.get('CriticalDamageBase', 0)
-            attribute_bonus['CriticalDamageBase'] = critical_chance_base + (
-                weapon_effect['21020']['Param']['CriticalDamageBase'][
-                    self.weapon_rank - 1
-                ]
+            attribute_bonus['CriticalDamageBase'] = (
+                critical_chance_base
+                + (
+                    weapon_effect['21020']['Param']['CriticalDamageBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
             )
         return attribute_bonus
 
@@ -518,8 +524,9 @@ class MaketheWorldClamor(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
-        attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
-            weapon_effect['21013']['Param']['r_dmg'][self.weapon_rank - 1]
+        attribute_bonus['UltraDmgAdd'] = (
+            ultra_dmg_add
+            + (weapon_effect['21013']['Param']['r_dmg'][self.weapon_rank - 1])
         )
         return attribute_bonus
 
@@ -544,8 +551,13 @@ class TheBirthoftheSelf(BaseWeapon):
     ):
         if await self.check():
             talent_dmg_add = attribute_bonus.get('TalentDmgAdd', 0)
-            attribute_bonus['TalentDmgAdd'] = talent_dmg_add + (
-                weapon_effect['21006']['Param']['t_dmg'][self.weapon_rank - 1]
+            attribute_bonus['TalentDmgAdd'] = (
+                talent_dmg_add
+                + (
+                    weapon_effect['21006']['Param']['t_dmg'][
+                        self.weapon_rank - 1
+                    ]
+                )
             )
             return attribute_bonus
         return attribute_bonus
@@ -1473,12 +1485,14 @@ class CollapsingSky(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         normal_dmg_add = attribute_bonus.get('NormalDmgAdd', 0)
-        attribute_bonus['NormalDmgAdd'] = normal_dmg_add + (
-            weapon_effect['20002']['Param']['a_dmg'][self.weapon_rank - 1]
+        attribute_bonus['NormalDmgAdd'] = (
+            normal_dmg_add
+            + (weapon_effect['20002']['Param']['a_dmg'][self.weapon_rank - 1])
         )
         bp_skill_dmg_add = attribute_bonus.get('BPSkillDmgAdd', 0)
-        attribute_bonus['BPSkillDmgAdd'] = bp_skill_dmg_add + (
-            weapon_effect['20002']['Param']['e_dmg'][self.weapon_rank - 1]
+        attribute_bonus['BPSkillDmgAdd'] = (
+            bp_skill_dmg_add
+            + (weapon_effect['20002']['Param']['e_dmg'][self.weapon_rank - 1])
         )
         return attribute_bonus
 
@@ -1631,8 +1645,9 @@ class DataBank(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         ultra_dmg_add = attribute_bonus.get('UltraDmgAdd', 0)
-        attribute_bonus['UltraDmgAdd'] = ultra_dmg_add + (
-            weapon_effect['20006']['Param']['r_dmg'][self.weapon_rank - 1]
+        attribute_bonus['UltraDmgAdd'] = (
+            ultra_dmg_add
+            + (weapon_effect['20006']['Param']['r_dmg'][self.weapon_rank - 1])
         )
         return attribute_bonus
 
@@ -1670,12 +1685,13 @@ class Thisbodyisasword(BaseWeapon):
         resistance_penetration = attribute_bonus.get(
             'AllDamageResistancePenetration', 0
         )
-        attribute_bonus[
-            'AllDamageResistancePenetration'
-        ] = resistance_penetration + (
-            weapon_effect['23014']['Param']['ResistancePenetration'][
-                self.weapon_rank - 1
-            ]
+        attribute_bonus['AllDamageResistancePenetration'] = (
+            resistance_penetration
+            + (
+                weapon_effect['23014']['Param']['ResistancePenetration'][
+                    self.weapon_rank - 1
+                ]
+            )
         )
 
         return attribute_bonus
@@ -1748,7 +1764,7 @@ class WorrisomeBlissf(BaseWeapon):
         return attribute_bonus
 
 
-# 片刻，留在眼底
+# 片刻, 留在眼底
 class AnInstanceBeforeAGaze(BaseWeapon):
     weapon_base_attributes: Dict
 
@@ -1756,7 +1772,7 @@ class AnInstanceBeforeAGaze(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者施放终结技时，根据装备者的能量上限，提高装备者终结技造成的伤害：每点能量提高0.36%，最多计入180点。
+        # 当装备者施放终结技时, 根据装备者的能量上限, 提高装备者终结技造成的伤害: 每点能量提高0.36%, 最多计入180点。
         return True
 
     async def weapon_ability(
@@ -1787,7 +1803,7 @@ class TimeWaitsforNoOne(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者对我方目标提供治疗时，记录治疗量。当任意我方目标施放攻击后，根据记录治疗量的36%，对随机1个受到攻击的敌方目标造成基于装备者属性的附加伤害
+        # 当装备者对我方目标提供治疗时,记录治疗量。当任意我方目标施放攻击后,根据记录治疗量的36%,对随机1个受到攻击的敌方目标造成基于装备者属性的附加伤害
         pass
 
     async def weapon_ability(
@@ -1807,7 +1823,7 @@ class EchoesoftheCoffin(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者施放终结技后，使我方全体速度提高12点，持续1回合。
+        # 当装备者施放终结技后,使我方全体速度提高12点,持续1回合。
         return True
 
     async def weapon_ability(
@@ -1818,8 +1834,13 @@ class EchoesoftheCoffin(BaseWeapon):
     ):
         if await self.check():
             speed_delta = attribute_bonus.get('SpeedDelta', 0)
-            attribute_bonus['SpeedDelta'] = speed_delta + (
-                weapon_effect['23008']['Param']['speed'][self.weapon_rank - 1]
+            attribute_bonus['SpeedDelta'] = (
+                speed_delta
+                + (
+                    weapon_effect['23008']['Param']['speed'][
+                        self.weapon_rank - 1
+                    ]
+                )
             )
         return attribute_bonus
 
@@ -1832,7 +1853,7 @@ class NightofFright(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者为我方目标提供治疗时，使该目标的攻击力提高2.3%，该效果最多叠加5层
+        # 当装备者为我方目标提供治疗时,使该目标的攻击力提高2.3%,该效果最多叠加5层
         return True
 
     async def weapon_ability(
@@ -1874,10 +1895,13 @@ class PostOpConversation(BaseWeapon):
     ):
         if await self.check():
             Ultra_HealRatioBase = attribute_bonus.get('Ultra_HealRatioBase', 0)
-            attribute_bonus['Ultra_HealRatioBase'] = Ultra_HealRatioBase + (
-                weapon_effect['21000']['Param']['Ultra_HealRatioBase'][
-                    self.weapon_rank - 1
-                ]
+            attribute_bonus['Ultra_HealRatioBase'] = (
+                Ultra_HealRatioBase
+                + (
+                    weapon_effect['21000']['Param']['Ultra_HealRatioBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
             )
         return attribute_bonus
 
@@ -1910,7 +1934,7 @@ class PerfectTiming(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 使装备者的治疗量提高，提高数值等同于效果抵抗的33%，最多使治疗量提高15%。
+        # 使装备者的治疗量提高, 提高数值等同于效果抵抗的33%, 最多使治疗量提高15%。
         return True
 
     async def weapon_ability(
@@ -1965,7 +1989,7 @@ class WarmthShortensColdNights(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 施放普攻或战技后，为我方全体回复等同于各自生命上限2%的生命值。
+        # 施放普攻或战技后, 为我方全体回复等同于各自生命上限2%的生命值。
         pass
 
     async def weapon_ability(
@@ -1977,7 +2001,7 @@ class WarmthShortensColdNights(BaseWeapon):
         return attribute_bonus
 
 
-# 嘿，我在这儿
+# 嘿,我在这儿
 class HeyOverHere(BaseWeapon):
     weapon_base_attributes: Dict
 
@@ -1985,7 +2009,7 @@ class HeyOverHere(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者施放战技时，治疗量提高16%，持续2回合。
+        # 当装备者施放战技时, 治疗量提高16%,持续2回合。
         return True
 
     async def weapon_ability(
@@ -1996,10 +2020,13 @@ class HeyOverHere(BaseWeapon):
     ):
         if await self.check():
             HealRatioBase = attribute_bonus.get('HealRatioBase', 0)
-            attribute_bonus['HealRatioBase'] = HealRatioBase + (
-                weapon_effect['22001']['Param']['HealRatioBase'][
-                    self.weapon_rank - 1
-                ]
+            attribute_bonus['HealRatioBase'] = (
+                HealRatioBase
+                + (
+                    weapon_effect['22001']['Param']['HealRatioBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
             )
         return attribute_bonus
 
@@ -2012,7 +2039,7 @@ class Cornucopia(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者施放战技和终结技时，治疗量提高12%。
+        # 装备者施放战技和终结技时, 治疗量提高12%。
         return True
 
     async def weapon_ability(
@@ -2023,20 +2050,24 @@ class Cornucopia(BaseWeapon):
     ):
         if await self.check():
             Ultra_HealRatioBase = attribute_bonus.get('Ultra_HealRatioBase', 0)
-            attribute_bonus['Ultra_HealRatioBase'] = Ultra_HealRatioBase + (
-                weapon_effect['20001']['Param']['HealRatioBase'][
-                    self.weapon_rank - 1
-                ]
+            attribute_bonus['Ultra_HealRatioBase'] = (
+                Ultra_HealRatioBase
+                + (
+                    weapon_effect['20001']['Param']['HealRatioBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
             )
             BPSkill_HealRatioBase = attribute_bonus.get(
                 'BPSkill_HealRatioBase', 0
             )
-            attribute_bonus[
-                'BPSkill_HealRatioBase'
-            ] = BPSkill_HealRatioBase + (
-                weapon_effect['20001']['Param']['HealRatioBase'][
-                    self.weapon_rank - 1
-                ]
+            attribute_bonus['BPSkill_HealRatioBase'] = (
+                BPSkill_HealRatioBase
+                + (
+                    weapon_effect['20001']['Param']['HealRatioBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
             )
         return attribute_bonus
 
@@ -2049,7 +2080,7 @@ class FineFruit(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 战斗开始时，立即为我方全体恢复6点能量。
+        # 战斗开始时, 立即为我方全体恢复6点能量。
         pass
 
     async def weapon_ability(
@@ -2069,7 +2100,7 @@ class Multiplication(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 战斗开始时，立即为我方全体恢复6点能量。
+        # 战斗开始时, 立即为我方全体恢复6点能量。
         pass
 
     async def weapon_ability(
@@ -2089,7 +2120,7 @@ class ButtheBattleIsnotOver(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者施放战技后，使下一个行动的我方【其他目标】造成的伤害提高30%
+        # 当装备者施放战技后, 使下一个行动的我方【其他目标】造成的伤害提高30%
         pass
 
     async def weapon_ability(
@@ -2109,7 +2140,7 @@ class MemoriesofthePast(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 装备者施放攻击后，额外恢复4点能量
+        # 装备者施放攻击后, 额外恢复4点能量
         pass
 
     async def weapon_ability(
@@ -2129,7 +2160,7 @@ class PlanetaryRendezvous(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当我方目标造成与装备者相同属性的伤害时，造成的伤害提高12%。
+        # 当我方目标造成与装备者相同属性的伤害时, 造成的伤害提高12%。
         pass
 
     async def weapon_ability(
@@ -2139,15 +2170,18 @@ class PlanetaryRendezvous(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         all_damage_added_ratio = attribute_bonus.get('AllDamageAddedRatio', 0)
-        attribute_bonus['AllDamageAddedRatio'] = all_damage_added_ratio + (
-            weapon_effect['21011']['Param']['AllDamageAddedRatio'][
-                self.weapon_rank - 1
-            ]
+        attribute_bonus['AllDamageAddedRatio'] = (
+            all_damage_added_ratio
+            + (
+                weapon_effect['21011']['Param']['AllDamageAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
         )
         return attribute_bonus
 
 
-# 舞！舞！舞！
+# 舞! 舞! 舞!
 class DanceDanceDance(BaseWeapon):
     weapon_base_attributes: Dict
 
@@ -2155,7 +2189,7 @@ class DanceDanceDance(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者施放终结技后，我方全体行动提前16%。
+        # 当装备者施放终结技后, 我方全体行动提前16%。
         pass
 
     async def weapon_ability(
@@ -2195,7 +2229,7 @@ class CarvetheMoonWeavetheClouds(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 在战斗开始时以及当装备者回合开始时，随机生效1个效果
+        # 在战斗开始时以及当装备者回合开始时,随机生效1个效果
         # 使我方全体攻击力提高10%
         # 使我方全体暴击伤害提高12%
         # 暂时固定只算攻击
@@ -2208,10 +2242,13 @@ class CarvetheMoonWeavetheClouds(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         AttackAddedRatio = attribute_bonus.get('AttackAddedRatio', 0)
-        attribute_bonus['AttackAddedRatio'] = AttackAddedRatio + (
-            weapon_effect['21032']['Param']['AttackAddedRatio'][
-                self.weapon_rank - 1
-            ]
+        attribute_bonus['AttackAddedRatio'] = (
+            AttackAddedRatio
+            + (
+                weapon_effect['21032']['Param']['AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
         )
         return attribute_bonus
 
@@ -2224,7 +2261,7 @@ class Chorus(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 进入战斗后，使我方全体的攻击力提高8%
+        # 进入战斗后,使我方全体的攻击力提高8%
         pass
 
     async def weapon_ability(
@@ -2234,10 +2271,13 @@ class Chorus(BaseWeapon):
         attribute_bonus: Dict[str, float],
     ):
         AttackAddedRatio = attribute_bonus.get('AttackAddedRatio', 0)
-        attribute_bonus['AttackAddedRatio'] = AttackAddedRatio + (
-            weapon_effect['20005']['Param']['AttackAddedRatio'][
-                self.weapon_rank - 1
-            ]
+        attribute_bonus['AttackAddedRatio'] = (
+            AttackAddedRatio
+            + (
+                weapon_effect['20005']['Param']['AttackAddedRatio'][
+                    self.weapon_rank - 1
+                ]
+            )
         )
         return attribute_bonus
 
@@ -2250,7 +2290,7 @@ class MeshingCogs(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 使装备者施放攻击或受到攻击后，额外恢复4点能量
+        # 使装备者施放攻击或受到攻击后,额外恢复4点能量
         pass
 
     async def weapon_ability(
@@ -2270,7 +2310,7 @@ class Mediation(BaseWeapon):
         super().__init__(weapon)
 
     async def check(self):
-        # 当装备者施放终结技后，使我方全体速度提高12点，持续1回合。
+        # 当装备者施放终结技后,使我方全体速度提高12点,持续1回合。
         return True
 
     async def weapon_ability(
@@ -2281,8 +2321,13 @@ class Mediation(BaseWeapon):
     ):
         if await self.check():
             speed_delta = attribute_bonus.get('SpeedDelta', 0)
-            attribute_bonus['SpeedDelta'] = speed_delta + (
-                weapon_effect['20019']['Param']['speed'][self.weapon_rank - 1]
+            attribute_bonus['SpeedDelta'] = (
+                speed_delta
+                + (
+                    weapon_effect['20019']['Param']['speed'][
+                        self.weapon_rank - 1
+                    ]
+                )
             )
         return attribute_bonus
 

@@ -39,6 +39,8 @@ async def get_gachalog_by_link(bot: Bot, ev: Event):
     if ev.command.startswith('强制'):
         await bot.logger.info('[WARNING]本次为强制刷新')
         is_force = True
-    await bot.send(f'UID{uid}开始执行[刷新抽卡记录],需要一定时间...请勿重复触发!')
+    await bot.send(
+        f'UID{uid}开始执行[刷新抽卡记录],需要一定时间...请勿重复触发!'
+    )
     im = await save_gachalogs(uid, gacha_url, None, is_force)
     return await bot.send(im)
