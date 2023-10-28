@@ -1123,6 +1123,13 @@ class EyesofthePrey(BaseWeapon):
         base_attr: Dict[str, float],
         attribute_bonus: Dict[str, float],
     ):
+        dot_dmg_add = attribute_bonus.get('DOTDmgAdd', 0)
+        attribute_bonus['DOTDmgAdd'] = (
+            dot_dmg_add
+            + weapon_effect['21008']['Param']['DOTDmgAdd'][
+                self.weapon_rank - 1
+            ]
+        )
         return attribute_bonus
 
 
@@ -2331,10 +2338,40 @@ class Mediation(BaseWeapon):
             )
         return attribute_bonus
 
+# 嘿，我在这儿
+class HeyOverHere(BaseWeapon):
+    weapon_base_attributes: Dict
+
+    def __init__(self, weapon: DamageInstanceWeapon):
+        super().__init__(weapon)
+
+    async def check(self):
+        # 当装备者施放终结技后,使我方全体速度提高12点,持续1回合。
+        return True
+
+    async def weapon_ability(
+        self,
+        Ultra_Use: float,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        if await self.check():
+            heal_ratio_base = attribute_bonus.get('HealRatioBase', 0)
+            attribute_bonus['HealRatioBase'] = (
+                heal_ratio_base
+                + (
+                    weapon_effect['22001']['Param']['HealRatioBase'][
+                        self.weapon_rank - 1
+                    ]
+                )
+            )
+        return attribute_bonus
 
 class Weapon:
     @classmethod
     def create(cls, weapon: DamageInstanceWeapon):
+        if weapon.id_ == 22001:
+            return HeyOverHere(weapon)
         if weapon.id_ == 20019:
             return Mediation(weapon)
         if weapon.id_ == 20012:

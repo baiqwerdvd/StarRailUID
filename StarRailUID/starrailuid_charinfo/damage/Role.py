@@ -87,6 +87,8 @@ async def calculate_damage(
     # logger.info(f'merged_attr: {merged_attr}')
     if is_hp == 1:
         attack = merged_attr.get('hp', 0)
+    elif is_hp == 2:
+        attack = merged_attr.get('defence', 0)
     else:
         attack = merged_attr.get('attack', 0)
     logger.info(f'Attack: {attack}')

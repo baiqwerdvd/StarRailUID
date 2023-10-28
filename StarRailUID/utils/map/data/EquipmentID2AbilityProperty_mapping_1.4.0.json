@@ -2036,5 +2036,89 @@
         }
       }
     ]
+  },
+  "23017": {
+    "1": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.12
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.14
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.16
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.18
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.2
+        }
+      }
+    ]
+  },
+  "22001": {
+    "1": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.08
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.09
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.1
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.11
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.12
+        }
+      }
+    ]
   }
 }

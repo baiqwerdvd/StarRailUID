@@ -3029,17 +3029,1467 @@ class Sushang(BaseAvatar):
             skill_multiplier,
             self.avatar_level,
         )
-        damagelist1[2] += damage3
+        damagelist5[2] += damage3
         skill_info_list.append({'name': '终结技', 'damagelist': damagelist5})
 
         return skill_info_list
 
+class Luka(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['AllDamageAddedRatio'] = 0.15
+
+    def extra_ability(self):
+        pass
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        # 计算终结技提供的易伤加成
+        attribute_bonus['DmgRatio'] = attribute_bonus.get('DmgRatio', 0) + self.Skill_num('Ultra', 'Ultra_d')
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+        
+        # 计算强化普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal1')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[0] += damagelist2[0] * 5
+        damagelist2[1] += damagelist2[1] * 5
+        damagelist2[2] += damage3 + damagelist2[2] * 5
+        skill_multiplier = self.Skill_num('Normal', 'Normal2')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[0] += damagelist2[0]
+        damagelist3[1] += damagelist2[1]
+        damagelist3[2] += damagelist2[2]
+        skill_info_list.append({'name': '强化普攻(满段数)', 'damagelist': damagelist3})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist4 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist4[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist4})
+
+        # 计算DOT伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'DOT')
+        damagelist5 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'DOT',
+            'DOT',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        skill_info_list.append({'name': '持续伤害(最大值)', 'damagelist': damagelist5})
+
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist6 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist6[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist6})
+
+        return skill_info_list
+
+class DanHeng(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['CriticalChanceBase'] = 0.12
+
+    def extra_ability(self):
+        self.extra_ability_attribute['SpeedAddedRatio'] = 0.2
+        self.extra_ability_attribute['NormalDmgAdd'] = 0.4
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        # 计算穿透加成
+        attribute_bonus['WindResistancePenetration'] = attribute_bonus.get('WindResistancePenetration', 0) + self.Skill_num('Talent', 'Talent')
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra') + self.Skill_num('Ultra', 'Ultra_d')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist3})
+
+        return skill_info_list
+
+class Arlan(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['BPSkillDmgAdd'] = 0.12
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['UltraDmgAdd'] = 0.12
+
+    def extra_ability(self):
+        pass
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        # 计算天赋伤害加成
+        attribute_bonus['AllDamageAddedRatio'] = attribute_bonus.get('AllDamageAddedRatio', 0) + self.Skill_num('Talent', 'Talent')
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist3})
+
+        return skill_info_list
+
+class Asta(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        pass
+
+    def extra_ability(self):
+        self.eidolon_attribute['FireAddedRatio'] = 0.18
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        # 计算天赋加成
+        attribute_bonus['AttackAddedRatio'] = attribute_bonus.get('AttackAddedRatio', 0) + self.Skill_num('Talent', 'Talent') * 5
+        attribute_bonus['SpeedDelta'] = attribute_bonus.get('SpeedDelta', 0) + self.Skill_num('Ultra', 'Ultra')
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        skill_num = 5
+        if self.avatar_rank >= 1:
+            skill_num += 1
+        damagelist2[0] = damagelist2[0] * skill_num
+        damagelist2[1] = damagelist2[1] * skill_num
+        damagelist2[2] = damage3 + damagelist2[2] * skill_num
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+
+        return skill_info_list
+
+class Herta(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 2:
+            self.eidolon_attribute['CriticalChanceBase'] = 0.15
+        if self.avatar_rank >= 4:
+            self.eidolon_attribute['TalentDmgAdd'] = 0.12
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['AttackAddedRatio'] = 0.25
+
+    def extra_ability(self):
+        self.extra_ability_attribute['BPSkillDmgAdd'] = 0.25
+        self.extra_ability_attribute['UltraDmgAdd'] = 0.2
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        if self.avatar_rank >= 1:
+            skill_multiplier += 0.4
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        attribute_bonus['BPSkillDmgAdd'] = attribute_bonus.get('BPSkillDmgAdd', 0) + 0.2
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist3})
+        
+        # 计算追加攻击伤害
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        damagelist4 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Talent',
+            'Talent',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist4[2] += damage3
+        skill_info_list.append({'name': '追加攻击', 'damagelist': damagelist4})
+
+        return skill_info_list
+
+class Serval(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['AllDamageAddedRatio'] = 0.3
+
+    def extra_ability(self):
+        self.extra_ability_attribute['AttackAddedRatio'] = 0.2
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+        
+        # 计算DOT伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'DOT')
+        damagelist5 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'DOT',
+            'DOT',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        skill_info_list.append({'name': '持续伤害', 'damagelist': damagelist5})
+        
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist3})
+        
+        # 计算追加攻击伤害
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        damagelist4 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Talent',
+            'Talent',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist4[2] += damage3
+        skill_info_list.append({'name': '追加攻击', 'damagelist': damagelist4})
+
+        return skill_info_list
+
+class Pela(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 2:
+            self.eidolon_attribute['SpeedAddedRatio'] = 0.1
+        if self.avatar_rank >= 4:
+            self.eidolon_attribute['IceResistancePenetration'] = 0.12
+
+    def extra_ability(self):
+        self.extra_ability_attribute['AllDamageAddedRatio'] = 0.4
+        self.extra_ability_attribute['StatusProbabilityBase'] = 0.1
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        # 计算终结技降防
+        attribute_bonus['ignore_defence'] = attribute_bonus.get('ignore_defence', 0) + self.Skill_num('Ultra', 'Ultra_d')
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+        
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist3})
+        
+        if self.avatar_rank >= 6:
+            # 计算命座附加伤害
+            damagelist4 = await calculate_damage(
+                base_attr,
+                attribute_bonus,
+                'fujia',
+                'fujia',
+                self.avatar_element,
+                0.4,
+                self.avatar_level,
+            )
+            damagelist4[2] += damage3
+            skill_info_list.append({'name': '6命追加伤害', 'damagelist': damagelist4})
+        
+        return skill_info_list
+
+class Sampo(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        pass
+
+    def extra_ability(self):
+        pass
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        # 计算终结技持续伤害加成
+        attribute_bonus['DOTDmgAdd'] = attribute_bonus.get('DOTDmgAdd', 0) + self.Skill_num('Ultra', 'Ultra_d')
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[0] = damagelist2[0] * 5
+        damagelist2[1] = damagelist2[1] * 5
+        damagelist2[2] = damage3 + damagelist2[2] * 5
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+        
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist3})
+        
+        # 计算持续伤害
+        skill_multiplier = self.Skill_num('Talent', 'DOT')
+        if self.avatar_rank >= 6:
+            skill_multiplier += 0.15
+        damagelist4 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'DOT',
+            'DOT',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        skill_info_list.append({'name': '单层持续伤害', 'damagelist': damagelist4})
+        
+        return skill_info_list
+
+class Hook(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 2:
+            self.eidolon_attribute['BPSkill1DmgAdd'] = 0.2
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['AllDamageAddedRatio'] = 0.2
+
+    def extra_ability(self):
+        pass
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+        
+        # 计算强化战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill1')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill1',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        skill_info_list.append({'name': '强化战技', 'damagelist': damagelist3})
+        
+        # 计算持续伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'DOT')
+        damagelist5 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'DOT',
+            'DOT',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        skill_info_list.append({'name': '灼烧伤害', 'damagelist': damagelist5})
+        
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist4 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist4[2] += damage3
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist4})
+        
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        damagelist6 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist6[2] += damage3
+        skill_info_list.append({'name': '附加伤害', 'damagelist': damagelist6})
+        
+        return skill_info_list
+
+class Tingyun(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['SpeedAddedRatio'] = 0.2
+
+    def extra_ability(self):
+        self.eidolon_attribute['SpeedAddedRatio'] = 0.2
+        self.eidolon_attribute['NormalDmgAdd'] = 0.4
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill_M')
+        attack = (
+            base_attr['attack'] * (1 + attribute_bonus['AttackAddedRatio'])
+            + attribute_bonus['AttackDelta']
+        )
+        add_atk = attack * skill_multiplier
+        damagelist2 = []
+        damagelist2.append(add_atk)
+        skill_info_list.append({'name': '战技提升攻击力', 'damagelist': damagelist2})
+        
+        return skill_info_list
+
+class Trailblazer(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 4:
+            self.eidolon_attribute['CriticalChanceBase'] = 0.25
+
+    def extra_ability(self):
+        self.extra_ability_attribute['BPSkillDmgAdd'] = 0.25
+        self.extra_ability_attribute['Ultra1DmgAdd'] = 0.25
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        # 计算天赋攻击加成
+        attribute_bonus['AttackAddedRatio'] = attribute_bonus.get('AttackAddedRatio', 0) + self.Skill_num('Talent', 'Talent') * 2
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+        
+        # 计算终结技1伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        skill_info_list.append({'name': '全胜•再见安打', 'damagelist': damagelist3})
+        
+        # 计算终结技2伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra1')
+        damagelist4 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra1',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist4[2] += damage3
+        skill_info_list.append({'name': '全胜•安息全垒打', 'damagelist': damagelist4})
+        
+        return skill_info_list
+
+class Trailblazer_K(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['DefenceAddedRatio'] = 0.3
+
+    def extra_ability(self):
+        self.extra_ability_attribute['AttackAddedRatio'] = 0.15
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        if self.avatar_rank >= 1:   
+            damagelist1_f = await calculate_damage(
+                base_attr,
+                attribute_bonus,
+                'Normal',
+                'Normal',
+                self.avatar_element,
+                0.25,
+                self.avatar_level,
+                2
+            )
+            damagelist1[0] += damagelist1_f[0]
+            damagelist1[1] += damagelist1_f[1]
+            damagelist1[2] += damagelist1_f[2]
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算强化普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal1')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        if self.avatar_rank >= 1:
+            damagelist2_f = await calculate_damage(
+                base_attr,
+                attribute_bonus,
+                'Normal',
+                'Normal',
+                self.avatar_element,
+                0.5,
+                self.avatar_level,
+                2
+            )
+            damagelist2[0] += damagelist2_f[0]
+            damagelist2[1] += damagelist2_f[1]
+            damagelist2[2] += damagelist2_f[2]
+        skill_info_list.append({'name': '强化普攻', 'damagelist': damagelist2})
+        
+        # 计算终结技伤害
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra')
+        damagelist3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist3[2] += damage3
+        
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra1')
+        damagelist3_f = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Ultra',
+            'Ultra',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+            2
+        )
+        damagelist3[0] += damagelist3_f[0]
+        damagelist3[1] += damagelist3_f[1]
+        damagelist3[2] += damagelist3_f[2]
+        skill_info_list.append({'name': '终结技', 'damagelist': damagelist3})
+        
+        # 计算天赋提供护盾
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        skill_multiplier_g = self.Skill_num('Talent', 'Talent_G')
+        if self.avatar_rank >= 2:
+            skill_multiplier += 0.02
+            skill_multiplier_g += 27
+        damagelist4 = await calculate_shield(
+            base_attr,
+            attribute_bonus,
+            skill_multiplier,
+            skill_multiplier_g,
+        )
+        skill_info_list.append({'name': '天赋护盾', 'damagelist': damagelist4})
+        
+        return skill_info_list
+
+class Huohuo(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 1:
+            self.eidolon_attribute['SpeedAddedRatio'] = 0.12
+        if self.avatar_rank >= 6:
+            self.eidolon_attribute['AllDamageAddedRatio'] = 0.5
+
+    def extra_ability(self):
+        pass
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+            1,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技治疗
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        skill_num = self.Skill_num('BPSkill', 'BPSkill_G')
+        damagelist2 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '战技治疗量', 'damagelist': damagelist2})
+        
+        if self.avatar_rank >= 4:
+            # 计算战技治疗
+            skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+            skill_num = self.Skill_num('BPSkill', 'BPSkill_G')
+            add_attr_bonus = copy.deepcopy(attribute_bonus)
+            add_attr_bonus['HealRatioBase'] = add_attr_bonus.get('HealRatioBase', 0) + 0.8
+            damagelist2_max = await calculate_heal(
+                base_attr,
+                add_attr_bonus,
+                'BPSkill',
+                skill_multiplier,
+                skill_num,
+            )
+            skill_info_list.append({'name': '战技最高治疗量(4魂)', 'damagelist': damagelist2_max})
+
+        # 计算天赋治疗量
+        skill_multiplier = self.Skill_num('Talent', 'Talent')
+        skill_num = self.Skill_num('Talent', 'Talent_G')
+        damagelist5 = await calculate_heal(
+            base_attr,
+            attribute_bonus,
+            'Talent',
+            skill_multiplier,
+            skill_num,
+        )
+        skill_info_list.append({'name': '天赋治疗量', 'damagelist': damagelist5})
+        
+        if self.avatar_rank >= 4:
+            skill_multiplier = self.Skill_num('Talent', 'Talent')
+            skill_num = self.Skill_num('Talent', 'Talent_G')
+            add_attr_bonus = copy.deepcopy(attribute_bonus)
+            add_attr_bonus['HealRatioBase'] = add_attr_bonus.get('HealRatioBase', 0) + 0.8
+            damagelist5 = await calculate_heal(
+                base_attr,
+                add_attr_bonus,
+                'Talent',
+                skill_multiplier,
+                skill_num,
+            )
+            skill_info_list.append({'name': '天赋治疗量', 'damagelist': damagelist5})
+        
+        return skill_info_list
+
+class Hanya(BaseAvatar):
+    Buff: BaseAvatarBuff
+
+    def __init__(
+        self, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
+    ):
+        super().__init__(char=char, skills=skills)
+        self.eidolon_attribute: Dict[str, float] = {}
+        self.extra_ability_attribute: Dict[str, float] = {}
+        self.eidolons()
+        self.extra_ability()
+
+    def Technique(self):
+        pass
+
+    def eidolons(self):
+        if self.avatar_rank >= 2:
+            self.eidolon_attribute['SpeedAddedRatio'] = 0.2
+
+    def extra_ability(self):
+        self.extra_ability_attribute['AttackAddedRatio'] = 0.1
+
+    async def getdamage(
+        self,
+        base_attr: Dict[str, float],
+        attribute_bonus: Dict[str, float],
+    ):
+        # 计算天赋易伤加成
+        attribute_bonus['DmgRatio'] = attribute_bonus.get('DmgRatio', 0) + self.Skill_num('Talent', 'Talent')
+        if self.avatar_rank >= 6:
+            attribute_bonus['DmgRatio'] = attribute_bonus.get('DmgRatio', 0) + 0.1
+        
+        attribute_bonus['AttackAddedRatio'] = attribute_bonus.get('AttackAddedRatio', 0) + self.Skill_num('Ultra', 'Ultra_A')
+        
+        damage1, damage2, damage3 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'fujia',
+            'fujia',
+            'Thunder',
+            0.44,
+            self.avatar_level,
+        )
+        
+        skill_info_list = []
+        # 计算普攻伤害
+        skill_multiplier = self.Skill_num('Normal', 'Normal')
+        damagelist1 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'Normal',
+            'Normal',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist1[2] += damage3
+        skill_info_list.append({'name': '普攻', 'damagelist': damagelist1})
+
+        # 计算战技伤害
+        skill_multiplier = self.Skill_num('BPSkill', 'BPSkill')
+        damagelist2 = await calculate_damage(
+            base_attr,
+            attribute_bonus,
+            'BPSkill',
+            'BPSkill',
+            self.avatar_element,
+            skill_multiplier,
+            self.avatar_level,
+        )
+        damagelist2[2] += damage3
+        skill_info_list.append({'name': '战技', 'damagelist': damagelist2})
+        
+        # 计算终结技提升速度
+        speed = (
+            base_attr['speed'] * (1 + attribute_bonus['SpeedAddedRatio'])
+            + attribute_bonus['SpeedDelta']
+        )
+        skill_multiplier = self.Skill_num('Ultra', 'Ultra_S')
+        add_speed = speed * skill_multiplier
+        damagelist3 = []
+        damagelist3.append(add_speed)
+        skill_info_list.append({'name': '终结技增加速度', 'damagelist': damagelist3})
+        
+        return skill_info_list
 
 class AvatarDamage:
     @classmethod
     def create(
         cls, char: DamageInstanceAvatar, skills: List[DamageInstanceSkill]
     ):
+        if char.id_ == 1215:
+            return Hanya(char, skills)
+        if char.id_ == 1217:
+            return Huohuo(char, skills)
+        if char.id_ == 8003 or char.id_ == 8004:
+            return Trailblazer_K(char, skills)
+        if char.id_ == 8002 or char.id_ == 8001:
+            return Trailblazer(char, skills)
+        if char.id_ == 1202:
+            return Tingyun(char, skills)
+        if char.id_ == 1109:
+            return Hook(char, skills)
+        if char.id_ == 1108:
+            return Sampo(char, skills)
+        if char.id_ == 1106:
+            return Pela(char, skills)
+        if char.id_ == 1103:
+            return Serval(char, skills)
+        if char.id_ == 1013:
+            return Herta(char, skills)
+        if char.id_ == 1009:
+            return Asta(char, skills)
+        if char.id_ == 1008:
+            return Arlan(char, skills)
+        if char.id_ == 1002:
+            return DanHeng(char, skills)
+        if char.id_ == 1111:
+            return Luka(char, skills)
         if char.id_ == 1206:
             return Sushang(char, skills)
         if char.id_ == 1101:

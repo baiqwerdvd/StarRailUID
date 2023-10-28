@@ -198,6 +198,24 @@
         "AttributeAddedRatio": 0
     },
 	{
+        "role": "藿藿",
+        "HPDelta": 1.0,
+        "HPAddedRatio": 1.0,
+        "AttackDelta": 0.0,
+        "AttackAddedRatio": 0.0,
+        "DefenceDelta": 0.5,
+        "DefenceAddedRatio": 0.5,
+        "SpeedDelta": 1.0,
+        "CriticalChanceBase": 0,
+        "CriticalDamageBase": 0,
+        "BreakDamageAddedRatioBase": 0.0,
+        "HealRatio": 1,
+        "SPRatio": 1.0,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.75,
+        "AttributeAddedRatio": 0
+    },
+	{
         "role": "符玄",
         "HPDelta": 1.0,
         "HPAddedRatio": 1.0,

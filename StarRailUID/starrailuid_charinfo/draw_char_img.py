@@ -367,7 +367,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if char.equipment != {}:
         weapon_bg = Image.open(TEXT_PATH / 'weapon_bg.png')
         weapon_id = char.equipment['equipmentID']
-        weapon_img = Image.open(WEAPON_PATH / f'{weapon_id}.png').resize(
+        weapon_img = Image.open(WEAPON_PATH / f'{weapon_id}.png').convert('RGBA').resize(
             (170, 180)
         )
         weapon_bg.paste(weapon_img, (20, 90), weapon_img)
