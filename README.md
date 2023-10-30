@@ -3,12 +3,12 @@
 <p align="center">
   <a href="https://github.com/qwerdvd/StarRailUID"><img src="https://s2.loli.net/2023/04/30/kvZgaVLo5fATI6h.png" width="256" height="256" alt="StarRailUID"></a>
 </p>
-<h1 align = "center">StarRailUID 0.1</h1>
+<h1 align = "center">StarRailUID 1.4</h1>
 <h4 align = "center">🚧支持OneBot(QQ)、QQ频道、微信、开黑啦、Telegram的全功能星铁Bot插件🚧</h4>
 <div align = "center">
-        <a href="http://docs.gsuid.gbots.work/#/" target="_blank">安装文档</a> &nbsp; · &nbsp;
-        <a href="http://docs.gsuid.gbots.work/#/CommandList" target="_blank">指令列表</a> &nbsp; · &nbsp;
-        <a href="http://docs.gsuid.gbots.work/#/FAQ">常见问题</a>
+        <a href="https://docs.sayu-bot.com/" target="_blank">安装文档</a> &nbsp; · &nbsp;
+        <a href="https://docs.sayu-bot.com/插件帮助/StarRailUID.html" target="_blank">指令列表</a> &nbsp; · &nbsp;
+        <a href="https://docs.sayu-bot.com/常见问题/">常见问题</a>
 </div>
 
 
@@ -22,7 +22,11 @@
 >
 > 支持NoneBot2 & HoshinoBot & ZeroBot & YunzaiBot的星穹铁道Bot插件
 >
-> 🚧插件目前还在施工中，可以使用，功能快速迭代中...🚧
+> <del>🚧插件目前还在施工中，可以使用，功能快速迭代中...🚧</del>
+>
+> ✨通用功能目前都已完成❤~ 撒花=*★，°*✨
+> 
+> ✨如果需要添加其他星铁相关功能欢迎在issues中提出✨
 
 ## 丨功能
 
