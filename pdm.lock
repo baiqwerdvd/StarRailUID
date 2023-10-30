@@ -6,7 +6,7 @@ groups = ["default"]
 cross_platform = true
 static_urls = false
 lock_version = "4.3"
-content_hash = "sha256:4b46a9f0d8d192c3cdb2b0caa6e5bc8783bbd61c95254ec959fecc29e73fb2d6"
+content_hash = "sha256:95f715290809f5d3a83e79c40bd55087875dd058f16a7da9771c275752176f37"
 
 [[package]]
 name = "aiofiles"
@@ -625,6 +625,20 @@ summary = "A modern CSS selector implementation for Beautiful Soup."
 files = [
     {file = "soupsieve-2.5-py3-none-any.whl", hash = "sha256:eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7"},
     {file = "soupsieve-2.5.tar.gz", hash = "sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690"},
+]
+
+[[package]]
+name = "starrail-damage-cal"
+version = "1.0.0"
+requires_python = ">=3.8"
+summary = "For StarRail Role Damage Cal"
+dependencies = [
+    "httpx>=0.25.0",
+    "msgspec>=0.18.4",
+]
+files = [
+    {file = "starrail_damage_cal-1.0.0-py3-none-any.whl", hash = "sha256:95c1757accd60bc9eda97d51399b9f26fa39ae112927c94f68da385f88defa17"},
+    {file = "starrail_damage_cal-1.0.0.tar.gz", hash = "sha256:ff4287c56304e996981b851e9bfe47bc898feead5511c3b831dd7e099516cef4"},
 ]
 
 [[package]]

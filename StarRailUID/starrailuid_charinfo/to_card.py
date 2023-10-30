@@ -3,14 +3,18 @@ from pathlib import Path
 from typing import Dict, List, Union
 
 from PIL import Image, ImageDraw
+from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
+from starrail_damage_cal.to_data import api_to_dict
 
-from .to_data import api_to_dict
-from ..utils.image.convert import convert_img
 from ..utils.fonts.first_world import fw_font_28
-from ..utils.map.SR_MAP_PATH import avatarId2Name
-from ..utils.map.name_covert import avatar_id_to_char_star
 from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
-from ..utils.resource.RESOURCE_PATH import CHAR_ICON_PATH, CHAR_PREVIEW_PATH
+from ..utils.image.convert import convert_img
+from ..utils.map.name_covert import avatar_id_to_char_star
+from ..utils.resource.RESOURCE_PATH import (
+    CHAR_ICON_PATH,
+    CHAR_PREVIEW_PATH,
+    PLAYER_PATH,
+)
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
@@ -27,15 +31,18 @@ pic_500 = Image.open(TEXT_PATH / '500.png')
 
 
 async def api_to_card(uid: str) -> Union[str, bytes]:
-    char_data_list = await api_to_dict(uid)
+    char_id_list, _ = await api_to_dict(
+        sr_uid=uid,
+        save_path=PLAYER_PATH,
+    )
     if (
-        not isinstance(char_data_list, str)
-        and char_data_list == []
-        or isinstance(char_data_list, str)
+        not isinstance(char_id_list, str)
+        and char_id_list == []
+        or isinstance(char_id_list, str)
     ):
         return await convert_img(pic_500)
 
-    return await draw_enka_card(uid=uid, char_list=char_data_list, showfrom=1)
+    return await draw_enka_card(uid=uid, char_list=char_id_list, showfrom=1)
 
 
 async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
@@ -54,9 +61,7 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
         return await convert_img(Image.new('RGBA', (0, 1), (255, 255, 255)))
     else:
         line1 = f'UID {uid} 刷新成功'
-    line2 = (
-        f'可以使用 sr查询{char_data_list[0]["avatarName"]} 查询详情角色面板'
-    )
+    line2 = f'可以使用 sr查询{char_data_list[0]["avatarName"]} 查询详情角色面板'
     char_num = len(char_data_list)
     if char_num <= 4:
         based_w, based_h = 1380, 926

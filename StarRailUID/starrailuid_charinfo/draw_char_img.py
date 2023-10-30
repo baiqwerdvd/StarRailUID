@@ -9,6 +9,8 @@ from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
 from PIL import Image, ImageDraw
+from starrail_damage_cal.cal_damage import cal_char_info, cal_info
+from starrail_damage_cal.to_data import api_to_dict
 
 from ..utils.error_reply import CHAR_HINT
 from ..utils.excel.read_excel import light_cone_ranks
@@ -36,10 +38,8 @@ from ..utils.resource.RESOURCE_PATH import (
     SKILL_PATH,
     WEAPON_PATH,
 )
-from .cal_damage import cal_char_info, cal_info
-from .to_data import api_to_dict
 
-Excel_path = Path(__file__).parent / 'damage'
+Excel_path = Path(__file__).parent
 with Path.open(Excel_path / 'Excel' / 'SkillData.json', encoding='utf-8') as f:
     skill_dict = json.load(f)
 
@@ -367,8 +367,10 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     if char.equipment != {}:
         weapon_bg = Image.open(TEXT_PATH / 'weapon_bg.png')
         weapon_id = char.equipment['equipmentID']
-        weapon_img = Image.open(WEAPON_PATH / f'{weapon_id}.png').convert('RGBA').resize(
-            (170, 180)
+        weapon_img = (
+            Image.open(WEAPON_PATH / f'{weapon_id}.png')
+            .convert('RGBA')
+            .resize((170, 180))
         )
         weapon_bg.paste(weapon_img, (20, 90), weapon_img)
         weapon_bg_draw = ImageDraw.Draw(weapon_bg)
@@ -757,11 +759,13 @@ async def get_char_data(
     elif enable_self and char_self_path.exists():
         path = char_self_path
     else:
-        char_data_list = await api_to_dict(sr_uid)
+        char_id_list, _ = await api_to_dict(
+            sr_uid, save_path=PLAYER_PATH
+        )
         charname_list = []
-        if isinstance(char_data_list, str):
-            return char_data_list
-        for char in char_data_list:
+        if isinstance(char_id_list, str):
+            return char_id_list
+        for char in char_id_list:
             charname = avatarId2Name[str(char)]
             charname_list.append(charname)
         if str(char_name) in charname_list:

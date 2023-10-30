@@ -1,36 +1,40 @@
-import re
 import json
+import re
 from pathlib import Path
-from typing import Dict, Tuple, Union, Optional
+from typing import Dict, Optional, Tuple, Union
 
 from gsuid_core.logger import logger
-
-from .to_data import api_to_dict
-from .draw_char_img import draw_char_img
-from ..utils.error_reply import CHAR_HINT
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-from ..utils.excel.model import AvatarPromotionConfig, EquipmentPromotionConfig
-from ..utils.map.name_covert import (
-    name_to_avatar_id,
-    name_to_weapon_id,
-    alias_to_char_name,
-    alias_to_weapon_name,
+from starrail_damage_cal.excel.model import (
+    AvatarPromotionConfig,
+    EquipmentPromotionConfig,
 )
+from starrail_damage_cal.to_data import api_to_dict
+
+
 from ..utils.map.SR_MAP_PATH import (
-    Property2Name,
-    EquipmentID2Name,
     AvatarRankSkillUp,
+    EquipmentID2Name,
     EquipmentID2Rarity,
-    rankId2Name,
-    skillId2Name,
-    avatarId2Name,
-    skillId2Effect,
+    Property2Name,
+    avatarId2DamageType,
     avatarId2EnName,
+    avatarId2Name,
     avatarId2Rarity,
     characterSkillTree,
+    rankId2Name,
     skillId2AttackType,
-    avatarId2DamageType,
+    skillId2Effect,
+    skillId2Name,
 )
+from ..utils.error_reply import CHAR_HINT
+from ..utils.map.name_covert import (
+    alias_to_char_name,
+    alias_to_weapon_name,
+    name_to_avatar_id,
+    name_to_weapon_id,
+)
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from .draw_char_img import draw_char_img
 
 WEAPON_TO_INT = {
     '一': 1,
@@ -130,9 +134,7 @@ async def get_char_args(
             if isinstance(char_data, str):
                 return char_data
         else:
-            for i, s in enumerate(
-                ['头部', '手部', '躯干', '腿部', '位面球', '连结绳']
-            ):
+            for i, s in enumerate(['头部', '手部', '躯干', '腿部', '位面球', '连结绳']):
                 if '赤沙' in part:
                     continue
                 if part[-1] in PieceName_ilst[i]:
@@ -228,11 +230,11 @@ async def get_char_data(
     elif enable_self and char_self_path.exists():
         path = char_self_path
     else:
-        char_data_list = await api_to_dict(sr_uid)
+        char_id_list, _ = await api_to_dict(sr_uid, save_path=PLAYER_PATH)
         charname_list = []
-        if isinstance(char_data_list, str):
-            return char_data_list
-        for char in char_data_list:
+        if isinstance(char_id_list, str):
+            return char_id_list
+        for char in char_id_list:
             charname = avatarId2Name[str(char)]
             charname_list.append(charname)
         if str(char_name) in charname_list:
