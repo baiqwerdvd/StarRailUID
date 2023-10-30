@@ -4367,7 +4367,7 @@ class Huohuo(BaseAvatar):
                 skill_multiplier,
                 skill_num,
             )
-            skill_info_list.append({'name': '天赋治疗量', 'damagelist': damagelist5})
+            skill_info_list.append({'name': '天赋最高治疗量(4魂)', 'damagelist': damagelist5})
         
         return skill_info_list
 
