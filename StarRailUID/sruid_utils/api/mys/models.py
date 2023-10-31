@@ -2,6 +2,52 @@ from typing import Any, Dict, List, Union
 
 from msgspec import Struct
 
+
+class AvatarDetailEquipment(Struct):
+    item_id: str
+    item_name: str
+    item_url: str
+    avatar_base_type: str
+    rarity: str
+    max_level: int
+    cur_level: int
+    target_level: int
+
+
+class AvatarDetailSkill(Struct):
+    point_id: str
+    pre_point: str
+    point_type: int
+    anchor: str
+    item_url: str
+    max_level: int
+    cur_level: int
+    target_level: int
+    progress: str
+    min_level_limit: int
+
+
+class AvatarDetailAvatar(Struct):
+    item_id: str
+    item_name: str
+    icon_url: str
+    damage_type: str
+    rarity: str
+    avatar_base_type: str
+    max_level: int
+    cur_level: int
+    target_level: int
+    vertical_icon_url: str
+
+
+class AvatarDetail(Struct):
+    avatar: AvatarDetailAvatar
+    skills: List[AvatarDetailSkill]
+    skills_other: List[AvatarDetailSkill]
+    equipment: AvatarDetailEquipment
+    is_login: bool
+
+
 ################
 # 抽卡记录相关 #
 ################

@@ -1,38 +1,39 @@
 import copy
-import time
 import random
-from string import digits, ascii_letters
-from typing import Any, Dict, Union, Literal, Optional
+import time
+from string import ascii_letters, digits
+from typing import Any, Dict, Literal, Optional, Union
 
 import msgspec
-from gsuid_core.utils.api.mys_api import _MysApi
-from gsuid_core.utils.database.models import GsUser
 
 # from gsuid_core.utils.api.mys.models import MysSign, SignList
 from gsuid_core.utils.api.mys.tools import (
-    mys_version,
     _random_int_ds,
     generate_os_ds,
     get_web_ds_token,
+    mys_version,
 )
+from gsuid_core.utils.api.mys_api import _MysApi
+from gsuid_core.utils.database.models import GsUser
 
-from .api import srdbsqla
 from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
-    MysSign,
+    AbyssData,
+    AvatarDetail,
+    AvatarInfo,
+    DailyNoteData,
     GachaLog,
+    MonthlyAward,
+    MysSign,
+    RogueData,
+    RogueLocustData,
+    RoleBasicInfo,
+    RoleIndex,
     SignInfo,
     SignList,
-    AbyssData,
-    RogueData,
-    RoleIndex,
-    AvatarInfo,
-    MonthlyAward,
-    DailyNoteData,
-    RoleBasicInfo,
     WidgetStamina,
-    RogueLocustData,
 )
+from .api import srdbsqla
 
 RECOGNIZE_SERVER = {
     '1': 'prod_gf_cn',
@@ -285,28 +286,7 @@ class MysApi(_MysApi):
             data = msgspec.convert(data['data'], type=AvatarInfo)
             # data = cast(AvatarInfo, data['data'])
         return data
-    
-    async def get_avatar_list(
-        self, uid: str
-    ):
-        data = await self.simple_mys_req(
-            'STAR_RAIL_AVATAR_LIST_URL',
-            uid,
-            params={
-                'game': 'hkrpg',
-                'uid': uid,
-                'region': RECOGNIZE_SERVER.get(str(uid)[0], 'prod_gf_cn'),
-                'lang': 'zh-cn',
-                'tab_from': 'TabOwned',
-                'page': '1',
-                'size': '100',
-            },
-            header=self._HEADER,
-        )
-        if isinstance(data, Dict):
-            data = data['data']
-        return data
-    
+
     async def get_avatar_detail(
         self, uid: str, avatarid: str
     ):
@@ -325,9 +305,9 @@ class MysApi(_MysApi):
             header=self._HEADER,
         )
         if isinstance(data, Dict):
-            data = data['data']
+            data = msgspec.convert(data['data'], type=AvatarDetail)
         return data
-    
+
     async def get_sign_list(self, uid) -> Union[SignList, int]:
         is_os = self.check_os(uid)
         if is_os:
