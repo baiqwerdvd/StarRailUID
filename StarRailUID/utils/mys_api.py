@@ -70,7 +70,9 @@ class MysApi(_MysApi):
     async def get_user_fp(self, uid: str) -> Optional[str]:
         data = await GsUser.get_user_attr_by_uid(uid, 'fp', 'sr')
         if data is None:
-            data = await self.generate_fp_by_uid(uid)
+            seed_id, seed_time = self.get_seed()
+            model_name = self.generate_model_name()
+            data = await self.generate_fp_by_uid(uid, seed_id, seed_time, model_name)
             await GsUser.update_data_by_uid_without_bot_id(uid, 'sr', fp=data)
         return data
 
@@ -283,7 +285,49 @@ class MysApi(_MysApi):
             data = msgspec.convert(data['data'], type=AvatarInfo)
             # data = cast(AvatarInfo, data['data'])
         return data
-
+    
+    async def get_avatar_list(
+        self, uid: str
+    ):
+        data = await self.simple_mys_req(
+            'STAR_RAIL_AVATAR_LIST_URL',
+            uid,
+            params={
+                'game': 'hkrpg',
+                'uid': uid,
+                'region': RECOGNIZE_SERVER.get(str(uid)[0], 'prod_gf_cn'),
+                'lang': 'zh-cn',
+                'tab_from': 'TabOwned',
+                'page': '1',
+                'size': '100',
+            },
+            header=self._HEADER,
+        )
+        if isinstance(data, Dict):
+            data = data['data']
+        return data
+    
+    async def get_avatar_detail(
+        self, uid: str, avatarid: str
+    ):
+        data = await self.simple_mys_req(
+            'STAR_RAIL_AVATAR_DETAIL_URL',
+            uid,
+            params={
+                'game': 'hkrpg',
+                'lang': 'zh-cn',
+                'item_id': avatarid,
+                'tab_from': 'TabOwned',
+                'change_target_level': '0',
+                'uid': uid,
+                'region': RECOGNIZE_SERVER.get(str(uid)[0], 'prod_gf_cn'),
+            },
+            header=self._HEADER,
+        )
+        if isinstance(data, Dict):
+            data = data['data']
+        return data
+    
     async def get_sign_list(self, uid) -> Union[SignList, int]:
         is_os = self.check_os(uid)
         if is_os:

@@ -46,6 +46,9 @@ STAR_RAIL_AVATAR_INFO_URL_OS = (
     f'{OS_INFO_URL}/game_record/hkrpg/api/avatar/info'  # OS角色详细信息接口
 )
 
+STAR_RAIL_AVATAR_LIST_URL = f'{OLD_URL}/event/rpgcalc/avatar/list'
+STAR_RAIL_AVATAR_DETAIL_URL = f'{OLD_URL}/event/rpgcalc/avatar/detail'
+
 CHALLENGE_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge'
 CHALLENGE_INFO_URL_OS = f'{OS_INFO_URL}/game_record/hkrpg/api/challenge'
 
