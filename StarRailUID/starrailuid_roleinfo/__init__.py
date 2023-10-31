@@ -28,7 +28,7 @@ async def send_role_info(bot: Bot, ev: Event):
     return None
 
 @sv_get_info.on_command(f'{PREFIX}练度统计')
-async def send_role_info(bot: Bot, ev: Event):
+async def send_detail_info(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     if name:
         return None

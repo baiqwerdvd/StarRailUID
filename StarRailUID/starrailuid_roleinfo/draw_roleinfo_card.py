@@ -347,6 +347,8 @@ async def get_detail_card(sr_uid: str) -> Union[bytes, str]:
     # 获取角色列表
     # avatar_list = await mys_api.get_avatar_list(sr_uid)
     avatar_list = await mys_api.get_avatar_info(sr_uid, '1001')
+    if isinstance(avatar_list, int):
+        return get_error(avatar_list)
     avatar_num = len(avatar_list.avatar_list)
     img_height = 300 + avatar_num * 51
     char_info = bg_img.copy()
