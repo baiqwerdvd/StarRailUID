@@ -44,7 +44,7 @@ class AvatarDetail(Struct):
     avatar: AvatarDetailAvatar
     skills: List[AvatarDetailSkill]
     skills_other: List[AvatarDetailSkill]
-    equipment: AvatarDetailEquipment
+    equipment: Union[AvatarDetailEquipment, None]
     is_login: bool
 
 
