@@ -43,7 +43,7 @@
 </p></details>
 
 <details><summary>查询面板 - 命令: sr强制刷新 & sr查询希儿</summary><p>
-<img src="https://s2.loli.net/2023/05/14/xgmuBvAP5UVLsn4.jpg"/> 
+<img src="https://s2.loli.net/2023/11/01/luzA9UINstFdvox.jpg"/> 
 </p></details>
 
 <details><summary>查询深渊 - 命令: sr查询深渊 & sr深渊</summary><p>
