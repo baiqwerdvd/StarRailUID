@@ -54,6 +54,10 @@
 <img src="https://s2.loli.net/2023/06/08/eCnmu74rWKPf9Fp.png"/> 
 </p></details>
 
+<details><summary>查询练度 - 命令: sr练度统计</summary><p>
+<img src="https://s2.loli.net/2023/11/01/vK539aQ7UyelqDn.png"/> 
+</p></details>
+
 以及自动签到 & 体力推送 & WIKI & 攻略图等..
 
 ## 丨其他
