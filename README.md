@@ -43,7 +43,7 @@
 </p></details>
 
 <details><summary>查询面板 - 命令: sr强制刷新 & sr查询希儿</summary><p>
-<img src="https://s2.loli.net/2023/05/14/xgmuBvAP5UVLsn4.jpg"/> 
+<img src="https://s2.loli.net/2023/11/01/wUIFYaLx4qbREXZ.jpg"/> 
 </p></details>
 
 <details><summary>查询深渊 - 命令: sr查询深渊 & sr深渊</summary><p>
@@ -52,6 +52,10 @@
 
 <details><summary>查询模拟宇宙 - 命令: sr查询模拟宇宙</summary><p>
 <img src="https://s2.loli.net/2023/06/08/eCnmu74rWKPf9Fp.png"/> 
+</p></details>
+
+<details><summary>查询练度 - 命令: sr练度统计</summary><p>
+<img src="https://s2.loli.net/2023/11/01/vK539aQ7UyelqDn.png"/> 
 </p></details>
 
 以及自动签到 & 体力推送 & WIKI & 攻略图等..

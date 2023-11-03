@@ -32,12 +32,14 @@ async def send_detail_info(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     if name:
         return None
-
-    uid = await get_uid(bot, ev)
+    get_uid_ = await get_uid(bot, ev, True)
+    if get_uid_ is None:
+        return await bot.send(UID_HINT)
+    uid, user_id = get_uid_
     if uid is None:
-        return '你还没有绑定UID噢,请使用[sr绑定uid123]完成绑定!'
+        return await bot.send(UID_HINT)
 
     logger.info(f'[sr查询信息]UID: {uid}')
     await bot.logger.info('开始执行[sr查询信息]')
-    await bot.send(await get_detail_img(uid))
+    await bot.send(await get_detail_img(user_id, uid))
     return None
