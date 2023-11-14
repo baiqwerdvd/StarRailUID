@@ -2120,5 +2120,54 @@
         }
       }
     ]
+  },
+  "23020": {
+    "1": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.2
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.23
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.26
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.29
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.32
+        }
+      }
+    ]
+  },
+  "23019": {
+    "1": [],
+    "2": [],
+    "3": [],
+    "4": [],
+    "5": []
   }
 }
