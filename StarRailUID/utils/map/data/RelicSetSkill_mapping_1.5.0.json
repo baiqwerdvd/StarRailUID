@@ -146,18 +146,6 @@
             "Value": 0.10000000009313226
         }
     },
-    "311": {
-        "2": {
-            "Property": "AttackAddedRatio",
-            "Value": 0.12000000011175871
-        }
-    },
-    "312": {
-        "2": {
-            "Property": "SPRatioBase",
-            "Value": 0.05000000004656613
-        }
-    },
     "113": {
         "2": {
             "Property": "HPAddedRatio",
@@ -169,17 +157,6 @@
         "2": {
             "Property": "SpeedAddedRatio",
             "Value": 0.060000000055879354
-        },
-        "4": {}
-    },
-    "115": {
-        "2": {},
-        "4": {}
-    },
-    "116": {
-        "2": {
-            "Property": "AttackAddedRatio",
-            "Value": 0.12000000011175871
         },
         "4": {}
     }
