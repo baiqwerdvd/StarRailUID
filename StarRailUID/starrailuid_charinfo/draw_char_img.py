@@ -740,9 +740,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
 
 
 async def get_char_data(
-    sr_uid: str, char_name: str, enable_self: bool = True
+    uid: str, char_name: str, enable_self: bool = True
 ) -> Union[Dict, str]:
-    player_path = PLAYER_PATH / str(sr_uid)
+    player_path = PLAYER_PATH / str(uid)
     SELF_PATH = player_path / 'SELF'
     if '开拓者' in str(char_name):
         char_name = '开拓者'
@@ -760,7 +760,7 @@ async def get_char_data(
         path = char_self_path
     else:
         char_id_list, _ = await api_to_dict(
-            sr_uid, save_path=PLAYER_PATH
+            uid, save_path=PLAYER_PATH
         )
         charname_list = []
         if isinstance(char_id_list, str):

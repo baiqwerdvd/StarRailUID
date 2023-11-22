@@ -10,7 +10,13 @@ from starrail_damage_cal.excel.model import (
 )
 from starrail_damage_cal.to_data import api_to_dict
 
-
+from ..utils.error_reply import CHAR_HINT
+from ..utils.map.name_covert import (
+    alias_to_char_name,
+    alias_to_weapon_name,
+    name_to_avatar_id,
+    name_to_weapon_id,
+)
 from ..utils.map.SR_MAP_PATH import (
     AvatarRankSkillUp,
     EquipmentID2Name,
@@ -25,13 +31,6 @@ from ..utils.map.SR_MAP_PATH import (
     skillId2AttackType,
     skillId2Effect,
     skillId2Name,
-)
-from ..utils.error_reply import CHAR_HINT
-from ..utils.map.name_covert import (
-    alias_to_char_name,
-    alias_to_weapon_name,
-    name_to_avatar_id,
-    name_to_weapon_id,
 )
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from .draw_char_img import draw_char_img
@@ -211,9 +210,9 @@ async def get_fake_char_data(
 
 
 async def get_char_data(
-    sr_uid: str, char_name: str, enable_self: bool = True
+    uid: str, char_name: str, enable_self: bool = True
 ) -> Union[Dict, str]:
-    player_path = PLAYER_PATH / str(sr_uid)
+    player_path = PLAYER_PATH / str(uid)
     SELF_PATH = player_path / 'SELF'
     if '开拓者' in str(char_name):
         char_name = '开拓者'
@@ -230,7 +229,7 @@ async def get_char_data(
     elif enable_self and char_self_path.exists():
         path = char_self_path
     else:
-        char_id_list, _ = await api_to_dict(sr_uid, save_path=PLAYER_PATH)
+        char_id_list, _ = await api_to_dict(uid, save_path=PLAYER_PATH)
         charname_list = []
         if isinstance(char_id_list, str):
             return char_id_list

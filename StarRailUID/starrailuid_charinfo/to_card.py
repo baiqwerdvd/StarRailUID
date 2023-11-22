@@ -32,7 +32,7 @@ pic_500 = Image.open(TEXT_PATH / '500.png')
 
 async def api_to_card(uid: str) -> Union[str, bytes]:
     char_id_list, _ = await api_to_dict(
-        uid=uid,
+        uid,
         save_path=PLAYER_PATH,
     )
     if (
