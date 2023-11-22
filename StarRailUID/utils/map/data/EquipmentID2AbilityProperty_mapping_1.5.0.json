@@ -370,48 +370,6 @@
     "4": [],
     "5": []
   },
-  "21007": {
-    "1": [
-      {
-        "PropertyType": "HealRatioBase",
-        "Value": {
-          "Value": 0.10000000009313226
-        }
-      }
-    ],
-    "2": [
-      {
-        "PropertyType": "HealRatioBase",
-        "Value": {
-          "Value": 0.12499999976716936
-        }
-      }
-    ],
-    "3": [
-      {
-        "PropertyType": "HealRatioBase",
-        "Value": {
-          "Value": 0.1500000001396984
-        }
-      }
-    ],
-    "4": [
-      {
-        "PropertyType": "HealRatioBase",
-        "Value": {
-          "Value": 0.17499999981373549
-        }
-      }
-    ],
-    "5": [
-      {
-        "PropertyType": "HealRatioBase",
-        "Value": {
-          "Value": 0.20000000018626451
-        }
-      }
-    ]
-  },
   "21008": {
     "1": [
       {
@@ -1953,6 +1911,132 @@
     "4": [],
     "5": []
   },
+  "23017": {
+    "1": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.12000000011175871
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.14000000013038516
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.1600000001490116
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.18000000016763806
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "SPRatioBase",
+        "Value": {
+          "Value": 0.20000000018626451
+        }
+      }
+    ]
+  },
+  "23018": {
+    "1": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.3600000003352761
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.4200000003911555
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.48000000044703484
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.5400000005029142
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "CriticalDamageBase",
+        "Value": {
+          "Value": 0.6000000005587935
+        }
+      }
+    ]
+  },
+  "22001": {
+    "1": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.0800000000745058
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.09000000008381903
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.10000000009313226
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.11000000010244548
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "HPAddedRatio",
+        "Value": {
+          "Value": 0.12000000011175871
+        }
+      }
+    ]
+  },
   "24003": {
     "1": [
       {
@@ -1991,6 +2075,48 @@
         "PropertyType": "BreakDamageAddedRatioBase",
         "Value": {
           "Value": 0.40000000037252903
+        }
+      }
+    ]
+  },
+  "21007": {
+    "1": [
+      {
+        "PropertyType": "HealRatioBase",
+        "Value": {
+          "Value": 0.10000000009313226
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "HealRatioBase",
+        "Value": {
+          "Value": 0.12499999976716936
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "HealRatioBase",
+        "Value": {
+          "Value": 0.1500000001396984
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "HealRatioBase",
+        "Value": {
+          "Value": 0.17499999981373549
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "HealRatioBase",
+        "Value": {
+          "Value": 0.20000000018626451
         }
       }
     ]

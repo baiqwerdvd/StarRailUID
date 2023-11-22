@@ -52428,1254 +52428,6 @@
       "icon": "icon/property/IconBreakUp.png"
     }
   },
-  "1214": {
-    "1214001": {
-      "id": "1214001",
-      "name": "",
-      "max_level": 6,
-      "desc": "",
-      "params": [],
-      "anchor": "Point01",
-      "pre_points": [],
-      "level_up_skills": [
-        {
-          "id": "121401",
-          "num": 1
-        }
-      ],
-      "levels": [
-        {
-          "promotion": 0,
-          "level": 0,
-          "properties": [],
-          "materials": []
-        },
-        {
-          "promotion": 1,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 4000
-            },
-            {
-              "id": "110111",
-              "num": 2
-            },
-            {
-              "id": "111001",
-              "num": 4
-            }
-          ]
-        },
-        {
-          "promotion": 2,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 8000
-            },
-            {
-              "id": "110112",
-              "num": 2
-            },
-            {
-              "id": "111002",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 3,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 16000
-            },
-            {
-              "id": "110112",
-              "num": 4
-            },
-            {
-              "id": "111002",
-              "num": 3
-            }
-          ]
-        },
-        {
-          "promotion": 4,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 36000
-            },
-            {
-              "id": "110113",
-              "num": 2
-            },
-            {
-              "id": "111003",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 5,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 128000
-            },
-            {
-              "id": "110113",
-              "num": 6
-            },
-            {
-              "id": "111003",
-              "num": 3
-            }
-          ]
-        }
-      ],
-      "icon": "icon/skill/1214_basic_atk.png"
-    },
-    "1214002": {
-      "id": "1214002",
-      "name": "",
-      "max_level": 10,
-      "desc": "",
-      "params": [],
-      "anchor": "Point02",
-      "pre_points": [],
-      "level_up_skills": [
-        {
-          "id": "121402",
-          "num": 1
-        }
-      ],
-      "levels": [
-        {
-          "promotion": 0,
-          "level": 0,
-          "properties": [],
-          "materials": []
-        },
-        {
-          "promotion": 1,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 2000
-            },
-            {
-              "id": "111001",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 2,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 4000
-            },
-            {
-              "id": "110111",
-              "num": 2
-            },
-            {
-              "id": "111001",
-              "num": 4
-            }
-          ]
-        },
-        {
-          "promotion": 3,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 8000
-            },
-            {
-              "id": "110112",
-              "num": 2
-            },
-            {
-              "id": "111002",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 4,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 16000
-            },
-            {
-              "id": "110112",
-              "num": 4
-            },
-            {
-              "id": "111002",
-              "num": 3
-            }
-          ]
-        },
-        {
-          "promotion": 5,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 24000
-            },
-            {
-              "id": "110112",
-              "num": 6
-            },
-            {
-              "id": "111002",
-              "num": 5
-            }
-          ]
-        },
-        {
-          "promotion": 6,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 36000
-            },
-            {
-              "id": "110113",
-              "num": 2
-            },
-            {
-              "id": "111003",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 7,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 64000
-            },
-            {
-              "id": "110113",
-              "num": 4
-            },
-            {
-              "id": "110504",
-              "num": 1
-            },
-            {
-              "id": "111003",
-              "num": 3
-            }
-          ]
-        },
-        {
-          "promotion": 8,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 128000
-            },
-            {
-              "id": "110113",
-              "num": 6
-            },
-            {
-              "id": "110504",
-              "num": 1
-            }
-          ]
-        },
-        {
-          "promotion": 9,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 240000
-            },
-            {
-              "id": "241",
-              "num": 1
-            },
-            {
-              "id": "110113",
-              "num": 11
-            },
-            {
-              "id": "110504",
-              "num": 1
-            }
-          ]
-        }
-      ],
-      "icon": "icon/skill/1214_skill.png"
-    },
-    "1214003": {
-      "id": "1214003",
-      "name": "",
-      "max_level": 10,
-      "desc": "",
-      "params": [],
-      "anchor": "Point03",
-      "pre_points": [],
-      "level_up_skills": [
-        {
-          "id": "121403",
-          "num": 1
-        }
-      ],
-      "levels": [
-        {
-          "promotion": 0,
-          "level": 0,
-          "properties": [],
-          "materials": []
-        },
-        {
-          "promotion": 1,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 2000
-            },
-            {
-              "id": "111001",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 2,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 4000
-            },
-            {
-              "id": "110111",
-              "num": 2
-            },
-            {
-              "id": "111001",
-              "num": 4
-            }
-          ]
-        },
-        {
-          "promotion": 3,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 8000
-            },
-            {
-              "id": "110112",
-              "num": 2
-            },
-            {
-              "id": "111002",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 4,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 16000
-            },
-            {
-              "id": "110112",
-              "num": 4
-            },
-            {
-              "id": "111002",
-              "num": 3
-            }
-          ]
-        },
-        {
-          "promotion": 5,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 24000
-            },
-            {
-              "id": "110112",
-              "num": 6
-            },
-            {
-              "id": "111002",
-              "num": 5
-            }
-          ]
-        },
-        {
-          "promotion": 6,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 36000
-            },
-            {
-              "id": "110113",
-              "num": 2
-            },
-            {
-              "id": "111003",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 7,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 64000
-            },
-            {
-              "id": "110113",
-              "num": 4
-            },
-            {
-              "id": "110504",
-              "num": 1
-            },
-            {
-              "id": "111003",
-              "num": 3
-            }
-          ]
-        },
-        {
-          "promotion": 8,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 128000
-            },
-            {
-              "id": "110113",
-              "num": 6
-            },
-            {
-              "id": "110504",
-              "num": 1
-            }
-          ]
-        },
-        {
-          "promotion": 9,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 240000
-            },
-            {
-              "id": "241",
-              "num": 1
-            },
-            {
-              "id": "110113",
-              "num": 11
-            },
-            {
-              "id": "110504",
-              "num": 1
-            }
-          ]
-        }
-      ],
-      "icon": "icon/skill/1214_ultimate.png"
-    },
-    "1214004": {
-      "id": "1214004",
-      "name": "",
-      "max_level": 10,
-      "desc": "",
-      "params": [],
-      "anchor": "Point04",
-      "pre_points": [],
-      "level_up_skills": [
-        {
-          "id": "121404",
-          "num": 1
-        }
-      ],
-      "levels": [
-        {
-          "promotion": 0,
-          "level": 0,
-          "properties": [],
-          "materials": []
-        },
-        {
-          "promotion": 1,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 2000
-            },
-            {
-              "id": "111001",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 2,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 4000
-            },
-            {
-              "id": "110111",
-              "num": 2
-            },
-            {
-              "id": "111001",
-              "num": 4
-            }
-          ]
-        },
-        {
-          "promotion": 3,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 8000
-            },
-            {
-              "id": "110112",
-              "num": 2
-            },
-            {
-              "id": "111002",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 4,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 16000
-            },
-            {
-              "id": "110112",
-              "num": 4
-            },
-            {
-              "id": "111002",
-              "num": 3
-            }
-          ]
-        },
-        {
-          "promotion": 5,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 24000
-            },
-            {
-              "id": "110112",
-              "num": 6
-            },
-            {
-              "id": "111002",
-              "num": 5
-            }
-          ]
-        },
-        {
-          "promotion": 6,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 36000
-            },
-            {
-              "id": "110113",
-              "num": 2
-            },
-            {
-              "id": "111003",
-              "num": 2
-            }
-          ]
-        },
-        {
-          "promotion": 7,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 64000
-            },
-            {
-              "id": "110113",
-              "num": 4
-            },
-            {
-              "id": "110504",
-              "num": 1
-            },
-            {
-              "id": "111003",
-              "num": 3
-            }
-          ]
-        },
-        {
-          "promotion": 8,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 128000
-            },
-            {
-              "id": "110113",
-              "num": 6
-            },
-            {
-              "id": "110504",
-              "num": 1
-            }
-          ]
-        },
-        {
-          "promotion": 9,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 240000
-            },
-            {
-              "id": "241",
-              "num": 1
-            },
-            {
-              "id": "110113",
-              "num": 11
-            },
-            {
-              "id": "110504",
-              "num": 1
-            }
-          ]
-        }
-      ],
-      "icon": "icon/skill/1214_talent.png"
-    },
-    "1214007": {
-      "id": "1214007",
-      "name": "",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point05",
-      "pre_points": [],
-      "level_up_skills": [
-        {
-          "id": "121407",
-          "num": 1
-        }
-      ],
-      "levels": [
-        {
-          "promotion": 0,
-          "level": 0,
-          "properties": [],
-          "materials": []
-        }
-      ],
-      "icon": "icon/skill/1214_technique.png"
-    },
-    "1214101": {
-      "id": "1214101",
-      "name": "预兆机杼",
-      "max_level": 1,
-      "desc": "使自身造成的伤害提高，提高数值等同于击破特攻的<unbreak>#1[i]%</unbreak>，最多使造成的伤害提高<unbreak>#2[i]%</unbreak>。",
-      "params": [
-        [
-          1
-        ],
-        [
-          2.4
-        ]
-      ],
-      "anchor": "Point06",
-      "pre_points": [],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 2,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 4000
-            },
-            {
-              "id": "110111",
-              "num": 2
-            },
-            {
-              "id": "110504",
-              "num": 1
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/SkillIcon_1214_SkillTree1.png"
-    },
-    "1214102": {
-      "id": "1214102",
-      "name": "摧锋轴承",
-      "max_level": 1,
-      "desc": "如果敌方目标当前韧性大于等于其自身韧性上限的<unbreak>#1[i]%</unbreak>，施放终结技时造成的伤害提高<unbreak>#2[i]%</unbreak>。",
-      "params": [
-        [
-          0.5
-        ],
-        [
-          0.1
-        ]
-      ],
-      "anchor": "Point07",
-      "pre_points": [],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 4,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 16000
-            },
-            {
-              "id": "241",
-              "num": 1
-            },
-            {
-              "id": "110112",
-              "num": 4
-            },
-            {
-              "id": "110504",
-              "num": 1
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/SkillIcon_1214_SkillTree2.png"
-    },
-    "1214103": {
-      "id": "1214103",
-      "name": "伺观中枢",
-      "max_level": 1,
-      "desc": "雪衣叠加【恶报】层数超过【恶报】叠加上限时，每超过1层【恶报】会转化为叠加1层【罪业】，最多叠加<unbreak>#1[i]</unbreak>层。雪衣触发天赋后，消耗所有【罪业】，每消耗1层【罪业】叠加1层【恶报】。",
-      "params": [
-        [
-          6
-        ]
-      ],
-      "anchor": "Point08",
-      "pre_points": [],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 6,
-          "level": 0,
-          "properties": [],
-          "materials": [
-            {
-              "id": "2",
-              "num": 128000
-            },
-            {
-              "id": "241",
-              "num": 1
-            },
-            {
-              "id": "110113",
-              "num": 6
-            },
-            {
-              "id": "110504",
-              "num": 1
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/SkillIcon_1214_SkillTree3.png"
-    },
-    "1214201": {
-      "id": "1214201",
-      "name": "击破强化",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point09",
-      "pre_points": [],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 0,
-          "level": 0,
-          "properties": [
-            {
-              "type": "BreakDamageAddedRatioBase",
-              "value": 0.053
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 2000
-            },
-            {
-              "id": "111001",
-              "num": 2
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconBreakUp.png"
-    },
-    "1214202": {
-      "id": "1214202",
-      "name": "生命强化",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point10",
-      "pre_points": [
-        "1214101"
-      ],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 2,
-          "level": 0,
-          "properties": [
-            {
-              "type": "HPAddedRatio",
-              "value": 0.04
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 4000
-            },
-            {
-              "id": "110111",
-              "num": 2
-            },
-            {
-              "id": "111001",
-              "num": 4
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconMaxHP.png"
-    },
-    "1214203": {
-      "id": "1214203",
-      "name": "击破强化",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point11",
-      "pre_points": [
-        "1214202"
-      ],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 3,
-          "level": 0,
-          "properties": [
-            {
-              "type": "BreakDamageAddedRatioBase",
-              "value": 0.053
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 8000
-            },
-            {
-              "id": "110112",
-              "num": 2
-            },
-            {
-              "id": "111002",
-              "num": 2
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconBreakUp.png"
-    },
-    "1214204": {
-      "id": "1214204",
-      "name": "伤害强化•量子",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point12",
-      "pre_points": [
-        "1214203"
-      ],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 3,
-          "level": 0,
-          "properties": [
-            {
-              "type": "QuantumAddedRatio",
-              "value": 0.032
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 8000
-            },
-            {
-              "id": "110112",
-              "num": 2
-            },
-            {
-              "id": "111002",
-              "num": 2
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconQuantumAddedRatio.png"
-    },
-    "1214205": {
-      "id": "1214205",
-      "name": "击破强化",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point13",
-      "pre_points": [
-        "1214102"
-      ],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 4,
-          "level": 0,
-          "properties": [
-            {
-              "type": "BreakDamageAddedRatioBase",
-              "value": 0.08
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 16000
-            },
-            {
-              "id": "110112",
-              "num": 4
-            },
-            {
-              "id": "111002",
-              "num": 3
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconBreakUp.png"
-    },
-    "1214206": {
-      "id": "1214206",
-      "name": "生命强化",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point14",
-      "pre_points": [
-        "1214205"
-      ],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 5,
-          "level": 0,
-          "properties": [
-            {
-              "type": "HPAddedRatio",
-              "value": 0.06
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 36000
-            },
-            {
-              "id": "110113",
-              "num": 2
-            },
-            {
-              "id": "111003",
-              "num": 2
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconMaxHP.png"
-    },
-    "1214207": {
-      "id": "1214207",
-      "name": "击破强化",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point15",
-      "pre_points": [
-        "1214206"
-      ],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 5,
-          "level": 0,
-          "properties": [
-            {
-              "type": "BreakDamageAddedRatioBase",
-              "value": 0.08
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 36000
-            },
-            {
-              "id": "110113",
-              "num": 2
-            },
-            {
-              "id": "111003",
-              "num": 2
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconBreakUp.png"
-    },
-    "1214208": {
-      "id": "1214208",
-      "name": "伤害强化•量子",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point16",
-      "pre_points": [
-        "1214103"
-      ],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 6,
-          "level": 0,
-          "properties": [
-            {
-              "type": "QuantumAddedRatio",
-              "value": 0.048
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 128000
-            },
-            {
-              "id": "110113",
-              "num": 6
-            },
-            {
-              "id": "111003",
-              "num": 6
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconQuantumAddedRatio.png"
-    },
-    "1214209": {
-      "id": "1214209",
-      "name": "生命强化",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point17",
-      "pre_points": [
-        "1214208"
-      ],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 0,
-          "level": 0,
-          "properties": [
-            {
-              "type": "HPAddedRatio",
-              "value": 0.08
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 128000
-            },
-            {
-              "id": "110113",
-              "num": 6
-            },
-            {
-              "id": "111003",
-              "num": 6
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconMaxHP.png"
-    },
-    "1214210": {
-      "id": "1214210",
-      "name": "击破强化",
-      "max_level": 1,
-      "desc": "",
-      "params": [],
-      "anchor": "Point18",
-      "pre_points": [
-        "1214208"
-      ],
-      "level_up_skills": [],
-      "levels": [
-        {
-          "promotion": 0,
-          "level": 0,
-          "properties": [
-            {
-              "type": "BreakDamageAddedRatioBase",
-              "value": 0.107
-            }
-          ],
-          "materials": [
-            {
-              "id": "2",
-              "num": 128000
-            },
-            {
-              "id": "110113",
-              "num": 6
-            },
-            {
-              "id": "111003",
-              "num": 6
-            }
-          ]
-        }
-      ],
-      "icon": "icon/property/IconBreakUp.png"
-    }
-  },
   "1305": {
     "1305001": {
       "id": "1305001",
@@ -54937,6 +53689,1254 @@
         }
       ],
       "icon": "icon/property/IconAttack.png"
+    }
+  },
+  "1214": {
+    "1214001": {
+      "id": "1214001",
+      "name": "",
+      "max_level": 6,
+      "desc": "",
+      "params": [],
+      "anchor": "Point01",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": "121401",
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 4000
+            },
+            {
+              "id": "110111",
+              "num": 2
+            },
+            {
+              "id": "111001",
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 8000
+            },
+            {
+              "id": "110112",
+              "num": 2
+            },
+            {
+              "id": "111002",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 16000
+            },
+            {
+              "id": "110112",
+              "num": 4
+            },
+            {
+              "id": "111002",
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 36000
+            },
+            {
+              "id": "110113",
+              "num": 2
+            },
+            {
+              "id": "111003",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 128000
+            },
+            {
+              "id": "110113",
+              "num": 6
+            },
+            {
+              "id": "111003",
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1214_basic_atk.png"
+    },
+    "1214002": {
+      "id": "1214002",
+      "name": "",
+      "max_level": 10,
+      "desc": "",
+      "params": [],
+      "anchor": "Point02",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": "121402",
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 2000
+            },
+            {
+              "id": "111001",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 4000
+            },
+            {
+              "id": "110111",
+              "num": 2
+            },
+            {
+              "id": "111001",
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 8000
+            },
+            {
+              "id": "110112",
+              "num": 2
+            },
+            {
+              "id": "111002",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 16000
+            },
+            {
+              "id": "110112",
+              "num": 4
+            },
+            {
+              "id": "111002",
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 24000
+            },
+            {
+              "id": "110112",
+              "num": 6
+            },
+            {
+              "id": "111002",
+              "num": 5
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 36000
+            },
+            {
+              "id": "110113",
+              "num": 2
+            },
+            {
+              "id": "111003",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 64000
+            },
+            {
+              "id": "110113",
+              "num": 4
+            },
+            {
+              "id": "110504",
+              "num": 1
+            },
+            {
+              "id": "111003",
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 128000
+            },
+            {
+              "id": "110113",
+              "num": 6
+            },
+            {
+              "id": "110504",
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 240000
+            },
+            {
+              "id": "241",
+              "num": 1
+            },
+            {
+              "id": "110113",
+              "num": 11
+            },
+            {
+              "id": "110504",
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1214_skill.png"
+    },
+    "1214003": {
+      "id": "1214003",
+      "name": "",
+      "max_level": 10,
+      "desc": "",
+      "params": [],
+      "anchor": "Point03",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": "121403",
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 2000
+            },
+            {
+              "id": "111001",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 4000
+            },
+            {
+              "id": "110111",
+              "num": 2
+            },
+            {
+              "id": "111001",
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 8000
+            },
+            {
+              "id": "110112",
+              "num": 2
+            },
+            {
+              "id": "111002",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 16000
+            },
+            {
+              "id": "110112",
+              "num": 4
+            },
+            {
+              "id": "111002",
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 24000
+            },
+            {
+              "id": "110112",
+              "num": 6
+            },
+            {
+              "id": "111002",
+              "num": 5
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 36000
+            },
+            {
+              "id": "110113",
+              "num": 2
+            },
+            {
+              "id": "111003",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 64000
+            },
+            {
+              "id": "110113",
+              "num": 4
+            },
+            {
+              "id": "110504",
+              "num": 1
+            },
+            {
+              "id": "111003",
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 128000
+            },
+            {
+              "id": "110113",
+              "num": 6
+            },
+            {
+              "id": "110504",
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 240000
+            },
+            {
+              "id": "241",
+              "num": 1
+            },
+            {
+              "id": "110113",
+              "num": 11
+            },
+            {
+              "id": "110504",
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1214_ultimate.png"
+    },
+    "1214004": {
+      "id": "1214004",
+      "name": "",
+      "max_level": 10,
+      "desc": "",
+      "params": [],
+      "anchor": "Point04",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": "121404",
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 2000
+            },
+            {
+              "id": "111001",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 4000
+            },
+            {
+              "id": "110111",
+              "num": 2
+            },
+            {
+              "id": "111001",
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 8000
+            },
+            {
+              "id": "110112",
+              "num": 2
+            },
+            {
+              "id": "111002",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 16000
+            },
+            {
+              "id": "110112",
+              "num": 4
+            },
+            {
+              "id": "111002",
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 24000
+            },
+            {
+              "id": "110112",
+              "num": 6
+            },
+            {
+              "id": "111002",
+              "num": 5
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 36000
+            },
+            {
+              "id": "110113",
+              "num": 2
+            },
+            {
+              "id": "111003",
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 64000
+            },
+            {
+              "id": "110113",
+              "num": 4
+            },
+            {
+              "id": "110504",
+              "num": 1
+            },
+            {
+              "id": "111003",
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 128000
+            },
+            {
+              "id": "110113",
+              "num": 6
+            },
+            {
+              "id": "110504",
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 240000
+            },
+            {
+              "id": "241",
+              "num": 1
+            },
+            {
+              "id": "110113",
+              "num": 11
+            },
+            {
+              "id": "110504",
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1214_talent.png"
+    },
+    "1214007": {
+      "id": "1214007",
+      "name": "",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point05",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": "121407",
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        }
+      ],
+      "icon": "icon/skill/1214_technique.png"
+    },
+    "1214101": {
+      "id": "1214101",
+      "name": "预兆机杼",
+      "max_level": 1,
+      "desc": "使自身造成的伤害提高，提高数值等同于击破特攻的<unbreak>#1[i]%</unbreak>，最多使造成的伤害提高<unbreak>#2[i]%</unbreak>。",
+      "params": [
+        [
+          1
+        ],
+        [
+          2.4
+        ]
+      ],
+      "anchor": "Point06",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 4000
+            },
+            {
+              "id": "110111",
+              "num": 2
+            },
+            {
+              "id": "110504",
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_1214_SkillTree1.png"
+    },
+    "1214102": {
+      "id": "1214102",
+      "name": "摧锋轴承",
+      "max_level": 1,
+      "desc": "如果敌方目标当前韧性大于等于其自身韧性上限的<unbreak>#1[i]%</unbreak>，施放终结技时造成的伤害提高<unbreak>#2[i]%</unbreak>。",
+      "params": [
+        [
+          0.5
+        ],
+        [
+          0.1
+        ]
+      ],
+      "anchor": "Point07",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 16000
+            },
+            {
+              "id": "241",
+              "num": 1
+            },
+            {
+              "id": "110112",
+              "num": 4
+            },
+            {
+              "id": "110504",
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_1214_SkillTree2.png"
+    },
+    "1214103": {
+      "id": "1214103",
+      "name": "伺观中枢",
+      "max_level": 1,
+      "desc": "雪衣叠加【恶报】层数超过【恶报】叠加上限时，每超过1层【恶报】会转化为叠加1层【罪业】，最多叠加<unbreak>#1[i]</unbreak>层。雪衣触发天赋后，消耗所有【罪业】，每消耗1层【罪业】叠加1层【恶报】。",
+      "params": [
+        [
+          6
+        ]
+      ],
+      "anchor": "Point08",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": "2",
+              "num": 128000
+            },
+            {
+              "id": "241",
+              "num": 1
+            },
+            {
+              "id": "110113",
+              "num": 6
+            },
+            {
+              "id": "110504",
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_1214_SkillTree3.png"
+    },
+    "1214201": {
+      "id": "1214201",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point09",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.053
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 2000
+            },
+            {
+              "id": "111001",
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "1214202": {
+      "id": "1214202",
+      "name": "生命强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point10",
+      "pre_points": [
+        "1214101"
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [
+            {
+              "type": "HPAddedRatio",
+              "value": 0.04
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 4000
+            },
+            {
+              "id": "110111",
+              "num": 2
+            },
+            {
+              "id": "111001",
+              "num": 4
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconMaxHP.png"
+    },
+    "1214203": {
+      "id": "1214203",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point11",
+      "pre_points": [
+        "1214202"
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.053
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 8000
+            },
+            {
+              "id": "110112",
+              "num": 2
+            },
+            {
+              "id": "111002",
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "1214204": {
+      "id": "1214204",
+      "name": "伤害强化•量子",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point12",
+      "pre_points": [
+        "1214203"
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "QuantumAddedRatio",
+              "value": 0.032
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 8000
+            },
+            {
+              "id": "110112",
+              "num": 2
+            },
+            {
+              "id": "111002",
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconQuantumAddedRatio.png"
+    },
+    "1214205": {
+      "id": "1214205",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point13",
+      "pre_points": [
+        "1214102"
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.08
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 16000
+            },
+            {
+              "id": "110112",
+              "num": 4
+            },
+            {
+              "id": "111002",
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "1214206": {
+      "id": "1214206",
+      "name": "生命强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point14",
+      "pre_points": [
+        "1214205"
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "HPAddedRatio",
+              "value": 0.06
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 36000
+            },
+            {
+              "id": "110113",
+              "num": 2
+            },
+            {
+              "id": "111003",
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconMaxHP.png"
+    },
+    "1214207": {
+      "id": "1214207",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point15",
+      "pre_points": [
+        "1214206"
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.08
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 36000
+            },
+            {
+              "id": "110113",
+              "num": 2
+            },
+            {
+              "id": "111003",
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "1214208": {
+      "id": "1214208",
+      "name": "伤害强化•量子",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point16",
+      "pre_points": [
+        "1214103"
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [
+            {
+              "type": "QuantumAddedRatio",
+              "value": 0.048
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 128000
+            },
+            {
+              "id": "110113",
+              "num": 6
+            },
+            {
+              "id": "111003",
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconQuantumAddedRatio.png"
+    },
+    "1214209": {
+      "id": "1214209",
+      "name": "生命强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point17",
+      "pre_points": [
+        "1214208"
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "HPAddedRatio",
+              "value": 0.08
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 128000
+            },
+            {
+              "id": "110113",
+              "num": 6
+            },
+            {
+              "id": "111003",
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconMaxHP.png"
+    },
+    "1214210": {
+      "id": "1214210",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point18",
+      "pre_points": [
+        "1214208"
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.107
+            }
+          ],
+          "materials": [
+            {
+              "id": "2",
+              "num": 128000
+            },
+            {
+              "id": "110113",
+              "num": 6
+            },
+            {
+              "id": "111003",
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
     }
   }
 }

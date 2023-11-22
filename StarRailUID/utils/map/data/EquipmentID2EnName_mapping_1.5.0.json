@@ -27,7 +27,6 @@
   "21004": "MemoriesofthePast",
   "21005": "TheMolesWelcomeYou",
   "21006": "TheBirthoftheSelf",
-  "21007": "SharedFeeling",
   "21008": "EyesofthePrey",
   "21009": "Landau'sChoice",
   "21010": "Swordplay",
@@ -76,7 +75,11 @@
   "24001": "CruisingintheStellarSea",
   "24002": "TextureofMemories",
   "21025": "PastandFuture",
+  "23017": "NightofFright",
+  "23018": "AnInstantBeforeAGaze",
+  "22001": "Hey,OverHere",
   "24003": "SolitaryHealing",
+  "21007": "SharedFeeling",
   "23019": "PastSelfinMirror",
   "23020": "BaptismofPureThought"
 }
