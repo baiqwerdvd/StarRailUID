@@ -4,9 +4,9 @@ from copy import deepcopy
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
+from gsuid_core.utils.database.models import GsUser
 from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
-from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
 from ..starrailuid_config.sr_config import srconfig
 
@@ -49,23 +49,17 @@ async def sign_in(sr_uid: str) -> str:
                 if core_plugins_config.get_config('CaptchaPass').data:
                     gt = sign_data.gt
                     ch = sign_data.challenge
-                    vl, ch = await mys_api._pass(  # noqa: SLF001
-                        gt, ch, Header
-                    )
+                    vl, ch = await mys_api._pass(gt, ch, Header)
                     if vl:
                         delay = 1
                         Header['x-rpc-challenge'] = ch
                         Header['x-rpc-validate'] = vl
                         Header['x-rpc-seccode'] = f'{vl}|jordan'
-                        logger.info(
-                            f'[SR签到] {sr_uid} 已获取验证码, 等待时间{delay}秒'
-                        )
+                        logger.info(f'[SR签到] {sr_uid} 已获取验证码, 等待时间{delay}秒')
                         await asyncio.sleep(delay)
                     else:
                         delay = 605 + random.randint(1, 120)
-                        logger.info(
-                            f'[SR签到] {sr_uid} 未获取验证码,等待{delay}秒后重试...'
-                        )
+                        logger.info(f'[SR签到] {sr_uid} 未获取验证码,等待{delay}秒后重试...')
                         await asyncio.sleep(delay)
                     continue
                 logger.info('配置文件暂未开启[跳过无感验证],结束本次任务...')
@@ -74,9 +68,7 @@ async def sign_in(sr_uid: str) -> str:
             if index == 0:
                 logger.info(f'[SR签到] {sr_uid} 该用户无校验码!')
             else:
-                logger.info(
-                    f'[SR签到] [无感验证] {sr_uid} 该用户重试 {index} 次验证成功!'
-                )
+                logger.info(f'[SR签到] [无感验证] {sr_uid} 该用户重试 {index} 次验证成功!')
             break
         if (int(str(sr_uid)[0]) > 5) and (sign_data.code == 'ok'):
             # 国际服签到无risk_code字段
@@ -109,9 +101,7 @@ async def sign_in(sr_uid: str) -> str:
         sign_missed -= 1
     sign_missed = sign_info.sign_cnt_missed or sign_missed
     im = f'{mes_im}!\n{get_im}\n本月漏签次数:{sign_missed}'
-    logger.info(
-        f'[SR签到] {sr_uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}'
-    )
+    logger.info(f'[SR签到] {sr_uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}')
     return im
 
 
@@ -121,7 +111,11 @@ async def single_daily_sign(bot_id: str, sr_uid: str, gid: str, qid: str):
         if qid not in private_msg_list:
             private_msg_list[qid] = []
         private_msg_list[qid].append(
-            {'bot_id': bot_id, 'uid': sr_uid, 'msg': im}
+            {
+                'bot_id': bot_id,
+                'uid': sr_uid,
+                'msg': im,
+            }
         )
     else:
         # 向群消息推送列表添加这个群
@@ -153,8 +147,7 @@ async def daily_sign():
     global already
     tasks = []
     for bot_id in gss.active_bot:
-        sqla = get_sqla(bot_id)
-        user_list = await sqla.get_all_user()
+        user_list = await GsUser.get_all_user()
         for user in user_list:
             if user.sign_switch != 'off' and user.sr_uid is not None:
                 tasks.append(
@@ -171,9 +164,7 @@ async def daily_sign():
                     delay = 1
                 else:
                     delay = 50 + random.randint(3, 45)
-                logger.info(
-                    f'[SR签到] 已签到{len(tasks)}个用户, 等待{delay}秒进行下一次签到'
-                )
+                logger.info(f'[SR签到] 已签到{len(tasks)}个用户, 等待{delay}秒进行下一次签到')
                 tasks.clear()
                 already = 0
                 await asyncio.sleep(delay)

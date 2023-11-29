@@ -3,17 +3,17 @@ from pathlib import Path
 from typing import Dict, List, Union
 
 from PIL import Image, ImageDraw
-from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
 from starrail_damage_cal.to_data import api_to_dict
+from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
 
-from ..utils.fonts.first_world import fw_font_28
-from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
 from ..utils.image.convert import convert_img
+from ..utils.fonts.first_world import fw_font_28
 from ..utils.map.name_covert import avatar_id_to_char_star
+from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
 from ..utils.resource.RESOURCE_PATH import (
+    PLAYER_PATH,
     CHAR_ICON_PATH,
     CHAR_PREVIEW_PATH,
-    PLAYER_PATH,
 )
 
 half_color = (255, 255, 255, 120)
@@ -53,7 +53,10 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
     for char in char_list:
         avatarName = avatarId2Name[str(char)]
         char_data_list.append(
-            {'avatarName': avatarName, 'avatarId': str(char)}
+            {
+                'avatarName': avatarName,
+                'avatarId': str(char),
+            }
         )
     if showfrom == 0:
         line1 = f'展柜内有 {len(char_data_list)} 个角色!'
@@ -155,11 +158,11 @@ async def draw_enka_char(index: int, img: Image.Image, char_data: Dict):
     char_temp.paste(char_img, (8, 8), char_img)
     char_card.paste(char_temp, (0, 0), char_mask)
     if index <= 7:
-        x = (
-            60 + (index % 4) * 220
-            if img.size[0] <= 1100
-            else 160 + (index % 4) * 220
-        )
+        if img.size[0] <= 1100:
+            x = 60 + (index % 4) * 220
+        else:
+            x = 160 + (index % 4) * 220
+
         img.paste(
             char_card,
             (x, 187 + (index // 4) * 220),

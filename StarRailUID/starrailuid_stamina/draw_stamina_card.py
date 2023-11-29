@@ -6,8 +6,8 @@ from typing import Optional
 import aiohttp
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
+from gsuid_core.utils.database.models import GsBind, GsUser
 
-from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import Expedition
@@ -106,15 +106,14 @@ async def _draw_task_img(
 
 async def get_stamina_img(bot_id: str, user_id: str):
     try:
-        sqla = get_sqla(bot_id)
-        uid_list = await sqla.get_bind_sruid_list(user_id)
+        uid_list = await GsBind.get_uid_list_by_game(user_id, bot_id, 'sr')
         logger.info(f'[每日信息]UID: {uid_list}')
         if uid_list is None:
             return '请先绑定一个UID再来查询哦~'
         # 进行校验UID是否绑定CK
         useable_uid_list = []
         for uid in uid_list:
-            status = await sqla.get_user_cookie(uid)
+            status = await GsUser.get_user_cookie_by_uid(uid, 'sr')
             if status is not None:
                 useable_uid_list.append(uid)
         logger.info(f'[每日信息]可用UID: {useable_uid_list}')
@@ -208,7 +207,7 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
     else:
         stamina_color = second_color
     stamina_recovery_time = await seconds2hours_zhcn(
-        daily_data.stamina_recover_time
+        daily_data.stamina_recover_time,
     )
 
     img.paste(note_bg, (0, 0), note_bg)
@@ -217,21 +216,13 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
     # 派遣
     task_task = []
     for i in range(4):
-        char = (
-            daily_data.expeditions[i]
-            if i < len(daily_data.expeditions)
-            else None
-        )
+        char = daily_data.expeditions[i] if i < len(daily_data.expeditions) else None
         task_task.append(_draw_task_img(img, img_draw, i, char))
     await asyncio.gather(*task_task)
 
     # 绘制树脂圆环
     ring_pic = Image.open(TEXT_PATH / 'ring.apng')
-    percent = (
-        round(stamina_percent * 89)
-        if round(stamina_percent * 89) <= 89
-        else 89
-    )
+    percent = round(stamina_percent * 89) if round(stamina_percent * 89) <= 89 else 89
     ring_pic.seek(percent)
     img.paste(ring_pic, (0, 5), ring_pic)
 
@@ -245,7 +236,11 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
     )
     # 写Nickname
     img_draw.text(
-        (350, 139), nickname, font=sr_font_36, fill=white_color, anchor='mm'
+        (350, 139),
+        nickname,
+        font=sr_font_36,
+        fill=white_color,
+        anchor='mm',
     )
     # 写开拓等级
     img_draw.text(

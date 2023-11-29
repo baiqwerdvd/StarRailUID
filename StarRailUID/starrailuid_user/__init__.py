@@ -3,16 +3,14 @@ from typing import List
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.utils.database.models import GsBind
 
-from ..utils.api import get_sqla
 from ..utils.sr_prefix import PREFIX
 from ..utils.message import send_diff_msg
 from .draw_user_card import get_user_card
 
 sv_user_config = SV('sr用户管理', pm=2)
-sv_user_add = SV('sr用户添加')
 sv_user_info = SV('sr用户信息')
-# sv_user_help = SV('sr绑定帮助')
 
 
 @sv_user_info.on_fullmatch(f'{PREFIX}绑定信息')
@@ -39,13 +37,14 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     qid = ev.user_id
     await bot.logger.info(f'sr[绑定/解绑]UserID: {qid}')
 
-    sqla = get_sqla(ev.bot_id)
     sr_uid = ev.text.strip()
     if sr_uid and not sr_uid.isdigit():
         return await bot.send('你输入了错误的格式!')
 
     if '绑定' in ev.command:
-        data = await sqla.insert_bind_data(qid, sr_uid=sr_uid)
+        data = await GsBind.insert_uid(
+            qid, ev.bot_id, sr_uid, ev.group_id, 9, game_name='sr'
+        )
         return await send_diff_msg(
             bot,
             data,
@@ -56,17 +55,18 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
                 -3: '你输入了错误的格式!',
             },
         )
-    if '切换' in ev.command:
-        data = await sqla.switch_uid(qid, uid=sr_uid)
+    elif '切换' in ev.command:
+        data = await GsBind.switch_uid_by_game(qid, ev.bot_id, sr_uid, 'sr')
         if isinstance(data, List):
             return await bot.send(f'切换SR_UID{sr_uid}成功!')
         return await bot.send(f'尚未绑定该SR_UID{sr_uid}')
-    data = await sqla.delete_bind_data(qid, sr_uid=sr_uid)
-    return await send_diff_msg(
-        bot,
-        data,
-        {
-            0: f'删除SR_UID{sr_uid}成功!',
-            -1: f'该SR_UID{sr_uid}不在已绑定列表中!',
-        },
-    )
+    else:
+        data = await GsBind.delete_uid(qid, ev.bot_id, sr_uid, 'sr')
+        return await send_diff_msg(
+            bot,
+            data,
+            {
+                0: f'删除SR_UID{sr_uid}成功!',
+                -1: f'该SR_UID{sr_uid}不在已绑定列表中!',
+            },
+        )

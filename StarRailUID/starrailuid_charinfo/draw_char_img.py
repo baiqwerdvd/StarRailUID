@@ -5,16 +5,29 @@ import textwrap
 from pathlib import Path
 from typing import Dict, Union
 
+from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
+from starrail_damage_cal.to_data import api_to_dict
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
-from PIL import Image, ImageDraw
-from starrail_damage_cal.cal_damage import cal_char_info, cal_info
-from starrail_damage_cal.to_data import api_to_dict
+from starrail_damage_cal.cal_damage import cal_info, cal_char_info
 
 from ..utils.error_reply import CHAR_HINT
-from ..utils.excel.read_excel import light_cone_ranks
 from ..utils.fonts.first_world import fw_font_28
+from ..utils.excel.read_excel import light_cone_ranks
+from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
+from ..utils.map.SR_MAP_PATH import (
+    RelicId2Rarity,
+    AvatarRelicScore,
+    avatarId2Name,
+)
+from ..utils.resource.RESOURCE_PATH import (
+    RELIC_PATH,
+    SKILL_PATH,
+    PLAYER_PATH,
+    WEAPON_PATH,
+    CHAR_PORTRAIT_PATH,
+)
 from ..utils.fonts.starrail_fonts import (
     sr_font_18,
     sr_font_20,
@@ -24,19 +37,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_28,
     sr_font_34,
     sr_font_38,
-)
-from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
-from ..utils.map.SR_MAP_PATH import (
-    AvatarRelicScore,
-    RelicId2Rarity,
-    avatarId2Name,
-)
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_PORTRAIT_PATH,
-    PLAYER_PATH,
-    RELIC_PATH,
-    SKILL_PATH,
-    WEAPON_PATH,
 )
 
 Excel_path = Path(__file__).parent
@@ -131,9 +131,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
 
     # 放角色名
     char_img_draw = ImageDraw.Draw(char_info)
-    char_img_draw.text(
-        (620, 207), char.char_name, (255, 255, 255), sr_font_38, 'lm'
-    )
+    char_img_draw.text((620, 207), char.char_name, (255, 255, 255), sr_font_38, 'lm')
     if hasattr(sr_font_38, 'getsize'):
         char_name_len = sr_font_38.getsize(char.char_name)[0]  # type: ignore
     else:
@@ -178,12 +176,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
     # 生命值
     hp = int(char.base_attributes.get('hp'))
     add_hp = int(
-        char.add_attr.get('HPDelta', 0)
-        + hp * char.add_attr.get('HPAddedRatio', 0)
+        char.add_attr.get('HPDelta', 0) + hp * char.add_attr.get('HPAddedRatio', 0)
     )
-    attr_bg_draw.text(
-        (413, 31), f'{hp + add_hp}', white_color, sr_font_26, 'rm'
-    )
+    attr_bg_draw.text((413, 31), f'{hp + add_hp}', white_color, sr_font_26, 'rm')
     attr_bg_draw.text(
         (428, 31),
         f'(+{round(add_hp)!s})',
@@ -274,9 +269,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         'rm',
     )
     # 效果命中
-    status_probability_base = (
-        char.add_attr.get('StatusProbabilityBase', 0) * 100
-    )
+    status_probability_base = char.add_attr.get('StatusProbabilityBase', 0) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 6),
         f'{status_probability_base:.1f}%',
@@ -401,8 +394,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
         weapon_bg.paste(rank_img, (weapon_name_len + 330, 2), rank_img)
 
         rarity_img = Image.open(
-            TEXT_PATH
-            / f'LightCore_Rarity{char.equipment["equipmentRarity"]}.png'
+            TEXT_PATH / f'LightCore_Rarity{char.equipment["equipmentRarity"]}.png'
         ).resize((306, 72))
         weapon_bg.paste(rarity_img, (223, 55), rarity_img)
         weapon_bg_draw.text(
@@ -415,9 +407,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
 
         # 武器技能
         desc = light_cone_ranks[str(char.equipment['equipmentID'])]['desc']
-        desc_params = light_cone_ranks[str(char.equipment['equipmentID'])][
-            'params'
-        ][char.equipment['equipmentRank'] - 1]
+        desc_params = light_cone_ranks[str(char.equipment['equipmentID'])]['params'][
+            char.equipment['equipmentRank'] - 1
+        ]
         for i in range(len(desc_params)):
             temp = math.floor(desc_params[i] * 1000) / 10
             desc = desc.replace(f'#{i + 1}[i]%', f'{temp!s}%')
@@ -467,7 +459,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 (105, 105), Image.Resampling.LANCZOS
             ).convert('RGBA')
             relic_img.paste(
-                relic_piece_new_img, (200, 90), relic_piece_new_img
+                relic_piece_new_img,
+                (200, 90),
+                relic_piece_new_img,
             )
             rarity_img = Image.open(
                 TEXT_PATH / f'LightCore_Rarity'
@@ -585,9 +579,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 anchor='rm',
             )
 
-            char_info.paste(
-                relic_img, RELIC_POS[str(relic['Type'])], relic_img
-            )
+            char_info.paste(relic_img, RELIC_POS[str(relic['Type'])], relic_img)
             relic_score += single_relic_score
         if relic_score > 210:
             relic_value_level = Image.open(TEXT_PATH / 'CommonIconSSS.png')
@@ -659,9 +651,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 damage_img = Image.open(TEXT_PATH / 'attack_1.png')
             else:
                 damage_img = Image.open(TEXT_PATH / 'attack_2.png')
-            char_info.paste(
-                damage_img, (0, 2028 + damage_num * 48), damage_img
-            )
+            char_info.paste(damage_img, (0, 2028 + damage_num * 48), damage_img)
             char_img_draw.text(
                 (55, 2048 + damage_num * 48),
                 f'{damage_info["name"]}',
@@ -669,8 +659,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                 sr_font_26,
                 'lm',
             )
-            if len(damage_info['damagelist']) == 3:
-                damage1 = math.floor(damage_info['damagelist'][0])  # type: ignore
+            dmg_list = damage_info['damagelist']
+            if len(dmg_list) == 3:
+                damage1 = math.floor(dmg_list[0])  # type: ignore
                 char_img_draw.text(
                     (370, 2048 + damage_num * 48),
                     f'{damage1}',
@@ -678,7 +669,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                     sr_font_26,
                     'lm',
                 )
-                damage2 = math.floor(damage_info['damagelist'][1])  # type: ignore
+                damage2 = math.floor(dmg_list[1])  # type: ignore
                 char_img_draw.text(
                     (560, 2048 + damage_num * 48),
                     f'{damage2}',
@@ -686,7 +677,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                     sr_font_26,
                     'lm',
                 )
-                damage3 = math.floor(damage_info['damagelist'][2])  # type: ignore
+                damage3 = math.floor(dmg_list[2])  # type: ignore
                 char_img_draw.text(
                     (750, 2048 + damage_num * 48),
                     f'{damage3}',
@@ -695,7 +686,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str):
                     'lm',
                 )
             else:
-                damage = math.floor(damage_info['damagelist'][0])  # type: ignore
+                damage = math.floor(dmg_list[0])  # type: ignore
                 char_img_draw.text(
                     (560, 2048 + damage_num * 48),
                     f'{damage}',
@@ -759,9 +750,7 @@ async def get_char_data(
     elif enable_self and char_self_path.exists():
         path = char_self_path
     else:
-        char_id_list, _ = await api_to_dict(
-            uid, save_path=PLAYER_PATH
-        )
+        char_id_list, _ = await api_to_dict(uid, save_path=PLAYER_PATH)
         charname_list = []
         if isinstance(char_id_list, str):
             return char_id_list
@@ -817,9 +806,7 @@ async def get_relic_score(
             add_value = subValue * 0.3 * 0.5 * weight_dict['AttackDelta'] * 1.0
             relic_score += add_value
         if subProperty == 'DefenceDelta':
-            add_value = (
-                subValue * 0.3 * 0.5 * weight_dict['DefenceDelta'] * 1.0
-            )
+            add_value = subValue * 0.3 * 0.5 * weight_dict['DefenceDelta'] * 1.0
             relic_score += add_value
         if subProperty == 'HPDelta':
             add_value = subValue * 0.158 * 0.5 * weight_dict['HPDelta'] * 1.0
@@ -828,9 +815,7 @@ async def get_relic_score(
             add_value = subValue * 1.5 * weight_dict['AttackAddedRatio'] * 100
             relic_score += add_value
         if subProperty == 'DefenceAddedRatio':
-            add_value = (
-                subValue * 1.19 * weight_dict['DefenceAddedRatio'] * 100
-            )
+            add_value = subValue * 1.19 * weight_dict['DefenceAddedRatio'] * 100
             relic_score += add_value
         if subProperty == 'HPAddedRatio':
             add_value = subValue * 1.5 * weight_dict['HPAddedRatio'] * 100
@@ -839,18 +824,12 @@ async def get_relic_score(
             add_value = subValue * 2.53 * weight_dict['SpeedDelta']
             relic_score += add_value
         if subProperty == 'BreakDamageAddedRatioBase':
-            add_value = (
-                subValue * 1.0 * weight_dict['BreakDamageAddedRatioBase'] * 100
-            )
+            add_value = subValue * 1.0 * weight_dict['BreakDamageAddedRatioBase'] * 100
             relic_score += add_value
         if subProperty == 'StatusProbabilityBase':
-            add_value = (
-                subValue * 1.49 * weight_dict['StatusProbabilityBase'] * 100
-            )
+            add_value = subValue * 1.49 * weight_dict['StatusProbabilityBase'] * 100
             relic_score += add_value
         if subProperty == 'StatusResistanceBase':
-            add_value = (
-                subValue * 1.49 * weight_dict['StatusResistanceBase'] * 100
-            )
+            add_value = subValue * 1.49 * weight_dict['StatusResistanceBase'] * 100
             relic_score += add_value
     return relic_score

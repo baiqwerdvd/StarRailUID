@@ -7,8 +7,8 @@ from gsuid_core.gss import gss
 from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
+from gsuid_core.utils.database.models import GsBind
 
-from ..utils.api import get_sqla
 from ..utils.sr_prefix import PREFIX
 from .sign import sign_in, daily_sign
 from ..utils.error_reply import UID_HINT
@@ -31,8 +31,7 @@ async def sr_sign_at_night():
 @sv_sign.on_fullmatch(f'{PREFIX}签到')
 async def get_sign_func(bot: Bot, ev: Event):
     await bot.logger.info(f'[SR签到]QQ号: {ev.user_id}')
-    sqla = get_sqla(ev.bot_id)
-    sr_uid = await sqla.get_bind_sruid(ev.user_id)
+    sr_uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id, 'sr')
     if sr_uid is None:
         return await bot.send(UID_HINT)
     await bot.logger.info(f'[SR签到]UID: {sr_uid}')
@@ -65,9 +64,7 @@ async def send_daily_sign():
                         single['msg'], 'direct', qid, single['bot_id'], '', ''
                     )
         except Exception as e:
-            logger.warning(
-                f'[SR每日全部签到] QQ {qid} 私聊推送失败!错误信息:{e}'
-            )
+            logger.warning(f'[SR每日全部签到] QQ {qid} 私聊推送失败!错误信息:{e}')
         await asyncio.sleep(0.5)
     logger.info('[SR每日全部签到]私聊推送完成')
 
@@ -76,9 +73,7 @@ async def send_daily_sign():
         # 根据succee数判断是否为简洁推送
         if group_msg_list[gid]['success'] >= 0:
             report = (
-                '以下为签到失败报告:{}'.format(
-                    group_msg_list[gid]['push_message']
-                )
+                '以下为签到失败报告:{}'.format(group_msg_list[gid]['push_message'])
                 if group_msg_list[gid]['push_message'] != ''
                 else ''
             )

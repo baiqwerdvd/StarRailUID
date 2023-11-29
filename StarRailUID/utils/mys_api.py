@@ -1,39 +1,38 @@
 import copy
-import random
 import time
-from string import ascii_letters, digits
-from typing import Any, Dict, Literal, Optional, Union
+import random
+from string import digits, ascii_letters
+from typing import Any, Dict, Union, Literal, Optional
 
 import msgspec
-
-# from gsuid_core.utils.api.mys.models import MysSign, SignList
-from gsuid_core.utils.api.mys.tools import (
-    _random_int_ds,
-    generate_os_ds,
-    get_web_ds_token,
-    mys_version,
-)
 from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.database.models import GsUser
 
+# from gsuid_core.utils.api.mys.models import MysSign, SignList
+from gsuid_core.utils.api.mys.tools import (
+    mys_version,
+    _random_int_ds,
+    generate_os_ds,
+    get_web_ds_token,
+)
+
 from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
-    AbyssData,
-    AvatarDetail,
-    AvatarInfo,
-    DailyNoteData,
-    GachaLog,
-    MonthlyAward,
     MysSign,
-    RogueData,
-    RogueLocustData,
-    RoleBasicInfo,
-    RoleIndex,
+    GachaLog,
     SignInfo,
     SignList,
+    AbyssData,
+    RogueData,
+    RoleIndex,
+    AvatarInfo,
+    AvatarDetail,
+    MonthlyAward,
+    DailyNoteData,
+    RoleBasicInfo,
     WidgetStamina,
+    RogueLocustData,
 )
-from .api import srdbsqla
 
 RECOGNIZE_SERVER = {
     '1': 'prod_gf_cn',
@@ -71,10 +70,7 @@ class MysApi(_MysApi):
     async def get_user_fp(self, uid: str) -> Optional[str]:
         data = await GsUser.get_user_attr_by_uid(uid, 'fp', 'sr')
         if data is None:
-            seed_id, seed_time = self.get_seed()
-            model_name = self.generate_model_name()
-            data = await self.generate_fp_by_uid(uid, seed_id, seed_time, model_name)
-            await GsUser.update_data_by_uid_without_bot_id(uid, 'sr', fp=data)
+            data = self.generate_random_fp()
         return data
 
     async def get_user_device_id(self, uid: str) -> Optional[str]:
@@ -82,7 +78,9 @@ class MysApi(_MysApi):
         if data is None:
             data = self.get_device_id()
             await GsUser.update_data_by_uid_without_bot_id(
-                uid, 'sr', device_id=data
+                uid,
+                'sr',
+                device_id=data,
             )
         return data
 
@@ -138,7 +136,8 @@ class MysApi(_MysApi):
         return data
 
     async def get_widget_stamina_data(
-        self, uid: str
+        self,
+        uid: str,
     ) -> Union[WidgetStamina, int]:
         header = copy.deepcopy(self._HEADER)
         sk = await self.get_stoken(uid)
@@ -147,9 +146,7 @@ class MysApi(_MysApi):
         header['Cookie'] = sk
         header['x-rpc-channel'] = 'beta'
         device_id = await self.get_user_device_id(uid)
-        header['x-rpc-device_id'] = (
-            '233333' if device_id is None else device_id
-        )
+        header['x-rpc-device_id'] = '23' if device_id is None else device_id
         header['x-rpc-app_version'] = '2.53.0'
         header['x-rpc-device_model'] = 'Mi 10'
         fp = await self.get_user_fp(uid)
@@ -161,7 +158,9 @@ class MysApi(_MysApi):
         header['x-rpc-sys_version'] = '12'
         header['User-Agent'] = 'okhttp/4.8.0'
         data = await self._mys_request(
-            _API['STAR_RAIL_WIDGRT_URL'], 'GET', header
+            _API['STAR_RAIL_WIDGRT_URL'],
+            'GET',
+            header,
         )
         if isinstance(data, Dict):
             data = msgspec.convert(data['data'], type=WidgetStamina)
@@ -287,9 +286,7 @@ class MysApi(_MysApi):
             # data = cast(AvatarInfo, data['data'])
         return data
 
-    async def get_avatar_detail(
-        self, uid: str, avatarid: str
-    ):
+    async def get_avatar_detail(self, uid: str, avatarid: str):
         data = await self.simple_mys_req(
             'STAR_RAIL_AVATAR_DETAIL_URL',
             uid,
@@ -322,7 +319,9 @@ class MysApi(_MysApi):
                 'lang': 'zh-cn',
             }
         data = await self._mys_req_get(
-            'STAR_RAIL_SIGN_LIST_URL', is_os, params
+            'STAR_RAIL_SIGN_LIST_URL',
+            is_os,
+            params,
         )
         if isinstance(data, Dict):
             data = msgspec.convert(data['data'], type=SignList)
@@ -354,7 +353,10 @@ class MysApi(_MysApi):
             }
             header = self._HEADER
         data = await self._mys_req_get(
-            'STAR_RAIL_SIGN_INFO_URL', is_os, params, header
+            'STAR_RAIL_SIGN_INFO_URL',
+            is_os,
+            params,
+            header,
         )
         if isinstance(data, Dict):
             data = msgspec.convert(data['data'], type=SignInfo)
@@ -533,7 +535,8 @@ class MysApi(_MysApi):
         return data
 
     async def get_role_basic_info(
-        self, sr_uid: str
+        self,
+        sr_uid: str,
     ) -> Union[RoleBasicInfo, int]:
         data = await self.simple_mys_req(
             'STAR_RAIL_ROLE_BASIC_INFO_URL', sr_uid, header=self._HEADER
@@ -545,7 +548,6 @@ class MysApi(_MysApi):
 
 
 mys_api = MysApi()
-mys_api.dbsqla = srdbsqla
 mys_api.MAPI.update(_API)
 mys_api.is_sr = True
 mys_api.RECOGNIZE_SERVER = RECOGNIZE_SERVER

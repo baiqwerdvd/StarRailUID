@@ -2,8 +2,8 @@ from typing import Dict
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
+from gsuid_core.utils.database.models import GsPush, GsUser
 
-from ..utils.api import get_sqla
 from ..utils.mys_api import mys_api
 from ..starrailuid_config.sr_config import srconfig
 from ..sruid_utils.api.mys.models import DailyNoteData
@@ -19,15 +19,14 @@ NOTICE = {
 async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
     msg_dict: Dict[str, Dict[str, Dict]] = {}
     for bot_id in gss.active_bot:
-        sqla = get_sqla(bot_id)
-        user_list = await sqla.get_all_push_user_list()
+        user_list = await GsUser.get_all_push_user_list()
         for user in user_list:
             if user.sr_uid is not None:
                 raw_data = await mys_api.get_daily_data(user.sr_uid)
                 if isinstance(raw_data, int):
                     logger.error(f'[sr推送提醒]获取{user.sr_uid}的数据失败!')
                     continue
-                push_data = await sqla.select_push_data(user.sr_uid)
+                push_data = await GsPush.select_data_by_uid(user.sr_uid, 'sr')
                 msg_dict = await all_check(
                     user.bot_id,
                     raw_data,
@@ -47,14 +46,13 @@ async def all_check(
     user_id: str,
     uid: str,
 ) -> Dict[str, Dict[str, Dict]]:
-    sqla = get_sqla(bot_id)
     for mode in NOTICE.keys():
         # 检查条件
         if push_data[f'{mode}_is_push'] == 'on':
             if srconfig.get_config('CrazyNotice').data:
                 if not await check(mode, raw_data, push_data[f'{mode}_value']):
-                    await sqla.update_push_data(
-                        uid, bot_id, {f'{mode}_is_push': 'off'}
+                    await GsPush.update_data_by_uid(
+                        uid, bot_id, 'sr', **{f'{mode}_is_push': 'off'}
                     )
                 continue
         # 准备推送
@@ -73,8 +71,8 @@ async def all_check(
                         msg_dict[bot_id]['direct'][user_id] = NOTICE[mode]
                     else:
                         msg_dict[bot_id]['direct'][user_id] += NOTICE[mode]
-                    await sqla.update_push_data(
-                        uid, bot_id, {f'{mode}_is_push': 'on'}
+                    await GsPush.update_data_by_uid(
+                        uid, bot_id, 'sr', **{f'{mode}_is_push': 'on'}
                     )
                 # 群号推送到群聊
                 else:
@@ -87,8 +85,8 @@ async def all_check(
                         msg_dict[bot_id]['group'][gid][user_id] = NOTICE[mode]
                     else:
                         msg_dict[bot_id]['group'][gid][user_id] += NOTICE[mode]
-                    await sqla.update_push_data(
-                        uid, bot_id, {f'{mode}_is_push': 'on'}
+                    await GsPush.update_data_by_uid(
+                        uid, bot_id, 'sr', **{f'{mode}_is_push': 'on'}
                     )
     return msg_dict
 

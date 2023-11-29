@@ -6,5 +6,5 @@ class SRDBSqla(DBSqla):
         super().__init__(is_sr=True)
 
 
-srdbsqla = SRDBSqla()
-get_sqla = srdbsqla.get_sqla
+# srdbsqla = SRDBSqla()
+# get_sqla = srdbsqla.get_sqla
