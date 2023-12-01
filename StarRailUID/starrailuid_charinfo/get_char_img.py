@@ -1,39 +1,39 @@
-import json
 import re
+import json
 from pathlib import Path
-from typing import Dict, Optional, Tuple, Union
+from typing import Dict, Tuple, Union, Optional
 
 from gsuid_core.logger import logger
+from starrail_damage_cal.to_data import api_to_dict
 from starrail_damage_cal.excel.model import (
     AvatarPromotionConfig,
     EquipmentPromotionConfig,
 )
-from starrail_damage_cal.to_data import api_to_dict
 
+from .draw_char_img import draw_char_img
 from ..utils.error_reply import CHAR_HINT
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.map.name_covert import (
-    alias_to_char_name,
-    alias_to_weapon_name,
     name_to_avatar_id,
     name_to_weapon_id,
+    alias_to_char_name,
+    alias_to_weapon_name,
 )
 from ..utils.map.SR_MAP_PATH import (
-    AvatarRankSkillUp,
-    EquipmentID2Name,
-    EquipmentID2Rarity,
     Property2Name,
-    avatarId2DamageType,
-    avatarId2EnName,
+    EquipmentID2Name,
+    AvatarRankSkillUp,
+    EquipmentID2Rarity,
+    rankId2Name,
+    skillId2Name,
     avatarId2Name,
+    skillId2Effect,
+    avatarId2EnName,
     avatarId2Rarity,
     characterSkillTree,
-    rankId2Name,
     skillId2AttackType,
-    skillId2Effect,
-    skillId2Name,
+    avatarId2DamageType,
 )
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-from .draw_char_img import draw_char_img
 
 WEAPON_TO_INT = {
     '一': 1,
