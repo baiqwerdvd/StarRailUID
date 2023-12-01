@@ -62,6 +62,7 @@ progresslist = {
     5: '第五世界',
     6: '第六世界',
     7: '第七世界',
+    8: '第八世界',
 }
 
 difficultylist = {
@@ -71,6 +72,8 @@ difficultylist = {
     4: 'Ⅳ',
     5: 'V',
     6: 'Ⅵ',
+    7: 'Ⅶ',
+    8: 'Ⅷ',
 }
 
 bufflist = {
@@ -300,8 +303,8 @@ async def draw_rogue_img(
 
     # 获取查询者数据
     if floor:
-        if floor > 7:
-            return '世界不能大于第七世界!'
+        if floor > 8:
+            return '世界不能大于第八世界!'
         if floor not in detail_list:
             return '你还没有挑战该模拟宇宙!'
     elif schedule_type == '3':
