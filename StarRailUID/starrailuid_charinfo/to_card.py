@@ -42,7 +42,8 @@ async def api_to_card(uid: str) -> Union[str, bytes]:
     ):
         return await convert_img(pic_500)
 
-    return await draw_enka_card(uid=uid, char_list=char_id_list, showfrom=1)
+    img = await draw_enka_card(uid=uid, char_list=char_id_list, showfrom=1)
+    return img,char_id_list
 
 
 async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
