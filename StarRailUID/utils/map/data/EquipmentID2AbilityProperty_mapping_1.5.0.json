@@ -1506,13 +1506,13 @@
       {
         "PropertyType": "HPAddedRatio",
         "Value": {
-          "Value": 0.24000000022351742
+          "Value": 0.24
         }
       },
       {
         "PropertyType": "SPRatioBase",
         "Value": {
-          "Value": 0.12000000011175871
+          "Value": 0.09
         }
       }
     ],
@@ -1520,13 +1520,13 @@
       {
         "PropertyType": "HPAddedRatio",
         "Value": {
-          "Value": 0.2800000002607703
+          "Value": 0.28
         }
       },
       {
         "PropertyType": "SPRatioBase",
         "Value": {
-          "Value": 0.14000000013038516
+          "Value": 0.105
         }
       }
     ],
@@ -1534,13 +1534,13 @@
       {
         "PropertyType": "HPAddedRatio",
         "Value": {
-          "Value": 0.3200000002980232
+          "Value": 0.32
         }
       },
       {
         "PropertyType": "SPRatioBase",
         "Value": {
-          "Value": 0.1600000001490116
+          "Value": 0.12
         }
       }
     ],
@@ -1548,13 +1548,13 @@
       {
         "PropertyType": "HPAddedRatio",
         "Value": {
-          "Value": 0.3600000003352761
+          "Value": 0.36
         }
       },
       {
         "PropertyType": "SPRatioBase",
         "Value": {
-          "Value": 0.18000000016763806
+          "Value": 0.135
         }
       }
     ],
@@ -1562,13 +1562,13 @@
       {
         "PropertyType": "HPAddedRatio",
         "Value": {
-          "Value": 0.40000000037252903
+          "Value": 0.4
         }
       },
       {
         "PropertyType": "SPRatioBase",
         "Value": {
-          "Value": 0.20000000018626451
+          "Value": 0.15
         }
       }
     ]
@@ -2122,11 +2122,46 @@
     ]
   },
   "23019": {
-    "1": [],
-    "2": [],
-    "3": [],
-    "4": [],
-    "5": []
+    "1": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 0.6
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 0.7
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 0.8
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 0.9
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 1
+        }
+      }
+    ]
   },
   "23020": {
     "1": [

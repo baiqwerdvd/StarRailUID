@@ -36,8 +36,8 @@ async def send_char_info(bot: Bot, ev: Event):
         await bot.send_option(
             img,
             [
-                Button('🔄更换武器', f'sr查询{name}换'),
-                Button('⏫提高命座', f'sr查询六魂{name}'),
+                Button('🔄更换武器', f'sr查询{name}换', action = 2),
+                Button('⏫提高命座', f'sr查询六魂{name}', action = 2),
             ],
         )
         if im[1]:
