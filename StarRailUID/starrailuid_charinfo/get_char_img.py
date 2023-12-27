@@ -133,7 +133,9 @@ async def get_char_args(
             if isinstance(char_data, str):
                 return char_data
         else:
-            for i, s in enumerate(['头部', '手部', '躯干', '腿部', '位面球', '连结绳']):
+            for i, s in enumerate(
+                ['头部', '手部', '躯干', '腿部', '位面球', '连结绳']
+            ):
                 if '赤沙' in part:
                     continue
                 if part[-1] in PieceName_ilst[i]:

@@ -2,20 +2,20 @@ import re
 from pathlib import Path
 from typing import Tuple, cast
 
-from PIL import Image
-from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
-from gsuid_core.models import Event
-
-from .to_card import api_to_card
-from ..utils.convert import get_uid
-from ..utils.sr_prefix import PREFIX
-from ..utils.error_reply import UID_HINT
-from .get_char_img import draw_char_info_img
-from ..utils.image.convert import convert_img
 from gsuid_core.message_models import Button
-from ..utils.resource.RESOURCE_PATH import TEMP_PATH
+from gsuid_core.models import Event
+from gsuid_core.sv import SV
+from PIL import Image
 from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
+
+from ..utils.convert import get_uid
+from ..utils.error_reply import UID_HINT
+from ..utils.image.convert import convert_img
+from ..utils.resource.RESOURCE_PATH import TEMP_PATH
+from ..utils.sr_prefix import PREFIX
+from .get_char_img import draw_char_info_img
+from .to_card import api_to_card
 
 sv_char_info_config = SV('sr面板设置', pm=2)
 sv_get_char_info = SV('sr面板查询', priority=10)
@@ -36,8 +36,8 @@ async def send_char_info(bot: Bot, ev: Event):
         await bot.send_option(
             img,
             [
-                Button('🔄更换武器', f'sr查询{name}换', action = 2),
-                Button('⏫提高命座', f'sr查询六魂{name}', action = 2),
+                Button('🔄更换武器', f'sr查询{name}换', action=2),
+                Button('⏫提高命座', f'sr查询六魂{name}', action=2),
             ],
         )
         if im[1]:
@@ -50,8 +50,8 @@ async def send_char_info(bot: Bot, ev: Event):
         await bot.send_option(
             im,
             [
-                Button('🔄更换武器', f'sr查询{name}换', action = 2),
-                Button('⏫提高命座', f'sr查询六魂{name}', action = 2),
+                Button('🔄更换武器', f'sr查询{name}换', action=2),
+                Button('⏫提高命座', f'sr查询六魂{name}', action=2),
             ],
         )
     elif im is None:
@@ -90,9 +90,11 @@ async def send_card_info(bot: Bot, ev: Event):
     await bot.logger.info(f'UID{uid}获取角色数据成功!')
     if isinstance(im, Tuple):
         buttons = [
-            Button(f'✅查询{avatarId2Name[str(avatarid)]}', f'sr查询{avatarId2Name[str(avatarid)]}')
+            Button(
+                f'✅查询{avatarId2Name[str(avatarid)]}',
+                f'sr查询{avatarId2Name[str(avatarid)]}',
+            )
             for avatarid in im[1]
         ]
-        await bot.send_option(im[0], buttons)
-    else:
-        await bot.send(im)
+        return await bot.send_option(im[0], buttons)
+    return await bot.send(im)

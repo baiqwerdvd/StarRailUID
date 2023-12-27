@@ -69,8 +69,10 @@ elements = {
 async def get_role_img(uid: str) -> Union[bytes, str]:
     return await draw_role_card(uid)
 
+
 async def get_detail_img(qid: Union[str, int], uid: str) -> Union[bytes, str]:
     return await get_detail_card(qid, uid)
+
 
 def _lv(level: int) -> str:
     return f'Lv.0{level}' if level < 10 else f'Lv.{level}'
@@ -268,8 +270,12 @@ async def draw_role_card(sr_uid: str) -> Union[bytes, str]:
     img.paste(bg3, (0, height + 810))
     return await convert_img(img)
 
+
 async def _draw_detail_card(
-    avatar_detail: AvatarDetail, avatar: AvatarListItemDetail, index: int, char_info: Image.Image
+    avatar_detail: AvatarDetail,
+    avatar: AvatarListItemDetail,
+    index: int,
+    char_info: Image.Image,
 ) -> Image.Image:
     if str(avatar.rarity) == '5':
         avatar_img = Image.open(TEXT_PATH / 'bar_5.png')
@@ -337,7 +343,6 @@ async def _draw_detail_card(
     )
 
     if avatar.equip:
-
         equip_icon = (await get_icon(avatar.equip.icon)).resize((50, 50))
         avatar_img.paste(equip_icon, (595, 5), mask=equip_icon)
 
@@ -369,7 +374,10 @@ async def _draw_detail_card(
 
     return char_info
 
-async def get_detail_card(qid: Union[str, int], sr_uid: str) -> Union[bytes, str]:
+
+async def get_detail_card(
+    qid: Union[str, int], sr_uid: str
+) -> Union[bytes, str]:
     # 获取角色列表
     avatar_list = await mys_api.get_avatar_info(sr_uid, 1001)
     if isinstance(avatar_list, int):
@@ -397,7 +405,9 @@ async def get_detail_card(qid: Union[str, int], sr_uid: str) -> Union[bytes, str
     char_info.paste(char_pic, (400, 88), char_pic)
 
     # 绘制抬头
-    char_img_draw.text((525, 420), f'UID {sr_uid}', white_color, sr_font_28, 'mm')
+    char_img_draw.text(
+        (525, 420), f'UID {sr_uid}', white_color, sr_font_28, 'mm'
+    )
 
     title_img = Image.open(TEXT_PATH / 'bar_title.png')
     char_info.paste(title_img, (0, 515), mask=title_img)

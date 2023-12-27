@@ -93,6 +93,15 @@ inline-quotes = "single"
 [tool.ruff.format]
 quote-style = "single"
 
+[tool.ruff.isort]
+case-sensitive = true
+force-sort-within-sections = true
+extra-standard-library = ["typing_extensions"]
+#force-wrap-aliases = true
+combine-as-imports = true
+order-by-type = true
+relative-imports-order = "closest-to-furthest"
+section-order = ["future", "standard-library", "first-party", "local-folder", "third-party"]
 
 [tool.pdm]
 [tool.pdm.build]
@@ -118,7 +127,7 @@ dependencies = [
     "aiofiles>=23.2.1",
     "aiohttp>=3.8.6",
     "qrcode[pil]>=7.4.2",
-    "starrail-damage-cal>=1.0.0",
+    "starrail-damage-cal>=1.2.1",
 ]
 requires-python = ">=3.8.1,<4.0"
 readme = "README.md"

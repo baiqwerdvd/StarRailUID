@@ -1,12 +1,12 @@
 from typing import List
 
-from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.sv import SV
 from gsuid_core.utils.database.models import GsBind
 
-from ..utils.sr_prefix import PREFIX
 from ..utils.message import send_diff_msg
+from ..utils.sr_prefix import PREFIX
 from .draw_user_card import get_user_card
 
 sv_user_config = SV('sr用户管理', pm=2)
@@ -55,18 +55,19 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
                 -3: '你输入了错误的格式!',
             },
         )
-    elif '切换' in ev.command:
+
+    if '切换' in ev.command:
         data = await GsBind.switch_uid_by_game(qid, ev.bot_id, sr_uid, 'sr')
         if isinstance(data, List):
             return await bot.send(f'切换SR_UID{sr_uid}成功!')
         return await bot.send(f'尚未绑定该SR_UID{sr_uid}')
-    else:
-        data = await GsBind.delete_uid(qid, ev.bot_id, sr_uid, 'sr')
-        return await send_diff_msg(
-            bot,
-            data,
-            {
-                0: f'删除SR_UID{sr_uid}成功!',
-                -1: f'该SR_UID{sr_uid}不在已绑定列表中!',
-            },
-        )
+
+    data = await GsBind.delete_uid(qid, ev.bot_id, sr_uid, 'sr')
+    return await send_diff_msg(
+        bot,
+        data,
+        {
+            0: f'删除SR_UID{sr_uid}成功!',
+            -1: f'该SR_UID{sr_uid}不在已绑定列表中!',
+        },
+    )

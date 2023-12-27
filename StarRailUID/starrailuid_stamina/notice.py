@@ -4,9 +4,9 @@ from gsuid_core.gss import gss
 from gsuid_core.logger import logger
 from gsuid_core.utils.database.models import GsPush, GsUser
 
-from ..utils.mys_api import mys_api
-from ..starrailuid_config.sr_config import srconfig
 from ..sruid_utils.api.mys.models import DailyNoteData
+from ..starrailuid_config.sr_config import srconfig
+from ..utils.mys_api import mys_api
 
 MR_NOTICE = '\n可发送[srmr]或者[sr每日]来查看更多信息!\n'
 
@@ -18,7 +18,7 @@ NOTICE = {
 
 async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
     msg_dict: Dict[str, Dict[str, Dict]] = {}
-    for bot_id in gss.active_bot:
+    for _ in gss.active_bot:
         user_list = await GsUser.get_all_push_user_list()
         for user in user_list:
             if user.sr_uid is not None:

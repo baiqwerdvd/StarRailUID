@@ -216,13 +216,21 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
     # 派遣
     task_task = []
     for i in range(4):
-        char = daily_data.expeditions[i] if i < len(daily_data.expeditions) else None
+        char = (
+            daily_data.expeditions[i]
+            if i < len(daily_data.expeditions)
+            else None
+        )
         task_task.append(_draw_task_img(img, img_draw, i, char))
     await asyncio.gather(*task_task)
 
     # 绘制树脂圆环
     ring_pic = Image.open(TEXT_PATH / 'ring.apng')
-    percent = round(stamina_percent * 89) if round(stamina_percent * 89) <= 89 else 89
+    percent = (
+        round(stamina_percent * 89)
+        if round(stamina_percent * 89) <= 89
+        else 89
+    )
     ring_pic.seek(percent)
     img.paste(ring_pic, (0, 5), ring_pic)
 
