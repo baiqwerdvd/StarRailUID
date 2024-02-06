@@ -36,6 +36,60 @@
         "AttributeAddedRatio": 1
     },
     {
+        "role": "真理医生",
+        "HPDelta": 0.0,
+        "HPAddedRatio": 0.0,
+        "AttackDelta": 0.75,
+        "AttackAddedRatio": 0.75,
+        "DefenceDelta": 0.0,
+        "DefenceAddedRatio": 0.0,
+        "SpeedDelta": 1.0,
+        "CriticalChanceBase": 1,
+        "CriticalDamageBase": 1,
+        "BreakDamageAddedRatioBase": 0.0,
+        "HealRatio": 0,
+        "SPRatio": 0.5,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.0,
+        "AttributeAddedRatio": 1
+    },
+    {
+        "role": "雪衣",
+        "HPDelta": 0.0,
+        "HPAddedRatio": 0.0,
+        "AttackDelta": 0.75,
+        "AttackAddedRatio": 0.75,
+        "DefenceDelta": 0.0,
+        "DefenceAddedRatio": 0.0,
+        "SpeedDelta": 1.0,
+        "CriticalChanceBase": 1,
+        "CriticalDamageBase": 1,
+        "BreakDamageAddedRatioBase": 0.0,
+        "HealRatio": 0,
+        "SPRatio": 0.5,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.0,
+        "AttributeAddedRatio": 1
+    },
+    {
+        "role": "阮•梅",
+        "HPDelta": 0.0,
+        "HPAddedRatio": 0.0,
+        "AttackDelta": 0.5,
+        "AttackAddedRatio": 0.5,
+        "DefenceDelta": 0.0,
+        "DefenceAddedRatio": 0.0,
+        "SpeedDelta": 1.0,
+        "CriticalChanceBase": 1,
+        "CriticalDamageBase": 1,
+        "BreakDamageAddedRatioBase": 1.0,
+        "HealRatio": 0,
+        "SPRatio": 0.5,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.0,
+        "AttributeAddedRatio": 1
+    },
+    {
         "role": "布洛妮娅",
         "HPDelta": 0.75,
         "HPAddedRatio": 0.75,
@@ -107,7 +161,7 @@
         "StatusResistanceBase": 0.0,
         "AttributeAddedRatio": 1
     },
-	{
+    {
         "role": "卡芙卡",
         "HPDelta": 0.0,
         "HPAddedRatio": 0.0,
@@ -143,7 +197,7 @@
         "StatusResistanceBase": 0.0,
         "AttributeAddedRatio": 1
     },
-	{
+    {
         "role": "镜流",
         "HPDelta": 0.0,
         "HPAddedRatio": 0.0,
@@ -179,7 +233,7 @@
         "StatusResistanceBase": 0.75,
         "AttributeAddedRatio": 0
     },
-	{
+    {
         "role": "玲可",
         "HPDelta": 1.0,
         "HPAddedRatio": 1.0,
@@ -197,7 +251,7 @@
         "StatusResistanceBase": 0.75,
         "AttributeAddedRatio": 0
     },
-	{
+    {
         "role": "藿藿",
         "HPDelta": 1.0,
         "HPAddedRatio": 1.0,
@@ -215,7 +269,7 @@
         "StatusResistanceBase": 0.75,
         "AttributeAddedRatio": 0
     },
-	{
+    {
         "role": "符玄",
         "HPDelta": 1.0,
         "HPAddedRatio": 1.0,
@@ -233,7 +287,7 @@
         "StatusResistanceBase": 1.0,
         "AttributeAddedRatio": 0
     },
-	{
+    {
         "role": "罗刹",
         "HPDelta": 0.75,
         "HPAddedRatio": 0.75,
@@ -251,7 +305,7 @@
         "StatusResistanceBase": 0.75,
         "AttributeAddedRatio": 0
     },
-	{
+    {
         "role": "桂乃芬",
         "HPDelta": 0.0,
         "HPAddedRatio": 0.0,
@@ -269,7 +323,7 @@
         "StatusResistanceBase": 0.0,
         "AttributeAddedRatio": 1
     },
-	{
+    {
         "role": "驭空",
         "HPDelta": 0.0,
         "HPAddedRatio": 0.0,
@@ -575,7 +629,7 @@
         "StatusResistanceBase": 0.0,
         "AttributeAddedRatio": 1
     },
-	{
+    {
         "role": "刃",
         "HPDelta": 0.75,
         "HPAddedRatio": 0.75,
@@ -629,7 +683,7 @@
         "StatusResistanceBase": 0.0,
         "AttributeAddedRatio": 1
     },
-	{
+    {
         "role": "托帕&账账",
         "HPDelta": 0.0,
         "HPAddedRatio": 0.0,
@@ -647,7 +701,7 @@
         "StatusResistanceBase": 0.0,
         "AttributeAddedRatio": 1
     },
-	{
+    {
         "role": "银枝",
         "HPDelta": 0.0,
         "HPAddedRatio": 0.0,
