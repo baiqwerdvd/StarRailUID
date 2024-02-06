@@ -161,8 +161,8 @@ async def draw_abyss_img(
     # 获取查询者数据
     if floor:
         floor_num = 1
-        if floor > 10:
-            return '楼层不能大于10层!'
+        if floor > 12:
+            return '楼层不能大于12层!'
         if len(raw_abyss_data.all_floor_detail) < floor:
             return '你还没有挑战该层!'
     else:
@@ -221,7 +221,7 @@ async def draw_abyss_img(
 
     img_draw.text(
         (695, 590),
-        f'{raw_abyss_data.star_num}/30',
+        f'{raw_abyss_data.star_num}/36',
         white_color,
         sr_font_42,
         'lm',
