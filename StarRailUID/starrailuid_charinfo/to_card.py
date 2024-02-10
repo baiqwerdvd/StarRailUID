@@ -2,19 +2,16 @@ import asyncio
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
-from ..utils.fonts.first_world import fw_font_28
-from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
-from ..utils.image.convert import convert_img
-from ..utils.map.name_covert import avatar_id_to_char_star
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_ICON_PATH,
-    CHAR_PREVIEW_PATH,
-    PLAYER_PATH,
-)
-
 from PIL import Image, ImageDraw
-from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
 from starrail_damage_cal.to_data import api_to_dict
+from gsuid_core.utils.image.convert import convert_img
+from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
+from gsuid_core.utils.image.image_tools import crop_center_img
+
+from ..utils.fonts.first_world import fw_font_28
+from ..utils.map.name_covert import avatar_id_to_char_star
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, CHAR_PREVIEW_PATH
+from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
@@ -23,7 +20,7 @@ white_color = (247, 247, 247)
 gray_color = (175, 175, 175)
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
-char_mask = Image.open(TEXT_PATH / 'char_mask.png')
+char_mask = Image.open(TEXT_PATH / 'ring_mask.png')
 char_bg_mask = Image.open(TEXT_PATH / 'char_bg_mask.png')
 tag = Image.open(TEXT_PATH / 'tag.png')
 footbar = Image.open(TEXT_PATH / 'footbar.png')
@@ -65,29 +62,26 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
         return await convert_img(Image.new('RGBA', (0, 1), (255, 255, 255)))
     else:
         line1 = f'UID {uid} 刷新成功'
-    line2 = (
-        f'可以使用 sr查询{char_data_list[0]["avatarName"]} 查询详情角色面板'
-    )
+    line2 = f'可以使用 sr查询{char_data_list[0]["avatarName"]} 查询详情角色面板'
     char_num = len(char_data_list)
     if char_num <= 4:
         based_w, based_h = 1380, 926
         show_type = 1
     else:
         show_type = 0
-        based_w, based_h = 1380, 660 + (char_num - 5) // 5 * 110
-        if (char_num - 5) % 5 >= 4:
-            based_h += 110
+        based_w, based_h = 1380, 310 + (((char_num - 1) // 4) + 1) * 320
 
-    img = Image.open(TEXT_PATH / 'shin-w.jpg').resize((based_w, based_h))
+    img = Image.open(TEXT_PATH / 'shin.jpg')
+    img = crop_center_img(img, based_w, based_h)
     img.paste(tag, (0, 0), tag)
 
     img_draw = ImageDraw.Draw(img, 'RGBA')
 
     # 写底层文字
     img_draw.text(
-        (690, based_h - 16),
+        (690, based_h - 26),
         '--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--',
-        (0, 0, 255),
+        (22, 22, 22),
         fw_font_28,
         'mm',
     )
@@ -151,40 +145,35 @@ async def draw_mihomo_char(index: int, img: Image.Image, char_data: Dict):
 async def draw_enka_char(index: int, img: Image.Image, char_data: Dict):
     char_id = char_data['avatarId']
     char_star = await avatar_id_to_char_star(str(char_id))
-    char_card = Image.open(TEXT_PATH / f'char_card_{char_star}.png')
-    char_img = (
-        Image.open(str(CHAR_ICON_PATH / f'{char_id}.png'))
-        .convert('RGBA')
-        .resize((204, 204))
+    char_card = Image.open(TEXT_PATH / f'ring_{char_star}.png')
+    _path = CHAR_PREVIEW_PATH / f'{char_id}.png'
+    char_img = Image.open(_path).convert('RGBA')
+    char_img = char_img.resize(
+        (int(char_img.size[0] * 0.76), int(char_img.size[1] * 0.76))
     )
-    char_temp = Image.new('RGBA', (220, 220))
-    char_temp.paste(char_img, (8, 8), char_img)
-    char_card.paste(char_temp, (0, 0), char_mask)
-    if index <= 7:
-        if img.size[0] <= 1100:
-            x = 60 + (index % 4) * 220
-        else:
-            x = 160 + (index % 4) * 220
 
-        img.paste(
-            char_card,
-            (x, 187 + (index // 4) * 220),
-            char_card,
-        )
-    elif index <= 12:
-        img.paste(
-            char_card,
-            (50 + (index % 8) * 220, 296),
-            char_card,
-        )
-    else:
-        _i = index - 13
-        x, y = 50 + (_i % 9) * 220, 512 + (_i // 9) * 220
-        if _i % 9 >= 5:
-            y += 110
-            x = 160 + ((_i - 5) % 9) * 220
-        img.paste(
-            char_card,
-            (x, y),
-            char_card,
-        )
+    char_temp = Image.new('RGBA', (300, 400))
+    card_temp = Image.new('RGBA', (300, 400))
+    char_temp.paste(char_img, (19, 57), char_img)
+    card_temp.paste(char_temp, (0, 0), char_mask)
+
+    char_draw = ImageDraw.Draw(card_temp)
+    char_draw.text(
+        (144, 285),
+        char_data['avatarName'],
+        'white',
+        sr_font_30,
+        'mm',
+    )
+
+    img.paste(
+        char_card,
+        (113 + (index % 4) * 289, 152 + (index // 4) * 336),
+        char_card,
+    )
+
+    img.paste(
+        card_temp,
+        (113 + (index % 4) * 289, 152 + (index // 4) * 336),
+        card_temp,
+    )
