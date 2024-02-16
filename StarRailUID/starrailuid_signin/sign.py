@@ -43,9 +43,9 @@ async def sign_in(sr_uid: str) -> str:
         if isinstance(sign_data, int):
             logger.warning(f'[SR签到] {sr_uid} 出错, 请检查Cookies是否过期!')
             return 'sr签到失败...请检查Cookies是否过期!'
-        if sign_data.risk_code:
+        if sign_data.risk_code == 5001 or sign_data.risk_code == 0:
             # 出现校验码
-            if sign_data.risk_code == 5001:
+            if sign_data.risk_code == 5001 and sign_data.is_risk:
                 if core_plugins_config.get_config('CaptchaPass').data:
                     gt = sign_data.gt
                     ch = sign_data.challenge
@@ -76,13 +76,14 @@ async def sign_in(sr_uid: str) -> str:
                     f'[SR签到] [无感验证] {sr_uid} 该用户重试 {index} 次验证成功!'
                 )
             break
-        if (int(str(sr_uid)[0]) > 5) and (sign_data.code == 'ok'):
+        elif (int(str(sr_uid)[0]) > 5) and (sign_data.code == 'ok'):
             # 国际服签到无risk_code字段
             logger.info(f'[SR国际服签到] {sr_uid} 签到成功!')
             break
         # 重试超过阈值
-        logger.warning('[SR签到] 超过请求阈值...')
-        return 'sr签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到!'
+        else:
+            logger.warning('[SR签到] 超过请求阈值...')
+            return 'sr签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到!'
     # 签到失败
     else:
         im = 'sr签到失败!'
