@@ -23,12 +23,12 @@ from .RESOURCE_PATH import (
 )
 from .download_url import download_file
 
-from aiohttp import ClientTimeout, TCPConnector
 from aiohttp.client import ClientSession
-from bs4 import BeautifulSoup
 from gsuid_core.logger import logger
-from gsuid_core.utils.download_resource.download_core import find_fastest_url
-from gsuid_core.utils.download_resource.download_file import download
+from gsuid_core.utils.download_resource.download_core import (
+    download_all_file,
+    find_fastest_url,
+)
 from msgspec import json as msgjson
 
 with Path.open(
@@ -44,7 +44,7 @@ async def check_speed():
     logger.info('[GsCore资源下载]测速中...')
 
     URL_LIB = {
-        #'[cos]': 'http://182.43.43.40:8765',
+        '[cos]': 'http://182.43.43.40:8765',
         '[qianxu-jp]': 'https://jp.qxqx.me',
         '[qianxu-kr]': 'https://kr-arm.qxqx.me',
     }
@@ -59,8 +59,6 @@ async def check_use():
     logger.info(tag, url)
     if tag != '[cos]':
         await download_all_file(
-            url,
-            tag,
             'StarRailUID',
             {
                 'resource/character': CHAR_ICON_PATH,
@@ -190,73 +188,3 @@ async def download_all_file_from_cos():
             logger.error(
                 f'[cos]仍有{count}个文件未下载,请使用命令 `下载全部资源` 重新下载'
             )
-
-
-async def _get_url(url: str, sess: ClientSession):
-    req = await sess.get(url=url)
-    return await req.read()
-
-
-async def download_all_file(
-    BASE_URL: str, TAG: str, plugin_name: str, EPATH_MAP: Dict[str, Path]
-):
-    PLUGIN_RES = f'{BASE_URL}/{plugin_name}'
-
-    TASKS = []
-    async with ClientSession(
-        connector=TCPConnector(verify_ssl=False),
-        timeout=ClientTimeout(total=None, sock_connect=20, sock_read=200),
-    ) as sess:
-        for endpoint in EPATH_MAP:
-            url = f'{PLUGIN_RES}/{endpoint}/'
-            path = EPATH_MAP[endpoint]
-
-            base_data = await _get_url(url, sess)
-            content_bs = BeautifulSoup(base_data, 'lxml')
-            pre_data = content_bs.find_all('pre')[0]
-            data_list = pre_data.find_all('a')
-            size_list = list(content_bs.strings)
-            logger.info(
-                f'{TAG} 数据库 {endpoint} 中存在 {len(data_list)} 个内容!'
-            )
-
-            temp_num = 0
-            for index, data in enumerate(data_list):
-                if data['href'] == '../':
-                    continue
-                file_url = f'{url}{data["href"]}'
-                name: str = data.text
-                size = size_list[index * 2 + 6].split(' ')[-1]
-                size = size.replace('\r\n', '')
-                file_path = path / name
-                if file_path.exists():
-                    is_diff = size == str(Path.stat(file_path).st_size)
-                else:
-                    is_diff = True
-                if (
-                    not file_path.exists()
-                    or not Path.stat(file_path).st_size
-                    or not is_diff
-                ):
-                    logger.info(
-                        f'{TAG} {plugin_name} 开始下载 {endpoint}/{name} ...'
-                    )
-                    temp_num += 1
-                    TASKS.append(
-                        asyncio.wait_for(
-                            download(file_url, path, name, sess, TAG),
-                            timeout=600,
-                        )
-                    )
-                    if len(TASKS) >= 10:
-                        await asyncio.gather(*TASKS)
-                        TASKS.clear()
-            await asyncio.gather(*TASKS)
-            TASKS.clear()
-
-            if temp_num == 0:
-                im = f'{TAG} 数据库 {endpoint} 无需下载!'
-            else:
-                im = f'{TAG}数据库 {endpoint} 已下载{temp_num}个内容!'
-            temp_num = 0
-            logger.info(im)
