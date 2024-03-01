@@ -376,7 +376,7 @@ async def _draw_detail_card(
 
 
 async def get_detail_card(
-    qid: Union[str, int], sr_uid: str, sender
+    qid: Union[str, int], sr_uid: str, sender: Union[str, str]
 ) -> Union[bytes, str]:
     # 获取角色列表
     avatar_list = await mys_api.get_avatar_info(sr_uid, 1001)

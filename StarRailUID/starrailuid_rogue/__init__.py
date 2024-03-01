@@ -63,7 +63,7 @@ async def send_srabyss_info(bot: Bot, ev: Event):
     else:
         floor = None
     await bot.logger.info(f'[sr查询模拟宇宙信息]模拟宇宙世界数: {floor}')
-    im = await draw_rogue_img(user_id, uid, floor, schedule_type, ev.sender)
+    im = await draw_rogue_img(user_id, uid, ev.sender, floor, schedule_type)
     await bot.send(im)
     return None
 

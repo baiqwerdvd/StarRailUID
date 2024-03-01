@@ -150,9 +150,9 @@ async def _draw_floor_card(
 async def draw_abyss_img(
     qid: Union[str, int],
     uid: str,
+    sender: Union[str, str],
     floor: Optional[int] = None,
     schedule_type: str = '1',
-    sender,
 ) -> Union[bytes, str]:
     raw_abyss_data = await mys_api.get_srspiral_abyss_info(uid, schedule_type)
 

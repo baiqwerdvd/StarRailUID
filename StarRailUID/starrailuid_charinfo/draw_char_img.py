@@ -128,11 +128,11 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
 
     # 放属性图标
     attr_img = Image.open(TEXT_PATH / f'IconAttribute{char.char_element}.png')
-    char_info.paste(attr_img, (540, 166), attr_img)
+    char_info.paste(attr_img, (540, 122), attr_img)
 
     # 放角色名
     char_img_draw = ImageDraw.Draw(char_info)
-    char_img_draw.text((620, 207), char.char_name, (255, 255, 255), sr_font_38, 'lm')
+    char_img_draw.text((620, 162), char.char_name, (255, 255, 255), sr_font_38, 'lm')
     if hasattr(sr_font_38, 'getsize'):
         char_name_len = sr_font_38.getsize(char.char_name)[0]  # type: ignore
     else:
@@ -141,7 +141,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
 
     # 放等级
     char_img_draw.text(
-        (620 + char_name_len + 50, 212),
+        (620 + char_name_len + 50, 168),
         f'LV.{char.char_level!s}',
         white_color,
         sr_font_24,
@@ -152,7 +152,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
     rarity_img = Image.open(
         TEXT_PATH / f'LightCore_Rarity{char.char_rarity}.png'
     ).resize((306, 72))
-    char_info.paste(rarity_img, (490, 233), rarity_img)
+    char_info.paste(rarity_img, (490, 189), rarity_img)
 
     # 放命座
     rank_img = Image.open(TEXT_PATH / 'ImgNewBg.png')
@@ -160,7 +160,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
     rank_img_draw.text(
         (70, 44), f'{NUM_MAP[char.char_rank]}命', white_color, sr_font_28, 'mm'
     )
-    char_info.paste(rank_img, (722, 225), rank_img)
+    char_info.paste(rank_img, (722, 181), rank_img)
 
     # 放uid
     char_img_draw.text(
@@ -292,7 +292,16 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
         sr_font_26,
         'rm',
     )
-    char_info.paste(attr_bg, (475, 300), attr_bg)
+    # 击破特攻
+    status_resistance_base = char.add_attr.get('BreakDamageAddedRatioBase', 0) * 100
+    attr_bg_draw.text(
+        (500, 31 + 48 * 8),
+        f'{status_resistance_base:.1f}%',
+        white_color,
+        sr_font_26,
+        'rm',
+    )
+    char_info.paste(attr_bg, (475, 256), attr_bg)
 
     # 命座
     for rank in range(6):

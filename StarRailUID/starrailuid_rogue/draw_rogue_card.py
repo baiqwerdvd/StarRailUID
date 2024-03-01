@@ -248,9 +248,9 @@ async def _draw_rogue_card(
 async def draw_rogue_img(
     qid: Union[str, int],
     uid: str,
+    sender: Union[str, str],
     floor: Optional[int] = None,
     schedule_type: str = '3',
-    sender,
 ) -> Union[bytes, str]:
     raw_rogue_data = await mys_api.get_rogue_info(uid, '3')
 
@@ -536,7 +536,7 @@ async def draw_rogue_img(
 async def draw_rogue_locust_img(
     qid: Union[str, int],
     uid: str,
-    sender,
+    sender: Union[str, str],
 ) -> Union[bytes, str]:
     raw_rogue_data = await mys_api.get_rogue_locust_info(uid, '3')
 

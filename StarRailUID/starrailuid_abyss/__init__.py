@@ -63,6 +63,6 @@ async def send_srabyss_info(bot: Bot, ev: Event):
     else:
         floor = None
     await bot.logger.info(f'[sr查询深渊信息]深渊层数: {floor}')
-    im = await draw_abyss_img(user_id, uid, floor, schedule_type, ev.sender)
+    im = await draw_abyss_img(user_id, uid, ev.sender, floor, schedule_type)
     await bot.send(im)
     return None
