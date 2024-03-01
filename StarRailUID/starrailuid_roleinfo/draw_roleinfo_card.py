@@ -70,8 +70,8 @@ async def get_role_img(uid: str) -> Union[bytes, str]:
     return await draw_role_card(uid)
 
 
-async def get_detail_img(qid: Union[str, int], uid: str) -> Union[bytes, str]:
-    return await get_detail_card(qid, uid)
+async def get_detail_img(qid: Union[str, int], uid: str, sender) -> Union[bytes, str]:
+    return await get_detail_card(qid, uid, sender)
 
 
 def _lv(level: int) -> str:
@@ -376,7 +376,7 @@ async def _draw_detail_card(
 
 
 async def get_detail_card(
-    qid: Union[str, int], sr_uid: str
+    qid: Union[str, int], sr_uid: str, sender
 ) -> Union[bytes, str]:
     # 获取角色列表
     avatar_list = await mys_api.get_avatar_info(sr_uid, 1001)
@@ -398,6 +398,8 @@ async def get_detail_card(
     _id = str(qid)
     if _id.startswith('http'):
         char_pic = await get_qq_avatar(avatar_url=_id)
+    elif sender.get('avatar') is not None:
+        char_pic = await get_qq_avatar(avatar_url=sender['avatar'])
     else:
         char_pic = await get_qq_avatar(qid=qid)
     char_pic = await draw_pic_with_ring(char_pic, 250, None, False)

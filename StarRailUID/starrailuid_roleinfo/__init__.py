@@ -43,5 +43,5 @@ async def send_detail_info(bot: Bot, ev: Event):
 
     logger.info(f'[sr查询信息]UID: {uid}')
     await bot.logger.info('开始执行[sr查询信息]')
-    await bot.send(await get_detail_img(user_id, uid))
+    await bot.send(await get_detail_img(user_id, uid, ev.sender))
     return None

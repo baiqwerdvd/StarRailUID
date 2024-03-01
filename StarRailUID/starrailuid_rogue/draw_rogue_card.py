@@ -250,6 +250,7 @@ async def draw_rogue_img(
     uid: str,
     floor: Optional[int] = None,
     schedule_type: str = '3',
+    sender,
 ) -> Union[bytes, str]:
     raw_rogue_data = await mys_api.get_rogue_info(uid, '3')
 
@@ -325,6 +326,8 @@ async def draw_rogue_img(
     _id = str(qid)
     if _id.startswith('http'):
         char_pic = await get_qq_avatar(avatar_url=_id)
+    elif sender.get('avatar') is not None:
+        char_pic = await get_qq_avatar(avatar_url=sender['avatar'])
     else:
         char_pic = await get_qq_avatar(qid=qid)
     char_pic = await draw_pic_with_ring(char_pic, 250, None, False)
@@ -533,6 +536,7 @@ async def draw_rogue_img(
 async def draw_rogue_locust_img(
     qid: Union[str, int],
     uid: str,
+    sender,
 ) -> Union[bytes, str]:
     raw_rogue_data = await mys_api.get_rogue_locust_info(uid, '3')
 
@@ -608,6 +612,8 @@ async def draw_rogue_locust_img(
     _id = str(qid)
     if _id.startswith('http'):
         char_pic = await get_qq_avatar(avatar_url=_id)
+    elif sender.get('avatar') is not None:
+        char_pic = await get_qq_avatar(avatar_url=sender['avatar'])
     else:
         char_pic = await get_qq_avatar(qid=qid)
     char_pic = await draw_pic_with_ring(char_pic, 250, None, False)

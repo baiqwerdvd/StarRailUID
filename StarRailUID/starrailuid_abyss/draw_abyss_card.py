@@ -152,6 +152,7 @@ async def draw_abyss_img(
     uid: str,
     floor: Optional[int] = None,
     schedule_type: str = '1',
+    sender,
 ) -> Union[bytes, str]:
     raw_abyss_data = await mys_api.get_srspiral_abyss_info(uid, schedule_type)
 
@@ -185,6 +186,8 @@ async def draw_abyss_img(
     _id = str(qid)
     if _id.startswith('http'):
         char_pic = await get_qq_avatar(avatar_url=_id)
+    elif sender.get('avatar') is not None:
+        char_pic = await get_qq_avatar(avatar_url=sender['avatar'])
     else:
         char_pic = await get_qq_avatar(qid=qid)
     char_pic = await draw_pic_with_ring(char_pic, 250, None, False)

@@ -63,7 +63,7 @@ async def send_srabyss_info(bot: Bot, ev: Event):
     else:
         floor = None
     await bot.logger.info(f'[sr查询模拟宇宙信息]模拟宇宙世界数: {floor}')
-    im = await draw_rogue_img(user_id, uid, floor, schedule_type)
+    im = await draw_rogue_img(user_id, uid, floor, schedule_type, ev.sender)
     await bot.send(im)
     return None
 
@@ -90,6 +90,6 @@ async def send_srabyss_locust_info(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     await bot.logger.info(f'[sr查询寰宇蝗灾信息]uid: {uid}')
-    im = await draw_rogue_locust_img(user_id, uid)
+    im = await draw_rogue_locust_img(user_id, uid, ev.sender)
     await bot.send(im)
     return None
