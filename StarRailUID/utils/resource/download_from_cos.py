@@ -45,8 +45,9 @@ async def check_speed():
 
     URL_LIB = {
         '[cos]': 'http://182.43.43.40:8765',
-        '[qianxu-jp]': 'https://jp.qxqx.me',
-        '[qianxu-kr]': 'https://kr-arm.qxqx.me',
+        '[Chuncheon]': 'https://kr.qxqx.cf',
+        '[Seoul]': 'https://kr-s.qxqx.cf',
+        '[Singapore]': 'https://sg.qxqx.cf'
     }
 
     TAG, BASE_URL = await find_fastest_url(URL_LIB)
