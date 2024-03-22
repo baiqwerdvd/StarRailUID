@@ -18,6 +18,24 @@
         "AttributeAddedRatio": 1
     },
     {
+        "role": "黄泉",
+        "HPDelta": 0.0,
+        "HPAddedRatio": 0.0,
+        "AttackDelta": 0.75,
+        "AttackAddedRatio": 0.75,
+        "DefenceDelta": 0.0,
+        "DefenceAddedRatio": 0.0,
+        "SpeedDelta": 1,
+        "CriticalChanceBase": 1,
+        "CriticalDamageBase": 1,
+        "BreakDamageAddedRatioBase": 0.0,
+        "HealRatio": 0,
+        "SPRatio": 0.5,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.0,
+        "AttributeAddedRatio": 1
+    },
+    {
         "role": "希儿",
         "HPDelta": 0.0,
         "HPAddedRatio": 0.0,
@@ -89,7 +107,6 @@
         "StatusResistanceBase": 0.0,
         "AttributeAddedRatio": 1
     },
-	,
     {
         "role": "黑天鹅",
         "HPDelta": 0.0,
