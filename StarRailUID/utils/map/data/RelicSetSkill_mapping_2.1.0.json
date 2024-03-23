@@ -183,6 +183,18 @@
             "Value": 0.05
         }
     },
+    "313": {
+        "2": {
+            "Property": "CriticalChanceBase",
+            "Value": 0.04
+        }
+    },
+    "314": {
+        "2": {
+            "Property": "AttackAddedRatio",
+            "Value": 0.12
+        }
+    },
     "117": {
         "2": {},
         "4": {

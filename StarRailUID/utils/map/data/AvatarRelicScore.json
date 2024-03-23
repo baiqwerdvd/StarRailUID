@@ -54,6 +54,24 @@
         "AttributeAddedRatio": 1
     },
     {
+        "role": "加拉赫",
+        "HPDelta": 0.0,
+        "HPAddedRatio": 0.0,
+        "AttackDelta": 0.5,
+        "AttackAddedRatio": 0.5,
+        "DefenceDelta": 0.0,
+        "DefenceAddedRatio": 0.0,
+        "SpeedDelta": 1.0,
+        "CriticalChanceBase": 1,
+        "CriticalDamageBase": 1,
+        "BreakDamageAddedRatioBase": 0.0,
+        "HealRatio": 0.75,
+        "SPRatio": 0.75,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.0,
+        "AttributeAddedRatio": 1
+    },
+    {
         "role": "真理医生",
         "HPDelta": 0.0,
         "HPAddedRatio": 0.0,
@@ -196,6 +214,24 @@
         "StatusProbabilityBase": 0.5,
         "StatusResistanceBase": 0.5,
         "AttributeAddedRatio": 0
+    },
+    {
+        "role": "砂金",
+        "HPDelta": 0.0,
+        "HPAddedRatio": 0.0,
+        "AttackDelta": 0.0,
+        "AttackAddedRatio": 0.0,
+        "DefenceDelta": 0.75,
+        "DefenceAddedRatio": 0.75,
+        "SpeedDelta": 0.75,
+        "CriticalChanceBase": 1,
+        "CriticalDamageBase": 1,
+        "BreakDamageAddedRatioBase": 0.0,
+        "HealRatio": 0,
+        "SPRatio": 0.75,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.0,
+        "AttributeAddedRatio": 1
     },
     {
         "role": "姬子",
