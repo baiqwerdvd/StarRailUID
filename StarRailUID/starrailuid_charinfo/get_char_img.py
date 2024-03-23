@@ -101,7 +101,6 @@ async def get_char_args(
         msg.replace('带', '换')
         .replace('拿', '换')
         .replace('圣遗物', '遗器')
-        .replace('命', '魂')
     )
 
     # 希儿带于夜色中换1000xxxx6希儿头
@@ -177,7 +176,7 @@ async def get_fake_char_str(char_name: str) -> Tuple[str, Optional[int]]:
 
     """
     talent_num = None
-    if '魂' in char_name and char_name[0] in CHAR_TO_INT:
+    if ('魂' in char_name or '命' in char_name) and char_name[0] in CHAR_TO_INT:
         talent_num = CHAR_TO_INT[char_name[0]]
         char_name = char_name[2:]
     return char_name, talent_num
