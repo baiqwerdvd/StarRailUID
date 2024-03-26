@@ -62441,5 +62441,4979 @@
       ],
       "icon": "icon/property/IconAttack.png"
     }
+  },
+  "1309": {
+    "1309001": {
+      "id": "1309001",
+      "name": "扑翼白声",
+      "max_level": 6,
+      "desc": "对指定敌方单体造成等同于知更鸟#1[i]%攻击力的物理属性伤害。",
+      "params": [],
+      "anchor": "Point01",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 130901,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110231,
+              "num": 3
+            },
+            {
+              "id": 114001,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110232,
+              "num": 3
+            },
+            {
+              "id": 114002,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110232,
+              "num": 5
+            },
+            {
+              "id": 114002,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110233,
+              "num": 3
+            },
+            {
+              "id": 114003,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110233,
+              "num": 8
+            },
+            {
+              "id": 114003,
+              "num": 4
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1309_basic_atk.png"
+    },
+    "1309002": {
+      "id": "1309002",
+      "name": "翎之咏叹调",
+      "max_level": 10,
+      "desc": "使我方全体造成的伤害提高#1[i]%，持续#2[i]回合，知更鸟每回合开始时持续回合数减1。",
+      "params": [],
+      "anchor": "Point02",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 130902,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2500
+            },
+            {
+              "id": 114001,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110231,
+              "num": 3
+            },
+            {
+              "id": 114001,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110232,
+              "num": 3
+            },
+            {
+              "id": 114002,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110232,
+              "num": 5
+            },
+            {
+              "id": 114002,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 30000
+            },
+            {
+              "id": 110232,
+              "num": 7
+            },
+            {
+              "id": 114002,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110233,
+              "num": 3
+            },
+            {
+              "id": 114003,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 80000
+            },
+            {
+              "id": 110233,
+              "num": 5
+            },
+            {
+              "id": 110504,
+              "num": 1
+            },
+            {
+              "id": 114003,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110233,
+              "num": 8
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 300000
+            },
+            {
+              "id": 110233,
+              "num": 14
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1309_skill.png"
+    },
+    "1309003": {
+      "id": "1309003",
+      "name": "千音迭奏，群星赋格",
+      "max_level": 10,
+      "desc": "知更鸟进入【协奏】状态，使我方全体攻击力提高，提高数值等同于知更鸟攻击力的#1[f1]%+#3[i]点，且使除自身以外的队友立即行动。我方目标每次施放攻击后，知更鸟会额外造成1次等同于其自身#4[i]%攻击力的物理属性附加伤害，该伤害暴击率固定为#5[i]%，暴击伤害固定为#6[i]%。\\n处于【协奏】状态时，知更鸟免疫控制类负面状态，在【协奏】状态结束前不会进入自己回合且无法行动。\\n行动序列上出现【协奏】倒计时，倒计时回合开始时知更鸟退出【协奏】状态并立即行动，倒计时固定拥有#2[i]点速度。",
+      "params": [],
+      "anchor": "Point03",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 130903,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2500
+            },
+            {
+              "id": 114001,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110231,
+              "num": 3
+            },
+            {
+              "id": 114001,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110232,
+              "num": 3
+            },
+            {
+              "id": 114002,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110232,
+              "num": 5
+            },
+            {
+              "id": 114002,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 30000
+            },
+            {
+              "id": 110232,
+              "num": 7
+            },
+            {
+              "id": 114002,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110233,
+              "num": 3
+            },
+            {
+              "id": 114003,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 80000
+            },
+            {
+              "id": 110233,
+              "num": 5
+            },
+            {
+              "id": 110504,
+              "num": 1
+            },
+            {
+              "id": 114003,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110233,
+              "num": 8
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 300000
+            },
+            {
+              "id": 110233,
+              "num": 14
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1309_ultimate.png"
+    },
+    "1309004": {
+      "id": "1309004",
+      "name": "调性合颂",
+      "max_level": 10,
+      "desc": "使我方全体暴击伤害提高#1[f1]%，且我方目标攻击敌方目标后，知更鸟额外为自身恢复#2[i]点能量。",
+      "params": [],
+      "anchor": "Point04",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 130904,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2500
+            },
+            {
+              "id": 114001,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110231,
+              "num": 3
+            },
+            {
+              "id": 114001,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110232,
+              "num": 3
+            },
+            {
+              "id": 114002,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110232,
+              "num": 5
+            },
+            {
+              "id": 114002,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 30000
+            },
+            {
+              "id": 110232,
+              "num": 7
+            },
+            {
+              "id": 114002,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110233,
+              "num": 3
+            },
+            {
+              "id": 114003,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 80000
+            },
+            {
+              "id": 110233,
+              "num": 5
+            },
+            {
+              "id": 110504,
+              "num": 1
+            },
+            {
+              "id": 114003,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110233,
+              "num": 8
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 300000
+            },
+            {
+              "id": 110233,
+              "num": 14
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1309_talent.png"
+    },
+    "1309007": {
+      "id": "1309007",
+      "name": "酣醉序曲",
+      "max_level": 1,
+      "desc": "施放秘技后，在自身周围展开持续#1[i]秒的特殊领域，处于领域内的敌人不会对知更鸟发动攻击，且在领域展开期间跟随知更鸟。领域展开期间进入战斗后，每个波次开始时知更鸟额外恢复#2[i]点能量。我方制造的领域效果最多存在1个。",
+      "params": [],
+      "anchor": "Point05",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 130907,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        }
+      ],
+      "icon": "icon/skill/1309_technique.png"
+    },
+    "1309101": {
+      "id": "1309101",
+      "name": "华彩花腔",
+      "max_level": 1,
+      "desc": "战斗开始时，自身行动提前#1[i]%。",
+      "params": [
+        0.25000000023283064
+      ],
+      "anchor": "Point06",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110231,
+              "num": 3
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_1309_SkillTree1.png"
+    },
+    "1309102": {
+      "id": "1309102",
+      "name": "即兴装饰",
+      "max_level": 1,
+      "desc": "处于【协奏】状态时，我方全体发动追加攻击造成的暴击伤害提高#1[i]%。",
+      "params": [
+        0.10000000009313226
+      ],
+      "anchor": "Point07",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110232,
+              "num": 5
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_1309_SkillTree2.png"
+    },
+    "1309103": {
+      "id": "1309103",
+      "name": "模进乐段",
+      "max_level": 1,
+      "desc": "若自身当前生命值百分比小于等于#1[i]%，触发天赋时额外回复等同于自身生命上限#2[i]%的生命值。",
+      "params": [
+        0.5000000004656613,
+        0.02000000001862645
+      ],
+      "anchor": "Point08",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110233,
+              "num": 8
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_1309_SkillTree3.png"
+    },
+    "1309201": {
+      "id": "1309201",
+      "name": "攻击强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point09",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "AttackAddedRatio",
+              "value": 0.0400000000372529
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2500
+            },
+            {
+              "id": 114001,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconAttack.png"
+    },
+    "1309202": {
+      "id": "1309202",
+      "name": "生命强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point10",
+      "pre_points": [
+        1309101
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [
+            {
+              "type": "HPAddedRatio",
+              "value": 0.0400000000372529
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110231,
+              "num": 3
+            },
+            {
+              "id": 114001,
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconMaxHP.png"
+    },
+    "1309203": {
+      "id": "1309203",
+      "name": "攻击强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point11",
+      "pre_points": [
+        1309202
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "AttackAddedRatio",
+              "value": 0.0400000000372529
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110232,
+              "num": 3
+            },
+            {
+              "id": 114002,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconAttack.png"
+    },
+    "1309204": {
+      "id": "1309204",
+      "name": "速度强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point12",
+      "pre_points": [
+        1309201
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "SpeedDelta",
+              "value": 2
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110232,
+              "num": 3
+            },
+            {
+              "id": 114002,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconSpeed.png"
+    },
+    "1309205": {
+      "id": "1309205",
+      "name": "攻击强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point13",
+      "pre_points": [
+        1309102
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [
+            {
+              "type": "AttackAddedRatio",
+              "value": 0.060000000055879354
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110232,
+              "num": 5
+            },
+            {
+              "id": 114002,
+              "num": 4
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconAttack.png"
+    },
+    "1309206": {
+      "id": "1309206",
+      "name": "生命强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point14",
+      "pre_points": [
+        1309205
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "HPAddedRatio",
+              "value": 0.060000000055879354
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110233,
+              "num": 3
+            },
+            {
+              "id": 114003,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconMaxHP.png"
+    },
+    "1309207": {
+      "id": "1309207",
+      "name": "攻击强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point15",
+      "pre_points": [
+        1309201
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "AttackAddedRatio",
+              "value": 0.060000000055879354
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110233,
+              "num": 3
+            },
+            {
+              "id": 114003,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconAttack.png"
+    },
+    "1309208": {
+      "id": "1309208",
+      "name": "速度强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point16",
+      "pre_points": [
+        1309103
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [
+            {
+              "type": "SpeedDelta",
+              "value": 3
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110233,
+              "num": 8
+            },
+            {
+              "id": 114003,
+              "num": 8
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconSpeed.png"
+    },
+    "1309209": {
+      "id": "1309209",
+      "name": "生命强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point17",
+      "pre_points": [
+        1309208
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "HPAddedRatio",
+              "value": 0.0800000000745058
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110233,
+              "num": 8
+            },
+            {
+              "id": 114003,
+              "num": 8
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconMaxHP.png"
+    },
+    "1309210": {
+      "id": "1309210",
+      "name": "攻击强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point18",
+      "pre_points": [
+        1309208
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "AttackAddedRatio",
+              "value": 0.0800000000745058
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110233,
+              "num": 8
+            },
+            {
+              "id": 114003,
+              "num": 8
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconAttack.png"
+    }
+  },
+  "1315": {
+    "1315001": {
+      "id": "1315001",
+      "name": "蹄铁裂颅",
+      "max_level": 6,
+      "desc": "对指定敌方单体造成等同于波提欧#1[i]%攻击力的物理属性伤害。",
+      "params": [],
+      "anchor": "Point01",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 131501,
+          "num": 1
+        },
+        {
+          "id": 131508,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110191,
+              "num": 3
+            },
+            {
+              "id": 114011,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110192,
+              "num": 3
+            },
+            {
+              "id": 114012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110192,
+              "num": 5
+            },
+            {
+              "id": 114012,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110193,
+              "num": 3
+            },
+            {
+              "id": 114013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110193,
+              "num": 8
+            },
+            {
+              "id": 114013,
+              "num": 4
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1315_basic_atk.png"
+    },
+    "1315002": {
+      "id": "1315002",
+      "name": "炽砾舞者的探戈",
+      "max_level": 10,
+      "desc": "为自身及指定敌方单体开启【绝命对峙】，持续#3[i]回合。当场上不存在处于【绝命对峙】的可攻击的敌方目标时，解除【绝命对峙】。\\n处于【绝命对峙】时，敌方目标陷入嘲讽状态；波提欧无法施放战技，普攻【蹄铁裂颅】强化为【击锤连弩】。处于【绝命对峙】的敌方目标/波提欧受到对方攻击时，受到的伤害提高#1[i]%/#2[i]%。\\n该战技无法恢复能量。施放该战技后，本回合不会结束。",
+      "params": [],
+      "anchor": "Point02",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 131502,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2500
+            },
+            {
+              "id": 114011,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110191,
+              "num": 3
+            },
+            {
+              "id": 114011,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110192,
+              "num": 3
+            },
+            {
+              "id": 114012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110192,
+              "num": 5
+            },
+            {
+              "id": 114012,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 30000
+            },
+            {
+              "id": 110192,
+              "num": 7
+            },
+            {
+              "id": 114012,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110193,
+              "num": 3
+            },
+            {
+              "id": 114013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 80000
+            },
+            {
+              "id": 110193,
+              "num": 5
+            },
+            {
+              "id": 110505,
+              "num": 1
+            },
+            {
+              "id": 114013,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110193,
+              "num": 8
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110505,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 300000
+            },
+            {
+              "id": 110193,
+              "num": 14
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110505,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1315_skill.png"
+    },
+    "1315003": {
+      "id": "1315003",
+      "name": "尘魔舞者的日落秀",
+      "max_level": 10,
+      "desc": "有#5[i]%的基础概率为指定敌方单体添加物理弱点，持续#4[i]回合。\\n对该目标造成等同于波提欧#1[i]%攻击力的物理属性伤害，并使其行动延后，延后数值等同于波提欧#2[i]%的击破特攻+#3[i]%。",
+      "params": [],
+      "anchor": "Point03",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 131503,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2500
+            },
+            {
+              "id": 114011,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110191,
+              "num": 3
+            },
+            {
+              "id": 114011,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110192,
+              "num": 3
+            },
+            {
+              "id": 114012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110192,
+              "num": 5
+            },
+            {
+              "id": 114012,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 30000
+            },
+            {
+              "id": 110192,
+              "num": 7
+            },
+            {
+              "id": 114012,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110193,
+              "num": 3
+            },
+            {
+              "id": 114013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 80000
+            },
+            {
+              "id": 110193,
+              "num": 5
+            },
+            {
+              "id": 110505,
+              "num": 1
+            },
+            {
+              "id": 114013,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110193,
+              "num": 8
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110505,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 300000
+            },
+            {
+              "id": 110193,
+              "num": 14
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110505,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1315_ultimate.png"
+    },
+    "1315004": {
+      "id": "1315004",
+      "name": "轮中五豆",
+      "max_level": 10,
+      "desc": "处于【绝命对峙】的敌方目标被消灭或弱点被击破后，解除【绝命对峙】并且波提欧获得1层【优势口袋】，最多叠加#2[i]层。\\n施放【击锤连弩】期间，若目标处于弱点击破状态，每持有1层【优势口袋】，基于目标的韧性上限对该目标造成等同于波提欧#1[i]%物理属性击破伤害的击破伤害，计入的韧性上限不超过普攻基础韧性削减的#3[i]%。\\n战斗胜利后，波提欧能够将【优势口袋】保留至下一场战斗中。",
+      "params": [],
+      "anchor": "Point04",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 131504,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2500
+            },
+            {
+              "id": 114011,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110191,
+              "num": 3
+            },
+            {
+              "id": 114011,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110192,
+              "num": 3
+            },
+            {
+              "id": 114012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110192,
+              "num": 5
+            },
+            {
+              "id": 114012,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 30000
+            },
+            {
+              "id": 110192,
+              "num": 7
+            },
+            {
+              "id": 114012,
+              "num": 6
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110193,
+              "num": 3
+            },
+            {
+              "id": 114013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 80000
+            },
+            {
+              "id": 110193,
+              "num": 5
+            },
+            {
+              "id": 110505,
+              "num": 1
+            },
+            {
+              "id": 114013,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110193,
+              "num": 8
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110505,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 300000
+            },
+            {
+              "id": 110193,
+              "num": 14
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110505,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/1315_talent.png"
+    },
+    "1315007": {
+      "id": "1315007",
+      "name": "三乘九的微笑",
+      "max_level": 1,
+      "desc": "使用秘技后，下一次战斗首次施放战技时，有#1[i]%的基础概率为目标添加与终结技相同的物理弱点，持续#2[i]回合。",
+      "params": [],
+      "anchor": "Point05",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 131507,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        }
+      ],
+      "icon": "icon/skill/1315_technique.png"
+    },
+    "1315101": {
+      "id": "1315101",
+      "name": "幽灵装填",
+      "max_level": 1,
+      "desc": "使自身暴击率/暴击伤害提高，提高数值等同于击破特攻的#1[i]%/#3[i]%，最多使暴击率/暴击伤害提高#2[i]%/#4[i]%。",
+      "params": [
+        0.10000000009313226,
+        0.3000000002793968,
+        0.5000000004656613,
+        1.5000000004656613
+      ],
+      "anchor": "Point06",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110191,
+              "num": 3
+            },
+            {
+              "id": 110505,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_1315_SkillTree1.png"
+    },
+    "1315102": {
+      "id": "1315102",
+      "name": "蛇之上行",
+      "max_level": 1,
+      "desc": "受到未处于【绝命对峙】目标的伤害降低#1[i]%。",
+      "params": [
+        0.3000000002793968
+      ],
+      "anchor": "Point07",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110192,
+              "num": 5
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110505,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_1315_SkillTree2.png"
+    },
+    "1315103": {
+      "id": "1315103",
+      "name": "抵近射击",
+      "max_level": 1,
+      "desc": "触发天赋获得【优势口袋】时，恢复#1[i]点能量。该效果在获得溢出的【优势口袋】时也会触发。",
+      "params": [
+        10
+      ],
+      "anchor": "Point08",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110193,
+              "num": 8
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110505,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_1315_SkillTree3.png"
+    },
+    "1315201": {
+      "id": "1315201",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point09",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.05299999983981252
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2500
+            },
+            {
+              "id": 114011,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "1315202": {
+      "id": "1315202",
+      "name": "攻击强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point10",
+      "pre_points": [
+        1315101
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [
+            {
+              "type": "AttackAddedRatio",
+              "value": 0.0400000000372529
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 5000
+            },
+            {
+              "id": 110191,
+              "num": 3
+            },
+            {
+              "id": 114011,
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconAttack.png"
+    },
+    "1315203": {
+      "id": "1315203",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point11",
+      "pre_points": [
+        1315202
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.05299999983981252
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110192,
+              "num": 3
+            },
+            {
+              "id": 114012,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "1315204": {
+      "id": "1315204",
+      "name": "生命强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point12",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "HPAddedRatio",
+              "value": 0.0400000000372529
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 10000
+            },
+            {
+              "id": 110192,
+              "num": 3
+            },
+            {
+              "id": 114012,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconMaxHP.png"
+    },
+    "1315205": {
+      "id": "1315205",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point13",
+      "pre_points": [
+        1315102
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.0800000000745058
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 20000
+            },
+            {
+              "id": 110192,
+              "num": 5
+            },
+            {
+              "id": 114012,
+              "num": 4
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "1315206": {
+      "id": "1315206",
+      "name": "攻击强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point14",
+      "pre_points": [
+        1315205
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "AttackAddedRatio",
+              "value": 0.060000000055879354
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110193,
+              "num": 3
+            },
+            {
+              "id": 114013,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconAttack.png"
+    },
+    "1315207": {
+      "id": "1315207",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point15",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.0800000000745058
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 45000
+            },
+            {
+              "id": 110193,
+              "num": 3
+            },
+            {
+              "id": 114013,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "1315208": {
+      "id": "1315208",
+      "name": "生命强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point16",
+      "pre_points": [
+        1315103
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [
+            {
+              "type": "HPAddedRatio",
+              "value": 0.060000000055879354
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110193,
+              "num": 8
+            },
+            {
+              "id": 114013,
+              "num": 8
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconMaxHP.png"
+    },
+    "1315209": {
+      "id": "1315209",
+      "name": "攻击强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point17",
+      "pre_points": [
+        1315208
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "AttackAddedRatio",
+              "value": 0.0800000000745058
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110193,
+              "num": 8
+            },
+            {
+              "id": 114013,
+              "num": 8
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconAttack.png"
+    },
+    "1315210": {
+      "id": "1315210",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point18",
+      "pre_points": [
+        1315208
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.10699999961070716
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 160000
+            },
+            {
+              "id": 110193,
+              "num": 8
+            },
+            {
+              "id": 114013,
+              "num": 8
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    }
+  },
+  "8005": {
+    "8005001": {
+      "id": "8005001",
+      "name": "摇摆的礼仪",
+      "max_level": 6,
+      "desc": "对指定敌方单体造成等同于开拓者#1[i]%攻击力的虚数属性伤害。",
+      "params": [],
+      "anchor": "Point01",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800501,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 111013,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/8005_basic_atk.png"
+    },
+    "8005002": {
+      "id": "8005002",
+      "name": "中场馈赠的雨",
+      "max_level": 10,
+      "desc": "对指定敌方单体造成等同于开拓者#1[i]%攻击力的虚数属性伤害，并额外造成4次伤害。每次伤害对随机敌方单体造成等同于开拓者#1[i]%攻击力的虚数属性伤害。",
+      "params": [],
+      "anchor": "Point02",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800502,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2000
+            },
+            {
+              "id": 111011,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 24000
+            },
+            {
+              "id": 110232,
+              "num": 6
+            },
+            {
+              "id": 111012,
+              "num": 5
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 64000
+            },
+            {
+              "id": 110233,
+              "num": 4
+            },
+            {
+              "id": 110504,
+              "num": 1
+            },
+            {
+              "id": 111013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 240000
+            },
+            {
+              "id": 110233,
+              "num": 11
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/8005_skill.png"
+    },
+    "8005003": {
+      "id": "8005003",
+      "name": "喧嚣的舞灯巡游",
+      "max_level": 10,
+      "desc": "为我方全体附上【伴舞】效果，持续#1[i]回合，开拓者每回合开始时持续回合数减1。持有【伴舞】的我方目标攻击处于弱点击破状态下的敌方目标后，会基于攻击者#2[i]%击破特攻和本次攻击削韧伤害，额外造成1次击破伤害。",
+      "params": [],
+      "anchor": "Point03",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800503,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2000
+            },
+            {
+              "id": 111011,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 24000
+            },
+            {
+              "id": 110232,
+              "num": 6
+            },
+            {
+              "id": 111012,
+              "num": 5
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 64000
+            },
+            {
+              "id": 110233,
+              "num": 4
+            },
+            {
+              "id": 110504,
+              "num": 1
+            },
+            {
+              "id": 111013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 240000
+            },
+            {
+              "id": 110233,
+              "num": 11
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/8005_ultimate.png"
+    },
+    "8005004": {
+      "id": "8005004",
+      "name": "全屏段的高空踏歌",
+      "max_level": 10,
+      "desc": "当有敌方目标的弱点被击破时，开拓者立即恢复#1[f1]点能量。",
+      "params": [],
+      "anchor": "Point04",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800504,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2000
+            },
+            {
+              "id": 111011,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 24000
+            },
+            {
+              "id": 110232,
+              "num": 6
+            },
+            {
+              "id": 111012,
+              "num": 5
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 64000
+            },
+            {
+              "id": 110233,
+              "num": 4
+            },
+            {
+              "id": 110504,
+              "num": 1
+            },
+            {
+              "id": 111013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 240000
+            },
+            {
+              "id": 110233,
+              "num": 11
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/8005_talent.png"
+    },
+    "8005007": {
+      "id": "8005007",
+      "name": "即刻！独奏团",
+      "max_level": 1,
+      "desc": "使用秘技后，下一次战斗开始时使我方全体的击破特攻提高#1[i]%，持续#2[i]回合。",
+      "params": [],
+      "anchor": "Point05",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800507,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        }
+      ],
+      "icon": "icon/skill/8005_technique.png"
+    },
+    "8005101": {
+      "id": "8005101",
+      "name": "卫我起舞",
+      "max_level": 1,
+      "desc": "若敌方目标数量大于等于5个时，【伴舞】效果触发的击破伤害提高#1[i]%，每减少一个敌方目标，【伴舞】效果触发的击破伤害额外提高#2[i]%。",
+      "params": [
+        0.3000000002793968,
+        0.10000000009313226
+      ],
+      "anchor": "Point06",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_8005_SkillTree1.png"
+    },
+    "8005102": {
+      "id": "8005102",
+      "name": "随波逐流",
+      "max_level": 1,
+      "desc": "战技造成的第一次削韧伤害额外提高#1[i]%。",
+      "params": [
+        1
+      ],
+      "anchor": "Point07",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_8005_SkillTree2.png"
+    },
+    "8005103": {
+      "id": "8005103",
+      "name": "剧院之帽",
+      "max_level": 1,
+      "desc": "我方目标造成弱点击破后额外使敌方目标行动延后#1[i]%。",
+      "params": [
+        0.3000000002793968
+      ],
+      "anchor": "Point08",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_8005_SkillTree3.png"
+    },
+    "8005201": {
+      "id": "8005201",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point09",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.05299999983981252
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2000
+            },
+            {
+              "id": 111011,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "8005202": {
+      "id": "8005202",
+      "name": "伤害强化•虚数",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point10",
+      "pre_points": [
+        8005101
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [
+            {
+              "type": "ImaginaryAddedRatio",
+              "value": 0.031999999890103936
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconImaginaryAddedRatio.png"
+    },
+    "8005203": {
+      "id": "8005203",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point11",
+      "pre_points": [
+        8005202
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.05299999983981252
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "8005204": {
+      "id": "8005204",
+      "name": "效果抵抗强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point12",
+      "pre_points": [
+        8005201
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "StatusResistanceBase",
+              "value": 0.0400000000372529
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconStatusResistance.png"
+    },
+    "8005205": {
+      "id": "8005205",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point13",
+      "pre_points": [
+        8005102
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.0800000000745058
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "8005206": {
+      "id": "8005206",
+      "name": "伤害强化•虚数",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point14",
+      "pre_points": [
+        8005205
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "ImaginaryAddedRatio",
+              "value": 0.04799999948590994
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconImaginaryAddedRatio.png"
+    },
+    "8005207": {
+      "id": "8005207",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point15",
+      "pre_points": [
+        8005201
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.0800000000745058
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "8005208": {
+      "id": "8005208",
+      "name": "效果抵抗强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point16",
+      "pre_points": [
+        8005103
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [
+            {
+              "type": "StatusResistanceBase",
+              "value": 0.060000000055879354
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 111013,
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconStatusResistance.png"
+    },
+    "8005209": {
+      "id": "8005209",
+      "name": "伤害强化•虚数",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point17",
+      "pre_points": [
+        8005208
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "ImaginaryAddedRatio",
+              "value": 0.06399999978020787
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 111013,
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconImaginaryAddedRatio.png"
+    },
+    "8005210": {
+      "id": "8005210",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point18",
+      "pre_points": [
+        8005208
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.10699999961070716
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 111013,
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    }
+  },
+  "8006": {
+    "8006001": {
+      "id": "8006001",
+      "name": "摇摆的礼仪",
+      "max_level": 6,
+      "desc": "对指定敌方单体造成等同于开拓者#1[i]%攻击力的虚数属性伤害。",
+      "params": [],
+      "anchor": "Point01",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800601,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 111013,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/8006_basic_atk.png"
+    },
+    "8006002": {
+      "id": "8006002",
+      "name": "中场馈赠的雨",
+      "max_level": 10,
+      "desc": "对指定敌方单体造成等同于开拓者#1[i]%攻击力的虚数属性伤害，并额外造成4次伤害。每次伤害对随机敌方单体造成等同于开拓者#1[i]%攻击力的虚数属性伤害。",
+      "params": [],
+      "anchor": "Point02",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800602,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2000
+            },
+            {
+              "id": 111011,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 24000
+            },
+            {
+              "id": 110232,
+              "num": 6
+            },
+            {
+              "id": 111012,
+              "num": 5
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 64000
+            },
+            {
+              "id": 110233,
+              "num": 4
+            },
+            {
+              "id": 110504,
+              "num": 1
+            },
+            {
+              "id": 111013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 240000
+            },
+            {
+              "id": 110233,
+              "num": 11
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/8006_skill.png"
+    },
+    "8006003": {
+      "id": "8006003",
+      "name": "喧嚣的舞灯巡游",
+      "max_level": 10,
+      "desc": "为我方全体附上【伴舞】效果，持续#1[i]回合，开拓者每回合开始时持续回合数减1。持有【伴舞】的我方目标攻击处于弱点击破状态下的敌方目标后，会基于攻击者#2[i]%击破特攻和本次攻击削韧伤害，额外造成1次击破伤害。",
+      "params": [],
+      "anchor": "Point03",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800603,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2000
+            },
+            {
+              "id": 111011,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 24000
+            },
+            {
+              "id": 110232,
+              "num": 6
+            },
+            {
+              "id": 111012,
+              "num": 5
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 64000
+            },
+            {
+              "id": 110233,
+              "num": 4
+            },
+            {
+              "id": 110504,
+              "num": 1
+            },
+            {
+              "id": 111013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 240000
+            },
+            {
+              "id": 110233,
+              "num": 11
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/8006_ultimate.png"
+    },
+    "8006004": {
+      "id": "8006004",
+      "name": "全屏段的高空踏歌",
+      "max_level": 10,
+      "desc": "当有敌方目标的弱点被击破时，开拓者立即恢复#1[f1]点能量。",
+      "params": [],
+      "anchor": "Point04",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800604,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        },
+        {
+          "promotion": 1,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2000
+            },
+            {
+              "id": 111011,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        },
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 24000
+            },
+            {
+              "id": 110232,
+              "num": 6
+            },
+            {
+              "id": 111012,
+              "num": 5
+            }
+          ]
+        },
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        },
+        {
+          "promotion": 7,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 64000
+            },
+            {
+              "id": 110233,
+              "num": 4
+            },
+            {
+              "id": 110504,
+              "num": 1
+            },
+            {
+              "id": 111013,
+              "num": 3
+            }
+          ]
+        },
+        {
+          "promotion": 8,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        },
+        {
+          "promotion": 9,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 240000
+            },
+            {
+              "id": 110233,
+              "num": 11
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/skill/8006_talent.png"
+    },
+    "8006007": {
+      "id": "8006007",
+      "name": "即刻！独奏团",
+      "max_level": 1,
+      "desc": "使用秘技后，下一次战斗开始时使我方全体的击破特攻提高#1[i]%，持续#2[i]回合。",
+      "params": [],
+      "anchor": "Point05",
+      "pre_points": [],
+      "level_up_skills": [
+        {
+          "id": 800607,
+          "num": 1
+        }
+      ],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [],
+          "materials": []
+        }
+      ],
+      "icon": "icon/skill/8006_technique.png"
+    },
+    "8006101": {
+      "id": "8006101",
+      "name": "卫我起舞",
+      "max_level": 1,
+      "desc": "若敌方目标数量大于等于5个时，【伴舞】效果触发的击破伤害提高#1[i]%，每减少一个敌方目标，【伴舞】效果触发的击破伤害额外提高#2[i]%。",
+      "params": [
+        0.3000000002793968,
+        0.10000000009313226
+      ],
+      "anchor": "Point06",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_8005_SkillTree1.png"
+    },
+    "8006102": {
+      "id": "8006102",
+      "name": "随波逐流",
+      "max_level": 1,
+      "desc": "战技造成的第一次削韧伤害额外提高#1[i]%。",
+      "params": [
+        1
+      ],
+      "anchor": "Point07",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_8005_SkillTree2.png"
+    },
+    "8006103": {
+      "id": "8006103",
+      "name": "剧院之帽",
+      "max_level": 1,
+      "desc": "我方目标造成弱点击破后额外使敌方目标行动延后#1[i]%。",
+      "params": [
+        0.3000000002793968
+      ],
+      "anchor": "Point08",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 241,
+              "num": 1
+            },
+            {
+              "id": 110504,
+              "num": 1
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/SkillIcon_8005_SkillTree3.png"
+    },
+    "8006201": {
+      "id": "8006201",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point09",
+      "pre_points": [],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.05299999983981252
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 2000
+            },
+            {
+              "id": 111011,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "8006202": {
+      "id": "8006202",
+      "name": "伤害强化•虚数",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point10",
+      "pre_points": [
+        8006101
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 2,
+          "level": 0,
+          "properties": [
+            {
+              "type": "ImaginaryAddedRatio",
+              "value": 0.031999999890103936
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 4000
+            },
+            {
+              "id": 110231,
+              "num": 2
+            },
+            {
+              "id": 111011,
+              "num": 4
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconImaginaryAddedRatio.png"
+    },
+    "8006203": {
+      "id": "8006203",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point11",
+      "pre_points": [
+        8006202
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.05299999983981252
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "8006204": {
+      "id": "8006204",
+      "name": "效果抵抗强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point12",
+      "pre_points": [
+        8006201
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 3,
+          "level": 0,
+          "properties": [
+            {
+              "type": "StatusResistanceBase",
+              "value": 0.0400000000372529
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 8000
+            },
+            {
+              "id": 110232,
+              "num": 2
+            },
+            {
+              "id": 111012,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconStatusResistance.png"
+    },
+    "8006205": {
+      "id": "8006205",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point13",
+      "pre_points": [
+        8006102
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 4,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.0800000000745058
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 16000
+            },
+            {
+              "id": 110232,
+              "num": 4
+            },
+            {
+              "id": 111012,
+              "num": 3
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "8006206": {
+      "id": "8006206",
+      "name": "伤害强化•虚数",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point14",
+      "pre_points": [
+        8006205
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "ImaginaryAddedRatio",
+              "value": 0.04799999948590994
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconImaginaryAddedRatio.png"
+    },
+    "8006207": {
+      "id": "8006207",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point15",
+      "pre_points": [
+        8006201
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 5,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.0800000000745058
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 36000
+            },
+            {
+              "id": 110233,
+              "num": 2
+            },
+            {
+              "id": 111013,
+              "num": 2
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    },
+    "8006208": {
+      "id": "8006208",
+      "name": "效果抵抗强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point16",
+      "pre_points": [
+        8006103
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 6,
+          "level": 0,
+          "properties": [
+            {
+              "type": "StatusResistanceBase",
+              "value": 0.060000000055879354
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 111013,
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconStatusResistance.png"
+    },
+    "8006209": {
+      "id": "8006209",
+      "name": "伤害强化•虚数",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point17",
+      "pre_points": [
+        8006208
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "ImaginaryAddedRatio",
+              "value": 0.06399999978020787
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 111013,
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconImaginaryAddedRatio.png"
+    },
+    "8006210": {
+      "id": "8006210",
+      "name": "击破强化",
+      "max_level": 1,
+      "desc": "",
+      "params": [],
+      "anchor": "Point18",
+      "pre_points": [
+        8006208
+      ],
+      "level_up_skills": [],
+      "levels": [
+        {
+          "promotion": 0,
+          "level": 0,
+          "properties": [
+            {
+              "type": "BreakDamageAddedRatioBase",
+              "value": 0.10699999961070716
+            }
+          ],
+          "materials": [
+            {
+              "id": 2,
+              "num": 128000
+            },
+            {
+              "id": 110233,
+              "num": 6
+            },
+            {
+              "id": 111013,
+              "num": 6
+            }
+          ]
+        }
+      ],
+      "icon": "icon/property/IconBreakUp.png"
+    }
   }
 }

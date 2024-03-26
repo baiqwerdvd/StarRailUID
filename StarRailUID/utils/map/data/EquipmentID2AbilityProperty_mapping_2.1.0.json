@@ -2562,6 +2562,90 @@
       }
     ]
   },
+  "21044": {
+    "1": [
+      {
+        "PropertyType": "CriticalChanceBase",
+        "Value": {
+          "Value": 0.0800000000745058
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "CriticalChanceBase",
+        "Value": {
+          "Value": 0.10000000009313226
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "CriticalChanceBase",
+        "Value": {
+          "Value": 0.12000000011175871
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "CriticalChanceBase",
+        "Value": {
+          "Value": 0.14000000013038516
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "CriticalChanceBase",
+        "Value": {
+          "Value": 0.1600000001490116
+        }
+      }
+    ]
+  },
+  "22002": {
+    "1": [
+      {
+        "PropertyType": "AttackAddedRatio",
+        "Value": {
+          "Value": 0.1600000001490116
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "AttackAddedRatio",
+        "Value": {
+          "Value": 0.20000000018626451
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "AttackAddedRatio",
+        "Value": {
+          "Value": 0.24000000022351742
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "AttackAddedRatio",
+        "Value": {
+          "Value": 0.2800000002607703
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "AttackAddedRatio",
+        "Value": {
+          "Value": 0.3200000002980232
+        }
+      }
+    ]
+  },
   "23023": {
     "1": [
       {
@@ -2642,6 +2726,55 @@
         "PropertyType": "CriticalDamageBase",
         "Value": {
           "Value": 0.6000000005587935
+        }
+      }
+    ]
+  },
+  "23026": {
+    "1": [],
+    "2": [],
+    "3": [],
+    "4": [],
+    "5": []
+  },
+  "23027": {
+    "1": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 0.6000000005587935
+        }
+      }
+    ],
+    "2": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 0.7000000006519258
+        }
+      }
+    ],
+    "3": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 0.8000000007450581
+        }
+      }
+    ],
+    "4": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 0.9000000008381903
+        }
+      }
+    ],
+    "5": [
+      {
+        "PropertyType": "BreakDamageAddedRatioBase",
+        "Value": {
+          "Value": 1
         }
       }
     ]
