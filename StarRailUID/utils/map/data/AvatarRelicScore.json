@@ -862,5 +862,23 @@
         "StatusProbabilityBase": 0.0,
         "StatusResistanceBase": 0.0,
         "AttributeAddedRatio": 1
+    },
+	{
+        "role": "流萤",
+        "HPDelta": 0.0,
+        "HPAddedRatio": 0.0,
+        "AttackDelta": 1,
+        "AttackAddedRatio": 0.75,
+        "DefenceDelta": 0.0,
+        "DefenceAddedRatio": 0.0,
+        "SpeedDelta": 1,
+        "CriticalChanceBase": 0.0,
+        "CriticalDamageBase": 0.0,
+        "BreakDamageAddedRatioBase": 1.25,
+        "HealRatio": 0,
+        "SPRatio": 0.5,
+        "StatusProbabilityBase": 0.0,
+        "StatusResistanceBase": 0.0,
+        "AttributeAddedRatio": 0
     }
 ]
