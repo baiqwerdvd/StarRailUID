@@ -1,0 +1,238 @@
+{
+    "101": {
+        "2": {
+            "Property": "HealRatioBase",
+            "Value": 0.1
+        },
+        "4": {}
+    },
+    "102": {
+        "2": {
+            "Property": "AttackAddedRatio",
+            "Value": 0.12
+        },
+        "4": {
+            "Property": "SpeedAddedRatio",
+            "Value": 0.06
+        }
+    },
+    "103": {
+        "2": {
+            "Property": "DefenceAddedRatio",
+            "Value": 0.15
+        },
+        "4": {}
+    },
+    "104": {
+        "2": {
+            "Property": "IceAddedRatio",
+            "Value": 0.1
+        },
+        "4": {}
+    },
+    "105": {
+        "2": {
+            "Property": "PhysicalAddedRatio",
+            "Value": 0.1
+        },
+        "4": {}
+    },
+    "106": {
+        "2": {},
+        "4": {}
+    },
+    "107": {
+        "2": {
+            "Property": "FireAddedRatio",
+            "Value": 0.1
+        },
+        "4": {}
+    },
+    "108": {
+        "2": {
+            "Property": "QuantumAddedRatio",
+            "Value": 0.1
+        },
+        "4": {}
+    },
+    "109": {
+        "2": {
+            "Property": "ThunderAddedRatio",
+            "Value": 0.1
+        },
+        "4": {}
+    },
+    "110": {
+        "2": {
+            "Property": "WindAddedRatio",
+            "Value": 0.1
+        },
+        "4": {}
+    },
+    "111": {
+        "2": {
+            "Property": "BreakDamageAddedRatioBase",
+            "Value": 0.16
+        },
+        "4": {
+            "Property": "BreakDamageAddedRatioBase",
+            "Value": 0.16
+        }
+    },
+    "112": {
+        "2": {
+            "Property": "ImaginaryAddedRatio",
+            "Value": 0.1
+        },
+        "4": {}
+    },
+    "301": {
+        "2": {
+            "Property": "AttackAddedRatio",
+            "Value": 0.12
+        }
+    },
+    "302": {
+        "2": {
+            "Property": "HPAddedRatio",
+            "Value": 0.12
+        }
+    },
+    "303": {
+        "2": {
+            "Property": "StatusProbabilityBase",
+            "Value": 0.1
+        }
+    },
+    "304": {
+        "2": {
+            "Property": "DefenceAddedRatio",
+            "Value": 0.15
+        }
+    },
+    "305": {
+        "2": {
+            "Property": "CriticalDamageBase",
+            "Value": 0.16
+        }
+    },
+    "306": {
+        "2": {
+            "Property": "CriticalChanceBase",
+            "Value": 0.08
+        }
+    },
+    "307": {
+        "2": {
+            "Property": "BreakDamageAddedRatioBase",
+            "Value": 0.16
+        }
+    },
+    "308": {
+        "2": {
+            "Property": "SPRatioBase",
+            "Value": 0.05
+        }
+    },
+    "309": {
+        "2": {
+            "Property": "CriticalChanceBase",
+            "Value": 0.08
+        }
+    },
+    "310": {
+        "2": {
+            "Property": "StatusResistanceBase",
+            "Value": 0.1
+        }
+    },
+    "113": {
+        "2": {
+            "Property": "HPAddedRatio",
+            "Value": 0.12
+        },
+        "4": {}
+    },
+    "114": {
+        "2": {
+            "Property": "SpeedAddedRatio",
+            "Value": 0.06
+        },
+        "4": {}
+    },
+    "115": {
+        "2": {},
+        "4": {}
+    },
+    "116": {
+        "2": {
+            "Property": "AttackAddedRatio",
+            "Value": 0.12
+        },
+        "4": {}
+    },
+    "311": {
+        "2": {
+            "Property": "AttackAddedRatio",
+            "Value": 0.12
+        }
+    },
+    "312": {
+        "2": {
+            "Property": "SPRatioBase",
+            "Value": 0.05
+        }
+    },
+    "117": {
+        "2": {},
+        "4": {
+            "Property": "CriticalChanceBase",
+            "Value": 0.04
+        }
+    },
+    "118": {
+        "2": {
+            "Property": "BreakDamageAddedRatioBase",
+            "Value": 0.16
+        },
+        "4": {}
+    },
+    "313": {
+        "2": {
+            "Property": "CriticalChanceBase",
+            "Value": 0.04
+        }
+    },
+    "314": {
+        "2": {
+            "Property": "AttackAddedRatio",
+            "Value": 0.12
+        }
+    },
+    "119": {
+        "2": {
+            "Property": "BreakDamageAddedRatioBase",
+            "Value": 0.16
+        },
+        "4": {}
+    },
+    "120": {
+        "2": {
+            "Property": "AttackAddedRatio",
+            "Value": 0.12
+        },
+        "4": {
+            "Property": "CriticalChanceBase",
+            "Value": 0.06
+        }
+    },
+    "315": {
+        "2": {}
+    },
+    "316": {
+        "2": {
+            "Property": "SpeedAddedRatio",
+            "Value": 0.06
+        }
+    }
+}
