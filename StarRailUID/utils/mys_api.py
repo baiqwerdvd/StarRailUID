@@ -131,6 +131,9 @@ class MysApi(_MysApi):
                 'STAR_RAIL_NOTE_URL', uid, header=self._HEADER
             )
         if isinstance(data, Dict):
+            # workaround for mistake params in hoyolab
+            if (data['data']['accepted_epedition_num']):
+                data['data']['accepted_expedition_num'] = data['data']['accepted_epedition_num']
             data = msgspec.convert(data['data'], type=DailyNoteData)
             # data = cast(DailyNoteData, data['data'])
         return data
