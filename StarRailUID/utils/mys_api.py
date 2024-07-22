@@ -1,7 +1,5 @@
 import copy
 import time
-import random
-from string import digits, ascii_letters
 from typing import Any, Dict, Union, Literal, Optional
 
 import msgspec
@@ -64,48 +62,8 @@ class MysApi(_MysApi):
             return await GsUser.get_random_cookie(uid, game_name='sr')
         return await GsUser.get_user_cookie_by_uid(uid, game_name='sr')
 
-    async def get_stoken(self, uid: str) -> Optional[str]:
-        return await GsUser.get_user_stoken_by_uid(uid, 'sr')
-
-    async def get_user_fp(self, uid: str) -> Optional[str]:
-        data = await GsUser.get_user_attr_by_uid(uid, 'fp', 'sr')
-        if data is None:
-            data = self.generate_random_fp()
-        return data
-
-    async def get_user_device_id(self, uid: str) -> Optional[str]:
-        data = await GsUser.get_user_attr_by_uid(uid, 'device_id', 'sr')
-        if data is None:
-            data = self.get_device_id()
-            await GsUser.update_data_by_uid_without_bot_id(
-                uid,
-                'sr',
-                device_id=data,
-            )
-        return data
-
     def check_os(self, uid: str) -> bool:
         return False if int(str(uid)[0]) < 6 else True
-
-    async def create_qrcode_url(self) -> Union[Dict, int]:
-        device_id: str = ''.join(random.choices(ascii_letters + digits, k=64))
-        app_id: str = '8'
-        data = await self._mys_request(
-            _API['CREATE_QRCODE'],
-            'POST',
-            header={},
-            data={'app_id': app_id, 'device': device_id},
-        )
-        if isinstance(data, Dict):
-            url: str = data['data']['url']
-            ticket = url.split('ticket=')[1]
-            return {
-                'app_id': app_id,
-                'ticket': ticket,
-                'device': device_id,
-                'url': url,
-            }
-        return data
 
     async def get_daily_data(self, uid: str) -> Union[DailyNoteData, int]:
         is_os = self.check_os(uid)
@@ -132,8 +90,10 @@ class MysApi(_MysApi):
             )
         if isinstance(data, Dict):
             # workaround for mistake params in hoyolab
-            if (data['data']['accepted_epedition_num']):
-                data['data']['accepted_expedition_num'] = data['data']['accepted_epedition_num']
+            if data['data']['accepted_epedition_num']:
+                data['data']['accepted_expedition_num'] = data['data'][
+                    'accepted_epedition_num'
+                ]
             data = msgspec.convert(data['data'], type=DailyNoteData)
             # data = cast(DailyNoteData, data['data'])
         return data
@@ -143,16 +103,16 @@ class MysApi(_MysApi):
         uid: str,
     ) -> Union[WidgetStamina, int]:
         header = copy.deepcopy(self._HEADER)
-        sk = await self.get_stoken(uid)
+        sk = await self.get_stoken(uid, 'sr')
         if sk is None:
             return -51
         header['Cookie'] = sk
         header['x-rpc-channel'] = 'beta'
-        device_id = await self.get_user_device_id(uid)
+        device_id = await self.get_user_device_id(uid, 'sr')
         header['x-rpc-device_id'] = '23' if device_id is None else device_id
         header['x-rpc-app_version'] = '2.53.0'
         header['x-rpc-device_model'] = 'Mi 10'
-        fp = await self.get_user_fp(uid)
+        fp = await self.get_user_fp(uid, 'sr')
         header['x-rpc-device_fp'] = 'Asmr489' if fp is None else fp
         header['x-rpc-client_type'] = '2'
         header['DS'] = get_ds_token2()
