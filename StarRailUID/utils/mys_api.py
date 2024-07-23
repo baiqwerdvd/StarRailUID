@@ -4,7 +4,6 @@ from typing import Any, Dict, Union, Literal, Optional
 
 import msgspec
 from gsuid_core.utils.api.mys_api import _MysApi
-from gsuid_core.utils.database.models import GsUser
 
 # from gsuid_core.utils.api.mys.models import MysSign, SignList
 from gsuid_core.utils.api.mys.tools import (
@@ -55,12 +54,10 @@ class MysApi(_MysApi):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    async def get_ck(
+    async def get_sr_ck(
         self, uid: str, mode: Literal['OWNER', 'RANDOM'] = 'RANDOM'
     ) -> Optional[str]:
-        if mode == 'RANDOM':
-            return await GsUser.get_random_cookie(uid, game_name='sr')
-        return await GsUser.get_user_cookie_by_uid(uid, game_name='sr')
+        return await self.get_ck(uid, mode, 'sr')
 
     def check_os(self, uid: str) -> bool:
         return False if int(str(uid)[0]) < 6 else True
@@ -86,7 +83,7 @@ class MysApi(_MysApi):
         is_os = self.check_os(uid)
         if is_os:
             HEADER = copy.deepcopy(self._HEADER_OS)
-            ck = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_sr_ck(uid, 'OWNER')
             if ck is None:
                 return -51
             HEADER['Cookie'] = ck
@@ -151,7 +148,7 @@ class MysApi(_MysApi):
         is_os = self.check_os(uid)
         if is_os:
             HEADER = copy.deepcopy(self._HEADER_OS)
-            ck = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_sr_ck(uid, 'OWNER')
             if ck is None:
                 return -51
             HEADER['Cookie'] = ck
@@ -188,7 +185,7 @@ class MysApi(_MysApi):
         server_id = RECOGNIZE_SERVER.get(str(uid)[0])
         if self.check_os(uid):
             HEADER = copy.deepcopy(self._HEADER_OS)
-            ck = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_sr_ck(uid, 'OWNER')
             if ck is None:
                 return -51
             HEADER['Cookie'] = ck
@@ -233,7 +230,7 @@ class MysApi(_MysApi):
         is_os = self.check_os(uid)
         if is_os:
             HEADER = copy.deepcopy(self._HEADER_OS)
-            ck = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_sr_ck(uid, 'OWNER')
             if ck is None:
                 return -51
             HEADER['Cookie'] = ck
@@ -318,7 +315,7 @@ class MysApi(_MysApi):
                 'lang': 'zh-cn',
             }
             HEADER = copy.deepcopy(self._HEADER_OS)
-            ck = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_sr_ck(uid, 'OWNER')
             if ck is None:
                 return -51
             HEADER['Cookie'] = ck
@@ -353,7 +350,7 @@ class MysApi(_MysApi):
         is_os = self.check_os(uid)
         if is_os:
             HEADER = copy.deepcopy(self._HEADER_OS)
-            ck = await self.get_ck(uid, 'OWNER')
+            ck = await self.get_sr_ck(uid, 'OWNER')
             if ck is None:
                 return -51
             HEADER['Cookie'] = ck
@@ -419,7 +416,7 @@ class MysApi(_MysApi):
         ck: Optional[str] = None,
     ) -> Union[RogueLocustData, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
-        ck = await self.get_ck(uid, 'OWNER')
+        ck = await self.get_sr_ck(uid, 'OWNER')
         data = await self.simple_sr_req(
             'ROGUE_LOCUST_INFO_URL',
             uid,
@@ -441,7 +438,7 @@ class MysApi(_MysApi):
     ) -> Union[MysSign, int]:
         if header is None:
             header = {}
-        ck = await self.get_ck(uid, 'OWNER')
+        ck = await self.get_sr_ck(uid, 'OWNER')
         if ck is None:
             return -51
         if int(str(uid)[0]) < 6:
@@ -485,7 +482,7 @@ class MysApi(_MysApi):
 
     async def get_award(self, sr_uid, month) -> Union[MonthlyAward, int]:
         server_id = RECOGNIZE_SERVER.get(str(sr_uid)[0])
-        ck = await self.get_ck(sr_uid, 'OWNER')
+        ck = await self.get_sr_ck(sr_uid, 'OWNER')
         if ck is None:
             return -51
         if int(str(sr_uid)[0]) < 6:
