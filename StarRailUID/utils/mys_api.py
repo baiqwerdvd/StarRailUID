@@ -65,6 +65,23 @@ class MysApi(_MysApi):
     def check_os(self, uid: str) -> bool:
         return False if int(str(uid)[0]) < 6 else True
 
+    async def simple_sr_req(
+        self,
+        URL: str,
+        uid: Union[str, bool],
+        params: Dict = {},  # noqa: B006
+        header: Dict = {},  # noqa: B006
+        cookie: Optional[str] = None,
+    ) -> Union[Dict, int]:
+        return await self.simple_mys_req(
+            URL,
+            uid,
+            params,
+            header,
+            cookie,
+            'sr',
+        )
+
     async def get_daily_data(self, uid: str) -> Union[DailyNoteData, int]:
         is_os = self.check_os(uid)
         if is_os:
@@ -75,7 +92,7 @@ class MysApi(_MysApi):
             HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
-            data = await self.simple_mys_req(
+            data = await self.simple_sr_req(
                 'STAR_RAIL_NOTE_URL',
                 uid,
                 params={
@@ -85,7 +102,7 @@ class MysApi(_MysApi):
                 header=header,
             )
         else:
-            data = await self.simple_mys_req(
+            data = await self.simple_sr_req(
                 'STAR_RAIL_NOTE_URL', uid, header=self._HEADER
             )
         if isinstance(data, Dict):
@@ -140,7 +157,7 @@ class MysApi(_MysApi):
             HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
-            data = await self.simple_mys_req(
+            data = await self.simple_sr_req(
                 'STAR_RAIL_INDEX_URL',
                 uid,
                 params={
@@ -150,7 +167,7 @@ class MysApi(_MysApi):
                 header=header,
             )
         else:
-            data = await self.simple_mys_req(
+            data = await self.simple_sr_req(
                 'STAR_RAIL_INDEX_URL', uid, header=self._HEADER
             )
         if isinstance(data, Dict):
@@ -222,7 +239,7 @@ class MysApi(_MysApi):
             HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
-            data = await self.simple_mys_req(
+            data = await self.simple_sr_req(
                 'STAR_RAIL_AVATAR_INFO_URL',
                 uid,
                 params={
@@ -233,7 +250,7 @@ class MysApi(_MysApi):
                 header=header,
             )
         else:
-            data = await self.simple_mys_req(
+            data = await self.simple_sr_req(
                 'STAR_RAIL_AVATAR_INFO_URL',
                 uid,
                 params={
@@ -250,7 +267,7 @@ class MysApi(_MysApi):
         return data
 
     async def get_avatar_detail(self, uid: str, avatarid: str):
-        data = await self.simple_mys_req(
+        data = await self.simple_sr_req(
             'STAR_RAIL_AVATAR_DETAIL_URL',
             uid,
             params={
@@ -342,7 +359,7 @@ class MysApi(_MysApi):
             HEADER['Cookie'] = ck
             HEADER['DS'] = generate_os_ds()
             header = HEADER
-            data = await self.simple_mys_req(
+            data = await self.simple_sr_req(
                 'CHALLENGE_INFO_URL',
                 uid,
                 params={
@@ -354,7 +371,7 @@ class MysApi(_MysApi):
                 header=header,
             )
         else:
-            data = await self.simple_mys_req(
+            data = await self.simple_sr_req(
                 'CHALLENGE_INFO_URL',
                 uid,
                 params={
@@ -379,7 +396,7 @@ class MysApi(_MysApi):
         ck: Optional[str] = None,
     ) -> Union[RogueData, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
-        data = await self.simple_mys_req(
+        data = await self.simple_sr_req(
             'ROGUE_INFO_URL',
             uid,
             params={
@@ -403,7 +420,7 @@ class MysApi(_MysApi):
     ) -> Union[RogueLocustData, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
         ck = await self.get_ck(uid, 'OWNER')
-        data = await self.simple_mys_req(
+        data = await self.simple_sr_req(
             'ROGUE_LOCUST_INFO_URL',
             uid,
             params={
@@ -501,7 +518,7 @@ class MysApi(_MysApi):
         self,
         sr_uid: str,
     ) -> Union[RoleBasicInfo, int]:
-        data = await self.simple_mys_req(
+        data = await self.simple_sr_req(
             'STAR_RAIL_ROLE_BASIC_INFO_URL', sr_uid, header=self._HEADER
         )
         if isinstance(data, Dict):
