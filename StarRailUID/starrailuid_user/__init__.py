@@ -1,5 +1,3 @@
-from typing import List
-
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.sv import SV
@@ -49,25 +47,32 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
             bot,
             data,
             {
-                0: f'绑定SR_UID{sr_uid}成功!',
-                -1: f'SR_UID{sr_uid}的位数不正确!',
-                -2: f'SR_UID{sr_uid}已经绑定过了!',
-                -3: '你输入了错误的格式!',
+                0: f'✅[崩铁]绑定UID{sr_uid}成功!',
+                -1: f'❌SR_UID{sr_uid}的位数不正确!',
+                -2: f'❌SR_UID{sr_uid}已经绑定过了!',
+                -3: '❌你输入了错误的格式!',
             },
         )
 
     if '切换' in ev.command:
         data = await GsBind.switch_uid_by_game(qid, ev.bot_id, sr_uid, 'sr')
-        if isinstance(data, List):
-            return await bot.send(f'切换SR_UID{sr_uid}成功!')
-        return await bot.send(f'尚未绑定该SR_UID{sr_uid}')
+        return await send_diff_msg(
+            bot,
+            data,
+            {
+                0: f'✅[崩铁]切换uid{sr_uid}成功!',
+                -1: '❌[崩铁]不存在绑定记录!',
+                -2: '❌[崩铁]请绑定两个以上UID再进行切换!',
+                -3: '❌[崩铁]请绑定两个以上UID再进行切换!',
+            },
+        )
 
     data = await GsBind.delete_uid(qid, ev.bot_id, sr_uid, 'sr')
     return await send_diff_msg(
         bot,
         data,
         {
-            0: f'删除SR_UID{sr_uid}成功!',
-            -1: f'该SR_UID{sr_uid}不在已绑定列表中!',
+            0: f'✅[崩铁]删除UID{sr_uid}成功!',
+            -1: f'❌[崩铁]该UID{sr_uid}不在已绑定列表中!',
         },
     )
