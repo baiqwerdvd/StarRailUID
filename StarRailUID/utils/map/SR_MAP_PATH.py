@@ -1,11 +1,16 @@
 import json
 from pathlib import Path
-from typing import Dict, List, Union, TypedDict
-
-from msgspec import json as msgjson
+from typing import Dict, List, Optional, TypedDict, Union
 
 from ...version import StarRail_version
-from .model.RelicSetSkill import RelicSetSkillModel
+
+from msgspec import Struct, convert, json as msgjson
+
+
+class RelicSetStatusAdd(Struct):
+    Property: str
+    Value: float
+
 
 MAP = Path(__file__).parent / 'data'
 
@@ -17,7 +22,7 @@ EquipmentID2Name_fileName = f'EquipmentID2Name_mapping_{version}.json'
 EquipmentID2EnName_fileName = f'EquipmentID2EnName_mapping_{version}.json'
 skillId2Name_fileName = f'skillId2Name_mapping_{version}.json'
 skillId2Type_fileName = f'skillId2Type_mapping_{version}.json'
-Property2Name_fileName = 'Property2Name.json'
+Property2Name_fileName = f'Property2Name_mapping_{version}.json'
 RelicId2SetId_fileName = f'RelicId2SetId_mapping_{version}.json'
 SetId2Name_fileName = f'SetId2Name_mapping_{version}.json'
 rankId2Name_fileName = f'rankId2Name_mapping_{version}.json'
@@ -98,9 +103,9 @@ with Path.open(
         f.read(), type=Dict[str, Dict[str, List]]
     )
 
-with Path.open(MAP / RelicSetSkill_fileName, encoding='UTF-8') as f:
-    data = json.load(f)
-    RelicSetSkill = RelicSetSkillModel.from_json(data)
+# with Path.open(MAP / RelicSetSkill_fileName, encoding='UTF-8') as f:
+#     RelicSetSkill = convert(json.load(f), Dict[str, Dict[str, object]])
+#     print(RelicSetSkill)
 
 with Path.open(MAP / skillId2AttackType_fileName, encoding='UTF-8') as f:
     skillId2AttackType = msgjson.decode(f.read(), type=Dict[str, str])

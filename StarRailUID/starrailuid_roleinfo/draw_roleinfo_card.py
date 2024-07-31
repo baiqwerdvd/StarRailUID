@@ -70,7 +70,9 @@ async def get_role_img(uid: str) -> Union[bytes, str]:
     return await draw_role_card(uid)
 
 
-async def get_detail_img(qid: Union[str, int], uid: str, sender) -> Union[bytes, str]:
+async def get_detail_img(
+    qid: Union[str, int], uid: str, sender
+) -> Union[bytes, str]:
     return await get_detail_card(qid, uid, sender)
 
 

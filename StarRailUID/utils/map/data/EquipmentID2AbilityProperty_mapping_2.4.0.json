@@ -2898,6 +2898,48 @@
             }
         ]
     },
+    "21046": {
+        "1": [
+            {
+                "PropertyType": "AttackAddedRatio",
+                "Value": {
+                    "Value": 0.16
+                }
+            }
+        ],
+        "2": [
+            {
+                "PropertyType": "AttackAddedRatio",
+                "Value": {
+                    "Value": 0.2
+                }
+            }
+        ],
+        "3": [
+            {
+                "PropertyType": "AttackAddedRatio",
+                "Value": {
+                    "Value": 0.24
+                }
+            }
+        ],
+        "4": [
+            {
+                "PropertyType": "AttackAddedRatio",
+                "Value": {
+                    "Value": 0.28
+                }
+            }
+        ],
+        "5": [
+            {
+                "PropertyType": "AttackAddedRatio",
+                "Value": {
+                    "Value": 0.32
+                }
+            }
+        ]
+    },
     "22002": {
         "1": [
             {
@@ -2946,5 +2988,89 @@
         "3": [],
         "4": [],
         "5": []
+    },
+    "23030": {
+        "1": [
+            {
+                "PropertyType": "CriticalDamageBase",
+                "Value": {
+                    "Value": 0.36
+                }
+            }
+        ],
+        "2": [
+            {
+                "PropertyType": "CriticalDamageBase",
+                "Value": {
+                    "Value": 0.42
+                }
+            }
+        ],
+        "3": [
+            {
+                "PropertyType": "CriticalDamageBase",
+                "Value": {
+                    "Value": 0.48
+                }
+            }
+        ],
+        "4": [
+            {
+                "PropertyType": "CriticalDamageBase",
+                "Value": {
+                    "Value": 0.54
+                }
+            }
+        ],
+        "5": [
+            {
+                "PropertyType": "CriticalDamageBase",
+                "Value": {
+                    "Value": 0.6
+                }
+            }
+        ]
+    },
+    "23029": {
+        "1": [
+            {
+                "PropertyType": "StatusProbabilityBase",
+                "Value": {
+                    "Value": 0.6
+                }
+            }
+        ],
+        "2": [
+            {
+                "PropertyType": "StatusProbabilityBase",
+                "Value": {
+                    "Value": 0.7
+                }
+            }
+        ],
+        "3": [
+            {
+                "PropertyType": "StatusProbabilityBase",
+                "Value": {
+                    "Value": 0.8
+                }
+            }
+        ],
+        "4": [
+            {
+                "PropertyType": "StatusProbabilityBase",
+                "Value": {
+                    "Value": 0.9
+                }
+            }
+        ],
+        "5": [
+            {
+                "PropertyType": "StatusProbabilityBase",
+                "Value": {
+                    "Value": 1
+                }
+            }
+        ]
     }
 }

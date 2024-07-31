@@ -1,15 +1,15 @@
-from gsuid_core.sv import SV
-from gsuid_core.bot import Bot
-from gsuid_core.models import Event
-from gsuid_core.aps import scheduler
-from gsuid_core.logger import logger
-from gsuid_core.utils.database.models import GsBind
-from gsuid_core.utils.sign.sign import sign_in, daily_sign
-from gsuid_core.utils.boardcast.send_msg import send_board_cast_msg
-
-from ..utils.sr_prefix import PREFIX
-from ..utils.error_reply import UID_HINT
 from ..starrailuid_config.sr_config import srconfig
+from ..utils.error_reply import UID_HINT
+from ..utils.sr_prefix import PREFIX
+
+from gsuid_core.aps import scheduler
+from gsuid_core.bot import Bot
+from gsuid_core.logger import logger
+from gsuid_core.models import Event
+from gsuid_core.sv import SV
+from gsuid_core.utils.boardcast.send_msg import send_board_cast_msg
+from gsuid_core.utils.database.models import GsBind
+from gsuid_core.utils.sign.sign import daily_sign, sign_in
 
 SIGN_TIME = srconfig.get_config('SignTime').data
 IS_REPORT = srconfig.get_config('PrivateSignReport').data
@@ -26,6 +26,7 @@ async def get_sign_func(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     logger.info(f'[星穹铁道] [签到] UID: {uid}')
     await bot.send(await sign_in(uid, 'sr'))
+    return None
 
 
 @sv_sign_config.on_fullmatch(f'{PREFIX}全部重签')

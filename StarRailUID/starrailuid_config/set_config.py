@@ -1,7 +1,7 @@
-from gsuid_core.models import Event
 from gsuid_core.logger import logger
-from gsuid_core.utils.database.models import GsUser
+from gsuid_core.models import Event
 from gsuid_core.utils.database.config_switch import set_database_value
+from gsuid_core.utils.database.models import GsUser
 
 
 async def set_config_func(
@@ -11,11 +11,10 @@ async def set_config_func(
     if '开启' in ev.command:
         if ev.user_type == 'direct':
             value = 'on'
+        elif ev.group_id:
+            value = ev.group_id
         else:
-            if ev.group_id:
-                value = ev.group_id
-            else:
-                value = 'on'
+            value = 'on'
     else:
         value = 'off'
 
@@ -30,6 +29,5 @@ async def set_config_func(
     )
     if text is None:
         return '[星穹铁道] 未找到配置项'
-    else:
-        logger.success(f'[UID{uid}]成功将配置[SR自动签到]设置为[{value}]!')
-        return text
+    logger.success(f'[UID{uid}]成功将配置[SR自动签到]设置为[{value}]!')
+    return text

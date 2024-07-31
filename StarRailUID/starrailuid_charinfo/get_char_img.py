@@ -97,11 +97,7 @@ async def get_char_args(
     char_data = {}
     weapon, weapon_affix = None, None
 
-    msg = (
-        msg.replace('带', '换')
-        .replace('拿', '换')
-        .replace('圣遗物', '遗器')
-    )
+    msg = msg.replace('带', '换').replace('拿', '换').replace('圣遗物', '遗器')
 
     # 希儿带于夜色中换1000xxxx6希儿头
     msg_list = msg.split('换')
@@ -132,13 +128,17 @@ async def get_char_args(
             if isinstance(char_data, str):
                 return char_data
         else:
-            for i, s in enumerate(['头部', '手部', '躯干', '腿部', '位面球', '连结绳']):
+            for i, s in enumerate(
+                ['头部', '手部', '躯干', '腿部', '位面球', '连结绳']
+            ):
                 if '赤沙' in part:
                     continue
                 if part[-1] in PieceName_ilst[i]:
                     if isinstance(char_data, str):
                         return char_data
-                    char_data = await change_equip(changeuid, char_data, part, s, i)
+                    char_data = await change_equip(
+                        changeuid, char_data, part, s, i
+                    )
                     if not char_data:
                         change_name = part.replace(part[-1], '')
                         return f'要替换的{change_name}的{s}遗器不存在噢~'
@@ -149,7 +149,9 @@ async def get_char_args(
     return char_data, weapon, weapon_affix, talent_num
 
 
-async def change_equip(uid: str, char_data: Dict, part: str, s: str, i: int) -> Dict:
+async def change_equip(
+    uid: str, char_data: Dict, part: str, s: str, i: int
+) -> Dict:
     char_name = part.replace(part[-1], '').replace(uid, '')
     fake_data = await get_char_data(uid, char_name)
     if isinstance(fake_data, str):
@@ -176,7 +178,9 @@ async def get_fake_char_str(char_name: str) -> Tuple[str, Optional[int]]:
 
     """
     talent_num = None
-    if ('魂' in char_name or '命' in char_name) and char_name[0] in CHAR_TO_INT:
+    if ('魂' in char_name or '命' in char_name) and char_name[
+        0
+    ] in CHAR_TO_INT:
         talent_num = CHAR_TO_INT[char_name[0]]
         char_name = char_name[2:]
     return char_name, talent_num
@@ -258,18 +262,28 @@ async def make_new_charinfo(
         char_id = await name_to_avatar_id(fake_name)
     char_data['avatarId'] = int(char_id)
     char_data['avatarName'] = fake_name
-    char_data['avatarElement'] = avatarId2DamageType[str(char_data['avatarId'])]
-    char_data['avatarRarity'] = str(avatarId2Rarity[str(char_data['avatarId'])])
+    char_data['avatarElement'] = avatarId2DamageType[
+        str(char_data['avatarId'])
+    ]
+    char_data['avatarRarity'] = str(
+        avatarId2Rarity[str(char_data['avatarId'])]
+    )
     char_data['avatarPromotion'] = 6
     char_data['avatarLevel'] = 80
     char_data['avatarSkill'] = await get_skill_list(char_data['avatarId'])
-    char_data['avatarExtraAbility'] = await get_extra_list(char_data['avatarId'])
-    char_data['avatarAttributeBonus'] = await get_attribute_list(char_data['avatarId'])
+    char_data['avatarExtraAbility'] = await get_extra_list(
+        char_data['avatarId']
+    )
+    char_data['avatarAttributeBonus'] = await get_attribute_list(
+        char_data['avatarId']
+    )
     char_data['RelicInfo'] = []
     char_data['avatarEnName'] = avatarId2EnName[str(char_data['avatarId'])]
     char_data['rank'] = 0
     char_data['rankList'] = []
-    char_data['baseAttributes'] = await get_baseAttributes(char_data['avatarId'])
+    char_data['baseAttributes'] = await get_baseAttributes(
+        char_data['avatarId']
+    )
     char_data['equipmentInfo'] = {}
     return char_data
 
@@ -299,9 +313,13 @@ async def get_baseAttributes(
     # 速度
     base_attributes['speed'] = avatar_promotion_base.SpeedBase.Value
     # 暴击率
-    base_attributes['CriticalChanceBase'] = avatar_promotion_base.CriticalChance.Value
+    base_attributes['CriticalChanceBase'] = (
+        avatar_promotion_base.CriticalChance.Value
+    )
     # 暴击伤害
-    base_attributes['CriticalDamageBase'] = avatar_promotion_base.CriticalDamage.Value
+    base_attributes['CriticalDamageBase'] = (
+        avatar_promotion_base.CriticalDamage.Value
+    )
     # 嘲讽
     base_attributes['BaseAggro'] = avatar_promotion_base.BaseAggro.Value
     return base_attributes
@@ -321,7 +339,9 @@ async def get_attribute_list(
         attribute_bonus_temp['statusAdd'] = {}
         if status_add:
             for property_ in status_add:
-                attribute_bonus_temp['statusAdd']['property'] = property_['type']
+                attribute_bonus_temp['statusAdd']['property'] = property_[
+                    'type'
+                ]
                 attribute_bonus_temp['statusAdd']['name'] = Property2Name[
                     property_['type']
                 ]
@@ -351,7 +371,9 @@ async def get_skill_list(
         skill_temp['skillId'] = char_id * 100 + skillid
         skill_temp['skillName'] = skillId2Name[str(skill_temp['skillId'])]
         skill_temp['skillEffect'] = skillId2Effect[str(skill_temp['skillId'])]
-        skill_temp['skillAttackType'] = skillId2AttackType[str(skill_temp['skillId'])]
+        skill_temp['skillAttackType'] = skillId2AttackType[
+            str(skill_temp['skillId'])
+        ]
         skilllevel = 10
         if skillid == 1:
             skilllevel = 6
@@ -404,7 +426,9 @@ async def get_char(
                         skill_id = item['id']
                         skill_up_num = item['num']
                         # 查找skill_id在不在avatarSkill中
-                        for index, skill_item in enumerate(char_data['avatarSkill']):
+                        for index, skill_item in enumerate(
+                            char_data['avatarSkill']
+                        ):
                             if str(skill_id) == str(skill_item['skillId']):
                                 if skill_id[-1] == 1:
                                     skilllevel_max = 7
@@ -412,7 +436,9 @@ async def get_char(
                                     skilllevel_max = 12
                                 skilllevel = min(
                                     skilllevel_max,
-                                    char_data['avatarSkill'][index]['skillLevel']
+                                    char_data['avatarSkill'][index][
+                                        'skillLevel'
+                                    ]
                                     + skill_up_num,
                                 )
                                 char_data['avatarSkill'][index][
@@ -433,11 +459,13 @@ async def get_char(
         equipment_info['equipmentLevel'] = 80
         equipment_info['equipmentPromotion'] = 6
         equipment_info['equipmentRank'] = weapon_affix
-        equipment_info['equipmentRarity'] = EquipmentID2Rarity[str(equipmentid)]
-        equipment_base_attributes = {}
-        equipment_promotion_base = EquipmentPromotionConfig.Equipment[str(equipmentid)][
-            '6'
+        equipment_info['equipmentRarity'] = EquipmentID2Rarity[
+            str(equipmentid)
         ]
+        equipment_base_attributes = {}
+        equipment_promotion_base = EquipmentPromotionConfig.Equipment[
+            str(equipmentid)
+        ]['6']
 
         # 生命值
         equipment_base_attributes['hp'] = (

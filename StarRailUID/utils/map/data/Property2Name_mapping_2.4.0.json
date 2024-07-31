@@ -9,7 +9,6 @@
     "BreakDamageAddedRatioBase": "击破特攻",
     "HealRatio": "治疗量加成",
     "MaxSP": "能量上限",
-    "SpecialMaxSP": "",
     "SPRatio": "能量恢复效率",
     "StatusProbability": "效果命中",
     "StatusResistance": "效果抵抗",
