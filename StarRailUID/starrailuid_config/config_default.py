@@ -4,7 +4,7 @@ from gsuid_core.utils.plugins_config.models import (
     GSC,
     GsStrConfig,
     GsBoolConfig,
-    GsListStrConfig,
+    GsListStrConfig, GsIntConfig,
 )
 
 CONIFG_DEFAULT: Dict[str, GSC] = {
@@ -20,6 +20,17 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '定时签到',
         '开启后每晚00:30将开始自动签到任务',
         True,
+    ),
+    'SchedStaminaPush': GsBoolConfig(
+        '定时检查开拓力',
+        '开启后每隔半小时检查一次开拓力',
+        True,
+    ),
+    'push_max_value': GsIntConfig(
+        '提醒阈值',
+        '发送提醒的阈值',
+        200,
+        240
     ),
     'CrazyNotice': GsBoolConfig(
         '催命模式',

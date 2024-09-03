@@ -52,6 +52,11 @@ STAR_RAIL_AVATAR_DETAIL_URL = f'{OLD_URL}/event/rpgcalc/avatar/detail'
 CHALLENGE_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge'
 CHALLENGE_INFO_URL_OS = f'{OS_INFO_URL}/game_record/hkrpg/api/challenge'
 
+CHALLENGE_STORY_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge_story'
+
+CHALLENGE_BOSS_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge_boss'
+
+
 ROGUE_INFO_URL = (
     f'{NEW_URL}/game_record/app/hkrpg/api/rogue'  # 角色模拟宇宙信息接口
 )

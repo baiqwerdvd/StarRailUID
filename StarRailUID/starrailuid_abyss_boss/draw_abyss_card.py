@@ -120,7 +120,6 @@ async def _draw_floor_card(
     img: Image.Image,
     index_floor: int,
     floor_name: str,
-    round_num: int,
 ):
     for index_num in [0, 1, 2]:
         star_num = index_num + 1
@@ -137,13 +136,6 @@ async def _draw_floor_card(
         fill=white_color,
         anchor='mm',
     )
-    floor_pic_draw.text(
-        (802, 60),
-        f'使用轮: {round_num}',
-        font=sr_font_28,
-        fill=gray_color,
-        anchor='rm',
-    )
     img.paste(floor_pic, (0, 657 + index_floor * 570), floor_pic)
 
 
@@ -151,25 +143,18 @@ async def draw_abyss_img(
     qid: Union[str, int],
     uid: str,
     sender: Union[str, str],
-    floor: Optional[int] = None,
     schedule_type: str = '1',
 ) -> Union[bytes, str]:
-    raw_abyss_data = await mys_api.get_abyss_info(uid, schedule_type)
-
+    raw_abyss_data = await mys_api.get_abyss_boss_info(uid, schedule_type)
     if isinstance(raw_abyss_data, int):
         return get_error(raw_abyss_data)
 
     # 获取查询者数据
-    if floor:
-        floor_num = 1
-        if floor > 12:
-            return '楼层不能大于12层!'
-        if len(raw_abyss_data.all_floor_detail) < floor:
-            return '你还没有挑战该层!'
-    else:
-        if raw_abyss_data.max_floor == '':
-            return '你还没有挑战本期深渊!\n可以使用[sr上期深渊]命令查询上期~'
-        floor_num = len(raw_abyss_data.all_floor_detail)
+    if raw_abyss_data.max_floor == '':
+        return '你还没有挑战本期末日幻影!\n可以使用[sr上期末日幻影]命令查询上期~'
+    # 过滤掉 is_fast 为 True 的项
+    floor_detail = [detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast]
+    floor_num = len(floor_detail)
 
     # 获取背景图片各项参数
     based_w = 900
@@ -224,23 +209,16 @@ async def draw_abyss_img(
 
     img_draw.text(
         (695, 590),
-        f'{raw_abyss_data.star_num}/36',
+        f'{raw_abyss_data.star_num}/12',
         white_color,
         sr_font_42,
         'lm',
     )
 
-    for index_floor, level in enumerate(raw_abyss_data.all_floor_detail):
-        if floor:
-            if abyss_list[str(floor)] == level.name.split('其')[1]:
-                index_floor = 0  # noqa: PLW2901
-            else:
-                continue
-
+    for index_floor, level in enumerate(floor_detail):
         floor_pic = Image.open(TEXT_PATH / 'floor_bg.png')
-        level_star = level.star_num
+        level_star = int(level.star_num)
         floor_name = level.name
-        round_num = level.round_num
         node_1 = level.node_1
         node_2 = level.node_2
         for index_part in [0, 1]:
@@ -286,9 +264,9 @@ async def draw_abyss_img(
             img,
             index_floor,
             floor_name,
-            round_num,
+
         )
 
     res = await convert_img(img)
-    logger.info('[查询深渊信息]绘图已完成,等待发送!')
+    logger.info('[查询末日幻影信息]绘图已完成,等待发送!')
     return res
