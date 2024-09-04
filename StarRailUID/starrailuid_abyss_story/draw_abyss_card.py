@@ -21,19 +21,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_42,
 )
 
-abyss_list = {
-    '1': '一',
-    '2': '二',
-    '3': '三',
-    '4': '四',
-    '5': '五',
-    '6': '六',
-    '7': '七',
-    '8': '八',
-    '9': '九',
-    '10': '十',
-}
-
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 white_color = (255, 255, 255)
 gray_color = (175, 175, 175)
@@ -160,13 +147,12 @@ async def draw_abyss_img(
     # 获取查询者数据
     if raw_abyss_data.max_floor == '':
         return '你还没有挑战本期虚构叙事!\n可以使用[sr上期虚构叙事]命令查询上期~'
-    floor_num = len(raw_abyss_data.all_floor_detail)
+    # 过滤掉 is_fast（快速通关） 为 True 的项
+    floor_detail = [detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast]
+    floor_num = len(floor_detail)
 
     # 获取背景图片各项参数
     based_w = 900
-    # if floor_num >= 3:
-    #     based_h = 2367
-    # else:
     based_h = 657 + 570 * floor_num
     img = img_bg.copy()
     img = img.crop((0, 0, based_w, based_h))

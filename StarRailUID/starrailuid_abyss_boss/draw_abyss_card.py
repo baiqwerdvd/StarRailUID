@@ -21,19 +21,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_42,
 )
 
-abyss_list = {
-    '1': '一',
-    '2': '二',
-    '3': '三',
-    '4': '四',
-    '5': '五',
-    '6': '六',
-    '7': '七',
-    '8': '八',
-    '9': '九',
-    '10': '十',
-}
-
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 white_color = (255, 255, 255)
 gray_color = (175, 175, 175)
@@ -70,7 +57,6 @@ async def get_abyss_star_pic(star: int) -> Image.Image:
 
 async def _draw_abyss_card(
     char: AbyssAvatar,
-    talent_num: str,
     floor_pic: Image.Image,
     index_char: int,
     index_part: int,
@@ -94,12 +80,6 @@ async def _draw_abyss_card(
             fill=white_color,
             anchor='mm',
         )
-    # 不存在自动下载
-    # if not char_pic_path.exists():
-    # await create_single_char_card(char_id)
-    # talent_pic = await get_talent_pic(int(talent_num))
-    # talent_pic = talent_pic.resize((90, 45))
-    # char_card.paste(talent_pic, (137, 260), talent_pic)
     char_card_draw.text(
         (100, 165),
         f'等级 {char.level}',
@@ -152,15 +132,12 @@ async def draw_abyss_img(
     # 获取查询者数据
     if raw_abyss_data.max_floor == '':
         return '你还没有挑战本期末日幻影!\n可以使用[sr上期末日幻影]命令查询上期~'
-    # 过滤掉 is_fast 为 True 的项
+    # 过滤掉 is_fast（快速通关） 为 True 的项
     floor_detail = [detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast]
     floor_num = len(floor_detail)
 
     # 获取背景图片各项参数
     based_w = 900
-    # if floor_num >= 3:
-    #     based_h = 2367
-    # else:
     based_h = 657 + 570 * floor_num
     img = img_bg.copy()
     img = img.crop((0, 0, based_w, based_h))
@@ -253,7 +230,6 @@ async def draw_abyss_img(
             for index_char, char in enumerate(avatars_array.avatars):
                 await _draw_abyss_card(
                     char,
-                    0,  # type: ignore
                     floor_pic,
                     index_char,
                     index_part,

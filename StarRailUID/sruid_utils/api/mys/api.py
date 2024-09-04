@@ -49,13 +49,10 @@ STAR_RAIL_AVATAR_INFO_URL_OS = (
 STAR_RAIL_AVATAR_LIST_URL = f'{OLD_URL}/event/rpgcalc/avatar/list'
 STAR_RAIL_AVATAR_DETAIL_URL = f'{OLD_URL}/event/rpgcalc/avatar/detail'
 
-CHALLENGE_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge'
-CHALLENGE_INFO_URL_OS = f'{OS_INFO_URL}/game_record/hkrpg/api/challenge'
-
-CHALLENGE_STORY_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge_story'
-
-CHALLENGE_BOSS_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge_boss'
-
+CHALLENGE_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge'  # 忘却之庭
+CHALLENGE_INFO_URL_OS = f'{OS_INFO_URL}/game_record/hkrpg/api/challenge'  # OS忘却之庭
+CHALLENGE_STORY_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge_story'  # 虚构叙事
+CHALLENGE_BOSS_INFO_URL = f'{NEW_URL}/game_record/app/hkrpg/api/challenge_boss'  # 末日幻影
 
 ROGUE_INFO_URL = (
     f'{NEW_URL}/game_record/app/hkrpg/api/rogue'  # 角色模拟宇宙信息接口

@@ -35,7 +35,7 @@ async def send_srabyss_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     await bot.logger.info(f'[sr查询末日幻影信息]uid: {uid}')
 
-    if 'sq' in ev.command or '上期' in ev.command:
+    if '上期' in ev.command:
         schedule_type = '2'
     else:
         schedule_type = '1'

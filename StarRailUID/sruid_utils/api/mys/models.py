@@ -254,24 +254,17 @@ class AbyssAvatar(Struct):
 
 
 class AbyssNodeDetail(Struct):
-    challenge_time: AbyssTime | None
+    challenge_time: Union[AbyssTime, None]
     avatars: List[AbyssAvatar]
 
 
 class AbyssFloorDetail(Struct):
     name: str
-    star_num: int
-    round_num: int
+    star_num: Union[int, str]
     node_1: AbyssNodeDetail
     node_2: AbyssNodeDetail
-
-
-class AbyssBossFloorDetail(Struct):
-    name: str
-    star_num: str
-    is_fast: bool
-    node_1: AbyssNodeDetail
-    node_2: AbyssNodeDetail
+    round_num: Optional[int] = None
+    is_fast: Optional[bool] = False
 
 
 class AbyssData(Struct):
@@ -302,7 +295,7 @@ class AbyssBossData(Struct):
     max_floor: str
     battle_num: int
     has_data: bool
-    all_floor_detail: List[AbyssBossFloorDetail]
+    all_floor_detail: List[AbyssFloorDetail]
     max_floor_id: int
 
 
