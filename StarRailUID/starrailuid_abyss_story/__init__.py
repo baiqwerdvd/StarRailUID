@@ -9,15 +9,17 @@ from ..utils.convert import get_uid
 from ..utils.sr_prefix import PREFIX
 from .draw_abyss_card import draw_abyss_img
 
-sv_srabyss = SV('sr查询深渊')
+sv_abyss_story = SV('sr查询虚构叙事')
 
 
-@sv_srabyss.on_command(
+@sv_abyss_story.on_command(
     (
-        f'{PREFIX}查询深渊',
-        f'{PREFIX}查询上期深渊',
-        f'{PREFIX}上期深渊',
-        f'{PREFIX}深渊',
+        f'{PREFIX}查询虚构叙事',
+        f'{PREFIX}xg',
+        f'{PREFIX}查询上期虚构叙事',
+        f'{PREFIX}sqxg',
+        f'{PREFIX}上期虚构',
+        f'{PREFIX}虚构',
     ),
     block=True,
 )
@@ -26,20 +28,20 @@ async def send_srabyss_info(bot: Bot, ev: Event):
     if name:
         return None
 
-    await bot.logger.info('开始执行[sr查询深渊信息]')
+    await bot.logger.info('开始执行[sr查询虚构叙事信息]')
     get_uid_ = await get_uid(bot, ev, True)
     if get_uid_ is None:
         return await bot.send(UID_HINT)
     uid, user_id = get_uid_
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info(f'[sr查询深渊信息]uid: {uid}')
+    await bot.logger.info(f'[sr查询虚构叙事信息]uid: {uid}')
 
-    if '上期' in ev.command:
+    if 'sq' in ev.command or '上期' in ev.command:
         schedule_type = '2'
     else:
         schedule_type = '1'
-    await bot.logger.info(f'[sr查询深渊信息]深渊期数: {schedule_type}')
+    await bot.logger.info(f'[sr查询虚构叙事信息]虚构叙事期数: {schedule_type}')
 
     im = await draw_abyss_img(user_id, uid, ev.sender, schedule_type)
     await bot.send(im)

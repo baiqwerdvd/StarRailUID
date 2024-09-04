@@ -57,10 +57,14 @@ async def get_abyss_star_pic(star: int) -> Image.Image:
 
 async def _draw_abyss_card(
     char: AbyssAvatar,
+    talent_num: str,
     floor_pic: Image.Image,
     index_char: int,
     index_part: int,
 ):
+    # char_id = char['id']
+    # # 确认角色头像路径
+    # char_pic_path = CHAR_ICON_PATH / f'{char_id}.png'
     char_bg = (char_bg_4 if char.rarity == 4 else char_bg_5).copy()
     char_icon = (await get_icon(char.icon)).resize((150, 170))
     element_icon = elements[char.element]
@@ -77,6 +81,12 @@ async def _draw_abyss_card(
             fill=white_color,
             anchor='mm',
         )
+    # 不存在自动下载
+    # if not char_pic_path.exists():
+    # await create_single_char_card(char_id)
+    # talent_pic = await get_talent_pic(int(talent_num))
+    # talent_pic = talent_pic.resize((90, 45))
+    # char_card.paste(talent_pic, (137, 260), talent_pic)
     char_card_draw.text(
         (100, 165),
         f'等级 {char.level}',
@@ -130,14 +140,13 @@ async def draw_abyss_img(
     sender: Union[str, str],
     schedule_type: str = '1',
 ) -> Union[bytes, str]:
-    raw_abyss_data = await mys_api.get_abyss_info(uid, schedule_type)
-
+    raw_abyss_data = await mys_api.get_abyss_story_info(uid, schedule_type)
     if isinstance(raw_abyss_data, int):
         return get_error(raw_abyss_data)
 
     # 获取查询者数据
     if raw_abyss_data.max_floor == '':
-        return '你还没有挑战本期深渊!\n可以使用[sr上期深渊]命令查询上期~'
+        return '你还没有挑战本期虚构叙事!\n可以使用[sr上期虚构叙事]命令查询上期~'
     # 过滤掉 is_fast（快速通关） 为 True 的项
     floor_detail = [detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast]
     floor_num = len(floor_detail)
@@ -192,7 +201,7 @@ async def draw_abyss_img(
 
     img_draw.text(
         (695, 590),
-        f'{raw_abyss_data.star_num}/36',
+        f'{raw_abyss_data.star_num}/12',
         white_color,
         sr_font_42,
         'lm',
@@ -237,6 +246,7 @@ async def draw_abyss_img(
             for index_char, char in enumerate(avatars_array.avatars):
                 await _draw_abyss_card(
                     char,
+                    0,  # type: ignore
                     floor_pic,
                     index_char,
                     index_part,
@@ -251,5 +261,5 @@ async def draw_abyss_img(
         )
 
     res = await convert_img(img)
-    logger.info('[查询深渊信息]绘图已完成,等待发送!')
+    logger.info('[查询虚构叙事信息]绘图已完成,等待发送!')
     return res

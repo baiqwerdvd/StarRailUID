@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 
 from msgspec import Struct
 
@@ -254,16 +254,17 @@ class AbyssAvatar(Struct):
 
 
 class AbyssNodeDetail(Struct):
-    challenge_time: AbyssTime
+    challenge_time: Union[AbyssTime, None]
     avatars: List[AbyssAvatar]
 
 
 class AbyssFloorDetail(Struct):
     name: str
-    round_num: int
-    star_num: int
+    star_num: Union[int, str]
     node_1: AbyssNodeDetail
     node_2: AbyssNodeDetail
+    round_num: Optional[int] = None
+    is_fast: Optional[bool] = False
 
 
 class AbyssData(Struct):
@@ -276,6 +277,26 @@ class AbyssData(Struct):
     has_data: bool
     all_floor_detail: List[AbyssFloorDetail]
     max_floor_detail: Union[bool, None] = None
+
+
+class AbyssStoryData(Struct):
+    groups: Any
+    star_num: int
+    max_floor: str
+    battle_num: int
+    has_data: bool
+    all_floor_detail: List[AbyssFloorDetail]
+    max_floor_id: int
+
+
+class AbyssBossData(Struct):
+    groups: Any
+    star_num: int
+    max_floor: str
+    battle_num: int
+    has_data: bool
+    all_floor_detail: List[AbyssFloorDetail]
+    max_floor_id: int
 
 
 ################
