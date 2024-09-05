@@ -8,26 +8,26 @@ async def set_config_func(
     uid: str,
     ev: Event,
 ):
-    if '开启' in ev.command:
-        if ev.user_type == 'direct':
-            value = 'on'
+    if "开启" in ev.command:
+        if ev.user_type == "direct":
+            value = "on"
         elif ev.group_id:
             value = ev.group_id
         else:
-            value = 'on'
+            value = "on"
     else:
-        value = 'off'
+        value = "off"
 
     text = await set_database_value(
         GsUser,
-        'sr',
-        'sr开启',
+        "sr",
+        "sr开启",
         ev.text.strip(),
         uid,
         ev.bot_id,
         value,
     )
     if text is None:
-        return '[星穹铁道] 未找到配置项'
-    logger.success(f'[UID{uid}]成功将配置[SR自动签到]设置为[{value}]!')
+        return "[星穹铁道] 未找到配置项"
+    logger.success(f"[UID{uid}]成功将配置[SR自动签到]设置为[{value}]!")
     return text

@@ -88,8 +88,6 @@ class SingleRelicSubAffix(Struct):
 
 
 AvatarPromotionConfig = convert(AvatarPromotion, List[SingleAvatarPromotion])
-EquipmentPromotionConfig = convert(
-    EquipmentPromotion, List[SingleEquipmentPromotion]
-)
+EquipmentPromotionConfig = convert(EquipmentPromotion, List[SingleEquipmentPromotion])
 RelicMainAffixConfig = convert(RelicMainAffix, List[SingleRelicMainAffix])
 RelicSubAffixConfig = convert(RelicSubAffix, List[SingleRelicSubAffix])

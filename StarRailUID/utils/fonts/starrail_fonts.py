@@ -2,7 +2,7 @@ from pathlib import Path
 
 from PIL import ImageFont
 
-FONT_ORIGIN_PATH = Path(__file__).parent / 'starrail_origin.ttf'
+FONT_ORIGIN_PATH = Path(__file__).parent / "starrail_origin.ttf"
 
 
 def starrail_font_origin(size: int) -> ImageFont.FreeTypeFont:

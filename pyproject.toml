@@ -38,33 +38,37 @@ pytest = "^7.2.0"
 pytest-asyncio = "^0.20.3"
 
 [tool.ruff]
-line-length = 79
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
 select = [
-  "E", "W",   # pycodestyle
-  "F",        # pyflakes
+  "E",
+  "W", # pycodestyle
+  "F", # pyflakes
   # "I",        # isort
-  "RUF",      # ruff
-  "TRY",      # tryceratops
+  "RUF", # ruff
+  "TRY", # tryceratops
   "UP",
 
   # pylint
-  "PLW",      # Warning
-  "PLR",      # Refactor
-  "PLE",      # Error
+  "PLW", # Warning
+  "PLR", # Refactor
+  "PLE", # Error
 
-  "PTH",      # flake8-use-pathlib
-  "SLF",      # flake8-self
-  "RET",      # flake8-return
-  "RSE",      # flake8-raise
-  "T20",      # flake8-print
-  "PIE",      # flake8-pie
-  "ISC",      # flake8-implicit-str-concat
-  "C4",       # flake8-comprehensions
-  "COM",      # flake8-commas
-  "A",        # flake8-builtins
-  "B",        # flake8-bugbear
-  "ASYNC",    # flake8-async
-  "Q",        # flake8-quotes
+  "PTH",   # flake8-use-pathlib
+  "SLF",   # flake8-self
+  "RET",   # flake8-return
+  "RSE",   # flake8-raise
+  "T20",   # flake8-print
+  "PIE",   # flake8-pie
+  "ISC",   # flake8-implicit-str-concat
+  "C4",    # flake8-comprehensions
+  "COM",   # flake8-commas
+  "A",     # flake8-builtins
+  "B",     # flake8-bugbear
+  "ASYNC", # flake8-async
+  "Q",     # flake8-quotes
 ]
 ignore = [
   "ISC",
@@ -76,32 +80,19 @@ ignore = [
   "PLR0915",
   "PLR0913",
   "PLR0911",
-  "PLW0603",  # Using the global statement
+  "PLW0603", # Using the global statement
   "TRY002",
-  "TRY003"
+  "TRY003",
 ]
-exclude = [
-  "gen.py",
-  ".ruff_cache"
-]
-# Assume Python 3.8
-target-version = "py38"
+exclude = ["gen.py", ".ruff_cache"]
 
-[tool.ruff.flake8-quotes]
-inline-quotes = "single"
-
-[tool.ruff.format]
-quote-style = "single"
-
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 case-sensitive = true
 force-sort-within-sections = true
 extra-standard-library = ["typing_extensions"]
-#force-wrap-aliases = true
 combine-as-imports = true
 order-by-type = true
 relative-imports-order = "closest-to-furthest"
-section-order = ["future", "standard-library", "first-party", "local-folder", "third-party"]
 
 [tool.pdm]
 [tool.pdm.build]
@@ -117,36 +108,32 @@ name = "StarRailUID"
 version = "0.1.0"
 description = "支持 NoneBot2 & HoshinoBot & ZeroBot & YunzaiBot 的全功能星穹铁道Bot插件"
 authors = [
-    {name = "qwerdvd", email = "105906879+qwerdvd@users.noreply.github.com"},
+  { name = "qwerdvd", email = "105906879+qwerdvd@users.noreply.github.com" },
 ]
 dependencies = [
-    "beautifulsoup4>=4.12.2",
-    "msgspec>=0.18.4",
-    "httpx>=0.25.0",
-    "pillow>=10.1.0",
-    "aiofiles>=23.2.1",
-    "aiohttp>=3.8.6",
-    "qrcode[pil]>=7.4.2",
-    "starrail-damage-cal>=1.2.1",
+  "beautifulsoup4>=4.12.2",
+  "msgspec>=0.18.4",
+  "httpx>=0.25.0",
+  "pillow>=10.1.0",
+  "aiofiles>=23.2.1",
+  "aiohttp>=3.8.6",
+  "qrcode[pil]>=7.4.2",
+  "starrail-damage-cal>=1.2.1",
 ]
 requires-python = ">=3.8.1,<4.0"
 readme = "README.md"
-license = {text = "GPL-3.0-or-later"}
+license = { text = "GPL-3.0-or-later" }
 
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "ruff>=0.0.276",
-    "pre-commit>=3.3.2",
-    "flake8>=6.0.0",
-    "isort>=5.12.0",
-    "pycln>=2.1.2"
+  "ruff>=0.0.276",
+  "pre-commit>=3.3.2",
+  "flake8>=6.0.0",
+  "isort>=5.12.0",
+  "pycln>=2.1.2",
 ]
-test = [
-    "nonebug>=0.3.0",
-    "pytest>=7.2.0",
-    "pytest-asyncio>=0.20.3"
-]
+test = ["nonebug>=0.3.0", "pytest>=7.2.0", "pytest-asyncio>=0.20.3"]
 
 [build-system]
 requires = ["pdm-backend"]

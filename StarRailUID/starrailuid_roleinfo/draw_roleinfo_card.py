@@ -1,26 +1,16 @@
 import asyncio
 from pathlib import Path
-from typing import Dict, List, Union, Optional
+from typing import Any, Dict, List, Optional, Union
 
-from PIL import Image, ImageDraw
-from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import get_error
-from gsuid_core.utils.image.image_tools import (
-    get_qq_avatar,
-    draw_pic_with_ring,
-)
-
-from ..utils.mys_api import mys_api
 from .utils import get_icon, wrap_list
-from ..utils.image.convert import convert_img
-from ..utils.fonts.first_world import fw_font_24
 from ..sruid_utils.api.mys.models import (
-    Stats,
     AvatarDetail,
-    RoleBasicInfo,
     AvatarListItem,
     AvatarListItemDetail,
+    RoleBasicInfo,
+    Stats,
 )
+from ..utils.fonts.first_world import fw_font_24
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_24,
@@ -28,41 +18,41 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_30,
     sr_font_36,
 )
+from ..utils.mys_api import mys_api
 
-TEXT_PATH = Path(__file__).parent / 'texture2D'
-
-bg1 = Image.open(TEXT_PATH / 'bg1.png')
-bg2 = Image.open(TEXT_PATH / 'bg2.png')
-bg3 = Image.open(TEXT_PATH / 'bg3.png')
-user_avatar = (
-    Image.open(TEXT_PATH / '200101.png').resize((220, 220)).convert('RGBA')
+from PIL import Image, ImageDraw
+from gsuid_core.logger import logger
+from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.utils.image.image_tools import (
+    draw_pic_with_ring,
+    get_qq_avatar,
 )
-char_bg_4 = Image.open(TEXT_PATH / 'rarity4_bg.png').convert('RGBA')
-char_bg_5 = Image.open(TEXT_PATH / 'rarity5_bg.png').convert('RGBA')
-circle = Image.open(TEXT_PATH / 'char_weapon_bg.png').convert('RGBA')
-bg_img = Image.open(TEXT_PATH / 'bg_light.jpg')
-rank_bg = Image.open(TEXT_PATH / 'rank_bg.png').convert('RGBA')
+
+TEXT_PATH = Path(__file__).parent / "texture2D"
+
+bg1 = Image.open(TEXT_PATH / "bg1.png")
+bg2 = Image.open(TEXT_PATH / "bg2.png")
+bg3 = Image.open(TEXT_PATH / "bg3.png")
+user_avatar = Image.open(TEXT_PATH / "200101.png").resize((220, 220)).convert("RGBA")
+char_bg_4 = Image.open(TEXT_PATH / "rarity4_bg.png").convert("RGBA")
+char_bg_5 = Image.open(TEXT_PATH / "rarity5_bg.png").convert("RGBA")
+circle = Image.open(TEXT_PATH / "char_weapon_bg.png").convert("RGBA")
+bg_img = Image.open(TEXT_PATH / "bg_light.jpg")
+rank_bg = Image.open(TEXT_PATH / "rank_bg.png").convert("RGBA")
 bg_color = (248, 248, 248)
 white_color = (255, 255, 255)
 color_color = (40, 18, 7)
 first_color = (22, 8, 31)
 
 elements = {
-    'ice': Image.open(TEXT_PATH / 'IconNatureColorIce.png').convert('RGBA'),
-    'fire': Image.open(TEXT_PATH / 'IconNatureColorFire.png').convert('RGBA'),
-    'imaginary': Image.open(
-        TEXT_PATH / 'IconNatureColorImaginary.png'
-    ).convert('RGBA'),
-    'quantum': Image.open(TEXT_PATH / 'IconNatureColorQuantum.png').convert(
-        'RGBA'
-    ),
-    'lightning': Image.open(TEXT_PATH / 'IconNatureColorThunder.png').convert(
-        'RGBA'
-    ),
-    'wind': Image.open(TEXT_PATH / 'IconNatureColorWind.png').convert('RGBA'),
-    'physical': Image.open(TEXT_PATH / 'IconNaturePhysical.png').convert(
-        'RGBA'
-    ),
+    "ice": Image.open(TEXT_PATH / "IconNatureColorIce.png").convert("RGBA"),
+    "fire": Image.open(TEXT_PATH / "IconNatureColorFire.png").convert("RGBA"),
+    "imaginary": Image.open(TEXT_PATH / "IconNatureColorImaginary.png").convert("RGBA"),
+    "quantum": Image.open(TEXT_PATH / "IconNatureColorQuantum.png").convert("RGBA"),
+    "lightning": Image.open(TEXT_PATH / "IconNatureColorThunder.png").convert("RGBA"),
+    "wind": Image.open(TEXT_PATH / "IconNatureColorWind.png").convert("RGBA"),
+    "physical": Image.open(TEXT_PATH / "IconNaturePhysical.png").convert("RGBA"),
 }
 
 
@@ -70,14 +60,12 @@ async def get_role_img(uid: str) -> Union[bytes, str]:
     return await draw_role_card(uid)
 
 
-async def get_detail_img(
-    qid: Union[str, int], uid: str, sender
-) -> Union[bytes, str]:
+async def get_detail_img(qid: Union[str, int], uid: str, sender) -> Union[bytes, str]:
     return await get_detail_card(qid, uid, sender)
 
 
 def _lv(level: int) -> str:
-    return f'Lv.0{level}' if level < 10 else f'Lv.{level}'
+    return f"Lv.0{level}" if level < 10 else f"Lv.{level}"
 
 
 async def _draw_card_1(
@@ -100,16 +88,14 @@ async def _draw_card_1(
     bg1_draw = ImageDraw.Draw(img_bg1)
 
     # 写Nickname
-    bg1_draw.text(
-        (400, 85), nickname, font=sr_font_36, fill=white_color, anchor='mm'
-    )
+    bg1_draw.text((400, 85), nickname, font=sr_font_36, fill=white_color, anchor="mm")
     # 写UID
     bg1_draw.text(
         (400, 165),
-        f'UID {sr_uid}',
+        f"UID {sr_uid}",
         font=sr_font_30,
         fill=white_color,
-        anchor='mm',
+        anchor="mm",
     )
     # 贴头像
     img_bg1.paste(user_avatar, (286, 213), mask=user_avatar)
@@ -120,31 +106,31 @@ async def _draw_card_1(
         str(active_days),
         font=sr_font_36,
         fill=white_color,
-        anchor='mm',
+        anchor="mm",
     )  # 活跃天数
     bg1_draw.text(
         (270, 590),
         str(avater_num),
         font=sr_font_36,
         fill=white_color,
-        anchor='mm',
+        anchor="mm",
     )  # 解锁角色
     bg1_draw.text(
         (398, 590),
         str(achievement_num),
         font=sr_font_36,
         fill=white_color,
-        anchor='mm',
+        anchor="mm",
     )  # 达成成就
     bg1_draw.text(
         (525, 590),
         str(chest_num),
         font=sr_font_36,
         fill=white_color,
-        anchor='mm',
+        anchor="mm",
     )  # 战利品开启
     bg1_draw.text(
-        (666, 590), str(level), font=sr_font_36, fill=white_color, anchor='mm'
+        (666, 590), str(level), font=sr_font_36, fill=white_color, anchor="mm"
     )  # 开拓等级
 
     # 画忘却之庭
@@ -153,7 +139,7 @@ async def _draw_card_1(
         abyss_process,
         font=sr_font_30,
         fill=first_color,
-        anchor='mm',
+        anchor="mm",
     )
 
     return img_bg1
@@ -174,10 +160,10 @@ async def _draw_avatar_card(
         char_bg.paste(rank_bg, (89, 6), mask=rank_bg)
         char_draw.text(
             (100, 21),
-            f'{avatar.rank}',
+            f"{avatar.rank}",
             font=sr_font_22,
             fill=white_color,
-            anchor='mm',
+            anchor="mm",
         )
 
     if equip := equips[avatar.id]:
@@ -190,7 +176,7 @@ async def _draw_avatar_card(
         _lv(avatar.level),
         font=sr_font_24,
         fill=color_color,
-        anchor='mm',
+        anchor="mm",
     )
     return char_bg
 
@@ -214,12 +200,9 @@ async def _draw_card_2(
 ) -> Image.Image:
     # 角色部分 每五个一组
     lines = await asyncio.gather(
-        *[
-            _draw_line(five_avatars, equips)
-            for five_avatars in wrap_list(avatars, 5)
-        ]
+        *[_draw_line(five_avatars, equips) for five_avatars in wrap_list(avatars, 5)]
     )
-    img_card_2 = Image.new('RGBA', (800, len(lines) * 200))
+    img_card_2 = Image.new("RGBA", (800, len(lines) * 200))
 
     y = 0
     for line in lines:
@@ -237,8 +220,8 @@ async def draw_role_card(sr_uid: str) -> Union[bytes, str]:
             return get_error(role_basic_info)
     else:
         role_basic_info = {}
-        role_basic_info['nickname'] = '开拓者'
-        role_basic_info['level'] = 0
+        role_basic_info["nickname"] = "开拓者"
+        role_basic_info["level"] = 0
 
     if isinstance(role_index, int):
         return get_error(role_index)
@@ -266,7 +249,7 @@ async def draw_role_card(sr_uid: str) -> Union[bytes, str]:
     )
     img2: Image.Image
     height = img2.size[1]
-    img = Image.new('RGBA', (800, 880 + height), bg_color)
+    img = Image.new("RGBA", (800, 880 + height), bg_color)
     img.paste(img1, (0, 0))
     img.paste(img2, (0, 810))
     img.paste(bg3, (0, height + 810))
@@ -279,69 +262,69 @@ async def _draw_detail_card(
     index: int,
     char_info: Image.Image,
 ) -> Image.Image:
-    if str(avatar.rarity) == '5':
-        avatar_img = Image.open(TEXT_PATH / 'bar_5.png')
+    if str(avatar.rarity) == "5":
+        avatar_img = Image.open(TEXT_PATH / "bar_5.png")
     else:
-        avatar_img = Image.open(TEXT_PATH / 'bar_4.png')
+        avatar_img = Image.open(TEXT_PATH / "bar_4.png")
     avatar_draw = ImageDraw.Draw(avatar_img)
     char_icon = (await get_icon(avatar.icon)).resize((40, 40))
     element_icon = elements[avatar.element]
     avatar_img.paste(char_icon, (75, 10), mask=char_icon)
     avatar_draw.text(
         (130, 30),
-        f'{avatar.name}',
+        f"{avatar.name}",
         first_color,
         sr_font_24,
-        'lm',
+        "lm",
     )
     avatar_img.paste(element_icon, (270, 10), mask=element_icon)
 
     avatar_draw.text(
         (339, 30),
-        f'{avatar.level}',
+        f"{avatar.level}",
         first_color,
         sr_font_24,
-        'mm',
+        "mm",
     )
 
     avatar_draw.text(
         (385, 30),
-        f'{avatar.rank}',
+        f"{avatar.rank}",
         first_color,
         sr_font_24,
-        'mm',
+        "mm",
     )
 
     avatar_draw.text(
         (429, 30),
-        f'{avatar_detail.skills[0].cur_level}',
+        f"{avatar_detail.skills[0].cur_level}",
         first_color,
         sr_font_24,
-        'mm',
+        "mm",
     )
 
     avatar_draw.text(
         (469, 30),
-        f'{avatar_detail.skills[1].cur_level}',
+        f"{avatar_detail.skills[1].cur_level}",
         first_color,
         sr_font_24,
-        'mm',
+        "mm",
     )
 
     avatar_draw.text(
         (515, 30),
-        f'{avatar_detail.skills[2].cur_level}',
+        f"{avatar_detail.skills[2].cur_level}",
         first_color,
         sr_font_24,
-        'mm',
+        "mm",
     )
 
     avatar_draw.text(
         (553, 30),
-        f'{avatar_detail.skills[3].cur_level}',
+        f"{avatar_detail.skills[3].cur_level}",
         first_color,
         sr_font_24,
-        'mm',
+        "mm",
     )
 
     if avatar.equip:
@@ -350,26 +333,26 @@ async def _draw_detail_card(
 
         avatar_draw.text(
             (680, 30),
-            f'{avatar.equip.rank}',
+            f"{avatar.equip.rank}",
             first_color,
             sr_font_24,
-            'mm',
+            "mm",
         )
 
         avatar_draw.text(
             (734, 30),
-            f'Lv.{avatar.equip.level}',
+            f"Lv.{avatar.equip.level}",
             first_color,
             sr_font_24,
-            'lm',
+            "lm",
         )
 
         avatar_draw.text(
             (804, 30),
-            f'{avatar.equip.name}',
+            f"{avatar.equip.name}",
             first_color,
             sr_font_24,
-            'lm',
+            "lm",
         )
 
     char_info.paste(avatar_img, (0, 585 + 62 * index), mask=avatar_img)
@@ -378,7 +361,7 @@ async def _draw_detail_card(
 
 
 async def get_detail_card(
-    qid: Union[str, int], sr_uid: str, sender: Union[str, str]
+    qid: Union[str, int], sr_uid: str, sender: Dict[str, Any]
 ) -> Union[bytes, str]:
     # 获取角色列表
     avatar_list = await mys_api.get_avatar_info(sr_uid, 1001)
@@ -393,15 +376,15 @@ async def get_detail_card(
         char_info = char_info.resize((1050, img_height))
     char_img_draw = ImageDraw.Draw(char_info)
 
-    char_title = Image.open(TEXT_PATH / 'title.png')
+    char_title = Image.open(TEXT_PATH / "title.png")
     char_info.paste(char_title, (0, 0), char_title)
 
     # 获取头像
     _id = str(qid)
-    if _id.startswith('http'):
+    if _id.startswith("http"):
         char_pic = await get_qq_avatar(avatar_url=_id)
-    elif sender.get('avatar') is not None:
-        char_pic = await get_qq_avatar(avatar_url=sender['avatar'])
+    elif sender.get("avatar") is not None:
+        char_pic = await get_qq_avatar(avatar_url=sender["avatar"])
     else:
         char_pic = await get_qq_avatar(qid=qid)
     char_pic = await draw_pic_with_ring(char_pic, 250, None, False)
@@ -409,11 +392,9 @@ async def get_detail_card(
     char_info.paste(char_pic, (400, 88), char_pic)
 
     # 绘制抬头
-    char_img_draw.text(
-        (525, 420), f'UID {sr_uid}', white_color, sr_font_28, 'mm'
-    )
+    char_img_draw.text((525, 420), f"UID {sr_uid}", white_color, sr_font_28, "mm")
 
-    title_img = Image.open(TEXT_PATH / 'bar_title.png')
+    title_img = Image.open(TEXT_PATH / "bar_title.png")
     char_info.paste(title_img, (0, 515), mask=title_img)
 
     for index, avatar in enumerate(avatar_list.avatar_list):
@@ -431,12 +412,12 @@ async def get_detail_card(
     # 写底层文字
     char_img_draw.text(
         (525, img_height - 45),
-        '--SR skill statistics by StarrailUID & Code by jiluoQAQ & Power by GsCore--',
+        "--SR skill statistics by StarrailUID & Code by jiluoQAQ & Power by GsCore--",
         (255, 255, 255),
         fw_font_24,
-        'mm',
+        "mm",
     )
 
     res = await convert_img(char_info)
-    logger.info('[查询练度统计]绘图已完成,等待发送!')
+    logger.info("[查询练度统计]绘图已完成,等待发送!")
     return res

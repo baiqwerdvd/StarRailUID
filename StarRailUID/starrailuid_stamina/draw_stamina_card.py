@@ -3,16 +3,14 @@ from io import BytesIO
 from pathlib import Path
 from typing import Optional
 
-import aiohttp
 from PIL import Image, ImageDraw
+import aiohttp
 from gsuid_core.logger import logger
 from gsuid_core.utils.database.models import GsBind, GsUser
+from gsuid_core.utils.image.convert import convert_img
 
-from ..utils.mys_api import mys_api
-from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import Expedition
 from ..starrailuid_config.sr_config import srconfig
-from ..utils.image.image_tools import get_simple_bg
 from ..utils.error_reply import get_error as get_error_msg
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
@@ -21,18 +19,20 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_36,
     sr_font_50,
 )
+from ..utils.image.image_tools import get_simple_bg
+from ..utils.mys_api import mys_api
 
-use_widget = srconfig.get_config('WidgetResin').data
+use_widget = srconfig.get_config("WidgetResin").data
 
-TEXT_PATH = Path(__file__).parent / 'texture2D'
+TEXT_PATH = Path(__file__).parent / "texture2D"
 
-note_bg = Image.open(TEXT_PATH / 'note_bg.png')
-note_travel_bg = Image.open(TEXT_PATH / 'note_travel_bg.png')
-warn_pic = Image.open(TEXT_PATH / 'warn.png')
+note_bg = Image.open(TEXT_PATH / "note_bg.png")
+note_travel_bg = Image.open(TEXT_PATH / "note_travel_bg.png")
+warn_pic = Image.open(TEXT_PATH / "warn.png")
 
 based_w = 700
 based_h = 1200
-white_overlay = Image.new('RGBA', (based_w, based_h), (255, 251, 242, 225))
+white_overlay = Image.new("RGBA", (based_w, based_h), (255, 251, 242, 225))
 
 first_color = (29, 29, 29)
 second_color = (98, 98, 98)
@@ -45,7 +45,7 @@ red_color = (235, 61, 75)
 def seconds2hours(seconds: int) -> str:
     m, s = divmod(int(seconds), 60)
     h, m = divmod(m, 60)
-    return '%02d:%02d:%02d' % (h, m, s)
+    return "%02d:%02d:%02d" % (h, m, s)
 
 
 async def download_image(url: str) -> Image.Image:
@@ -68,14 +68,14 @@ async def _draw_task_img(
         for i in range(2):
             avatar_url = char.avatars[i]
             image = await download_image(avatar_url)
-            char_pic = image.convert('RGBA').resize(
+            char_pic = image.convert("RGBA").resize(
                 (40, 40),
                 Image.Resampling.LANCZOS,  # type: ignore
             )
             note_travel_img.paste(char_pic, (495 + 68 * i, 20), char_pic)
         img.paste(note_travel_img, (0, 790 + index * 80), note_travel_img)
-        if char.status == 'Finished':
-            status_mark = '待收取'
+        if char.status == "Finished":
+            status_mark = "待收取"
         else:
             status_mark = str(remaining_time)
         img_draw.text(
@@ -83,55 +83,55 @@ async def _draw_task_img(
             expedition_name,
             font=sr_font_22,
             fill=white_color,
-            anchor='lm',
+            anchor="lm",
         )
         img_draw.text(
             (380, 830 + index * 80),
             status_mark,
             font=sr_font_22,
             fill=white_color,
-            anchor='mm',
+            anchor="mm",
         )
     else:
         note_travel_img = note_travel_bg.copy()
         img.paste(note_travel_img, (0, 790 + index * 80), note_travel_img)
         img_draw.text(
             (120, 830 + index * 80),
-            '等待加入探索队列...',
+            "等待加入探索队列...",
             font=sr_font_22,
             fill=white_color,
-            anchor='lm',
+            anchor="lm",
         )
 
 
 async def get_stamina_img(bot_id: str, user_id: str):
     try:
-        uid_list = await GsBind.get_uid_list_by_game(user_id, bot_id, 'sr')
-        logger.info(f'[每日信息]UID: {uid_list}')
+        uid_list = await GsBind.get_uid_list_by_game(user_id, bot_id, "sr")
+        logger.info(f"[每日信息]UID: {uid_list}")
         if uid_list is None:
-            return '请先绑定一个UID再来查询哦~'
+            return "请先绑定一个UID再来查询哦~"
         # 进行校验UID是否绑定CK
         useable_uid_list = []
         for uid in uid_list:
-            status = await GsUser.get_user_cookie_by_uid(uid, 'sr')
+            status = await GsUser.get_user_cookie_by_uid(uid, "sr")
             if status is not None:
                 useable_uid_list.append(uid)
-        logger.info(f'[每日信息]可用UID: {useable_uid_list}')
+        logger.info(f"[每日信息]可用UID: {useable_uid_list}")
         if len(useable_uid_list) == 0:
-            return '请先绑定一个可用CK & UID再来查询哦~'
+            return "请先绑定一个可用CK & UID再来查询哦~"
         # 开始绘图任务
         task = []
         img = Image.new(
-            'RGBA', (based_w * len(useable_uid_list), based_h), (0, 0, 0, 0)
+            "RGBA", (based_w * len(useable_uid_list), based_h), (0, 0, 0, 0)
         )
         for uid_index, uid in enumerate(useable_uid_list):
             task.append(_draw_all_stamina_img(img, uid, uid_index))
         await asyncio.gather(*task)
         res = await convert_img(img)
-        logger.info('[查询每日信息]绘图已完成,等待发送!')
+        logger.info("[查询每日信息]绘图已完成,等待发送!")
     except TypeError:
-        logger.exception('[查询每日信息]绘图失败!')
-        res = '你绑定过的UID中可能存在过期CK~请重新绑定一下噢~'
+        logger.exception("[查询每日信息]绘图失败!")
+        res = "你绑定过的UID中可能存在过期CK~请重新绑定一下噢~"
 
     return res
 
@@ -147,18 +147,18 @@ def get_error(img: Image.Image, uid: str, daily_data: int):
     # 写UID
     img_draw.text(
         (350, 680),
-        f'UID{uid}',
+        f"UID{uid}",
         font=sr_font_26,
         fill=first_color,
-        anchor='mm',
+        anchor="mm",
     )
     error_text = get_error_msg(daily_data)
     img_draw.text(
         (350, 650),
-        f'{error_text}, 错误码{daily_data}',
+        f"{error_text}, 错误码{daily_data}",
         font=sr_font_26,
         fill=red_color,
-        anchor='mm',
+        anchor="mm",
     )
     return img
 
@@ -166,7 +166,7 @@ def get_error(img: Image.Image, uid: str, daily_data: int):
 async def seconds2hours_zhcn(seconds: int) -> str:
     m, s = divmod(int(seconds), 60)
     h, m = divmod(m, 60)
-    return '%02d小时%02d分' % (h, m)
+    return "%02d小时%02d分" % (h, m)
 
 
 async def draw_stamina_img(sr_uid: str) -> Image.Image:
@@ -181,7 +181,7 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
         # daily_data = transform_fake_resin(_daily_data)
         daily_data = _daily_data
     else:
-        daily_data = await mys_api.get_daily_data(sr_uid)
+        daily_data = await mys_api.get_sr_daily_data(sr_uid)
         if isinstance(daily_data, int):
             return get_error(img, sr_uid, daily_data)
 
@@ -194,13 +194,13 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
         nickname = role_basic_info.nickname
         level = role_basic_info.level
     else:
-        nickname = '开拓者'
-        level = '0'
+        nickname = "开拓者"
+        level = "0"
 
     # 开拓力
     stamina = daily_data.current_stamina
     max_stamina = daily_data.max_stamina
-    stamina_str = f'{stamina}/{max_stamina}'
+    stamina_str = f"{stamina}/{max_stamina}"
     stamina_percent = stamina / max_stamina
     if stamina_percent > 0.8:
         stamina_color = red_color
@@ -216,31 +216,23 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
     # 派遣
     task_task = []
     for i in range(4):
-        char = (
-            daily_data.expeditions[i]
-            if i < len(daily_data.expeditions)
-            else None
-        )
+        char = daily_data.expeditions[i] if i < len(daily_data.expeditions) else None
         task_task.append(_draw_task_img(img, img_draw, i, char))
     await asyncio.gather(*task_task)
 
     # 绘制树脂圆环
-    ring_pic = Image.open(TEXT_PATH / 'ring.apng')
-    percent = (
-        round(stamina_percent * 89)
-        if round(stamina_percent * 89) <= 89
-        else 89
-    )
+    ring_pic = Image.open(TEXT_PATH / "ring.apng")
+    percent = round(stamina_percent * 89) if round(stamina_percent * 89) <= 89 else 89
     ring_pic.seek(percent)
     img.paste(ring_pic, (0, 5), ring_pic)
 
     # 写树脂剩余时间
     img_draw.text(
         (350, 490),
-        f'还剩{stamina_recovery_time}',
+        f"还剩{stamina_recovery_time}",
         font=sr_font_24,
         fill=stamina_color,
-        anchor='mm',
+        anchor="mm",
     )
     # 写Nickname
     img_draw.text(
@@ -248,23 +240,23 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
         nickname,
         font=sr_font_36,
         fill=white_color,
-        anchor='mm',
+        anchor="mm",
     )
     # 写开拓等级
     img_draw.text(
         (350, 190),
-        f'开拓等级{level}',
+        f"开拓等级{level}",
         font=sr_font_24,
         fill=white_color,
-        anchor='mm',
+        anchor="mm",
     )
     # 写UID
     img_draw.text(
         (350, 663),
-        f'UID{sr_uid}',
+        f"UID{sr_uid}",
         font=sr_font_26,
         fill=first_color,
-        anchor='mm',
+        anchor="mm",
     )
     # 写树脂
     img_draw.text(
@@ -272,7 +264,7 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
         stamina_str,
         font=sr_font_50,
         fill=first_color,
-        anchor='mm',
+        anchor="mm",
     )
 
     return img

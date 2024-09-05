@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
+from ..utils.mys_api import mys_api
 
 month_im = """==============
 SR_UID:{}
@@ -24,7 +24,7 @@ SR_UID:{}
 
 async def award(uid) -> str:
     # 获取当前的月份
-    data = await mys_api.get_award(uid, datetime.now().month)
+    data = await mys_api.get_sr_award(uid, datetime.now().month)
     if isinstance(data, int):
         return get_error(data)
     day_hcoin = data.day_data.current_hcoin
@@ -38,17 +38,17 @@ async def award(uid) -> str:
     month_rails_pass = data.month_data.current_rails_pass
     lastmonth_stone = data.month_data.last_hcoin
     lastmonth_rails_pass = data.month_data.last_rails_pass
-    group_str = ''
+    group_str = ""
     for i in data.month_data.group_by:
         group_str = (
             group_str
             + i.action_name
-            + ':'
+            + ":"
             + str(i.num)
-            + '('
+            + "("
             + str(i.percent)
-            + '%)'
-            + '\n'
+            + "%)"
+            + "\n"
         )
 
     return month_im.format(

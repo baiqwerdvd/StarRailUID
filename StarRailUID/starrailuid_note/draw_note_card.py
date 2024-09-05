@@ -1,23 +1,23 @@
+from datetime import datetime
 import json
 from pathlib import Path
 from typing import Union
-from datetime import datetime
 
 from PIL import Image, ImageDraw
-from msgspec import json as msgjson
 from gsuid_core.logger import logger
+from gsuid_core.utils.image.convert import convert_img
+from msgspec import json as msgjson
 
-from ..utils.mys_api import mys_api
-from ..utils.error_reply import get_error
-from ..utils.image.convert import convert_img
 from ..sruid_utils.api.mys.models import MonthlyAward
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from ..utils.error_reply import get_error
 from ..utils.fonts.starrail_fonts import sr_font_20, sr_font_28, sr_font_34
+from ..utils.mys_api import mys_api
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 
-TEXT_PATH = Path(__file__).parent / 'texture2d'
+TEXT_PATH = Path(__file__).parent / "texture2d"
 
-monthly_bg = Image.open(TEXT_PATH / 'monthly_bg.png')
-avatar_default = Image.open(TEXT_PATH / '200101.png')
+monthly_bg = Image.open(TEXT_PATH / "monthly_bg.png")
+avatar_default = Image.open(TEXT_PATH / "200101.png")
 
 first_color = (29, 29, 29)
 second_color = (67, 61, 56)
@@ -26,20 +26,20 @@ black_color = (54, 54, 54)
 white_color = (213, 213, 213)
 
 COLOR_MAP = {
-    '每日活跃': (248, 227, 157),
-    '活动奖励': (99, 231, 176),
-    '冒险奖励': (114, 205, 251),
-    '模拟宇宙奖励': (160, 149, 248),
-    '忘却之庭奖励': (221, 119, 250),
-    '邮件奖励': (244, 110, 104),
-    '其他': (255, 242, 200),
-    'Daily Activity': (248, 227, 157),
-    'Events': (99, 231, 176),
-    'Adventure': (114, 205, 251),
-    'moni': (160, 149, 248),
-    'Spiral Abyss': (221, 119, 250),
-    'Quests': (244, 110, 104),
-    'Other': (255, 242, 200),
+    "每日活跃": (248, 227, 157),
+    "活动奖励": (99, 231, 176),
+    "冒险奖励": (114, 205, 251),
+    "模拟宇宙奖励": (160, 149, 248),
+    "忘却之庭奖励": (221, 119, 250),
+    "邮件奖励": (244, 110, 104),
+    "其他": (255, 242, 200),
+    "Daily Activity": (248, 227, 157),
+    "Events": (99, 231, 176),
+    "Adventure": (114, 205, 251),
+    "moni": (160, 149, 248),
+    "Spiral Abyss": (221, 119, 250),
+    "Quests": (244, 110, 104),
+    "Other": (255, 242, 200),
 }
 
 
@@ -50,25 +50,25 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
 
     # 获取当前时间
     now = datetime.now()
-    current_year_mon = now.strftime('%Y-%m')
-    add_month = ''
+    current_year_mon = now.strftime("%Y-%m")
+    add_month = ""
     if int(now.month) < 10:
-        add_month = '0'
+        add_month = "0"
     now_month = str(now.year) + str(add_month) + str(now.month)
     # 获取数据
-    data = await mys_api.get_award(sr_uid, now_month)
+    data = await mys_api.get_sr_award(sr_uid, now_month)
     if isinstance(data, int):
         return get_error(data)
 
     # 保存数据
     with Path.open(
-        path / f'monthly_{current_year_mon}.json', 'w', encoding='utf-8'
+        path / f"monthly_{current_year_mon}.json", "w", encoding="utf-8"
     ) as f:
         save_json_data = msgjson.format(msgjson.encode(data), indent=4)
         save_data = json.dumps(
             {
-                'data_time': now.strftime('%Y-%m-%d %H:%M:%S'),
-                'data': save_json_data.decode('utf-8'),
+                "data_time": now.strftime("%Y-%m-%d %H:%M:%S"),
+                "data": save_json_data.decode("utf-8"),
             },
             ensure_ascii=False,
         )
@@ -80,33 +80,31 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     if last_month == 0:
         last_month = 12
         last_year -= 1
-    last_year_mon = f'{last_year}-{last_month:02d}'
-    last_monthly_path = path / f'monthly_{last_year_mon}.json'
+    last_year_mon = f"{last_year}-{last_month:02d}"
+    last_monthly_path = path / f"monthly_{last_year_mon}.json"
     if last_monthly_path.exists():
-        with Path.open(last_monthly_path, encoding='utf-8') as f:
+        with Path.open(last_monthly_path, encoding="utf-8") as f:
             last_monthly_data = json.load(f)
             last_monthly_data = msgjson.decode(
-                last_monthly_data['data'], type=MonthlyAward
+                last_monthly_data["data"], type=MonthlyAward
             )
     else:
-        add_month = ''
+        add_month = ""
         if int(last_month) < 10:
-            add_month = '0'
+            add_month = "0"
         find_last_month = str(last_year) + str(add_month) + str(last_month)
-        last_monthly_data = await mys_api.get_award(sr_uid, find_last_month)
+        last_monthly_data = await mys_api.get_sr_award(sr_uid, find_last_month)
         if isinstance(last_monthly_data, int):
             return get_error(last_monthly_data)
         # 保存上月数据
         with Path.open(
-            path / f'monthly_{last_year_mon}.json', 'w', encoding='utf-8'
+            path / f"monthly_{last_year_mon}.json", "w", encoding="utf-8"
         ) as f:
-            save_json_data = msgjson.format(
-                msgjson.encode(last_monthly_data), indent=4
-            )
+            save_json_data = msgjson.format(msgjson.encode(last_monthly_data), indent=4)
             save_data = json.dumps(
                 {
-                    'data_time': now.strftime('%Y-%m-%d %H:%M:%S'),
-                    'data': save_json_data.decode('utf-8'),
+                    "data_time": now.strftime("%Y-%m-%d %H:%M:%S"),
+                    "data": save_json_data.decode("utf-8"),
                 },
                 ensure_ascii=False,
             )
@@ -141,7 +139,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
 
     img = monthly_bg.copy()
     avatar_img = avatar_default.copy()
-    char_pic = avatar_img.convert('RGBA').resize(
+    char_pic = avatar_img.convert("RGBA").resize(
         (125, 125),
         Image.Resampling.LANCZOS,  # type: ignore
     )
@@ -149,17 +147,15 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     img_draw = ImageDraw.Draw(img)
 
     # 写Nickname
-    img_draw.text(
-        (310, 184), nickname, font=sr_font_34, fill=first_color, anchor='lm'
-    )
+    img_draw.text((310, 184), nickname, font=sr_font_34, fill=first_color, anchor="lm")
 
     # 写UID
     img_draw.text(
         (267, 219),
-        f'UID {sr_uid}',
+        f"UID {sr_uid}",
         font=sr_font_20,
         fill=second_color2,
-        anchor='lm',
+        anchor="lm",
     )
 
     # 写本日星琼
@@ -168,7 +164,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         day_hcoin_str,
         font=sr_font_28,
         fill=white_color,
-        anchor='lm',
+        anchor="lm",
     )
 
     # 写本月星琼
@@ -177,7 +173,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         month_hcoin_str,
         font=sr_font_28,
         fill=white_color,
-        anchor='lm',
+        anchor="lm",
     )
 
     # 写昨日星琼
@@ -186,7 +182,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         lastday_hcoin_str,
         font=sr_font_28,
         fill=black_color,
-        anchor='lm',
+        anchor="lm",
     )
 
     # 写上月星琼
@@ -195,7 +191,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         lastmonth_hcoin_str,
         font=sr_font_28,
         fill=black_color,
-        anchor='lm',
+        anchor="lm",
     )
 
     # 写本日铁票
@@ -204,7 +200,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         day_rails_pass_str,
         font=sr_font_28,
         fill=white_color,
-        anchor='lm',
+        anchor="lm",
     )
 
     # 写本月铁票
@@ -213,7 +209,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         month_rails_pass_str,
         font=sr_font_28,
         fill=white_color,
-        anchor='lm',
+        anchor="lm",
     )
 
     # 写昨日铁票
@@ -222,7 +218,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         lastday_rails_pass_str,
         font=sr_font_28,
         fill=black_color,
-        anchor='lm',
+        anchor="lm",
     )
 
     # 写上月铁票
@@ -231,16 +227,16 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         lastmonth_rails_pass_str,
         font=sr_font_28,
         fill=black_color,
-        anchor='lm',
+        anchor="lm",
     )
     xy = ((0, 0), (2100, 2100))
     temp = -90
     if not data.month_data.group_by:
-        pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
+        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         pie_image_draw.ellipse(xy, fill=(128, 128, 128))
     else:
-        pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
+        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         for _index, i in enumerate(data.month_data.group_by):
             pie_image_draw.pieslice(
@@ -251,7 +247,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
             )
             temp = temp + (i.percent / 100) * 360
     # 绘制蒙版圆形
-    new_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
+    new_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
     pie_image_draw.ellipse((150, 150, 1950, 1950), fill=(255, 255, 255, 0))
 
     position = (1050, 1050)
@@ -260,7 +256,7 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     img.paste(result_pie, (138, 618), result_pie)
 
     if last_monthly_data:
-        pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
+        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         for _index, i in enumerate(last_monthly_data.month_data.group_by):
             pie_image_draw.pieslice(
@@ -271,12 +267,12 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
             )
             temp = temp + (i.percent / 100) * 360
     else:
-        pie_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
+        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
         pie_image_draw = ImageDraw.Draw(pie_image)
         pie_image_draw.ellipse(xy, fill=(128, 128, 128))
 
     # 绘制蒙版圆形
-    new_image = Image.new('RGBA', (2100, 2100), color=(255, 255, 255, 0))
+    new_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
     pie_image_draw.ellipse((150, 150, 1950, 1950), fill=(255, 255, 255, 0))
 
     position = (1050, 1050)
@@ -285,13 +281,13 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     img.paste(result_pie, (138, 618 + 350), result_pie)
 
     img = await convert_img(img)
-    logger.info('[开拓月历] 图片绘制完成!等待发送...')
+    logger.info("[开拓月历] 图片绘制完成!等待发送...")
     return img
 
 
 async def int_carry(i: int) -> str:
     if i >= 100000:
-        i_str = f'{i / 10000:.1f}W'
+        i_str = f"{i / 10000:.1f}W"
     else:
         i_str = str(i)
     return i_str

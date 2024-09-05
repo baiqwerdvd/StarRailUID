@@ -2,7 +2,7 @@ from pathlib import Path
 
 from PIL import ImageFont
 
-FONT_ORIGIN_PATH = Path(__file__).parent / 'FirstWorld.ttf'
+FONT_ORIGIN_PATH = Path(__file__).parent / "FirstWorld.ttf"
 
 
 def first_word_origin(size: int) -> ImageFont.FreeTypeFont:

@@ -20,22 +20,22 @@ from gsuid_core.utils.download_resource.download_core import download_all_file
 
 async def check_use():
     await download_all_file(
-        'StarRailUID',
+        "StarRailUID",
         {
-            'resource/character': CHAR_ICON_PATH,
-            'resource/character_portrait': CHAR_PORTRAIT_PATH,
-            'resource/character_preview': CHAR_PREVIEW_PATH,
-            'resource/consumable': CONSUMABLE_PATH,
-            'resource/element': ELEMENT_PATH,
-            'guide/character_overview': GUIDE_CHARACTER_PATH,
-            'guide/light_cone': GUIDE_LIGHT_CONE_PATH,
-            'resource/relic': RELIC_PATH,
-            'resource/skill': SKILL_PATH,
-            'resource/light_cone': WEAPON_PATH,
-            'wiki/light_cone': WIKI_LIGHT_CONE_PATH,
-            'wiki/character_material': WIKI_MATERIAL_FOR_ROLE,
-            'wiki/relic_set': WIKI_RELIC_PATH,
-            'wiki/character_overview': WIKI_ROLE_PATH,
+            "resource/character": CHAR_ICON_PATH,
+            "resource/character_portrait": CHAR_PORTRAIT_PATH,
+            "resource/character_preview": CHAR_PREVIEW_PATH,
+            "resource/consumable": CONSUMABLE_PATH,
+            "resource/element": ELEMENT_PATH,
+            "guide/character_overview": GUIDE_CHARACTER_PATH,
+            "guide/light_cone": GUIDE_LIGHT_CONE_PATH,
+            "resource/relic": RELIC_PATH,
+            "resource/skill": SKILL_PATH,
+            "resource/light_cone": WEAPON_PATH,
+            "wiki/light_cone": WIKI_LIGHT_CONE_PATH,
+            "wiki/character_material": WIKI_MATERIAL_FOR_ROLE,
+            "wiki/relic_set": WIKI_RELIC_PATH,
+            "wiki/character_overview": WIKI_ROLE_PATH,
         },
     )
-    return 'sr全部资源下载完成!'
+    return "sr全部资源下载完成!"

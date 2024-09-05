@@ -4,7 +4,7 @@ from .config_default import CONIFG_DEFAULT
 from ..utils.resource.RESOURCE_PATH import CONFIG_PATH
 
 srconfig = StringConfig(
-    'StarRailUID',
+    "StarRailUID",
     CONFIG_PATH,
     CONIFG_DEFAULT,
 )
