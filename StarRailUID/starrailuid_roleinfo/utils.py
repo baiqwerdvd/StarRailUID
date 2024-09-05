@@ -1,6 +1,6 @@
 from io import BytesIO
 from pathlib import Path
-from typing import List, TypeVar, Generator
+from typing import Generator, List, TypeVar
 
 from PIL import Image
 from aiohttp import ClientSession

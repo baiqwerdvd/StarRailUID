@@ -1,12 +1,10 @@
-from __future__ import annotations
-
 from pathlib import Path
 
-from msgspec import convert
 from httpx import AsyncClient
+from msgspec import convert
 
-from ..utils import _HEADER
 from .models import MihomoData
+from ..utils import _HEADER
 from ....utils.resource.RESOURCE_PATH import PLAYER_PATH
 
 

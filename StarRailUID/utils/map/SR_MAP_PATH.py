@@ -1,10 +1,9 @@
-import json
 from pathlib import Path
-from typing import Dict, List, Optional, TypedDict, Union
+from typing import Dict, List, TypedDict, Union
+
+from msgspec import Struct, json as msgjson
 
 from ...version import StarRail_version
-
-from msgspec import Struct, convert, json as msgjson
 
 
 class RelicSetStatusAdd(Struct):

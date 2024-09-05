@@ -3,9 +3,9 @@ from gsuid_core.models import Event
 from gsuid_core.sv import SV
 from gsuid_core.utils.database.models import GsBind
 
+from .draw_user_card import get_user_card
 from ..utils.message import send_diff_msg
 from ..utils.sr_prefix import PREFIX
-from .draw_user_card import get_user_card
 
 sv_user_config = SV("sr用户管理", pm=2)
 sv_user_info = SV("sr用户信息")

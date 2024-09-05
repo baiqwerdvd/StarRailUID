@@ -1,3 +1,5 @@
+from gsuid_core.utils.download_resource.download_core import download_all_file
+
 from .RESOURCE_PATH import (
     CHAR_ICON_PATH,
     CHAR_PORTRAIT_PATH,
@@ -14,8 +16,6 @@ from .RESOURCE_PATH import (
     WIKI_RELIC_PATH,
     WIKI_ROLE_PATH,
 )
-
-from gsuid_core.utils.download_resource.download_core import download_all_file
 
 
 async def check_use():

@@ -2,6 +2,15 @@ import asyncio
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
+from PIL import Image, ImageDraw
+from gsuid_core.logger import logger
+from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.utils.image.image_tools import (
+    draw_pic_with_ring,
+    get_qq_avatar,
+)
+
 from .utils import get_icon, wrap_list
 from ..sruid_utils.api.mys.models import (
     AvatarDetail,
@@ -19,15 +28,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_36,
 )
 from ..utils.mys_api import mys_api
-
-from PIL import Image, ImageDraw
-from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import get_error
-from gsuid_core.utils.image.convert import convert_img
-from gsuid_core.utils.image.image_tools import (
-    draw_pic_with_ring,
-    get_qq_avatar,
-)
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 

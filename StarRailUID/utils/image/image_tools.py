@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union, Optional
+from typing import Optional, Union
 
 from PIL import Image
 from gsuid_core.utils.image.image_tools import TEXT_PATH, CustomizeImage

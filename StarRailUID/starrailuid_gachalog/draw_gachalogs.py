@@ -4,6 +4,15 @@ import json
 from pathlib import Path
 from typing import List, Tuple, Union
 
+from PIL import Image, ImageDraw
+from gsuid_core.logger import logger
+from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.utils.image.image_tools import (
+    draw_pic_with_ring,
+    get_color_bg,
+    get_qq_avatar,
+)
+
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_24,
@@ -16,15 +25,6 @@ from ..utils.resource.RESOURCE_PATH import (
     CHAR_ICON_PATH,
     PLAYER_PATH,
     WEAPON_PATH,
-)
-
-from PIL import Image, ImageDraw
-from gsuid_core.logger import logger
-from gsuid_core.utils.image.convert import convert_img
-from gsuid_core.utils.image.image_tools import (
-    draw_pic_with_ring,
-    get_color_bg,
-    get_qq_avatar,
 )
 
 TEXT_PATH = Path(__file__).parent / "texture2d"

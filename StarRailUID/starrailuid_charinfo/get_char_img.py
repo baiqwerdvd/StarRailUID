@@ -3,6 +3,13 @@ from pathlib import Path
 import re
 from typing import Dict, Optional, Tuple, Union
 
+from gsuid_core.logger import logger
+from starrail_damage_cal.excel.model import (
+    AvatarPromotionConfig,
+    EquipmentPromotionConfig,
+)
+from starrail_damage_cal.to_data import api_to_dict
+
 from .draw_char_img import draw_char_img
 from ..utils.error_reply import CHAR_HINT
 from ..utils.map.SR_MAP_PATH import (
@@ -27,13 +34,6 @@ from ..utils.map.name_covert import (
     name_to_weapon_id,
 )
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-
-from gsuid_core.logger import logger
-from starrail_damage_cal.excel.model import (
-    AvatarPromotionConfig,
-    EquipmentPromotionConfig,
-)
-from starrail_damage_cal.to_data import api_to_dict
 
 WEAPON_TO_INT = {
     "一": 1,

@@ -3,15 +3,15 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
 from PIL import Image, ImageDraw
-from starrail_damage_cal.to_data import api_to_dict
 from gsuid_core.utils.image.convert import convert_img
-from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
 from gsuid_core.utils.image.image_tools import crop_center_img
+from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
+from starrail_damage_cal.to_data import api_to_dict
 
 from ..utils.fonts.first_world import fw_font_28
-from ..utils.map.name_covert import avatar_id_to_char_star
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, CHAR_PREVIEW_PATH
 from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
+from ..utils.map.name_covert import avatar_id_to_char_star
+from ..utils.resource.RESOURCE_PATH import CHAR_PREVIEW_PATH, PLAYER_PATH
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)

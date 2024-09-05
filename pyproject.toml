@@ -93,6 +93,14 @@ extra-standard-library = ["typing_extensions"]
 combine-as-imports = true
 order-by-type = true
 relative-imports-order = "closest-to-furthest"
+section-order = [
+  "future",
+  "standard-library",
+  "first-party",
+  "third-party",
+  "local-folder",
+]
+
 
 [tool.pdm]
 [tool.pdm.build]
