@@ -27,7 +27,7 @@ class SrPush(Push, table=True):
 
 
 @site.register_admin
-class srpushadmin(GsAdminModel):
+class SrPushAdmin(GsAdminModel):
     pk_name = 'id'
     page_schema = PageSchema(label='星铁推送管理', icon='fa fa-bullhorn')  # type: ignore
 
