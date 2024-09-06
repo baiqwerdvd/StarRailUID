@@ -1,11 +1,9 @@
 from typing import Optional
 
 from gsuid_core.logger import logger
-from gsuid_core.utils.database.models import GsUser
-
 from .sr_config import srconfig
 from .config_default import CONIFG_DEFAULT
-from ..starrailuid_stamina.database import SrPush
+from ..utils.database.model import SrPush
 
 PUSH_MAP = {
     '体力': 'stamina',

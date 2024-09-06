@@ -1,7 +1,6 @@
 from typing import Optional
 from sqlmodel import Field
 
-from ..sr_prefix import PREFIX
 from gsuid_core.utils.database.base_models import Push
 from gsuid_core.webconsole import site
 from gsuid_core.webconsole.mount_app import GsAdminModel
@@ -15,7 +14,7 @@ class SrPush(Push, table=True):
     stamina_push: Optional[str] = Field(
         title='体力推送',
         default='off',
-        schema_extra={'json_schema_extra': {'hint': f'{PREFIX}开启体力'}},
+        schema_extra={'json_schema_extra': {'hint': 'sr开启体力'}},
     )
     stamina_value: Optional[int] = Field(title='体力阈值', default=200)
     stamina_is_push: Optional[str] = Field(title='体力是否已推送', default='off')
