@@ -23,7 +23,7 @@ async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
         user_list = await GsUser.get_all_push_user_list()
         for user in user_list:
             if user.sr_uid is not None:
-                raw_data = await mys_api.get_daily_data(user.sr_uid)
+                raw_data = await mys_api.get_sr_daily_data(user.sr_uid)
                 if isinstance(raw_data, int):
                     logger.error(f"[sr推送提醒]获取{user.sr_uid}的数据失败!")
                     continue
@@ -98,13 +98,13 @@ async def all_check(
                         group_data[gid][user_id] += notice
 
                 await SrPush.update_data_by_uid(
-                    uid, bot_id, None, **{f"{mode}_is_push": "on"}
+                    uid, bot_id, 'sr', **{f"{mode}_is_push": "on"}
                 )
     return msg_dict
 
 
 async def check(mode: str, data: DailyNoteData, limit: int) -> bool:
-    if mode == "resin":
+    if mode == "stamina":
         if data.current_stamina >= limit:
             return True
         if data.current_stamina >= data.max_stamina:
