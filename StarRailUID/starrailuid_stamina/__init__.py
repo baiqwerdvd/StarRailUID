@@ -19,7 +19,6 @@ from ..utils.sr_prefix import PREFIX
 sv_get_stamina = SV("sr查询体力")
 sv_get_stamina_admin = SV("sr强制推送", pm=1)
 
-
 @sv_get_stamina.on_fullmatch(f"{PREFIX}当前状态")
 async def send_daily_info(bot: Bot, ev: Event):
     await bot.logger.info("开始执行[sr每日信息文字版]")

@@ -40,5 +40,6 @@ async def send_srabyss_info(bot: Bot, ev: Event):
     await bot.logger.info(f"[sr查询深渊信息]深渊期数: {schedule_type}")
 
     im = await draw_abyss_img(user_id, uid, ev.sender, schedule_type)
+    im = await draw_abyss_img(user_id, uid, ev.sender, schedule_type)
     await bot.send(im)
     return None

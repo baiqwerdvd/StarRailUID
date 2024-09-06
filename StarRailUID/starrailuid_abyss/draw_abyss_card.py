@@ -123,6 +123,7 @@ async def draw_abyss_img(
     schedule_type: str = "1",
 ) -> Union[bytes, str]:
     raw_abyss_data = await mys_api.get_abyss_info(uid, schedule_type)
+    raw_abyss_data = await mys_api.get_abyss_info(uid, schedule_type)
 
     if isinstance(raw_abyss_data, int):
         return get_error(raw_abyss_data)
@@ -138,6 +139,7 @@ async def draw_abyss_img(
 
     # 获取背景图片各项参数
     based_w = 900
+    based_h = 657 + 570 * floor_num
     based_h = 657 + 570 * floor_num
     img = img_bg.copy()
     img = img.crop((0, 0, based_w, based_h))
