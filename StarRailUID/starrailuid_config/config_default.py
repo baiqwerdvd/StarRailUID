@@ -3,9 +3,8 @@ from typing import Dict
 from gsuid_core.utils.plugins_config.models import (
     GSC,
     GsBoolConfig,
-    GsIntConfig,
     GsListStrConfig,
-    GsStrConfig,
+    GsStrConfig
 )
 
 CONIFG_DEFAULT: Dict[str, GSC] = {
@@ -22,12 +21,6 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         "开启后每晚00:30将开始自动签到任务",
         True,
     ),
-    "SchedStaminaPush": GsBoolConfig(
-        "定时检查开拓力",
-        "开启后每隔半小时检查一次开拓力",
-        True,
-    ),
-    "push_max_value": GsIntConfig("提醒阈值", "发送提醒的阈值", 200, 240),
     "CrazyNotice": GsBoolConfig(
         "催命模式",
         "开启后当达到推送阈值将会一直推送",
