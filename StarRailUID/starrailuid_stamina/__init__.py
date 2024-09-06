@@ -7,7 +7,6 @@ from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
-from gsuid_core.utils.database.models import GsBind
 
 from ..utils.convert import get_uid
 from .notice import get_notice_list
