@@ -14,11 +14,12 @@ from .notice import get_notice_list
 from ..utils.error_reply import UID_HINT
 from .stamina_text import get_stamina_text
 from .draw_stamina_card import get_stamina_img
-from ..utils.sr_prefix import PREFIX
+# from ..utils.sr_prefix import PREFIX
 
 sv_get_stamina = SV('sr查询体力')
 sv_get_stamina_admin = SV('sr强制推送', pm=1)
 
+PREFIX = 'sr'
 
 @sv_get_stamina.on_fullmatch(f'{PREFIX}当前状态')
 async def send_daily_info(bot: Bot, ev: Event):
