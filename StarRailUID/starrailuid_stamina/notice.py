@@ -12,8 +12,8 @@ from ..utils.mys_api import mys_api
 MR_NOTICE = "\n可发送[srmr]或者[sr每日]来查看更多信息!\n"
 
 NOTICE = {
-    "stamina": f"你的开拓力已达提醒阈值!{MR_NOTICE}",
-    "go": f"你的派遣已全部完成!{MR_NOTICE}",
+    "stamina": f"[星铁] 你的开拓力已达提醒阈值!{MR_NOTICE}",
+    "go": f"[星铁] 你的派遣已全部完成!{MR_NOTICE}",
 }
 
 
@@ -103,7 +103,7 @@ async def all_check(
     return msg_dict
 
 
-async def check(mode: str, data: DailyNoteData, limit: int) -> bool:
+async def check(mode: str, data: DailyNoteData, limit: int) -> bool | str:
     if mode == "stamina":
         if data.current_stamina >= limit:
             return True

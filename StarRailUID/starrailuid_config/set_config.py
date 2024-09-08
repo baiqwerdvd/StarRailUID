@@ -2,7 +2,7 @@ from typing import Optional
 
 from gsuid_core.logger import logger
 from .sr_config import srconfig
-from .config_default import CONIFG_DEFAULT
+from .config_default import CONFIG_DEFAULT
 from ..utils.database.model import SrPush
 
 PUSH_MAP = {
@@ -38,8 +38,8 @@ async def set_config_func(
     is_admin: bool = False,
 ):
     # 这里将传入的中文config_name转换为英文status
-    for _name in CONIFG_DEFAULT:
-        config = CONIFG_DEFAULT[_name]
+    for _name in CONFIG_DEFAULT:
+        config = CONFIG_DEFAULT[_name]
         if config.title == config_name and isinstance(config.data, bool):
             name = _name
             break
