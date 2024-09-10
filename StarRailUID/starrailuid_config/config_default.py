@@ -4,7 +4,7 @@ from gsuid_core.utils.plugins_config.models import (
     GSC,
     GsBoolConfig,
     GsListStrConfig,
-    GsStrConfig
+    GsStrConfig,
 )
 
 CONIFG_DEFAULT: Dict[str, GSC] = {

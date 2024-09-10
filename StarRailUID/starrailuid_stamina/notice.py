@@ -70,13 +70,20 @@ async def all_check(
             else:
                 notice = NOTICE[mode]
                 if isinstance(_check, int):
-                    notice += f"（当前值: {_check}）"
+                    notice += f"(当前值: {_check})"
+
+                direct_data = None
+                group_data = None
 
                 # 初始化
                 if bot_id not in msg_dict:
                     msg_dict[bot_id] = {"direct": {}, "group": {}}
                     direct_data = msg_dict[bot_id]["direct"]
                     group_data = msg_dict[bot_id]["group"]
+
+                if direct_data is None or group_data is None:
+                    logger.error("[sr推送提醒]初始化失败!")
+                    continue
 
                 # on 推送到私聊
                 if push_data[f"{mode}_push"] == "on":
@@ -98,7 +105,7 @@ async def all_check(
                         group_data[gid][user_id] += notice
 
                 await SrPush.update_data_by_uid(
-                    uid, bot_id, 'sr', **{f"{mode}_is_push": "on"}
+                    uid, bot_id, "sr", **{f"{mode}_is_push": "on"}
                 )
     return msg_dict
 
