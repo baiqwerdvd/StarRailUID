@@ -27,7 +27,7 @@ async def send_gacha_log_card_info(bot: Bot, ev: Event):
 @sv_get_gachalog_by_link.on_command(f"{PREFIX}导入抽卡链接")
 async def get_gachalog_by_link(bot: Bot, ev: Event):
     await bot.logger.info("开始执行[sr导入抽卡链接]")
-    uid = await get_uid(bot, ev, GsBind, "sr")
+    uid = await get_uid(bot, ev, GsBind, "sr", False, None)
     if uid is None:
         return await bot.send(UID_HINT)
     gacha_url = ev.text.strip()
