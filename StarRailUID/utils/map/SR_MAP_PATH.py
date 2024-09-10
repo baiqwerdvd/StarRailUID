@@ -12,7 +12,6 @@ class RelicSetStatusAdd(Struct):
 
 
 MAP = Path(__file__).parent / "data"
-current = Path(__file__).parent
 
 version = StarRail_version
 
@@ -38,6 +37,7 @@ EquipmentID2Rarity_fileName = f"EquipmentID2Rarity_mapping_{version}.json"
 RelicId2Rarity_fileName = f"RelicId2Rarity_mapping_{version}.json"
 ItemId2Name_fileName = f"ItemId2Name_mapping_{version}.json"
 RelicId2MainAffixGroup_fileName = f"RelicId2MainAffixGroup_mapping_{version}.json"
+AvatarRelicScore_fileName = "AvatarRelicScore.json"
 avatarRankSkillUp_fileName = f"avatarRankSkillUp_mapping_{version}.json"
 
 
@@ -87,7 +87,7 @@ with Path.open(MAP / characterSkillTree_fileName, encoding="UTF-8") as f:
 with Path.open(MAP / avatarId2DamageType_fileName, encoding="UTF-8") as f:
     avatarId2DamageType = msgjson.decode(f.read(), type=Dict[str, str])
 
-with Path.open(current / "char_alias.json", encoding="UTF-8") as f:
+with Path.open(MAP / "char_alias.json", encoding="UTF-8") as f:
     alias_data = msgjson.decode(f.read(), type=Dict[str, Dict[str, List]])
 
 with Path.open(MAP / avatarId2Rarity_fileName, encoding="UTF-8") as f:
@@ -98,8 +98,9 @@ with Path.open(MAP / EquipmentID2AbilityProperty_fileName, encoding="UTF-8") as 
         f.read(), type=Dict[str, Dict[str, List]]
     )
 
-with Path.open(MAP / RelicSetSkill_fileName, encoding="UTF-8") as f:
-    RelicSetSkill = msgjson.decode(f.read(), type=Dict[str, Dict[str, object]])
+# with Path.open(MAP / RelicSetSkill_fileName, encoding='UTF-8') as f:
+#     RelicSetSkill = convert(json.load(f), Dict[str, Dict[str, object]])
+#     print(RelicSetSkill)
 
 with Path.open(MAP / skillId2AttackType_fileName, encoding="UTF-8") as f:
     skillId2AttackType = msgjson.decode(f.read(), type=Dict[str, str])
@@ -116,7 +117,7 @@ with Path.open(MAP / ItemId2Name_fileName, encoding="UTF-8") as f:
 with Path.open(MAP / RelicId2MainAffixGroup_fileName, encoding="UTF-8") as f:
     RelicId2MainAffixGroup = msgjson.decode(f.read(), type=Dict[str, int])
 
-with Path.open(current / "AvatarRelicScore.json", encoding="UTF-8") as f:
+with Path.open(MAP / AvatarRelicScore_fileName, encoding="UTF-8") as f:
     AvatarRelicScore = msgjson.decode(f.read(), type=List[Dict])
 
 with Path.open(MAP / avatarRankSkillUp_fileName, encoding="UTF-8") as f:
