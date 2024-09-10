@@ -3,7 +3,7 @@ from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.sv import SV
 
-from ..utils.resource.download_from_cos import check_use
+from ..utils.resource.download_all_file import check_use
 from ..utils.sr_prefix import PREFIX
 
 sv_sr_download_config = SV("sr下载资源", pm=1)
