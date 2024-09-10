@@ -2940,6 +2940,48 @@
             }
         ]
     },
+    "21047": {
+        "1": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
+                "Value": {
+                    "Value": 0.28
+                }
+            }
+        ],
+        "2": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
+                "Value": {
+                    "Value": 0.35
+                }
+            }
+        ],
+        "3": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
+                "Value": {
+                    "Value": 0.42
+                }
+            }
+        ],
+        "4": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
+                "Value": {
+                    "Value": 0.49
+                }
+            }
+        ],
+        "5": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
+                "Value": {
+                    "Value": 0.56
+                }
+            }
+        ]
+    },
     "22002": {
         "1": [
             {
@@ -3067,6 +3109,90 @@
         "5": [
             {
                 "PropertyType": "StatusProbabilityBase",
+                "Value": {
+                    "Value": 1
+                }
+            }
+        ]
+    },
+    "23031": {
+        "1": [
+            {
+                "PropertyType": "CriticalChanceBase",
+                "Value": {
+                    "Value": 0.15
+                }
+            }
+        ],
+        "2": [
+            {
+                "PropertyType": "CriticalChanceBase",
+                "Value": {
+                    "Value": 0.175
+                }
+            }
+        ],
+        "3": [
+            {
+                "PropertyType": "CriticalChanceBase",
+                "Value": {
+                    "Value": 0.2
+                }
+            }
+        ],
+        "4": [
+            {
+                "PropertyType": "CriticalChanceBase",
+                "Value": {
+                    "Value": 0.225
+                }
+            }
+        ],
+        "5": [
+            {
+                "PropertyType": "CriticalChanceBase",
+                "Value": {
+                    "Value": 0.25
+                }
+            }
+        ]
+    },
+    "23032": {
+        "1": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
+                "Value": {
+                    "Value": 0.6
+                }
+            }
+        ],
+        "2": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
+                "Value": {
+                    "Value": 0.7
+                }
+            }
+        ],
+        "3": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
+                "Value": {
+                    "Value": 0.8
+                }
+            }
+        ],
+        "4": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
+                "Value": {
+                    "Value": 0.9
+                }
+            }
+        ],
+        "5": [
+            {
+                "PropertyType": "BreakDamageAddedRatioBase",
                 "Value": {
                     "Value": 1
                 }
