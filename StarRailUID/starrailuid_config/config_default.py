@@ -2,9 +2,9 @@ from typing import Dict
 
 from gsuid_core.utils.plugins_config.models import (
     GSC,
+    GsStrConfig,
     GsBoolConfig,
     GsListStrConfig,
-    GsStrConfig
 )
 
 CONFIG_DEFAULT: Dict[str, GSC] = {
@@ -34,6 +34,11 @@ CONFIG_DEFAULT: Dict[str, GSC] = {
     "WidgetResin": GsBoolConfig(
         "体力使用组件API",
         "开启后mr功能将转为调用组件API, 可能缺失数据、数据不准",
+        True,
+    ),
+    "StaminaCheck": GsBoolConfig(
+        "定时检查体力(全体)",
+        "开启后将定时检查体力是否超过阈值",
         True,
     ),
 }

@@ -7,14 +7,15 @@ from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
-from ..utils.sr_prefix import PREFIX
+from gsuid_core.utils.database.api import get_uid
+from gsuid_core.utils.database.models import GsBind
 
-from ..utils.convert import get_uid
 from .notice import get_notice_list
-
+from ..utils.sr_prefix import PREFIX
 from ..utils.error_reply import UID_HINT
 from .stamina_text import get_stamina_text
 from .draw_stamina_card import get_stamina_img
+from ..starrailuid_config.sr_config import srconfig
 
 sv_get_stamina = SV("sr查询体力")
 sv_get_stamina_admin = SV("sr强制推送", pm=1)
@@ -23,7 +24,7 @@ sv_get_stamina_admin = SV("sr强制推送", pm=1)
 @sv_get_stamina.on_fullmatch(f"{PREFIX}当前状态")
 async def send_daily_info(bot: Bot, ev: Event):
     await bot.logger.info("开始执行[sr每日信息文字版]")
-    uid = await get_uid(bot, ev)
+    uid = await get_uid(bot, ev, GsBind, "sr")
     if uid is None:
         return await bot.send(UID_HINT)
     await bot.logger.info(f"[sr每日信息文字版]UID: {uid}")
@@ -41,6 +42,11 @@ async def force_notice_job(bot: Bot, ev: Event):
 
 @scheduler.scheduled_job("cron", minute="*/30")
 async def sr_notice_job():
+    StaminaCheck = srconfig.get_config("StaminaCheck").data
+    if not StaminaCheck:
+        logger.trace('[sr推送检查] 暂停...')
+        return
+
     result = await get_notice_list()
     logger.info("[sr推送检查]完成!等待消息推送中...")
     logger.debug(result)

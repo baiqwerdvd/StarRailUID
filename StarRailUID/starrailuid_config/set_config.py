@@ -1,8 +1,9 @@
 from typing import Optional
 
 from gsuid_core.logger import logger
+
+from .config_default import CONIFG_DEFAULT
 from .sr_config import srconfig
-from .config_default import CONFIG_DEFAULT
 from ..utils.database.model import SrPush
 
 PUSH_MAP = {
@@ -19,13 +20,15 @@ async def set_push_value(bot_id: str, func: str, uid: str, value: int):
     logger.info("[设置推送阈值]func: {}, value: {}".format(status, value))
     if (
         await SrPush.update_data_by_uid(
-            uid, bot_id, "sr", **{f"{status}_value": value}
+            uid,
+            bot_id,
+            "sr",
+            **{f"{status}_value": value},
         )
         == 0
     ):
         return f"设置成功!\n当前{func}推送阈值:{value}"
-    else:
-        return "设置失败!\n请检查参数是否正确!"
+    return "设置失败!\n请检查参数是否正确!"
 
 
 async def set_config_func(
@@ -44,9 +47,7 @@ async def set_config_func(
             name = _name
             break
     else:
-        logger.info(
-            f"uid: {uid}, option: {option}, config_name: {config_name}"
-        )
+        logger.info(f"uid: {uid}, option: {option}, config_name: {config_name}")
         if config_name.replace("推送", "") in PUSH_MAP:
             await SrPush.update_data_by_uid(
                 uid,
@@ -72,9 +73,7 @@ async def set_config_func(
         # 执行设置
         if query is not None:
             srconfig.set_config(name, query)
-            im = "成功设置{}为{}。".format(
-                config_name, "开" if query else "关"
-            )
+            im = "成功设置{}为{}。".format(config_name, "开" if query else "关")
         else:
             im = "未传入参数query!"
     else:
