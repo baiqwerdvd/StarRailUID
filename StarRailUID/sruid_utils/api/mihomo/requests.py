@@ -14,7 +14,7 @@ async def get_char_card_info(uid: str) -> MihomoData:
         headers=_HEADER,
         timeout=30,
     ) as client:
-        req = await client.get(f"/sr_info/{uid}")
+        req = await client.get(f"/sr_info_parsed/{uid}")
         path = PLAYER_PATH / str(uid)
         path.mkdir(parents=True, exist_ok=True)
         with Path.open(path / f"{uid!s}.json", "w") as file:

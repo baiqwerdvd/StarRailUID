@@ -1,13 +1,13 @@
 import asyncio
 from pathlib import Path
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Tuple, Union, Any
 
 from PIL import Image, ImageDraw
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import crop_center_img
 from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
-from starrail_damage_cal.to_data import api_to_dict
 
+from .to_data import api_to_dict
 from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
 from ..utils.map.name_covert import avatar_id_to_char_star
@@ -27,8 +27,8 @@ footbar = Image.open(TEXT_PATH / "footbar.png")
 pic_500 = Image.open(TEXT_PATH / "500.png")
 
 
-async def api_to_card(uid: str) -> Union[Tuple[bytes, List[str]], bytes]:
-    char_id_list, _ = await api_to_dict(
+async def api_to_card(uid: str) -> bytes | tuple[bytes, list[str]]:
+    char_id_list = await api_to_dict(
         uid,
         save_path=PLAYER_PATH,
     )

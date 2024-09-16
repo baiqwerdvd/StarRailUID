@@ -9,9 +9,9 @@ from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
-from starrail_damage_cal.cal_damage import cal_char_info, cal_info
-from starrail_damage_cal.to_data import api_to_dict
+from .to_data import api_to_dict
 
+from ..sruid_utils.api.mihomo.models import Character, Relic, Skill, LightCone, Attribute, SubAffix
 from ..utils.error_reply import CHAR_HINT
 from ..utils.excel.read_excel import light_cone_ranks
 from ..utils.fonts.first_world import fw_font_28
@@ -71,9 +71,7 @@ skill_type_map = {
     "Normal": ("普攻", "basic_atk"),
     "BPSkill": ("战技", "skill"),
     "Ultra": ("终结技", "ultimate"),
-    "": ("天赋", "talent"),
-    "MazeNormal": "dev_连携",
-    "Maze": ("秘技", "technique"),
+    "Talent": ("天赋", "talent"),
 }
 
 RELIC_POS = {
@@ -95,16 +93,9 @@ RELIC_CNT = {
 }
 
 
-async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, str]:
-    if isinstance(char_data, str):
-        return char_data
-    char = await cal_char_info(char_data)
+async def draw_char_img(char: Character, sr_uid: str, msg: str) -> Union[bytes, str]:
     damage_len = 0
     damage_list = []
-    if str(char.char_id) in skill_dict:
-        damage_data = copy.deepcopy(char_data)
-        damage_list = await cal_info(damage_data)
-        damage_len = len(damage_list)
     bg_height = 0
     if damage_len > 0:
         bg_height = 48 * (1 + damage_len) + 48
@@ -120,29 +111,28 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
     char_info = bg_img.copy()
     char_info = char_info.resize((1050, 2050 + bg_height))
     char_img = (
-        Image.open(CHAR_PORTRAIT_PATH / f"{char.char_id}.png")
+        Image.open(CHAR_PORTRAIT_PATH / f"{char.id}.png")
         .resize((1050, 1050))
         .convert("RGBA")
     )
     char_info.paste(char_img, (-220, -130), char_img)
-
     # 放属性图标
-    attr_img = Image.open(TEXT_PATH / f"IconAttribute{char.char_element}.png")
+    attr_img = Image.open(TEXT_PATH / f"IconAttribute{char.element['id']}.png")
     char_info.paste(attr_img, (540, 122), attr_img)
 
     # 放角色名
     char_img_draw = ImageDraw.Draw(char_info)
-    char_img_draw.text((620, 162), char.char_name, (255, 255, 255), sr_font_38, "lm")
+    char_img_draw.text((620, 162), char.name, (255, 255, 255), sr_font_38, "lm")
     if hasattr(sr_font_38, "getsize"):
         char_name_len = sr_font_38.getsize(char.char_name)[0]  # type: ignore
     else:
-        bbox = sr_font_38.getbbox(char.char_name)
+        bbox = sr_font_38.getbbox(char.name)
         char_name_len = bbox[2] - bbox[0]
 
     # 放等级
     char_img_draw.text(
         (620 + char_name_len + 50, 168),
-        f"LV.{char.char_level!s}",
+        f"LV.{char.level!s}",
         white_color,
         sr_font_24,
         "mm",
@@ -150,7 +140,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
 
     # 放星级
     rarity_img = Image.open(
-        TEXT_PATH / f"LightCore_Rarity{char.char_rarity}.png"
+        TEXT_PATH / f"LightCore_Rarity{char.rarity}.png"
     ).resize((306, 72))
     char_info.paste(rarity_img, (490, 189), rarity_img)
 
@@ -158,7 +148,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
     rank_img = Image.open(TEXT_PATH / "ImgNewBg.png")
     rank_img_draw = ImageDraw.Draw(rank_img)
     rank_img_draw.text(
-        (70, 44), f"{NUM_MAP[char.char_rank]}命", white_color, sr_font_28, "mm"
+        (70, 44), f"{NUM_MAP[char.rank]}命", white_color, sr_font_28, "mm"
     )
     char_info.paste(rank_img, (722, 181), rank_img)
 
@@ -174,142 +164,145 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
     # 放属性列表
     attr_bg = Image.open(TEXT_PATH / "attr_bg.png")
     attr_bg_draw = ImageDraw.Draw(attr_bg)
+    # 属性
+    attr = {}
+    # 遍历基础属性，获取对应的名称和值
+    for attribute in char.attributes:
+        attr[attribute['field']] = {
+            'base': attribute['value'] or 0,
+            'add': 0  # 防止副词条没有该属性时为None
+        }
+    # 添加占位
+    # 效果命中
+    attr['effect_hit'] = {
+        'base': 0,
+        'add': 0,
+    }
+    # 效果抵抗
+    attr['effect_res'] = {
+        'base': 0,
+        'add': 0,
+    }
+    # 击破特攻
+    attr['break_dmg'] = {
+        'base': 0,
+        'add': 0,
+    }
+    # 遍历属性加项，获取对应的名称和值
+    for addition in char.additions:
+        if addition['field'] not in attr:
+            # 创建一个新的键，初始化 base 和 add 为默认值
+            attr[addition['field']] = {'base': 0, 'add': 0}
+        attr[addition['field']]['add'] = addition['value'] or 0
+
     # 生命值
-    hp = int(char.base_attributes.get("hp"))
-    add_hp = int(
-        char.add_attr.get("HPDelta", 0)
-        + hp
-        * char.add_attr.get(
-            "HPAddedRatio",
-            0,
-        )
-    )
-    attr_bg_draw.text((413, 31), f"{hp + add_hp}", white_color, sr_font_26, "rm")
+    attr_bg_draw.text((413, 31), f"{round(attr['hp'].get('base') + attr['hp'].get('add'))}", white_color, sr_font_26,
+                      "rm")
     attr_bg_draw.text(
         (428, 31),
-        f"(+{round(add_hp)!s})",
+        f"(+{round(attr['hp'].get('add'))!s})",
         (95, 251, 80),
         sr_font_26,
         anchor="lm",
     )
     # 攻击力
-    attack = int(char.base_attributes["attack"])
-    add_attack = int(
-        char.add_attr.get("AttackDelta", 0)
-        + attack * char.add_attr.get("AttackAddedRatio", 0)
-    )
     attr_bg_draw.text(
         (413, 31 + 48),
-        f"{attack + add_attack}",
+        f"{round(attr['atk'].get('base') + attr['atk'].get('add'))}",
         white_color,
         sr_font_26,
         "rm",
     )
     attr_bg_draw.text(
         (428, 31 + 48),
-        f"(+{round(add_attack)!s})",
+        f"(+{round(attr['atk'].get('add'))!s})",
         (95, 251, 80),
         sr_font_26,
         anchor="lm",
     )
     # 防御力
-    defence = int(char.base_attributes["defence"])
-    add_defence = int(
-        char.add_attr.get("DefenceDelta", 0)
-        + defence * char.add_attr.get("DefenceAddedRatio", 0)
-    )
     attr_bg_draw.text(
         (413, 31 + 48 * 2),
-        f"{defence + add_defence}",
+        f"{round(attr['def'].get('base') + attr['def'].get('add'))}",
         white_color,
         sr_font_26,
         "rm",
     )
     attr_bg_draw.text(
         (428, 31 + 48 * 2),
-        f"(+{round(add_defence)!s})",
+        f"(+{round(attr['def'].get('add'))!s})",
         (95, 251, 80),
         sr_font_26,
         anchor="lm",
     )
     # 速度
-    speed = int(char.base_attributes["speed"])
-    add_speed = int(
-        char.add_attr.get("SpeedDelta", 0)
-        + speed * char.add_attr.get("SpeedAddedRatio", 0)
-    )
     attr_bg_draw.text(
         (413, 31 + 48 * 3),
-        f"{speed + add_speed}",
+        f"{round(attr['spd'].get('base') + attr['spd'].get('add'))}",
         white_color,
         sr_font_26,
         "rm",
     )
     attr_bg_draw.text(
         (428, 31 + 48 * 3),
-        f"(+{round(add_speed)!s})",
+        f"(+{round(attr['spd'].get('add'))!s})",
         (95, 251, 80),
         sr_font_26,
         anchor="lm",
     )
     # 暴击率
-    critical_chance = char.base_attributes["CriticalChanceBase"]
-    critical_chance_base = char.add_attr.get("CriticalChanceBase", 0)
-    critical_chance = (critical_chance + critical_chance_base) * 100
+    crit_date = (attr['crit_rate'].get('base', 0) + attr['crit_rate'].get('add', 0)) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 4),
-        f"{critical_chance:.1f}%",
+        f"{crit_date :.1f}",
         white_color,
         sr_font_26,
         "rm",
     )
     # 暴击伤害
-    critical_damage = char.base_attributes["CriticalDamageBase"]
-    critical_damage_base = char.add_attr.get("CriticalDamageBase", 0)
-    critical_damage = (critical_damage + critical_damage_base) * 100
+    crit_dmg = (attr['crit_dmg'].get('base', 0) + attr['crit_dmg'].get('add', 0)) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 5),
-        f"{critical_damage:.1f}%",
+        f"{crit_dmg :.1f}",
         white_color,
         sr_font_26,
         "rm",
     )
     # 效果命中
-    status_probability_base = char.add_attr.get("StatusProbabilityBase", 0) * 100
+    effect_hit = attr['effect_hit'].get('add', 0) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 6),
-        f"{status_probability_base:.1f}%",
+        f"{effect_hit:.1f}%",
         white_color,
         sr_font_26,
         "rm",
     )
     # 效果抵抗
-    status_resistance_base = char.add_attr.get("StatusResistanceBase", 0) * 100
+    effect_res = attr['effect_res'].get("add", 0) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 7),
-        f"{status_resistance_base:.1f}%",
+        f"{effect_res:.1f}%",
         white_color,
         sr_font_26,
         "rm",
     )
     # 击破特攻
-    status_resistance_base = char.add_attr.get("BreakDamageAddedRatioBase", 0) * 100
+    break_dmg = attr['break_dmg'].get("add", 0) * 100
     attr_bg_draw.text(
         (500, 31 + 48 * 8),
-        f"{status_resistance_base:.1f}%",
+        f"{break_dmg:.1f}%",
         white_color,
         sr_font_26,
         "rm",
     )
     char_info.paste(attr_bg, (475, 256), attr_bg)
-
     # 命座
     for rank in range(6):
         rank_bg = Image.open(TEXT_PATH / "mz_bg.png")
         rank_no_bg = Image.open(TEXT_PATH / "mz_no_bg.png")
-        if rank < char.char_rank:
+        if rank < char.rank:
             rank_img = (
-                Image.open(SKILL_PATH / f"{char.char_id}{RANK_MAP[rank + 1]}")
+                Image.open(SKILL_PATH / f"{char.id}{RANK_MAP[rank + 1]}")
                 .convert("RGBA")
                 .resize((50, 50))
             )
@@ -317,7 +310,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
             char_info.paste(rank_bg, (20 + rank * 80, 630), rank_bg)
         else:
             rank_img = (
-                Image.open(SKILL_PATH / f"{char.char_id}{RANK_MAP[rank + 1]}")
+                Image.open(SKILL_PATH / f"{char.id}{RANK_MAP[rank + 1]}")
                 .resize((50, 50))
                 .convert("RGBA")
             )
@@ -332,13 +325,17 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
     # 技能
     skill_bg = Image.open(TEXT_PATH / "skill_bg.png")
     i = 0
-    for skill in char.char_skill:
+    # 只显示前四个，因为其他的都是一级，显示意义不大
+    # 另一个原因是第五个是dev_连携，意思是普攻进入战斗，不知道后期会是什么样子
+    for skill in char.skills[:4]:
+        # 转为类
+        skill_data = Skill(**skill)
         skill_attr_img = Image.open(TEXT_PATH / f"skill_attr{i + 1}.png")
         skill_panel_img = Image.open(TEXT_PATH / "skill_panel.png")
         skill_img = (
             Image.open(
-                SKILL_PATH / f'{char.char_id}_'
-                f'{skill_type_map[skill["skillAttackType"]][1]}.png'
+                SKILL_PATH / f'{char.id}_'
+                             f'{skill_type_map[skill_data.type][1]}.png'
             )
             .convert("RGBA")
             .resize((55, 55))
@@ -348,83 +345,85 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
         skill_panel_img_draw = ImageDraw.Draw(skill_panel_img)
         skill_panel_img_draw.text(
             (108, 25),
-            f'{skill_type_map[skill["skillAttackType"]][0]}',
+            f'{skill_type_map[skill_data.type][0]}',
             white_color,
             sr_font_26,
             "lm",
         )
         skill_panel_img_draw.text(
             (89, 55),
-            f'Lv.{skill["skillLevel"]}',
+            f'Lv.{skill_data.level}',
             white_color,
             sr_font_26,
             "lm",
         )
         skill_panel_img_draw.text(
             (75, 90),
-            f'{skill["skillName"]}',
+            f'{skill_data.name}',
             (105, 105, 105),
             sr_font_20,
             "mm",
         )
-        skill_bg.paste(skill_panel_img, (50 + 187 * i, 35), skill_panel_img)
+        skill_bg.paste(skill_panel_img, (50 + 200 * i, 35), skill_panel_img)
         i += 1
     char_info.paste(skill_bg, (0, 710), skill_bg)
 
-    # 武器
-    if char.equipment != {}:
-        weapon_bg = Image.open(TEXT_PATH / "weapon_bg.png")
-        weapon_id = char.equipment["equipmentID"]
-        weapon_img = (
-            Image.open(WEAPON_PATH / f"{weapon_id}.png")
+    # 光锥
+    if char.light_cone != {}:
+        # 转换为Class
+        light_cone = LightCone(**char.light_cone)
+        light_cone_bg = Image.open(TEXT_PATH / "weapon_bg.png")
+        light_cone_id = light_cone.id
+        light_cone_img = (
+            Image.open(WEAPON_PATH / f"{light_cone_id}.png")
             .convert("RGBA")
             .resize((170, 180))
         )
-        weapon_bg.paste(weapon_img, (20, 90), weapon_img)
-        weapon_bg_draw = ImageDraw.Draw(weapon_bg)
+        light_cone_bg.paste(light_cone_img, (20, 90), light_cone_img)
+        weapon_bg_draw = ImageDraw.Draw(light_cone_bg)
         weapon_bg_draw.text(
             (345, 47),
-            f'{char.equipment["equipmentName"]}',
+            f'{light_cone.name}',
             white_color,
             sr_font_34,
             "lm",
         )
         if hasattr(sr_font_34, "getsize"):
             weapon_name_len = sr_font_34.getsize(  # type: ignore
-                char.equipment["equipmentName"]
+                light_cone.name
             )[0]
         else:
-            bbox = sr_font_34.getbbox(char.equipment["equipmentName"])
+            bbox = sr_font_34.getbbox(light_cone.name)
             weapon_name_len = bbox[2] - bbox[0]
         # 放阶
         rank_img = Image.open(TEXT_PATH / "ImgNewBg.png")
         rank_img_draw = ImageDraw.Draw(rank_img)
         rank_img_draw.text(
             (70, 44),
-            f'{NUM_MAP[char.equipment["equipmentRank"]]}阶',
+            f'{NUM_MAP[light_cone.rank]}阶',
             white_color,
             sr_font_28,
             "mm",
         )
-        weapon_bg.paste(rank_img, (weapon_name_len + 330, 2), rank_img)
+        light_cone_bg.paste(rank_img, (weapon_name_len + 330, 2), rank_img)
 
         rarity_img = Image.open(
-            TEXT_PATH / f'LightCore_Rarity{char.equipment["equipmentRarity"]}.png'
+            TEXT_PATH / f'LightCore_Rarity{light_cone.rarity}.png'
         ).resize((306, 72))
-        weapon_bg.paste(rarity_img, (223, 55), rarity_img)
+        light_cone_bg.paste(rarity_img, (223, 55), rarity_img)
         weapon_bg_draw.text(
             (498, 90),
-            f'Lv.{char.equipment["equipmentLevel"]}',
+            f'Lv.{light_cone.level}',
             white_color,
             sr_font_28,
             "mm",
         )
 
         # 武器技能
-        desc = light_cone_ranks[str(char.equipment["equipmentID"])]["desc"]
-        desc_params = light_cone_ranks[str(char.equipment["equipmentID"])]["params"][
-            char.equipment["equipmentRank"] - 1
-        ]
+        desc = light_cone_ranks[str(light_cone.id)]["desc"]
+        desc_params = light_cone_ranks[str(light_cone.id)]["params"][
+            light_cone.rank - 1
+            ]
         for i in range(len(desc_params)):
             temp = math.floor(desc_params[i] * 1000) / 10
             desc = desc.replace(f"#{i + 1}[i]%", f"{temp!s}%")
@@ -435,7 +434,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
         desctexty = 115
         for desctext in desclist:
             desctexty = draw_text_by_line(
-                weapon_bg,
+                light_cone_bg,
                 (210, desctexty),  # type: ignore
                 desctext,
                 sr_font_24,
@@ -443,7 +442,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
                 370,
             )
             desctexty += 28
-        char_info.paste(weapon_bg, (0, 855), weapon_bg)
+        char_info.paste(light_cone_bg, (0, 855), light_cone_bg)
     else:
         char_img_draw.text(
             (525, 1005),
@@ -454,21 +453,21 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
         )
 
     # 遗器
-    if char.char_relic:
+    if char.relics:
         weapon_rank_bg = Image.open(TEXT_PATH / "rank_bg.png")
         char_info.paste(weapon_rank_bg, (735, 880), weapon_rank_bg)
         relic_score = 0
-
-        for relic in char.char_relic:
-            rarity = RelicId2Rarity[str(relic["relicId"])]
+        for relic in char.relics:
+            relic_data = Relic(**relic)
+            rarity = RelicId2Rarity[str(relic_data.id)]
             relic_img = Image.open(TEXT_PATH / f"yq_bg{rarity}.png")
-            if str(relic["SetId"])[0] == "3":
+            if str(relic_data.set_id)[0] == "3":
                 relic_piece_img = Image.open(
-                    RELIC_PATH / f'{relic["SetId"]}_{relic["Type"] - 5}.png'
+                    RELIC_PATH / f'{relic_data.set_id}_{relic_data.type - 5}.png'
                 )
             else:
                 relic_piece_img = Image.open(
-                    RELIC_PATH / f'{relic["SetId"]}_{relic["Type"] - 1}.png'
+                    RELIC_PATH / f'{relic_data.set_id}_{relic_data.type - 1}.png'
                 )
             relic_piece_new_img = relic_piece_img.resize(
                 (105, 105), Image.Resampling.LANCZOS
@@ -480,14 +479,14 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
             )
             rarity_img = Image.open(
                 TEXT_PATH / f'LightCore_Rarity'
-                f'{RelicId2Rarity[str(relic["relicId"])]}.png'
+                            f'{RelicId2Rarity[str(relic_data.id)]}.png'
             ).resize((200, 48))
             relic_img.paste(rarity_img, (-10, 80), rarity_img)
             relic_img_draw = ImageDraw.Draw(relic_img)
-            if len(relic["relicName"]) <= 5:
-                main_name = relic["relicName"]
+            if len(relic_data.name) <= 5:
+                main_name = relic_data.name
             else:
-                main_name = relic["relicName"][:2] + relic["relicName"][4:]
+                main_name = relic_data.name[:2] + relic_data.name[4:]
             relic_img_draw.text(
                 (30, 70),
                 main_name,
@@ -497,9 +496,9 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
             )
 
             # 主属性
-            main_value = relic["MainAffix"]["Value"]
-            main_name: str = relic["MainAffix"]["Name"]
-            main_level: int = relic["Level"]
+            main_value = relic_data.main_affix['value']
+            main_name: str = relic_data.main_affix['name']
+            main_level: int = relic_data.level
 
             if main_name in ["攻击力", "生命值", "防御力", "速度"]:
                 mainValueStr = f"{main_value:.1f}"
@@ -536,21 +535,22 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
 
             single_relic_score = 0
             main_value_score = await get_relic_score(
-                relic["MainAffix"]["Property"],
+                relic_data.main_affix['type'],
                 main_value,
-                char.char_name,
+                char.name,
                 True,
-                relic["Type"],
+                relic_data.type,
             )
             single_relic_score += main_value_score
-            for index, i in enumerate(relic["SubAffixList"]):
-                subName: str = i["Name"]
-                subCnt = i["Cnt"]
-                subValue = i["Value"]
-                subProperty = i["Property"]
-
+            for index, i in enumerate(relic_data.sub_affix):
+                # 转换为class
+                sub_affix = SubAffix(**i)
+                subName: str = sub_affix.name
+                subCnt = sub_affix.count
+                subValue = sub_affix.value
+                subProperty = sub_affix.type
                 tmp_score = await get_relic_score(
-                    subProperty, subValue, char.char_name, False, relic["Type"]
+                    subProperty, subValue, char.name, False, relic_data.type
                 )
                 single_relic_score += tmp_score
 
@@ -594,7 +594,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
                 anchor="rm",
             )
 
-            char_info.paste(relic_img, RELIC_POS[str(relic["Type"])], relic_img)
+            char_info.paste(relic_img, RELIC_POS[str(relic_data.type)], relic_img)
             relic_score += single_relic_score
         if relic_score > 210:
             relic_value_level = Image.open(TEXT_PATH / "CommonIconSSS.png")
@@ -618,7 +618,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
     else:
         char_img_draw.text(
             (525, 1565),
-            "No relic!",
+            "未装备",
             white_color,
             fw_font_28,
             "mm",
@@ -735,7 +735,7 @@ async def draw_char_img(char_data: Dict, sr_uid: str, msg: str) -> Union[bytes, 
         (525, 2022 + bg_height),
         "--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--",
         (255, 255, 255),
-        fw_font_28,
+        sr_font_28,
         "mm",
     )
 

@@ -10,6 +10,7 @@ from gsuid_core.utils.api.mys.tools import (
     generate_os_ds,
     get_web_ds_token,
 )
+from gsuid_core.utils.database.models import GsUser
 
 from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
@@ -50,6 +51,9 @@ class MysApi(_MysApi):
         self, uid: str, mode: Literal["OWNER", "RANDOM"] = "RANDOM"
     ) -> Optional[str]:
         return await self.get_ck(uid, mode, "sr")
+
+    async def get_stoken(self, uid: str) -> Optional[str]:
+        return await GsUser.get_user_stoken_by_uid(uid, game_name='sr')
 
     async def simple_sr_req(
         self,
