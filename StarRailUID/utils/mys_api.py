@@ -108,11 +108,17 @@ class MysApi(_MysApi):
         if sk is None:
             return -51
         header["Cookie"] = sk
+        header["x-rpc-channel"] = "beta"
         device_id = await self.get_user_device_id(uid, "sr")
         header["x-rpc-device_id"] = "23" if device_id is None else device_id
+        header["x-rpc-device_model"] = "Mi 10"
         fp = await self.get_user_fp(uid, "sr")
         header["x-rpc-device_fp"] = "Asmr489" if fp is None else fp
         header["DS"] = get_ds_token()
+        header["Referer"] = "https://app.mihoyo.com"
+        del header["Origin"]
+        header["x-rpc-sys_version"] = "12"
+        header["User-Agent"] = "okhttp/4.8.0"
         data = await self._mys_request(
             _API["STAR_RAIL_WIDGRT_URL"],
             "GET",
