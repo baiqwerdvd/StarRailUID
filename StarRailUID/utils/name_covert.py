@@ -1,8 +1,8 @@
-from .SR_MAP_PATH import (
+from starrail_damage_cal.excel.model import CharAlias
+from starrail_damage_cal.map.SR_MAP_PATH import (
     EquipmentID2EnName,
     EquipmentID2Name,
     SetId2Name,
-    alias_data,
     avatarId2Name,
     avatarId2Rarity,
 )
@@ -33,16 +33,16 @@ async def avatar_id_to_char_star(char_id: str) -> str:
 
 
 async def alias_to_char_name(char_name: str) -> str:
-    for i in alias_data["characters"]:
-        if char_name in alias_data["characters"][i]:
-            return alias_data["characters"][i][0]
+    for i in CharAlias["characters"]:
+        if char_name in CharAlias["characters"][i]:
+            return CharAlias["characters"][i][0]
     return char_name
 
 
 async def alias_to_weapon_name(weapon_name: str) -> str:
-    for i in alias_data["light_cones"]:
-        if weapon_name in alias_data["light_cones"][i]:
-            return alias_data["light_cones"][i][0]
+    for i in CharAlias["light_cones"]:
+        if weapon_name in CharAlias["light_cones"][i]:
+            return CharAlias["light_cones"][i][0]
     return weapon_name
 
 

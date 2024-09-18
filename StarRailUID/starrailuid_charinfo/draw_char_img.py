@@ -10,6 +10,11 @@ from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
 from starrail_damage_cal.cal_damage import cal_char_info, cal_info
+from starrail_damage_cal.excel.model import AvatarRelicScore
+from starrail_damage_cal.map.SR_MAP_PATH import (
+    RelicId2Rarity,
+    avatarId2Name,
+)
 from starrail_damage_cal.model import MihomoCharacter
 from starrail_damage_cal.to_data import api_to_dict
 
@@ -26,12 +31,7 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_38,
 )
-from ..utils.map.SR_MAP_PATH import (
-    AvatarRelicScore,
-    RelicId2Rarity,
-    avatarId2Name,
-)
-from ..utils.map.name_covert import alias_to_char_name, name_to_avatar_id
+from ..utils.name_covert import alias_to_char_name, name_to_avatar_id
 from ..utils.resource.RESOURCE_PATH import (
     CHAR_PORTRAIT_PATH,
     PLAYER_PATH,
@@ -793,9 +793,9 @@ async def get_relic_score(
     relic_score = 0
     weight_dict = {}
     for item in AvatarRelicScore:
-        if item["role"] == char_name:
+        if item.role == char_name:
             weight_dict = item
-    if weight_dict == {}:
+    if isinstance(weight_dict, dict):
         return 0
     if is_main:
         elementlist = [
@@ -811,43 +811,45 @@ async def get_relic_score(
             if subProperty.__contains__("AddedRatio") and relicType == 5:
                 if subProperty.split("AddedRatio")[0] in elementlist:
                     subProperty = "AttributeAddedRatio"
-            if weight_dict.get(subProperty, 0) > 0:
-                relic_score += 5.83
+            # if weight_dict.get(subProperty, 0) > 0:
+            #     relic_score += 5.83
+            # if weight_dict.__contains__(subProperty):
+            #     relic_score += 5.83
     else:
         if subProperty == "CriticalDamageBase":
-            add_value = subValue * 1 * weight_dict["CriticalDamageBase"] * 100
+            add_value = subValue * 1 * weight_dict.CriticalDamageBase * 100
             relic_score += add_value
         if subProperty == "CriticalChanceBase":
-            add_value = subValue * 2 * weight_dict["CriticalChanceBase"] * 100
+            add_value = subValue * 2 * weight_dict.CriticalChanceBase * 100
             relic_score += add_value
         if subProperty == "AttackDelta":
-            add_value = subValue * 0.3 * 0.5 * weight_dict["AttackDelta"] * 1.0
+            add_value = subValue * 0.3 * 0.5 * weight_dict.AttackDelta * 1.0
             relic_score += add_value
         if subProperty == "DefenceDelta":
-            add_value = subValue * 0.3 * 0.5 * weight_dict["DefenceDelta"] * 1.0
+            add_value = subValue * 0.3 * 0.5 * weight_dict.DefenceDelta * 1.0
             relic_score += add_value
         if subProperty == "HPDelta":
-            add_value = subValue * 0.158 * 0.5 * weight_dict["HPDelta"] * 1.0
+            add_value = subValue * 0.158 * 0.5 * weight_dict.HPDelta * 1.0
             relic_score += add_value
         if subProperty == "AttackAddedRatio":
-            add_value = subValue * 1.5 * weight_dict["AttackAddedRatio"] * 100
+            add_value = subValue * 1.5 * weight_dict.AttackAddedRatio * 100
             relic_score += add_value
         if subProperty == "DefenceAddedRatio":
-            add_value = subValue * 1.19 * weight_dict["DefenceAddedRatio"] * 100
+            add_value = subValue * 1.19 * weight_dict.DefenceAddedRatio * 100
             relic_score += add_value
         if subProperty == "HPAddedRatio":
-            add_value = subValue * 1.5 * weight_dict["HPAddedRatio"] * 100
+            add_value = subValue * 1.5 * weight_dict.HPAddedRatio * 100
             relic_score += add_value
         if subProperty == "SpeedDelta":
-            add_value = subValue * 2.53 * weight_dict["SpeedDelta"]
+            add_value = subValue * 2.53 * weight_dict.SpeedDelta
             relic_score += add_value
         if subProperty == "BreakDamageAddedRatioBase":
-            add_value = subValue * 1.0 * weight_dict["BreakDamageAddedRatioBase"] * 100
+            add_value = subValue * 1.0 * weight_dict.BreakDamageAddedRatioBase * 100
             relic_score += add_value
         if subProperty == "StatusProbabilityBase":
-            add_value = subValue * 1.49 * weight_dict["StatusProbabilityBase"] * 100
+            add_value = subValue * 1.49 * weight_dict.StatusProbabilityBase * 100
             relic_score += add_value
         if subProperty == "StatusResistanceBase":
-            add_value = subValue * 1.49 * weight_dict["StatusResistanceBase"] * 100
+            add_value = subValue * 1.49 * weight_dict.StatusResistanceBase * 100
             relic_score += add_value
     return relic_score

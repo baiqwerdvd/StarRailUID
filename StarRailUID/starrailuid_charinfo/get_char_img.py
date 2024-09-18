@@ -6,7 +6,20 @@ from starrail_damage_cal.excel.model import (
     AvatarPromotionConfig,
     EquipmentPromotionConfig,
 )
-from starrail_damage_cal.map.SR_MAP_PATH import AvatarRankSkillUp
+from starrail_damage_cal.map.SR_MAP_PATH import (
+    AvatarRankSkillUp,
+    EquipmentID2Name,
+    EquipmentID2Rarity,
+    Property2Name,
+    avatarId2DamageType,
+    avatarId2EnName,
+    avatarId2Name,
+    avatarId2Rarity,
+    rankId2Name,
+    skillId2AttackType,
+    skillId2Effect,
+    skillId2Name,
+)
 from starrail_damage_cal.model import (
     AttributeBounsStatusAdd,
     AvatarBaseAttributes,
@@ -22,20 +35,7 @@ from starrail_damage_cal.to_data import api_to_dict, characterSkillTree
 
 from .draw_char_img import draw_char_img
 from ..utils.error_reply import CHAR_HINT
-from ..utils.map.SR_MAP_PATH import (
-    EquipmentID2Name,
-    EquipmentID2Rarity,
-    Property2Name,
-    avatarId2DamageType,
-    avatarId2EnName,
-    avatarId2Name,
-    avatarId2Rarity,
-    rankId2Name,
-    skillId2AttackType,
-    skillId2Effect,
-    skillId2Name,
-)
-from ..utils.map.name_covert import (
+from ..utils.name_covert import (
     alias_to_char_name,
     alias_to_weapon_name,
     name_to_avatar_id,

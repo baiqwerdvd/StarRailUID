@@ -5,7 +5,7 @@ from gsuid_core.models import Event
 from gsuid_core.sv import SV
 from gsuid_core.utils.image.convert import convert_img
 
-from ..utils.map.name_covert import (
+from ..utils.name_covert import (
     alias_to_char_name,
     name_to_avatar_id,
     name_to_relic_set_id,

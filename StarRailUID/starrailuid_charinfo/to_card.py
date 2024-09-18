@@ -10,7 +10,7 @@ from starrail_damage_cal.to_data import api_to_dict
 
 from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
-from ..utils.map.name_covert import avatar_id_to_char_star
+from ..utils.name_covert import avatar_id_to_char_star
 from ..utils.resource.RESOURCE_PATH import CHAR_PREVIEW_PATH, PLAYER_PATH
 
 half_color = (255, 255, 255, 120)

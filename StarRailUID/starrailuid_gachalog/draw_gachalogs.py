@@ -20,7 +20,7 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_38,
     sr_font_40,
 )
-from ..utils.map.name_covert import name_to_avatar_id, name_to_weapon_id
+from ..utils.name_covert import name_to_avatar_id, name_to_weapon_id
 from ..utils.resource.RESOURCE_PATH import (
     CHAR_ICON_PATH,
     PLAYER_PATH,

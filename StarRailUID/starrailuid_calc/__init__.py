@@ -6,11 +6,11 @@ from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.error_reply import get_error
 
 from ..utils.error_reply import UID_HINT
-from ..utils.map.name_covert import (
+from ..utils.mys_api import mys_api
+from ..utils.name_covert import (
     alias_to_char_name,
     name_to_avatar_id,
 )
-from ..utils.mys_api import mys_api
 from ..utils.sr_prefix import PREFIX
 
 if TYPE_CHECKING:
