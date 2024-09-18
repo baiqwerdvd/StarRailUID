@@ -8,7 +8,6 @@ from ..resource.RESOURCE_PATH import CU_BG_PATH
 
 BG_PATH = Path(__file__).parent / "bg"
 NM_BG_PATH = BG_PATH / "nm_bg"
-SP_BG_PATH = BG_PATH / "sp_bg"
 
 if list(CU_BG_PATH.iterdir()) != []:
     bg_path = CU_BG_PATH

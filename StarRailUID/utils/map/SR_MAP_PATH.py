@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, TypedDict, Union
+from typing import Dict, List, TypedDict
 
 from msgspec import Struct, json as msgjson
 
@@ -81,8 +81,8 @@ with Path.open(MAP / SetId2Name_fileName, encoding="UTF-8") as f:
 with Path.open(MAP / rankId2Name_fileName, encoding="UTF-8") as f:
     rankId2Name = msgjson.decode(f.read(), type=Dict[str, str])
 
-with Path.open(MAP / characterSkillTree_fileName, encoding="UTF-8") as f:
-    characterSkillTree = msgjson.decode(f.read(), type=Dict[str, Dict])
+# with Path.open(MAP / characterSkillTree_fileName, encoding="UTF-8") as f:
+#     characterSkillTree = msgjson.decode(f.read(), type=Dict[str, Dict])
 
 with Path.open(MAP / avatarId2DamageType_fileName, encoding="UTF-8") as f:
     avatarId2DamageType = msgjson.decode(f.read(), type=Dict[str, str])
@@ -119,5 +119,5 @@ with Path.open(MAP / RelicId2MainAffixGroup_fileName, encoding="UTF-8") as f:
 with Path.open(current / "AvatarRelicScore.json", encoding="UTF-8") as f:
     AvatarRelicScore = msgjson.decode(f.read(), type=List[Dict])
 
-with Path.open(MAP / avatarRankSkillUp_fileName, encoding="UTF-8") as f:
-    AvatarRankSkillUp = msgjson.decode(f.read(), type=Dict[str, Union[List[LU], None]])
+# with Path.open(MAP / avatarRankSkillUp_fileName, encoding="UTF-8") as f:
+#     AvatarRankSkillUp = msgjson.decode(f.read(), type=Dict[str, Union[List[LU], None]])
