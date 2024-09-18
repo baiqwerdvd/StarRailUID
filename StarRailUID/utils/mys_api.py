@@ -111,11 +111,9 @@ class MysApi(_MysApi):
         header["x-rpc-channel"] = "beta"
         device_id = await self.get_user_device_id(uid, "sr")
         header["x-rpc-device_id"] = "23" if device_id is None else device_id
-        header["x-rpc-app_version"] = "2.53.0"
         header["x-rpc-device_model"] = "Mi 10"
         fp = await self.get_user_fp(uid, "sr")
         header["x-rpc-device_fp"] = "Asmr489" if fp is None else fp
-        header["x-rpc-client_type"] = "2"
         header["DS"] = get_ds_token()
         header["Referer"] = "https://app.mihoyo.com"
         del header["Origin"]
