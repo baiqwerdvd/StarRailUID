@@ -32,7 +32,7 @@ async def get_new_gachalog_by_link(
                 url_parse = parse.parse_qs(url.query)
                 if "authkey" not in url_parse:
                     return {}
-                authkey = url_parse["authkey"][0]
+                authkey = parse.quote(url_parse["authkey"][0], safe='')
                 data = await mys_api.get_gacha_log_by_link_in_authkey(
                     uid, authkey, gacha_type, page, end_id
                 )

@@ -2,8 +2,8 @@ from typing import List
 
 from gsuid_core.logger import logger
 
-from ..utils.error_reply import get_error
 from ..utils.mys_api import mys_api
+from ..utils.error_reply import get_error
 
 daily_im = """*数据刷新可能存在一定延迟,请以当前游戏实际数据为准
 ==============
@@ -28,15 +28,15 @@ async def get_stamina_text(uid: str) -> str:
         rec_time = ""
         current_stamina = dailydata.current_stamina
         if current_stamina < 160:
-            stamina_recover_time = seconds2hours(dailydata.stamina_recover_time)
+            recover_time = seconds2hours(dailydata.stamina_recover_time)
             next_stamina_rec_time = seconds2hours(
                 8 * 60
                 - (
-                    (dailydata.max_stamina - dailydata.current_stamina) * 8 * 60
+                    (max_stamina - dailydata.current_stamina) * 8 * 60
                     - dailydata.stamina_recover_time
                 )
             )
-            rec_time = f" ({next_stamina_rec_time}/{stamina_recover_time})"
+            rec_time = f" ({next_stamina_rec_time}/{recover_time})"
 
         accepted_epedition_num = dailydata.accepted_expedition_num
         total_expedition_num = dailydata.total_expedition_num
@@ -50,7 +50,8 @@ async def get_stamina_text(uid: str) -> str:
                 finished_expedition_num += 1
             else:
                 remaining_time: str = seconds2hours(expedition.remaining_time)
-                expedition_info.append(f"{expedition_name} 剩余时间{remaining_time}")
+                _time = f"{expedition_name} 剩余时间"
+                expedition_info.append(f"{_time}{remaining_time}")
 
         expedition_data = "\n".join(expedition_info)
         return daily_im.format(

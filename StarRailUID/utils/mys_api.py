@@ -1,34 +1,34 @@
 import copy
 import time
-from typing import Dict, Literal, Optional, Union
+from typing import Dict, Union, Literal, Optional
 
-from gsuid_core.utils.api.mys.tools import (
-    generate_os_ds,
-    get_ds_token,
-    get_web_ds_token,
-    mys_version,
-)
-from gsuid_core.utils.api.mys_api import _MysApi
 import msgspec
+from gsuid_core.utils.api.mys_api import _MysApi
+from gsuid_core.utils.api.mys.tools import (
+    mys_version,
+    get_ds_token,
+    generate_os_ds,
+    get_web_ds_token,
+)
 
 from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
-    AbyssBossData,
-    AbyssData,
-    AbyssStoryData,
-    AvatarDetail,
-    AvatarInfo,
-    DailyNoteData,
-    GachaLog,
-    MonthlyAward,
     MysSign,
-    RogueData,
-    RogueLocustData,
-    RoleBasicInfo,
-    RoleIndex,
+    GachaLog,
     SignInfo,
     SignList,
+    AbyssData,
+    RogueData,
+    RoleIndex,
+    AvatarInfo,
+    AvatarDetail,
+    MonthlyAward,
+    AbyssBossData,
+    DailyNoteData,
+    RoleBasicInfo,
     WidgetStamina,
+    AbyssStoryData,
+    RogueLocustData,
 )
 
 RECOGNIZE_SERVER = {
@@ -111,11 +111,9 @@ class MysApi(_MysApi):
         header["x-rpc-channel"] = "beta"
         device_id = await self.get_user_device_id(uid, "sr")
         header["x-rpc-device_id"] = "23" if device_id is None else device_id
-        header["x-rpc-app_version"] = "2.53.0"
         header["x-rpc-device_model"] = "Mi 10"
         fp = await self.get_user_fp(uid, "sr")
         header["x-rpc-device_fp"] = "Asmr489" if fp is None else fp
-        header["x-rpc-client_type"] = "2"
         header["DS"] = get_ds_token()
         header["Referer"] = "https://app.mihoyo.com"
         del header["Origin"]
@@ -216,13 +214,14 @@ class MysApi(_MysApi):
             HEADER["Cookie"] = ck
             HEADER["DS"] = generate_os_ds()
             header = HEADER
+            os_server = "prod_official_asia"
             data = await self.simple_sr_req(
                 "STAR_RAIL_AVATAR_INFO_URL",
                 uid,
                 params={
                     "need_wiki": "true" if need_wiki else "false",
                     "role_id": uid,
-                    "server": RECOGNIZE_SERVER.get(str(uid)[0], "prod_official_asia"),
+                    "server": RECOGNIZE_SERVER.get(str(uid)[0], os_server),
                 },
                 header=header,
             )
