@@ -112,14 +112,10 @@ authors = [
   { name = "qwerdvd", email = "105906879+qwerdvd@users.noreply.github.com" },
 ]
 dependencies = [
-  "beautifulsoup4>=4.12.2",
-  "msgspec>=0.18.4",
-  "httpx>=0.25.0",
-  "pillow>=10.1.0",
-  "aiofiles>=23.2.1",
-  "aiohttp>=3.8.6",
-  "qrcode[pil]>=7.4.2",
-  "starrail-damage-cal>=1.9.4",
+  "msgspec>=0.18.6",
+  "httpx>=0.27.2",
+  "pillow>=10.4.0",
+  "starrail-damage-cal>=1.9.6",
 ]
 requires-python = ">=3.8.1,<4.0"
 readme = "README.md"
@@ -127,14 +123,7 @@ license = { text = "GPL-3.0-or-later" }
 
 
 [tool.pdm.dev-dependencies]
-dev = [
-  "ruff>=0.0.276",
-  "pre-commit>=3.3.2",
-  "flake8>=6.0.0",
-  "isort>=5.12.0",
-  "pycln>=2.1.2",
-]
-test = ["nonebug>=0.3.0", "pytest>=7.2.0", "pytest-asyncio>=0.20.3"]
+dev = ["ruff>=0.6.5", "pre-commit>=3.8.0"]
 
 [build-system]
 requires = ["pdm-backend"]

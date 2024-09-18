@@ -10,7 +10,6 @@ from gsuid_core.utils.image.image_tools import (
     get_qq_avatar,
 )
 
-from .utils import get_icon
 from ..sruid_utils.api.mys.models import AbyssAvatar
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
@@ -20,6 +19,7 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_42,
 )
 from ..utils.mys_api import mys_api
+from ..utils.resource.get_pic_from import get_roleinfo_icon
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 white_color = (255, 255, 255)
@@ -54,7 +54,7 @@ async def _draw_abyss_card(
     index_part: int,
 ):
     char_bg = (char_bg_4 if char.rarity == 4 else char_bg_5).copy()
-    char_icon = (await get_icon(char.icon)).resize((150, 170))
+    char_icon = (await get_roleinfo_icon(char.icon)).resize((150, 170))
     element_icon = elements[char.element]
     char_bg.paste(char_icon, (24, 16), mask=char_icon)
     char_bg.paste(level_cover, (0, 0), mask=level_cover)

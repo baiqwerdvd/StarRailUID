@@ -1,6 +1,6 @@
 import asyncio
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Generator, List, Optional, TypeVar, Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
@@ -11,7 +11,6 @@ from gsuid_core.utils.image.image_tools import (
     get_qq_avatar,
 )
 
-from .utils import get_icon, wrap_list
 from ..sruid_utils.api.mys.models import (
     AvatarDetail,
     AvatarListItem,
@@ -28,6 +27,7 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_36,
 )
 from ..utils.mys_api import mys_api
+from ..utils.resource.get_pic_from import get_roleinfo_icon
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 
@@ -66,6 +66,14 @@ async def get_detail_img(qid: Union[str, int], uid: str, sender) -> Union[bytes,
 
 def _lv(level: int) -> str:
     return f"Lv.0{level}" if level < 10 else f"Lv.{level}"
+
+
+T = TypeVar("T")
+
+
+def wrap_list(lst: List[T], n: int) -> Generator[List[T], None, None]:
+    for i in range(0, len(lst), n):
+        yield lst[i : i + n]
 
 
 async def _draw_card_1(
@@ -150,7 +158,7 @@ async def _draw_avatar_card(
 ) -> Image.Image:
     char_bg = (char_bg_4 if avatar.rarity == 4 else char_bg_5).copy()
     char_draw = ImageDraw.Draw(char_bg)
-    char_icon = (await get_icon(avatar.icon)).resize((110, 120))
+    char_icon = (await get_roleinfo_icon(avatar.icon)).resize((110, 120))
     element_icon = elements[avatar.element]
 
     char_bg.paste(char_icon, (4, 8), mask=char_icon)
@@ -168,7 +176,7 @@ async def _draw_avatar_card(
 
     if equip := equips[avatar.id]:
         char_bg.paste(circle, (0, 0), mask=circle)
-        equip_icon = (await get_icon(equip)).resize((48, 48))
+        equip_icon = (await get_roleinfo_icon(equip)).resize((48, 48))
         char_bg.paste(equip_icon, (9, 80), mask=equip_icon)
 
     char_draw.text(
@@ -267,7 +275,7 @@ async def _draw_detail_card(
     else:
         avatar_img = Image.open(TEXT_PATH / "bar_4.png")
     avatar_draw = ImageDraw.Draw(avatar_img)
-    char_icon = (await get_icon(avatar.icon)).resize((40, 40))
+    char_icon = (await get_roleinfo_icon(avatar.icon)).resize((40, 40))
     element_icon = elements[avatar.element]
     avatar_img.paste(char_icon, (75, 10), mask=char_icon)
     avatar_draw.text(
@@ -328,7 +336,7 @@ async def _draw_detail_card(
     )
 
     if avatar.equip:
-        equip_icon = (await get_icon(avatar.equip.icon)).resize((50, 50))
+        equip_icon = (await get_roleinfo_icon(avatar.equip.icon)).resize((50, 50))
         avatar_img.paste(equip_icon, (595, 5), mask=equip_icon)
 
         avatar_draw.text(

@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import Dict, Optional, Union
 
 from PIL import Image
-import aiofiles
 from gsuid_core.help.draw_plugin_help import get_help
 from gsuid_core.help.model import PluginHelp
 from msgspec import json as msgjson
@@ -16,8 +15,8 @@ HELP_DATA = Path(__file__).parent / "Help.json"
 
 async def get_help_data() -> Optional[Dict[str, PluginHelp]]:
     if HELP_DATA.exists():
-        async with aiofiles.open(HELP_DATA, "rb") as file:
-            return msgjson.decode(await file.read(), type=Dict[str, PluginHelp])
+        with Path.open(HELP_DATA, "rb") as file:
+            return msgjson.decode(file.read(), type=Dict[str, PluginHelp])
     return None
 
 

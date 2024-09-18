@@ -11,7 +11,6 @@ from gsuid_core.utils.image.image_tools import (
     get_qq_avatar,
 )
 
-from .utils import get_icon
 from ..sruid_utils.api.mys.models import (
     LocustBlocks,
     RogueAvatar,
@@ -25,6 +24,7 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_42,
 )
 from ..utils.mys_api import mys_api
+from ..utils.resource.get_pic_from import get_roleinfo_icon
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 white_color = (255, 255, 255)
@@ -181,7 +181,7 @@ async def _draw_rogue_miracles(
             zb_list.append([m, n])
     jishu = 0
     for miracle in miracles:
-        miracles_icon = (await get_icon(miracle.icon)).resize((80, 80))
+        miracles_icon = (await get_roleinfo_icon(miracle.icon)).resize((80, 80))
         z_left = 90 + 90 * zb_list[jishu][1]
         z_top = buff_height + 470 + 90 * zb_list[jishu][0]
         jishu = jishu + 1
@@ -200,7 +200,7 @@ async def _draw_rogue_card(
     # # 确认角色头像路径
     # char_pic_path = CHAR_ICON_PATH / f'{char_id}.png'
     char_bg = (char_bg_4 if char.rarity == 4 else char_bg_5).copy()
-    char_icon = (await get_icon(char.icon)).resize((151, 170))
+    char_icon = (await get_roleinfo_icon(char.icon)).resize((151, 170))
     element_icon = elements[char.element]
     char_bg.paste(char_icon, (24, 16), mask=char_icon)
     char_bg.paste(level_cover, (0, 0), mask=level_cover)

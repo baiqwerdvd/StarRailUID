@@ -3,16 +3,14 @@ from io import BytesIO
 from pathlib import Path
 from typing import Optional
 
-import aiohttp
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
-from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.database.models import GsBind, GsUser
+from gsuid_core.utils.image.convert import convert_img
+from httpx import AsyncClient
 
-from ..utils.mys_api import mys_api
 from ..sruid_utils.api.mys.models import Expedition
 from ..starrailuid_config.sr_config import srconfig
-from ..utils.image.image_tools import get_simple_bg
 from ..utils.error_reply import get_error as get_error_msg
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
@@ -21,6 +19,8 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_36,
     sr_font_50,
 )
+from ..utils.image.image_tools import get_simple_bg
+from ..utils.mys_api import mys_api
 
 use_widget = srconfig.get_config("WidgetResin").data
 
@@ -49,10 +49,10 @@ def seconds2hours(seconds: int) -> str:
 
 
 async def download_image(url: str) -> Image.Image:
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            img_data = await response.read()
-            return Image.open(BytesIO(img_data))
+    async with AsyncClient() as session:
+        response = await session.get(url)
+        img_data = response.read()
+        return Image.open(BytesIO(img_data))
 
 
 async def _draw_task_img(
