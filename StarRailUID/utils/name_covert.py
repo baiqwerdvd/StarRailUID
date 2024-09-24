@@ -1,8 +1,10 @@
+from typing import Optional
+
 from starrail_damage_cal.excel.model import CharAlias
 from starrail_damage_cal.map.SR_MAP_PATH import (
-    EquipmentID2EnName,
-    EquipmentID2Name,
     SetId2Name,
+    EquipmentID2Name,
+    EquipmentID2EnName,
     avatarId2Name,
     avatarId2Rarity,
 )
@@ -30,6 +32,14 @@ async def name_to_avatar_id(name: str) -> str:
 
 async def avatar_id_to_char_star(char_id: str) -> str:
     return avatarId2Rarity[str(char_id)]
+
+
+async def alias_to_char_id(char_name: str) -> Optional[str]:
+    for i in CharAlias["characters"]:
+        for j in CharAlias["characters"][i]:
+            if char_name in j:
+                return i
+    return None
 
 
 async def alias_to_char_name(char_name: str) -> str:
