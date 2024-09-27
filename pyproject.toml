@@ -120,6 +120,9 @@ dependencies = [
 requires-python = ">=3.8.1,<4.0"
 readme = "README.md"
 license = { text = "GPL-3.0-or-later" }
+gscore_auto_update_dep = [
+  "starrail-damage-cal>=1.9.6",
+]
 
 
 [tool.pdm.dev-dependencies]
