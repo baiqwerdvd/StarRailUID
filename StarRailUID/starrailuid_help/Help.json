@@ -3,25 +3,25 @@
     "desc": "需要先绑定uid",
     "data": [
       {
-        "name": "sr绑定uid",
+        "name": "绑定uid",
         "desc": "绑定你的星铁UID",
-        "eg": "sr绑定uid123456",
+        "eg": "绑定uid123456",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr删除uid",
+        "name": "删除uid",
         "desc": "删除你的星铁UID",
-        "eg": "sr删除uid123456",
+        "eg": "删除uid123456",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr切换uid",
+        "name": "切换uid",
         "desc": "切换你的星铁UID",
-        "eg": "sr切换uid123456",
+        "eg": "切换uid123456",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -32,73 +32,81 @@
     "desc": "查询一些基本信息",
     "data": [
       {
-        "name": "sruid",
+        "name": "查询",
         "desc": "角色信息一览,后可跟UID",
-        "eg": "sruid100740568",
+        "eg": "uid100740568",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr深渊",
+        "name": "深渊",
         "desc": "查询星铁深渊信息",
-        "eg": "sr深渊100740568",
+        "eg": "深渊100740568",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "srmr",
+        "name": "mr",
         "desc": "查询自己的体力派遣",
-        "eg": "sr每日",
+        "eg": "每日",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr札记",
+        "name": "札记",
         "desc": "查询自己的每月收入",
-        "eg": "srzj",
+        "eg": "zj",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr签到",
+        "name": "签到",
         "desc": "米游社签到",
-        "eg": "sr签到",
+        "eg": "签到",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr抽卡记录",
+        "name": "抽卡记录",
         "desc": "查询自己的抽卡记录",
-        "eg": "sr抽卡记录",
+        "eg": "抽卡记录",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr每月统计",
-        "desc": "srzj的文字版",
-        "eg": "sr每月统计",
+        "name": "每月统计",
+        "desc": "zj的文字版",
+        "eg": "每月统计",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr当前状态",
-        "desc": "srmr的文字版",
-        "eg": "sr当前状态",
+        "name": "当前状态",
+        "desc": "mr的文字版",
+        "eg": "当前状态",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr查询模拟宇宙",
+        "name": "查询模拟宇宙",
         "desc": "查询模拟宇宙的信息",
-        "eg": "sr查询宇宙",
+        "eg": "查询宇宙",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "查询寰宇蝗灾",
+        "desc": "查询寰宇蝗灾的信息",
+        "eg": "查询寰宇蝗灾",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
@@ -109,17 +117,17 @@
     "desc": "数据源由Mihomo提供",
     "data": [
       {
-        "name": "sr强制刷新",
+        "name": "强制刷新",
         "desc": "刷新自己游戏内面板数据",
-        "eg": "sr强制刷新",
+        "eg": "强制刷新",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr查询xx",
+        "name": "查询[角色]",
         "desc": "查询游戏内面板数据",
-        "eg": "sr查询希儿",
+        "eg": "查询希儿",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -130,33 +138,33 @@
     "desc": "提供 WIKI 查询",
     "data": [
       {
-        "name": "sr角色攻略",
+        "name": "角色攻略",
         "desc": "获取角色攻略",
-        "eg": "sr角色攻略 希儿",
+        "eg": "角色攻略 希儿",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr遗器",
+        "name": "遗器",
         "desc": "获取遗器图鉴",
-        "eg": "sr遗器 星体差分机",
+        "eg": "遗器 星体差分机",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr突破材料",
+        "name": "突破材料",
         "desc": "获取角色突破材料图鉴",
-        "eg": "sr突破材料 希儿",
+        "eg": "突破材料 希儿",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "sr武器",
+        "name": "武器",
         "desc": "查询武器图鉴",
-        "eg": "sr武器 于夜色中",
+        "eg": "武器 于夜色中",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -167,9 +175,9 @@
     "desc": "一些仅供私聊调用的服务",
     "data": [
       {
-        "name": "sr导入抽卡链接",
+        "name": "导入抽卡链接",
         "desc": "后跟抽卡记录连接以导入",
-        "eg": "sr导入抽卡链接",
+        "eg": "导入抽卡链接",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -180,17 +188,17 @@
     "desc": "一些仅供管理员调用的服务",
     "data": [
       {
-        "name": "sr下载全部资源",
+        "name": "下载全部资源",
         "desc": "下载一些机器人必须的资源",
-        "eg": "sr下载全部资源",
+        "eg": "下载全部资源",
         "need_ck": false,
         "need_sk": false,
         "need_admin": true
       },
       {
-        "name": "sr强制推送体力提醒",
+        "name": "强制推送体力提醒",
         "desc": "强制推送一次体力提醒",
-        "eg": "sr强制推送体力提醒",
+        "eg": "强制推送体力提醒",
         "need_ck": false,
         "need_sk": false,
         "need_admin": true

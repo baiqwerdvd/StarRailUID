@@ -1,39 +1,41 @@
+from typing import Dict
 from pathlib import Path
-from typing import Dict, Union, Optional
 
+import aiofiles
 from PIL import Image
 from msgspec import json as msgjson
 from gsuid_core.help.model import PluginHelp
-from gsuid_core.help.draw_plugin_help import get_help
+from gsuid_core.help.draw_new_plugin_help import get_new_help
 
-from ..version import StarRail_version
-from ..utils.fonts.starrail_fonts import starrail_font_origin
+from ..utils.image import get_footer
+from ..utils.sr_prefix import PREFIX
+from ..version import StarRailUID_version
 
-TEXT_PATH = Path(__file__).parent / "texture2d"
-HELP_DATA = Path(__file__).parent / "Help.json"
 ICON = Path(__file__).parent.parent.parent / 'ICON.png'
+HELP_DATA = Path(__file__).parent / 'help.json'
+ICON_PATH = Path(__file__).parent / 'icon_path'
+TEXT_PATH = Path(__file__).parent / 'texture2d'
 
 
-async def get_help_data() -> Optional[Dict[str, PluginHelp]]:
-    if HELP_DATA.exists():
-        with Path.open(HELP_DATA, "rb") as file:
-            return msgjson.decode(file.read(), type=Dict[str, PluginHelp])
-    return None
+async def get_help_data() -> Dict[str, PluginHelp]:
+    async with aiofiles.open(HELP_DATA, 'rb') as file:
+        return msgjson.decode(await file.read(), type=Dict[str, PluginHelp])
 
 
-async def get_core_help() -> Union[bytes, str]:
-    help_data = await get_help_data()
-    if help_data is None:
-        return "暂未找到帮助数据..."
-
-    return await get_help(
-        "StarRailUID",
-        f"版本号:{StarRail_version}",
-        help_data,
-        Image.open(TEXT_PATH / "bg.jpg"),
-        Image.open(TEXT_PATH / "ICON.png"),
-        Image.open(TEXT_PATH / "badge.png"),
-        Image.open(TEXT_PATH / "banner.png"),
-        Image.open(TEXT_PATH / "button.png"),
-        starrail_font_origin,
+async def get_help():
+    return await get_new_help(
+        plugin_name='StarRailUID',
+        plugin_info={f'v{StarRailUID_version}': ''},
+        plugin_icon=Image.open(ICON),
+        plugin_help=await get_help_data(),
+        plugin_prefix=PREFIX,
+        help_mode='dark',
+        banner_bg=Image.open(TEXT_PATH / 'banner_bg.jpg'),
+        banner_sub_text='「愿此行, 终抵群星!」',
+        help_bg=Image.open(TEXT_PATH / 'bg.jpg'),
+        cag_bg=Image.open(TEXT_PATH / 'cag_bg.png'),
+        item_bg=Image.open(TEXT_PATH / 'item.png'),
+        icon_path=ICON_PATH,
+        footer=get_footer(),
+        enable_cache=True,
     )
