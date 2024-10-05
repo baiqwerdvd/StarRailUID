@@ -7,7 +7,7 @@ from msgspec import json as msgjson
 from gsuid_core.help.model import PluginHelp
 from gsuid_core.help.draw_new_plugin_help import get_new_help
 
-from ..utils.image import get_footer
+from ..utils.image.image_tools import get_footer
 from ..utils.sr_prefix import PREFIX
 from ..version import StarRailUID_version
 
