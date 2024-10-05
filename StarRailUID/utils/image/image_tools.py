@@ -8,6 +8,7 @@ from ..resource.RESOURCE_PATH import CU_BG_PATH
 
 BG_PATH = Path(__file__).parent / "bg"
 NM_BG_PATH = BG_PATH / "nm_bg"
+TEXT_PATH = Path(__file__).parent / "texture2d"
 
 if list(CU_BG_PATH.iterdir()) != []:
     bg_path = CU_BG_PATH
@@ -25,3 +26,7 @@ async def get_simple_bg(
 ) -> Image.Image:
     CIL = CustomizeImage(NM_BG_PATH)
     return CIL.get_image(image, based_w, based_h)
+
+
+def get_footer():
+    return Image.open(TEXT_PATH / 'footer.png')
