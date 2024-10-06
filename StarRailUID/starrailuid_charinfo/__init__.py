@@ -1,31 +1,33 @@
-from pathlib import Path
 import re
+from pathlib import Path
 from typing import Tuple, cast
 
 from PIL import Image
-from gsuid_core.bot import Bot
-from gsuid_core.message_models import Button
-from gsuid_core.models import Event
 from gsuid_core.sv import SV
+from gsuid_core.bot import Bot
+from gsuid_core.models import Event
+from gsuid_core.message_models import Button
 from gsuid_core.utils.database.api import get_uid
 from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.image.convert import convert_img
 from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
 
-from .get_char_img import draw_char_info_img
 from .to_card import api_to_card
 from ..utils.error_reply import UID_HINT
+from .get_char_img import draw_char_info_img
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH
-from ..utils.sr_prefix import PREFIX
 
 sv_char_info_config = SV("sr面板设置", pm=2)
 sv_get_char_info = SV("sr面板查询", priority=10)
 sv_get_sr_original_pic = SV("sr查看面板原图", priority=5)
 
 
-@sv_get_char_info.on_prefix(f"{PREFIX}查询")
+@sv_get_char_info.on_prefix("查询")
 async def send_char_info(bot: Bot, ev: Event):
     name = ev.text.strip()
+    if not name:
+        return
+
     im = await _get_char_info(bot, ev, ev.text)
     if isinstance(im, str):
         await bot.send(im)
@@ -81,7 +83,7 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
     return await draw_char_info_img(msg, uid)
 
 
-@sv_get_char_info.on_command(f"{PREFIX}强制刷新")
+@sv_get_char_info.on_command(("强制刷新", "刷新面板"))
 async def send_card_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev, GsBind, "sr")
     if uid is None:

@@ -22,7 +22,10 @@ gacha_type_meta_data = {
 async def get_new_gachalog_by_link(
     uid: str, gacha_url: str, full_data: Dict, is_force: bool
 ):
-    full_data = msgspec.convert(full_data, type=Dict[str, List[SingleGachaLog]])
+    full_data = msgspec.convert(
+        full_data, 
+        type=Dict[str, List[SingleGachaLog]],
+    )
     temp = []
     for gacha_name in gacha_type_meta_data:
         for gacha_type in gacha_type_meta_data[gacha_name]:

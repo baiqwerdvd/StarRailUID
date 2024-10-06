@@ -2,16 +2,12 @@ from typing import TYPE_CHECKING
 
 from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
-from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.database.models import GsBind
 
-from ..utils.error_reply import UID_HINT
 from ..utils.mys_api import mys_api
-from ..utils.name_covert import (
-    alias_to_char_name,
-    name_to_avatar_id,
-)
-from ..utils.sr_prefix import PREFIX
+from ..utils.error_reply import UID_HINT
+from ..utils.name_covert import name_to_avatar_id, alias_to_char_name
 
 if TYPE_CHECKING:
     from gsuid_core.bot import Bot
@@ -20,7 +16,7 @@ if TYPE_CHECKING:
 sv_char_calc = SV("sr养成计算")
 
 
-@sv_char_calc.on_command(f"{PREFIX}养成计算", block=True)
+@sv_char_calc.on_command("养成计算", block=True)
 async def send_char_calc_info(bot: "Bot", ev: "Event"):
     name = ev.text.strip()
     char_id = await name_to_avatar_id(name)
@@ -41,6 +37,7 @@ async def send_char_calc_info(bot: "Bot", ev: "Event"):
     avatar_skills = avatar_detail.skills + avatar_detail.skills_other
     skill_list = []
     for skill in avatar_skills:
-        skill_list.append(f"{skill.point_id}({skill.cur_level}/{skill.max_level})")
+        d = f"{skill.point_id}({skill.cur_level}/{skill.max_level})"
+        skill_list.append(d)
 
     return None

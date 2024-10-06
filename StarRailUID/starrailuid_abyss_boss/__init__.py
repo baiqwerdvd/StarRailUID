@@ -1,24 +1,23 @@
 import re
 
+from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
-from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
-from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.error_reply import UID_HINT
+from gsuid_core.utils.database.models import GsBind
 
 from .draw_abyss_card import draw_abyss_img
-from ..utils.sr_prefix import PREFIX
 
 sv_abyss_boss = SV("sr查询末日幻影")
 
 
 @sv_abyss_boss.on_command(
     (
-        f"{PREFIX}查询末日幻影",
-        f"{PREFIX}查询上期末日幻影",
-        f"{PREFIX}上期末日",
-        f"{PREFIX}末日",
+        "查询末日幻影",
+        "查询上期末日幻影",
+        "上期末日",
+        "末日",
     ),
     block=True,
 )

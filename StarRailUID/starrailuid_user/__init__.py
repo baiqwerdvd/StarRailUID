@@ -1,17 +1,16 @@
+from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
-from gsuid_core.sv import SV
 from gsuid_core.utils.database.models import GsBind
 
-from .draw_user_card import get_user_card
 from ..utils.message import send_diff_msg
-from ..utils.sr_prefix import PREFIX
+from .draw_user_card import get_user_card
 
 sv_user_config = SV("sr用户管理", pm=2)
 sv_user_info = SV("sr用户信息")
 
 
-@sv_user_info.on_fullmatch(f"{PREFIX}绑定信息")
+@sv_user_info.on_fullmatch("绑定信息")
 async def send_bind_card(bot: Bot, ev: Event):
     await bot.logger.info("sr开始执行[查询用户绑定状态]")
     uid_list = await get_user_card(ev.bot_id, ev.user_id)
@@ -24,10 +23,14 @@ async def send_bind_card(bot: Bot, ev: Event):
 
 @sv_user_info.on_command(
     (
-        f"{PREFIX}绑定uid",
-        f"{PREFIX}切换uid",
-        f"{PREFIX}删除uid",
-        f"{PREFIX}解绑uid",
+        "绑定uid",
+        "绑定UID",
+        "切换uid",
+        "切换UID",
+        "删除uid",
+        "删除UID",
+        "解绑uid",
+        "解绑UID",
     )
 )
 async def send_link_uid_msg(bot: Bot, ev: Event):

@@ -1,14 +1,13 @@
 import re
 
+from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
-from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
-from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.error_reply import UID_HINT
+from gsuid_core.utils.database.models import GsBind
 
 from .draw_rogue_card import draw_rogue_img, draw_rogue_locust_img
-from ..utils.sr_prefix import PREFIX
 
 sv_srabyss = SV("sr查询模拟宇宙")
 sv_srabyss_locust = SV("sr查询寰宇蝗灾")
@@ -16,15 +15,15 @@ sv_srabyss_locust = SV("sr查询寰宇蝗灾")
 
 @sv_srabyss.on_command(
     (
-        f"{PREFIX}查询宇宙",
-        f"{PREFIX}yz",
-        f"{PREFIX}查询上期宇宙",
-        f"{PREFIX}sqyz",
-        f"{PREFIX}上期宇宙",
-        f"{PREFIX}宇宙",
-        f"{PREFIX}查询模拟宇宙",
-        f"{PREFIX}上期模拟宇宙",
-        f"{PREFIX}查询上期模拟宇宙",
+        "查询宇宙",
+        "yz",
+        "查询上期宇宙",
+        "sqyz",
+        "上期宇宙",
+        "宇宙",
+        "查询模拟宇宙",
+        "上期模拟宇宙",
+        "查询上期模拟宇宙",
     ),
     block=True,
 )
@@ -68,10 +67,10 @@ async def send_srabyss_info(bot: Bot, ev: Event):
 
 @sv_srabyss_locust.on_command(
     (
-        f"{PREFIX}寰宇蝗灾",
-        f"{PREFIX}hyhz",
-        f"{PREFIX}查询寰宇蝗灾",
-        f"{PREFIX}sqhyhz",
+        "寰宇蝗灾",
+        "hyhz",
+        "查询寰宇蝗灾",
+        "sqhyhz",
     ),
     block=True,
 )

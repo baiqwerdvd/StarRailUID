@@ -168,6 +168,14 @@
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "养成计算",
+        "desc": "查询武器图鉴",
+        "eg": "养成计算 希儿",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },

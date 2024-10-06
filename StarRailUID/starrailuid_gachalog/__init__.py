@@ -1,13 +1,13 @@
+from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
-from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
 from gsuid_core.utils.database.models import GsBind
 
-from .draw_gachalogs import draw_gachalogs_img
-from .get_gachalogs import save_gachalogs
-from ..utils.error_reply import UID_HINT
 from ..utils.sr_prefix import PREFIX
+from ..utils.error_reply import UID_HINT
+from .get_gachalogs import save_gachalogs
+from .draw_gachalogs import draw_gachalogs_img
 
 sv_gacha_log = SV("sr抽卡记录")
 sv_get_gachalog_by_link = SV("sr导入抽卡链接", area="DIRECT")
@@ -24,7 +24,7 @@ async def send_gacha_log_card_info(bot: Bot, ev: Event):
     return None
 
 
-@sv_get_gachalog_by_link.on_command(f"{PREFIX}导入抽卡链接")
+@sv_get_gachalog_by_link.on_command("导入抽卡链接")
 async def get_gachalog_by_link(bot: Bot, ev: Event):
     await bot.logger.info("开始执行[sr导入抽卡链接]")
     uid = await get_uid(bot, ev, GsBind, "sr", False, None)

@@ -25,7 +25,7 @@ sv_sr_wiki = SV("星铁WIKI")
 sv_sr_guide = SV("星铁攻略")
 
 
-@sv_sr_wiki.on_prefix("sr角色图鉴")
+@sv_sr_wiki.on_prefix("角色图鉴")
 async def send_role_wiki_pic(bot: Bot, ev: Event):
     char_name = " ".join(re.findall("[\u4e00-\u9fa5]+", ev.text))
     await bot.logger.info(f"开始获取{char_name}图鉴")
@@ -44,7 +44,7 @@ async def send_role_wiki_pic(bot: Bot, ev: Event):
         await bot.logger.warning(f"未找到{char_name}图鉴图片")
 
 
-@sv_sr_guide.on_prefix("sr角色攻略")
+@sv_sr_guide.on_prefix("角色攻略")
 async def send_role_guide_pic(bot: Bot, ev: Event):
     char_name = " ".join(re.findall("[\u4e00-\u9fa5]+", ev.text))
     await bot.logger.info(f"开始获取{char_name}图鉴")
@@ -65,7 +65,7 @@ async def send_role_guide_pic(bot: Bot, ev: Event):
         await bot.logger.warning(f"未找到{char_id}图鉴图片")
 
 
-@sv_sr_guide.on_prefix("sr光锥攻略")
+@sv_sr_guide.on_prefix("光锥攻略")
 async def send_weapon_guide_pic(bot: Bot, ev: Event):
     msg = " ".join(re.findall("[\u4e00-\u9fa5]+", ev.text))
     await bot.logger.info(f"开始获取{msg}图鉴")
@@ -79,7 +79,7 @@ async def send_weapon_guide_pic(bot: Bot, ev: Event):
         await bot.logger.warning(f"未找到{light_cone_id}光锥图片")
 
 
-@sv_sr_wiki.on_prefix("sr遗器")
+@sv_sr_wiki.on_prefix("遗器")
 async def send_relic_wiki_pic(bot: Bot, ev: Event):
     msg = " ".join(re.findall("[\u4e00-\u9fa5]+", ev.text))
     await bot.logger.info(f"开始获取{msg}遗器")
@@ -93,7 +93,7 @@ async def send_relic_wiki_pic(bot: Bot, ev: Event):
         await bot.logger.warning(f"未找到{msg}遗器图片")
 
 
-@sv_sr_wiki.on_prefix("sr突破材料")
+@sv_sr_wiki.on_prefix("突破材料")
 async def send_material_for_role_wiki_pic(bot: Bot, ev: Event):
     char_name = " ".join(re.findall("[\u4e00-\u9fa5]+", ev.text))
     await bot.logger.info(f"开始获取{char_name}突破材料")
@@ -112,7 +112,7 @@ async def send_material_for_role_wiki_pic(bot: Bot, ev: Event):
         await bot.logger.warning(f"未找到{char_name}突破材料图片")
 
 
-@sv_sr_wiki.on_prefix("sr武器")
+@sv_sr_wiki.on_prefix("武器")
 async def send_light_cone_wiki_pic(bot: Bot, ev: Event):
     msg = " ".join(re.findall("[\u4e00-\u9fa5]+", ev.text))
     await bot.logger.info(f"开始获取{msg}武器")

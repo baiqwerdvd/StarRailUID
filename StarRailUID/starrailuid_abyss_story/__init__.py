@@ -1,26 +1,25 @@
 import re
 
+from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
-from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
-from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.error_reply import UID_HINT
+from gsuid_core.utils.database.models import GsBind
 
 from .draw_abyss_card import draw_abyss_img
-from ..utils.sr_prefix import PREFIX
 
 sv_abyss_story = SV("sr查询虚构叙事")
 
 
 @sv_abyss_story.on_command(
     (
-        f"{PREFIX}查询虚构叙事",
-        f"{PREFIX}xg",
-        f"{PREFIX}查询上期虚构叙事",
-        f"{PREFIX}sqxg",
-        f"{PREFIX}上期虚构",
-        f"{PREFIX}虚构",
+        "查询虚构叙事",
+        "xg",
+        "查询上期虚构叙事",
+        "sqxg",
+        "上期虚构",
+        "虚构",
     ),
     block=True,
 )

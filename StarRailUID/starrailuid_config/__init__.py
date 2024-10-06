@@ -1,16 +1,18 @@
 import re
+
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import UID_HINT
 from gsuid_core.utils.database.models import GsBind
+
 from .set_config import set_push_value, set_config_func
 
 sv_self_config = SV("星铁配置")
 
 
-@sv_self_config.on_prefix(("sr设置"))
+@sv_self_config.on_prefix(("设置"))
 async def send_config_ev(bot: Bot, ev: Event):
     logger.info("开始执行[设置阈值信息]")
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id, "sr")
@@ -30,14 +32,14 @@ async def send_config_ev(bot: Bot, ev: Event):
 
 
 # 开启 自动签到 和 推送树脂提醒 功能
-@sv_self_config.on_prefix(("sr开启", "sr关闭"))
+@sv_self_config.on_prefix(("开启", "关闭"))
 async def open_switch_func(bot: Bot, ev: Event):
     user_id = ev.user_id
     config_name = ev.text
 
     logger.info(f"[{user_id}]尝试[{ev.command[2:]}]了[{ev.text}]功能")
 
-    if ev.command == "sr开启":
+    if "开启" in ev.command:
         query = True
         gid = ev.group_id if ev.group_id else "on"
     else:

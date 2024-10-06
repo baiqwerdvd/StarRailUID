@@ -1,24 +1,23 @@
 import re
 
+from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
-from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
-from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.error_reply import UID_HINT
+from gsuid_core.utils.database.models import GsBind
 
 from .draw_abyss_card import draw_abyss_img
-from ..utils.sr_prefix import PREFIX
 
 sv_srabyss = SV("sr查询深渊")
 
 
 @sv_srabyss.on_command(
     (
-        f"{PREFIX}查询深渊",
-        f"{PREFIX}查询上期深渊",
-        f"{PREFIX}上期深渊",
-        f"{PREFIX}深渊",
+        "查询深渊",
+        "查询上期深渊",
+        "上期深渊",
+        "深渊",
     ),
     block=True,
 )
