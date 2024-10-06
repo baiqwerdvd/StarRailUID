@@ -161,8 +161,11 @@ class MysApi(_MysApi):
         gacha_type: str = "11",
         page: int = 1,
         end_id: str = "0",
+        gacha_id: Optional[str] = None,
     ) -> Union[int, GachaLog]:
         server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+        if gacha_id is None:
+            gacha_id = "b06a52bc37892e08837b112d28229cebca6b24a2"
         if self.check_os(uid):
             HEADER = copy.deepcopy(self._HEADER_OS)
             ck = await self.get_sr_ck(uid, "OWNER")
@@ -178,7 +181,7 @@ class MysApi(_MysApi):
             url = self.MAPI["STAR_RAIL_GACHA_LOG_URL"]
             game_biz = "hkrpg_cn"
         data = await self._mys_request(
-            url=url,
+            url=url + f'?authkey={authkey}',
             method="GET",
             header=header,
             params={
@@ -186,12 +189,11 @@ class MysApi(_MysApi):
                 "sign_type": "2",
                 "auth_appid": "webview_gacha",
                 "default_gacha_type": 11,
-                "gacha_id": "dbebc8d9fbb0d4ffa067423482ce505bc5ea",
+                "gacha_id": gacha_id,
                 "timestamp": str(int(time.time())),
                 "lang": "zh-cn",
                 "plat_type": "pc",
                 "region": server_id,
-                "authkey": authkey,
                 "game_biz": game_biz,
                 "gacha_type": gacha_type,
                 "page": page,

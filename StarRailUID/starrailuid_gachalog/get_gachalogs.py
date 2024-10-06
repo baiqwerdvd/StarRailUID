@@ -1,15 +1,15 @@
-import asyncio
-from datetime import datetime
 import json
+import asyncio
 from pathlib import Path
-from typing import Dict, List, Optional
 from urllib import parse
+from datetime import datetime
+from typing import Dict, List, Optional
 
 import msgspec
 
-from ..sruid_utils.api.mys.models import SingleGachaLog
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from ..sruid_utils.api.mys.models import SingleGachaLog
 
 gacha_type_meta_data = {
     "群星跃迁": ["1"],
@@ -32,9 +32,15 @@ async def get_new_gachalog_by_link(
                 url_parse = parse.parse_qs(url.query)
                 if "authkey" not in url_parse:
                     return {}
-                authkey = parse.quote(url_parse["authkey"][0], safe='')
+                authkey = url_parse["authkey"][0]
+                authkey = parse.quote(authkey, safe='')
+                if 'gacha_id' in url_parse:
+                    gacha_id = url_parse["gacha_id"][0]
+                else:
+                    gacha_id = None
+
                 data = await mys_api.get_gacha_log_by_link_in_authkey(
-                    uid, authkey, gacha_type, page, end_id
+                    uid, authkey, gacha_type, page, end_id, gacha_id
                 )
                 if isinstance(data, int):
                     return {}
