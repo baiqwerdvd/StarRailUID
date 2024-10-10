@@ -256,6 +256,7 @@ class AbyssAvatar(Struct):
 class AbyssNodeDetail(Struct):
     challenge_time: Union[AbyssTime, None]
     avatars: List[AbyssAvatar]
+    score: Optional[str] = None
 
 
 class AbyssFloorDetail(Struct):

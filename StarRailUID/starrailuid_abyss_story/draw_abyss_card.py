@@ -100,6 +100,7 @@ async def _draw_floor_card(
     index_floor: int,
     floor_name: str,
     round_num: Union[int, None],
+    sum_score: Union[int, None],
 ):
     for index_num in [0, 1, 2]:
         star_num = index_num + 1
@@ -116,10 +117,19 @@ async def _draw_floor_card(
         fill=white_color,
         anchor="mm",
     )
+    #总分todo
+    if sum_score:
+        floor_pic_draw.text(
+            (800, 40),
+            f"{sum_score}",
+            font=sr_font_22,
+            fill="#fec86f",
+            anchor="rm",
+        )
     floor_pic_draw.text(
-        (802, 60),
+        (800, 70),
         f"使用轮: {round_num}",
-        font=sr_font_28,
+        font=sr_font_22,
         fill=gray_color,
         anchor="rm",
     )
@@ -208,12 +218,18 @@ async def draw_abyss_img(
         round_num = level.round_num
         node_1 = level.node_1
         node_2 = level.node_2
+        if node_1.score and node_2.score:
+            sum_score = int(node_1.score) + int(node_2.score)
+        else:
+            sum_score = None
         for index_part in [0, 1]:
             node_num = index_part + 1
             if node_num == 1:
                 time_array = node_1.challenge_time
+                score = node_1.score
             else:
                 time_array = node_2.challenge_time
+                score = node_2.score
             assert time_array is not None
             time_str = f"{time_array.year}-{time_array.month}"
             time_str = f"{time_str}-{time_array.day}"
@@ -232,6 +248,15 @@ async def draw_abyss_img(
                 gray_color,
                 sr_font_22,
                 "lm",
+            )
+            # 分数todo
+            if score :
+                floor_pic_draw.text(
+                (800, 120 + index_part * 219),
+                f"{score}",
+                "#fec86f",
+                sr_font_30,
+                "rm",
             )
             if node_num == 1:
                 avatars_array = node_1
@@ -253,6 +278,7 @@ async def draw_abyss_img(
             index_floor,
             floor_name,
             round_num,
+            sum_score,
         )
 
     res = await convert_img(img)
