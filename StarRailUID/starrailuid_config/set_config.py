@@ -1,10 +1,14 @@
 from typing import Optional
 
+from gsuid_core.models import Event
 from gsuid_core.logger import logger
+from gsuid_core.utils.database.models import GsUser
+from gsuid_core.sv import get_plugin_available_prefix
+from gsuid_core.utils.database.config_switch import set_database_value
 
-from .config_default import CONIFG_DEFAULT
 from .sr_config import srconfig
 from ..utils.database.model import SrPush
+from .config_default import CONIFG_DEFAULT
 
 PUSH_MAP = {
     "体力": "stamina",
@@ -32,6 +36,7 @@ async def set_push_value(bot_id: str, func: str, uid: str, value: int):
 
 
 async def set_config_func(
+    ev: Event,
     bot_id: str,
     config_name: str = "",
     uid: str = "0",
@@ -58,7 +63,23 @@ async def set_config_func(
                 },
             )
         else:
-            return "该配置项不存在!"
+            if await GsUser.data_exist(sr_uid=uid):
+                text = await set_database_value(
+                    GsUser,
+                    "sr",
+                    "sr开启",
+                    ev.text.strip(),
+                    uid,
+                    None,
+                    option,
+                )
+            else:
+                return '请先绑定Cookies！'
+
+            if not text:
+                return "该配置项不存在!"
+            else:
+                return text
 
         if option == "on":
             succeed_msg = "开启至私聊消息!"

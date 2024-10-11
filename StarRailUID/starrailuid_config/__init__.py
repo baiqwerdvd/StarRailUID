@@ -57,6 +57,7 @@ async def open_switch_func(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
 
     im = await set_config_func(
+        ev,
         ev.bot_id,
         config_name=config_name,
         uid=uid,
