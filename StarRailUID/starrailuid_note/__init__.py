@@ -16,7 +16,7 @@ sv_get_monthly_data = SV("sr查询月历")
 async def send_monthly_data(bot: Bot, ev: Event):
     sr_uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id, "sr")
     if sr_uid is None:
-        return UID_HINT
+        return await bot.send(UID_HINT)
     await bot.send(await award(sr_uid))
     return None
 
@@ -32,7 +32,7 @@ async def send_monthly_pic(bot: Bot, ev: Event):
     await bot.logger.info("开始执行[sr开拓月历]")
     sr_uid = await get_uid(bot, ev, GsBind, "sr")
     if sr_uid is None:
-        return UID_HINT
+        return await bot.send(UID_HINT)
     im = await draw_note_img(str(sr_uid))
     await bot.send(im)
     return None

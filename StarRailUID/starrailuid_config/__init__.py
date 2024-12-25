@@ -4,9 +4,9 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import UID_HINT
 from gsuid_core.utils.database.models import GsBind
 
+from ..utils.error_reply import UID_HINT
 from .set_config import set_push_value, set_config_func
 
 sv_self_config = SV("星铁配置")
