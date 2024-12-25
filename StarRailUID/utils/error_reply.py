@@ -1,10 +1,18 @@
 from typing import Union
+from gsuid_core.handler import command_start
 
-UID_HINT = "你还没有绑定过uid哦!\n请使用[sr绑定uid123456]命令绑定!"
-MYS_HINT = "你还没有绑定过mysid哦!\n请使用[绑定mys1234]命令绑定!"
+if command_start and command_start[0]:
+    _start = command_start[0]
+else:
+    _start = ''
+
+UID_HINT = f"你还没有绑定过uid哦!\n请使用[{_start}sr绑定uid123456]命令绑定!"
+MYS_HINT = f"你还没有绑定过mysid哦!\n请使用[{_start}绑定mys1234]命令绑定!"
 CK_HINT = """你还没有绑定过Cookie哦!发送【ck帮助】获取帮助!
 警告:绑定Cookie可能会带来未知的账号风险,请确保信任机器人管理员"""
-CHAR_HINT = "您的支援/星海同行角色没有{}的数据哦!\n请先把{}放入支援/星海同行中再使用【sr强制刷新】命令来缓存数据进行查询! !"
+
+_CHAR_HINT = f"再使用【{_start}sr强制刷新】命令来缓存数据进行查询! "
+CHAR_HINT = "您的支援/星海同行角色没有{}的数据哦!\n请先把{}放入支援/星海同行中!" + _CHAR_HINT
 VERIFY_HINT = """出现验证码!
 如已绑定CK: 请至米游社软件->我的->我的角色处解锁验证码
 (可使用[gs关闭推送]命令关闭体力推送以减少出现验证码风险)
