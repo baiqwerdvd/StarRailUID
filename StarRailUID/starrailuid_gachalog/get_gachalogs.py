@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import Dict, List, Optional
 
 import msgspec
+import aiofiles
 
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
@@ -23,7 +24,7 @@ async def get_new_gachalog_by_link(
     uid: str, gacha_url: str, full_data: Dict, is_force: bool
 ):
     full_data = msgspec.convert(
-        full_data, 
+        full_data,
         type=Dict[str, List[SingleGachaLog]],
     )
     temp = []
@@ -65,7 +66,7 @@ async def get_new_gachalog_by_link(
                         full_data[gacha_name][0:0] = data
                 else:
                     full_data[gacha_name].extend(data)
-                await asyncio.sleep(0.25)
+                await asyncio.sleep(0.4)
     return full_data
 
 
@@ -98,8 +99,12 @@ async def save_gachalogs(
         old_weapon_gacha_num,
     ) = (0, 0, 0, 0)
     if gachalogs_path.exists():
-        with Path.open(gachalogs_path, encoding="UTF-8") as f:
-            gachalogs_history: Dict = json.load(f)
+        async with aiofiles.open(
+            gachalogs_path,
+            mode='r',
+            encoding='UTF-8',
+        ) as f:
+            gachalogs_history = json.loads(await f.read())
         gachalogs_history = gachalogs_history["data"]
         old_normal_gacha_num = len(gachalogs_history["群星跃迁"])
         old_begin_gacha_num = len(gachalogs_history["始发跃迁"])
@@ -182,4 +187,6 @@ async def save_gachalogs(
             f"群星跃迁{normal_add}个\n始发跃迁{begin_gacha_add}\n"
             f"角色跃迁{char_add}个\n光锥跃迁{weapon_add}个!"
         )
+    return im
+    return im
     return im
