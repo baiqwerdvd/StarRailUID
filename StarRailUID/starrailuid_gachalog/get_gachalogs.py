@@ -46,6 +46,7 @@ async def get_new_gachalog_by_link(
                 data = await mys_api.get_gacha_log_by_link_in_authkey(
                     uid, authkey, gacha_type, page, end_id, gacha_id
                 )
+                await asyncio.sleep(1)
                 if isinstance(data, int):
                     return {}
                 data = data.list
