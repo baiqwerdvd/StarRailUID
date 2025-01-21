@@ -6,6 +6,7 @@ from PIL import Image
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.logger import logger
 from gsuid_core.message_models import Button
 from gsuid_core.utils.database.api import get_uid
 from gsuid_core.utils.database.models import GsBind
@@ -69,7 +70,7 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
     if not msg:
         return None
     # 获取角色名
-    await bot.logger.info("开始执行[查询角色面板]")
+    logger.info("开始执行[查询角色面板]")
     # 获取uid
     if "换" in msg or "拿" in msg or "带" in msg:
         uid = await get_uid(bot, ev, GsBind, "sr", False)
@@ -78,7 +79,7 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
         msg = " ".join(re.findall("[\u4e00-\u9fa5]+", text))
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info(f"[查询角色面板]uid: {uid}")
+    logger.info(f"[查询角色面板]uid: {uid}")
 
     return await draw_char_info_img(msg, uid)
 
@@ -88,9 +89,9 @@ async def send_card_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev, GsBind, "sr")
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info(f"[sr强制刷新]uid: {uid}")
+    logger.info(f"[sr强制刷新]uid: {uid}")
     im = await api_to_card(uid)
-    await bot.logger.info(f"UID{uid}获取角色数据成功!")
+    logger.info(f"UID{uid}获取角色数据成功!")
     if isinstance(im, Tuple):
         buttons = [
             Button(

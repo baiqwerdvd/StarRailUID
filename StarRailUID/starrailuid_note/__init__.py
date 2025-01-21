@@ -29,7 +29,7 @@ async def send_monthly_data(bot: Bot, ev: Event):
     )
 )
 async def send_monthly_pic(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[sr开拓月历]")
+    logger.info("开始执行[sr开拓月历]")
     sr_uid = await get_uid(bot, ev, GsBind, "sr")
     if sr_uid is None:
         return await bot.send(UID_HINT)

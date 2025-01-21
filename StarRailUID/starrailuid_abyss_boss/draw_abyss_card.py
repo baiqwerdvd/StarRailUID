@@ -1,16 +1,17 @@
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Union
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
-from gsuid_core.utils.image.image_tools import (
-    draw_pic_with_ring,
-    get_qq_avatar,
-)
+from gsuid_core.utils.image.image_tools import draw_pic_with_ring
 
+from ..utils.mys_api import mys_api
 from ..sruid_utils.api.mys.models import AbyssAvatar
+from ..utils.resource.get_pic_from import get_roleinfo_icon
+from ..utils.image.image_tools import elements, _get_event_avatar
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
@@ -18,8 +19,6 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_42,
 )
-from ..utils.mys_api import mys_api
-from ..utils.resource.get_pic_from import get_roleinfo_icon
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 white_color = (255, 255, 255)
@@ -31,16 +30,6 @@ char_bg_5 = Image.open(TEXT_PATH / "char5_bg.png").convert("RGBA")
 rank_bg = Image.open(TEXT_PATH / "rank_bg.png").convert("RGBA")
 star_yes = Image.open(TEXT_PATH / "star.png").convert("RGBA")
 star_gray = Image.open(TEXT_PATH / "star_gray.png").convert("RGBA")
-
-elements = {
-    "ice": Image.open(TEXT_PATH / "IconNatureColorIce.png").convert("RGBA"),
-    "fire": Image.open(TEXT_PATH / "IconNatureColorFire.png").convert("RGBA"),
-    "imaginary": Image.open(TEXT_PATH / "IconNatureColorImaginary.png").convert("RGBA"),
-    "quantum": Image.open(TEXT_PATH / "IconNatureColorQuantum.png").convert("RGBA"),
-    "lightning": Image.open(TEXT_PATH / "IconNatureColorThunder.png").convert("RGBA"),
-    "wind": Image.open(TEXT_PATH / "IconNatureColorWind.png").convert("RGBA"),
-    "physical": Image.open(TEXT_PATH / "IconNaturePhysical.png").convert("RGBA"),
-}
 
 
 async def get_abyss_star_pic(star: int) -> Image.Image:
@@ -109,7 +98,7 @@ async def _draw_floor_card(
         fill=white_color,
         anchor="mm",
     )
-    #总分todo
+    # 总分todo
     if sum_score:
         floor_pic_draw.text(
             (800, 60),
@@ -122,9 +111,8 @@ async def _draw_floor_card(
 
 
 async def draw_abyss_img(
-    qid: Union[str, int],
+    ev: Event,
     uid: str,
-    sender: Dict[str, Any],
     schedule_type: str = "1",
 ) -> Union[bytes, str]:
     raw_abyss_data = await mys_api.get_abyss_boss_info(uid, schedule_type)
@@ -136,7 +124,9 @@ async def draw_abyss_img(
         return "你还没有挑战本期末日幻影!\n可以使用[sr上期末日幻影]命令查询上期~"
     # 过滤掉 is_fast (快速通关) 为 True 的项
     floor_detail = [
-        detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast
+        detail
+        for detail in raw_abyss_data.all_floor_detail
+        if not detail.is_fast
     ]
     floor_num = len(floor_detail)
 
@@ -149,13 +139,7 @@ async def draw_abyss_img(
     img.paste(abyss_title, (0, 0), abyss_title)
 
     # 获取头像
-    _id = str(qid)
-    if _id.startswith("http"):
-        char_pic = await get_qq_avatar(avatar_url=_id)
-    elif sender.get("avatar") is not None:
-        char_pic = await get_qq_avatar(avatar_url=sender["avatar"])
-    else:
-        char_pic = await get_qq_avatar(qid=qid)
+    char_pic = await _get_event_avatar(ev)
     char_pic = await draw_pic_with_ring(char_pic, 250, None, False)
 
     img.paste(char_pic, (325, 132), char_pic)
@@ -234,14 +218,14 @@ async def draw_abyss_img(
                 "lm",
             )
             # 分数todo
-            if score :
+            if score:
                 floor_pic_draw.text(
-                (800, 120 + index_part * 219),
-                f"{score}",
-                "#fec86f",
-                sr_font_30,
-                "rm",
-            )
+                    (800, 120 + index_part * 219),
+                    f"{score}",
+                    "#fec86f",
+                    sr_font_30,
+                    "rm",
+                )
             if node_num == 1:
                 avatars_array = node_1
             else:

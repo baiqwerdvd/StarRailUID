@@ -1,30 +1,28 @@
-import asyncio
-import datetime
 import json
+import asyncio
 from pathlib import Path
+from datetime import datetime
 from typing import List, Tuple, Union
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
-from gsuid_core.utils.image.image_tools import (
-    draw_pic_with_ring,
-    get_color_bg,
-    get_qq_avatar,
-)
+from gsuid_core.utils.image.image_tools import get_color_bg, draw_pic_with_ring
 
+from ..utils.image.image_tools import _get_event_avatar
+from ..utils.name_covert import name_to_avatar_id, name_to_weapon_id
+from ..utils.resource.RESOURCE_PATH import (
+    PLAYER_PATH,
+    WEAPON_PATH,
+    CHAR_ICON_PATH,
+)
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_24,
     sr_font_28,
     sr_font_38,
     sr_font_40,
-)
-from ..utils.name_covert import name_to_avatar_id, name_to_weapon_id
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_ICON_PATH,
-    PLAYER_PATH,
-    WEAPON_PATH,
 )
 
 TEXT_PATH = Path(__file__).parent / "texture2d"
@@ -86,15 +84,13 @@ async def _draw_card(
     text_point = (100, 165)
     if card_type == "角色":
         _id = await name_to_avatar_id(name)
-        item_pic = (
-            Image.open(CHAR_ICON_PATH / f"{_id}.png").convert("RGBA").resize((105, 105))
-        )
+        item_pic = Image.open(CHAR_ICON_PATH / f"{_id}.png")
+        item_pic = item_pic.convert("RGBA").resize((105, 105))
     else:
         name = await name_to_weapon_id(name)
         # _id = await weapon_id_to_en_name(name)
-        item_pic = (
-            Image.open(WEAPON_PATH / f"{name}.png").convert("RGBA").resize((124, 124))
-        )
+        item_pic = Image.open(WEAPON_PATH / f"{name}.png")
+        item_pic = item_pic.convert("RGBA").resize((124, 124))
         point = (37, 24)
     card_img.paste(item_pic, point, item_pic)
     if gacha_num >= 81:
@@ -103,7 +99,13 @@ async def _draw_card(
         text_color = green_color
     else:
         text_color = brown_color
-    card_img_draw.text(text_point, f"{gacha_num}抽", text_color, sr_font_24, "mm")
+    card_img_draw.text(
+        text_point,
+        f"{gacha_num}抽",
+        text_color,
+        sr_font_24,
+        "mm"
+    )
     if is_up:
         logger.info(f"up: {name}")
         # card_img.paste(up_tag, (47, -2), up_tag)
@@ -132,16 +134,16 @@ def check_up(name: str, _time: str) -> bool:
     for char in UP_LIST:
         if char == name:
             time = UP_LIST[char]
-            s_time = datetime.datetime(*time[0])
-            e_time = datetime.datetime(*time[1])
-            gacha_time = datetime.datetime.strptime(_time, "%Y-%m-%d %H:%M:%S")
+            s_time = datetime(*time[0])
+            e_time = datetime(*time[1])
+            gacha_time = datetime.strptime(_time, "%Y-%m-%d %H:%M:%S")
             if gacha_time < s_time or gacha_time > e_time:
                 return False
             return True
     return False
 
 
-async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
+async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     path = PLAYER_PATH / str(uid) / "gacha_logs.json"
     if not path.exists():
         return "你还没有跃迁数据噢~\n请使用命令`sr导入抽卡链接`更新跃迁数据~"
@@ -174,23 +176,21 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
         # 开始初始化抽卡数
         num = 1
         # 从后面开始循环
-        temp_time = datetime.datetime(2023, 4, 26, 8, 0, 0)
+        temp_time = datetime(2023, 4, 26, 8, 0, 0)
         for index, data in enumerate(data_list[::-1]):
             # 计算抽卡时间跨度
             if index == 0:
                 total_data[i]["time_range"] = data["time"]
             if index == len(data_list) - 1:
-                total_data[i]["all_time"] = (
-                    datetime.datetime.strptime(data["time"], "%Y-%m-%d %H:%M:%S")
-                    - datetime.datetime.strptime(
-                        total_data[i]["time_range"], "%Y-%m-%d %H:%M:%S"
-                    )
-                ).total_seconds()
+                _fm = "%Y-%m-%d %H:%M:%S"
+                t1 = datetime.strptime(data["time"], _fm)
+                t2 = datetime.strptime(total_data[i]["time_range"], _fm)
+                total_data[i]["all_time"] = (t1-t2).total_seconds()
                 total_data[i]["time_range"] += "~" + data["time"]
 
             # 计算时间间隔
             if index != 0:
-                now_time = datetime.datetime.strptime(data["time"], "%Y-%m-%d %H:%M:%S")
+                now_time = datetime.strptime(data["time"], "%Y-%m-%d %H:%M:%S")
                 dis = (now_time - temp_time).total_seconds()
                 temp_time = now_time
                 if dis <= 5000:
@@ -200,7 +200,7 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
                     total_data[i]["long_gacha_data"]["num"] += 1
                     total_data[i]["long_gacha_data"]["time"] += dis
             else:
-                temp_time = datetime.datetime.strptime(
+                temp_time = datetime.strptime(
                     data["time"], "%Y-%m-%d %H:%M:%S"
                 )
 
@@ -307,16 +307,15 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
     weapon_y = (1 + ((total_data["光锥跃迁"]["total"] - 1) // 5)) * single_y
 
     # 获取背景图片各项参数
-    _id = str(user_id)
-    if _id.startswith("http"):
-        char_pic = await get_qq_avatar(avatar_url=_id)
-    else:
-        char_pic = await get_qq_avatar(qid=user_id)
+    char_pic = await _get_event_avatar(ev)
     char_pic = await draw_pic_with_ring(char_pic, 206, None, False)
 
     # 获取背景图片各项参数
     img = Abg3_img.copy()
-    img = await get_color_bg(800, 1600 + 400 + normal_y + char_y + weapon_y + begin_y)
+    img = await get_color_bg(
+        800,
+        1600 + 400 + normal_y + char_y + weapon_y + begin_y,
+    )
     gacha_title = bg1_img.copy()
     gacha_title.paste(char_pic, (297, 81), char_pic)
     img.paste(gacha_title, (0, 0), gacha_title)
@@ -392,7 +391,12 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
             "mm",
         )
         y_extend += (
-            (1 + ((total_data[type_list[index - 1]]["total"] - 1) // 5)) * single_y
+            (
+                1
+                + (
+                    (total_data[type_list[index - 1]]["total"] - 1) // 5
+                )
+            ) * single_y
             if index != 0
             else 0
         )

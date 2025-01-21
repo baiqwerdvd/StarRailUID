@@ -1,30 +1,29 @@
 import math
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import List, Union, Optional
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
-from gsuid_core.utils.image.image_tools import (
-    draw_pic_with_ring,
-    get_qq_avatar,
-)
+from gsuid_core.utils.image.image_tools import draw_pic_with_ring
 
-from ..sruid_utils.api.mys.models import (
-    LocustBlocks,
-    RogueAvatar,
-    RogueBuffitems,
-    RogueMiracles,
-)
+from ..utils.mys_api import mys_api
+from ..utils.resource.get_pic_from import get_roleinfo_icon
+from ..utils.image.image_tools import elements, _get_event_avatar
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
     sr_font_34,
     sr_font_42,
 )
-from ..utils.mys_api import mys_api
-from ..utils.resource.get_pic_from import get_roleinfo_icon
+from ..sruid_utils.api.mys.models import (
+    RogueAvatar,
+    LocustBlocks,
+    RogueMiracles,
+    RogueBuffitems,
+)
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 white_color = (255, 255, 255)
@@ -36,15 +35,6 @@ char_bg_5 = Image.open(TEXT_PATH / "char5_bg.png").convert("RGBA")
 rank_bg = Image.open(TEXT_PATH / "rank_bg.png").convert("RGBA")
 content_center = Image.open(TEXT_PATH / "center.png").convert("RGBA")
 
-elements = {
-    "ice": Image.open(TEXT_PATH / "IconNatureColorIce.png").convert("RGBA"),
-    "fire": Image.open(TEXT_PATH / "IconNatureColorFire.png").convert("RGBA"),
-    "imaginary": Image.open(TEXT_PATH / "IconNatureColorImaginary.png").convert("RGBA"),
-    "quantum": Image.open(TEXT_PATH / "IconNatureColorQuantum.png").convert("RGBA"),
-    "lightning": Image.open(TEXT_PATH / "IconNatureColorThunder.png").convert("RGBA"),
-    "wind": Image.open(TEXT_PATH / "IconNatureColorWind.png").convert("RGBA"),
-    "physical": Image.open(TEXT_PATH / "IconNaturePhysical.png").convert("RGBA"),
-}
 
 progresslist = {
     1: "第一世界",
@@ -117,7 +107,8 @@ async def _draw_rogue_buff(
             is_evoluted = 1
         else:
             is_evoluted = 0
-        buff_bg = Image.open(TEXT_PATH / f"zhufu_{item.rank}_{is_evoluted}.png")
+        buff_bg_str = TEXT_PATH / f"zhufu_{item.rank}_{is_evoluted}.png"
+        buff_bg = Image.open(buff_bg_str)
         buff_bg = buff_bg.resize((233, 35))
         z_left = 90 + 240 * zb_list[jishu][1]
         z_top = buff_height + 450 + 55 * zb_list[jishu][0]
@@ -181,7 +172,8 @@ async def _draw_rogue_miracles(
             zb_list.append([m, n])
     jishu = 0
     for miracle in miracles:
-        miracles_icon = (await get_roleinfo_icon(miracle.icon)).resize((80, 80))
+        miracles_icon = await get_roleinfo_icon(miracle.icon)
+        miracles_icon = miracles_icon.resize((80, 80))
         z_left = 90 + 90 * zb_list[jishu][1]
         z_top = buff_height + 470 + 90 * zb_list[jishu][0]
         jishu = jishu + 1
@@ -236,9 +228,8 @@ async def _draw_rogue_card(
 
 
 async def draw_rogue_img(
-    qid: Union[str, int],
+    ev: Event,
     uid: str,
-    sender: Dict[str, Any],
     floor: Optional[int] = None,
     schedule_type: str = "3",
 ) -> Union[bytes, str]:
@@ -313,13 +304,7 @@ async def draw_rogue_img(
     img.paste(rogue_title, (0, 0), rogue_title)
 
     # 获取头像
-    _id = str(qid)
-    if _id.startswith("http"):
-        char_pic = await get_qq_avatar(avatar_url=_id)
-    elif sender.get("avatar") is not None:
-        char_pic = await get_qq_avatar(avatar_url=sender["avatar"])
-    else:
-        char_pic = await get_qq_avatar(qid=qid)
+    char_pic = await _get_event_avatar(ev)
     char_pic = await draw_pic_with_ring(char_pic, 250, None, False)
 
     img.paste(char_pic, (325, 132), char_pic)
@@ -393,16 +378,19 @@ async def draw_rogue_img(
         floor_pic = Image.open(TEXT_PATH / "detail_bg.png").convert("RGBA")
         floor_pic = floor_pic.resize((900, detail_h_list[index_floor]))
 
-        floor_top_pic = Image.open(TEXT_PATH / "floor_bg_top.png").convert("RGBA")
+        floor_top_pic = Image.open(TEXT_PATH / "floor_bg_top.png")
+        floor_top_pic = floor_top_pic.convert("RGBA")
         floor_pic.paste(floor_top_pic, (0, 0), floor_top_pic)
 
-        floor_center_pic = Image.open(TEXT_PATH / "floor_bg_center.png").convert("RGBA")
+        floor_center_pic = Image.open(TEXT_PATH / "floor_bg_center.png")
+        floor_center_pic = floor_center_pic.convert("RGBA")
         floor_center_pic = floor_center_pic.resize(
             (900, detail_h_list[index_floor] - 170)
         )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
-        floor_bot_pic = Image.open(TEXT_PATH / "floor_bg_bot.png").convert("RGBA")
+        floor_bot_pic = Image.open(TEXT_PATH / "floor_bg_bot.png")
+        floor_bot_pic = floor_bot_pic.convert("RGBA")
         floor_pic.paste(
             floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic
         )
@@ -490,7 +478,11 @@ async def draw_rogue_img(
                 sr_font_34,
                 "lm",
             )
-            floor_pic.paste(content_center, (0, 370 + buff_height + 80), content_center)
+            floor_pic.paste(
+                content_center,
+                (0, 370 + buff_height + 80),
+                content_center
+            )
             await _draw_rogue_miracles(
                 detail.miracles,
                 floor_pic,
@@ -516,9 +508,8 @@ async def draw_rogue_img(
 
 
 async def draw_rogue_locust_img(
-    qid: Union[str, int],
+    ev: Event,
     uid: str,
-    sender: Dict[str, Any],
 ) -> Union[bytes, str]:
     raw_rogue_data = await mys_api.get_rogue_locust_info(uid, "3")
 
@@ -591,13 +582,7 @@ async def draw_rogue_locust_img(
     img.paste(rogue_title, (0, 0), rogue_title)
 
     # 获取头像
-    _id = str(qid)
-    if _id.startswith("http"):
-        char_pic = await get_qq_avatar(avatar_url=_id)
-    elif sender.get("avatar") is not None:
-        char_pic = await get_qq_avatar(avatar_url=sender["avatar"])
-    else:
-        char_pic = await get_qq_avatar(qid=qid)
+    char_pic = await _get_event_avatar(ev)
     char_pic = await draw_pic_with_ring(char_pic, 250, None, False)
 
     img.paste(char_pic, (325, 132), char_pic)
@@ -665,16 +650,19 @@ async def draw_rogue_locust_img(
         floor_pic = Image.open(TEXT_PATH / "detail_bg.png").convert("RGBA")
         floor_pic = floor_pic.resize((900, detail_h_list[index_floor]))
 
-        floor_top_pic = Image.open(TEXT_PATH / "floor_bg_top.png").convert("RGBA")
+        floor_top_pic = Image.open(TEXT_PATH / "floor_bg_top.png")
+        floor_top_pic = floor_top_pic.convert("RGBA")
         floor_pic.paste(floor_top_pic, (0, 0), floor_top_pic)
 
-        floor_center_pic = Image.open(TEXT_PATH / "floor_bg_center.png").convert("RGBA")
+        floor_center_pic = Image.open(TEXT_PATH / "floor_bg_center.png")
+        floor_center_pic = floor_center_pic.convert("RGBA")
         floor_center_pic = floor_center_pic.resize(
             (900, detail_h_list[index_floor] - 170)
         )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
-        floor_bot_pic = Image.open(TEXT_PATH / "floor_bg_bot.png").convert("RGBA")
+        floor_bot_pic = Image.open(TEXT_PATH / "floor_bg_bot.png")
+        floor_bot_pic = floor_bot_pic.convert("RGBA")
         floor_pic.paste(
             floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic
         )

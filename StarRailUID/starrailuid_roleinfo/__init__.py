@@ -24,8 +24,8 @@ async def send_role_info(bot: Bot, ev: Event):
         return "你还没有绑定UID噢,请使用[sr绑定uid123]完成绑定!"
 
     logger.info(f"[sr查询信息]UID: {uid}")
-    await bot.logger.info("开始执行[sr查询信息]")
-    await bot.send(await get_role_img(uid))
+    logger.info("开始执行[sr查询信息]")
+    await bot.send(await get_role_img(ev, uid))
     return None
 
 
@@ -39,6 +39,6 @@ async def send_detail_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
 
     logger.info(f"[sr查询信息]UID: {uid}")
-    await bot.logger.info("开始执行[sr查询信息]")
-    await bot.send(await get_detail_img(user_id, uid, ev.sender))
+    logger.info("开始执行[sr查询信息]")
+    await bot.send(await get_detail_img(ev, uid))
     return None

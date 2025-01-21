@@ -30,7 +30,7 @@ async def get_sign_func(bot: Bot, ev: Event):
 
 @sv_sign_config.on_fullmatch("全部重签")
 async def recheck(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[全部重签]")
+    logger.info("开始执行[全部重签]")
     await bot.send("[星穹铁道] [全部重签] 已开始执行!")
     result = await daily_sign("sr")
     if not IS_REPORT:

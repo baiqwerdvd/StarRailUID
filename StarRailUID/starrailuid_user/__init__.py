@@ -1,6 +1,7 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.logger import logger
 from gsuid_core.utils.database.models import GsBind
 
 from ..utils.message import send_diff_msg
@@ -12,11 +13,11 @@ sv_user_info = SV("sr用户信息")
 
 @sv_user_info.on_fullmatch("绑定信息")
 async def send_bind_card(bot: Bot, ev: Event):
-    await bot.logger.info("sr开始执行[查询用户绑定状态]")
+    logger.info("sr开始执行[查询用户绑定状态]")
     uid_list = await get_user_card(ev.bot_id, ev.user_id)
     if not uid_list:
         return await bot.send("你还没有绑定SR_UID哦!")
-    await bot.logger.info("sr[查询用户绑定状态]完成!等待图片发送中...")
+    logger.info("sr[查询用户绑定状态]完成!等待图片发送中...")
     await bot.send(uid_list)
     return None
 
@@ -34,9 +35,9 @@ async def send_bind_card(bot: Bot, ev: Event):
     )
 )
 async def send_link_uid_msg(bot: Bot, ev: Event):
-    await bot.logger.info("sr开始执行[绑定/解绑用户信息]")
+    logger.info("sr开始执行[绑定/解绑用户信息]")
     qid = ev.user_id
-    await bot.logger.info(f"sr[绑定/解绑]UserID: {qid}")
+    logger.info(f"sr[绑定/解绑]UserID: {qid}")
 
     sr_uid = ev.text.strip()
     if sr_uid and not sr_uid.isdigit():
