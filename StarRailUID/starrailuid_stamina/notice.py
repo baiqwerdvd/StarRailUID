@@ -20,7 +20,7 @@ NOTICE = {
 async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
     msg_dict: Dict[str, Dict[str, Dict]] = {}
     for _ in gss.active_bot:
-        user_list = await GsUser.get_all_push_user_list()
+        user_list = await GsUser.get_push_user_list('sr')
         for user in user_list:
             if user.sr_uid is not None:
                 raw_data = await mys_api.get_sr_daily_data(user.sr_uid)

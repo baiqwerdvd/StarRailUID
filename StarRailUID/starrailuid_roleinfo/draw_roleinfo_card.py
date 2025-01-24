@@ -105,7 +105,7 @@ async def _draw_card_1(
     )
     # 贴头像
     user_avatar = await _get_event_avatar(ev)
-    user_avatar = await draw_pic_with_ring(user_avatar, 128, None, False)
+    user_avatar = await draw_pic_with_ring(user_avatar, 220, None, False)
     img_bg1.paste(user_avatar, (286, 213), mask=user_avatar)
 
     # 写基本信息

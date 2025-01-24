@@ -62,6 +62,9 @@ async def set_config_func(
                     f'{PUSH_MAP[config_name.replace("推送", "")]}_push': option,
                 },
             )
+            await GsUser.update_data_by_uid(
+                uid, bot_id, 'sr', sr_push_switch=option
+            )
         else:
             if await GsUser.data_exist(sr_uid=uid):
                 text = await set_database_value(
