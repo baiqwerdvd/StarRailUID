@@ -8,6 +8,7 @@ from gsuid_core.utils.image.image_tools import crop_center_img
 from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
 from starrail_damage_cal.to_data import api_to_dict
 
+from ..utils.error_reply import prefix
 from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
 from ..utils.name_covert import avatar_id_to_char_star
@@ -62,7 +63,7 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
         return await convert_img(Image.new("RGBA", (0, 1), (255, 255, 255)))
     else:
         line1 = f"UID {uid} 刷新成功"
-    line2 = f'可以使用 sr查询{char_data_list[0]["avatarName"]} 查询详情角色面板'
+    line2 = f'可以使用 {prefix}查询{char_data_list[0]["avatarName"]} 查询详情角色面板'
     char_num = len(char_data_list)
     if char_num <= 4:
         based_w, based_h = 1380, 926

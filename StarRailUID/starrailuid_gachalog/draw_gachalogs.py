@@ -10,6 +10,7 @@ from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import get_color_bg, draw_pic_with_ring
 
+from ..utils.error_reply import prefix
 from ..utils.image.image_tools import _get_event_avatar
 from ..utils.name_covert import name_to_avatar_id, name_to_weapon_id
 from ..utils.resource.RESOURCE_PATH import (
@@ -146,7 +147,7 @@ def check_up(name: str, _time: str) -> bool:
 async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     path = PLAYER_PATH / str(uid) / "gacha_logs.json"
     if not path.exists():
-        return "你还没有跃迁数据噢~\n请使用命令`sr导入抽卡链接`更新跃迁数据~"
+        return f"你还没有跃迁数据噢~\n请使用命令`{prefix}导入抽卡链接`更新跃迁数据~"
     with Path.open(path, encoding="UTF-8") as f:
         gacha_data = json.load(f)
 

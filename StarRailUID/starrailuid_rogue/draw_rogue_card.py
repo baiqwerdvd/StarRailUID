@@ -10,6 +10,7 @@ from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring
 
 from ..utils.mys_api import mys_api
+from ..utils.error_reply import prefix
 from ..utils.resource.get_pic_from import get_roleinfo_icon
 from ..utils.image.image_tools import elements, _get_event_avatar
 from ..utils.fonts.starrail_fonts import (
@@ -291,9 +292,9 @@ async def draw_rogue_img(
             return "你还没有挑战该模拟宇宙!"
     elif schedule_type == "3":
         if raw_rogue_data.current_record.basic.finish_cnt == 0:
-            return "你还没有挑战本期模拟宇宙!\n可以使用[sr上期模拟宇宙]命令查询上期~"
+            return f"你还没有挑战本期模拟宇宙!\n可以使用[{prefix}上期模拟宇宙]命令查询上期~"
     elif raw_rogue_data.last_record.basic.finish_cnt == 0:
-        return "你还没有挑战上期模拟宇宙!\n可以使用[sr模拟宇宙]命令查询本期~"
+        return f"你还没有挑战上期模拟宇宙!\n可以使用[{prefix}模拟宇宙]命令查询本期~"
 
     # 获取背景图片各项参数
     based_w = 900

@@ -9,6 +9,7 @@ from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring
 
 from ..utils.mys_api import mys_api
+from ..utils.error_reply import prefix
 from ..sruid_utils.api.mys.models import AbyssAvatar
 from ..utils.resource.get_pic_from import get_roleinfo_icon
 from ..utils.image.image_tools import elements, _get_event_avatar
@@ -121,7 +122,7 @@ async def draw_abyss_img(
 
     # 获取查询者数据
     if raw_abyss_data.max_floor == "":
-        return "你还没有挑战本期末日幻影!\n可以使用[sr上期末日幻影]命令查询上期~"
+        return f"你还没有挑战本期末日幻影!\n可以使用[{prefix}上期末日幻影]命令查询上期~"
     # 过滤掉 is_fast (快速通关) 为 True 的项
     floor_detail = [
         detail
