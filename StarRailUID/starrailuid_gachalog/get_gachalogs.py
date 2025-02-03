@@ -189,5 +189,3 @@ async def save_gachalogs(
             f"角色跃迁{char_add}个\n光锥跃迁{weapon_add}个!"
         )
     return im
-    return im
-    return im

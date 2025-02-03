@@ -21,7 +21,7 @@ async def send_role_info(bot: Bot, ev: Event):
 
     uid = await get_uid(bot, ev, GsBind, "sr")
     if uid is None:
-        return "你还没有绑定UID噢,请使用[sr绑定uid123]完成绑定!"
+        return await bot.send(UID_HINT)
 
     logger.info(f"[sr查询信息]UID: {uid}")
     logger.info("开始执行[sr查询信息]")

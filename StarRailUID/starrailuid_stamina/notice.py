@@ -7,9 +7,10 @@ from gsuid_core.utils.database.models import GsUser
 from ..sruid_utils.api.mys.models import DailyNoteData
 from ..starrailuid_config.sr_config import srconfig
 from ..utils.database.model import SrPush
+from..utils.error_reply import prefix
 from ..utils.mys_api import mys_api
 
-MR_NOTICE = "\n可发送[srmr]或者[sr每日]来查看更多信息!\n"
+MR_NOTICE = f"\n可发送[{prefix}mr]或者[{prefix}每日]来查看更多信息!\n"
 
 NOTICE = {
     "stamina": f"你的开拓力已达提醒阈值!{MR_NOTICE}",
