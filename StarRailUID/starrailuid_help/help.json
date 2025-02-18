@@ -40,14 +40,6 @@
         "need_admin": false
       },
       {
-        "name": "深渊",
-        "desc": "查询星铁深渊信息",
-        "eg": "深渊100740568",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
         "name": "mr",
         "desc": "查询自己的体力派遣",
         "eg": "每日",
@@ -59,6 +51,30 @@
         "name": "札记",
         "desc": "查询自己的每月收入",
         "eg": "zj",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "深渊",
+        "desc": "查询星铁深渊信息",
+        "eg": "深渊100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "末日幻影",
+        "desc": "查询星铁末日幻影信息",
+        "eg": "末日100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "虚构叙事",
+        "desc": "查询星铁虚构叙事信息",
+        "eg": "虚构100740568",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
