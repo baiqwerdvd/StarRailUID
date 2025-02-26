@@ -226,9 +226,7 @@ async def get_fake_char_data(
     return char_data
 
 
-async def get_char_data(
-    uid: str, char_name: str, enable_self: bool = True
-) -> Union[MihomoCharacter, str]:
+async def get_char_data(uid: str, char_name: str, enable_self: bool = True) -> Union[MihomoCharacter, str]:
     if "开拓者" in str(char_name):
         char_name = "开拓者"
     char_id = await name_to_avatar_id(char_name)
@@ -331,19 +329,14 @@ async def get_baseAttributes(
 
     # 攻击力
     base_attributes.attack = (
-        avatar_promotion_base.AttackBase.Value
-        + avatar_promotion_base.AttackAdd.Value * (80 - 1)
+        avatar_promotion_base.AttackBase.Value + avatar_promotion_base.AttackAdd.Value * (80 - 1)
     )
     # 防御力
     base_attributes.defence = (
-        avatar_promotion_base.DefenceBase.Value
-        + avatar_promotion_base.DefenceAdd.Value * (80 - 1)
+        avatar_promotion_base.DefenceBase.Value + avatar_promotion_base.DefenceAdd.Value * (80 - 1)
     )
     # 血量
-    base_attributes.hp = (
-        avatar_promotion_base.HPBase.Value
-        + avatar_promotion_base.HPAdd.Value * (80 - 1)
-    )
+    base_attributes.hp = avatar_promotion_base.HPBase.Value + avatar_promotion_base.HPAdd.Value * (80 - 1)
     # 速度
     base_attributes.speed = avatar_promotion_base.SpeedBase.Value
     # 暴击率
@@ -467,8 +460,7 @@ async def get_char(
                                     skilllevel_max = 12
                                 skilllevel = min(
                                     skilllevel_max,
-                                    char_data.avatarSkill[index].skillLevel
-                                    + skill_up_num,
+                                    char_data.avatarSkill[index].skillLevel + skill_up_num,
                                 )
                                 char_data.avatarSkill[index].skillLevel = skilllevel
                                 break
@@ -507,8 +499,7 @@ async def get_char(
 
         # 生命值
         equipment_info.baseAttributes.hp = (
-            equipment_promotion_base.BaseHP.Value
-            + equipment_promotion_base.BaseHPAdd.Value * (80 - 1)
+            equipment_promotion_base.BaseHP.Value + equipment_promotion_base.BaseHPAdd.Value * (80 - 1)
         )
         # 攻击力
         equipment_info.baseAttributes.attack = (

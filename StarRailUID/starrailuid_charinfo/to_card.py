@@ -33,9 +33,7 @@ async def api_to_card(uid: str) -> Union[Tuple[bytes, List[str]], bytes]:
         uid,
         save_path=PLAYER_PATH,
     )
-    if (not isinstance(char_id_list, str) and char_id_list == []) or isinstance(
-        char_id_list, str
-    ):
+    if (not isinstance(char_id_list, str) and char_id_list == []) or isinstance(char_id_list, str):
         return await convert_img(pic_500)
 
     img = await draw_enka_card(uid=uid, char_list=char_id_list, showfrom=1)
@@ -115,11 +113,7 @@ async def draw_mihomo_char(index: int, img: Image.Image, char_data: Dict):
     char_star = await avatar_id_to_char_star(str(char_id))
     char_card = Image.open(TEXT_PATH / f"char{char_star}_bg.png")
     char_temp = Image.new("RGBA", (300, 650))
-    char_img = (
-        Image.open(str(CHAR_PREVIEW_PATH / f"{char_id}.png"))
-        .convert("RGBA")
-        .resize((449, 615))
-    )
+    char_img = Image.open(str(CHAR_PREVIEW_PATH / f"{char_id}.png")).convert("RGBA").resize((449, 615))
     if char_name == "希儿":
         char_img = char_img.resize((449, 650))
         char_img = char_img.crop((135, 0, 379, 457))
@@ -147,9 +141,7 @@ async def draw_enka_char(index: int, img: Image.Image, char_data: Dict):
     char_card = Image.open(TEXT_PATH / f"ring_{char_star}.png")
     _path = CHAR_PREVIEW_PATH / f"{char_id}.png"
     char_img = Image.open(_path).convert("RGBA")
-    char_img = char_img.resize(
-        (int(char_img.size[0] * 0.76), int(char_img.size[1] * 0.76))
-    )
+    char_img = char_img.resize((int(char_img.size[0] * 0.76), int(char_img.size[1] * 0.76)))
 
     char_temp = Image.new("RGBA", (300, 400))
     card_temp = Image.new("RGBA", (300, 400))

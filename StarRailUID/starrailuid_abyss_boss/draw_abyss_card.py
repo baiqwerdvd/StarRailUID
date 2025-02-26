@@ -124,9 +124,7 @@ async def draw_abyss_img(
     if raw_abyss_data.max_floor == "":
         return f"你还没有挑战本期末日幻影!\n可以使用[{prefix}上期末日幻影]命令查询上期~"
     # 过滤掉 is_fast (快速通关) 为 True 的项
-    floor_detail = [
-        detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast
-    ]
+    floor_detail = [detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast]
     floor_num = len(floor_detail)
 
     # 获取背景图片各项参数

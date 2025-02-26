@@ -44,9 +44,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
         return await bot.send("你输入了错误的格式!")
 
     if "绑定" in ev.command:
-        data = await GsBind.insert_uid(
-            qid, ev.bot_id, sr_uid, ev.group_id, 9, game_name="sr"
-        )
+        data = await GsBind.insert_uid(qid, ev.bot_id, sr_uid, ev.group_id, 9, game_name="sr")
         return await send_diff_msg(
             bot,
             data,

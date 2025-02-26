@@ -31,10 +31,7 @@ async def get_stamina_text(uid: str) -> str:
             recover_time = seconds2hours(dailydata.stamina_recover_time)
             next_stamina_rec_time = seconds2hours(
                 8 * 60
-                - (
-                    (max_stamina - dailydata.current_stamina) * 8 * 60
-                    - dailydata.stamina_recover_time
-                )
+                - ((max_stamina - dailydata.current_stamina) * 8 * 60 - dailydata.stamina_recover_time)
             )
             rec_time = f" ({next_stamina_rec_time}/{recover_time})"
 

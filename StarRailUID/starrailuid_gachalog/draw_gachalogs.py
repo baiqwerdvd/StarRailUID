@@ -238,18 +238,14 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             total_data[i]["avg"] = 0
         else:
             total_data[i]["avg"] = float(
-                "{:.2f}".format(
-                    sum(total_data[i]["r_num"]) / len(total_data[i]["r_num"])
-                )
+                "{:.2f}".format(sum(total_data[i]["r_num"]) / len(total_data[i]["r_num"]))
             )
         # 计算平均up数量
         if len(total_data[i]["up_list"]) == 0:
             total_data[i]["avg_up"] = 0
         else:
             total_data[i]["avg_up"] = float(
-                "{:.2f}".format(
-                    sum(total_data[i]["r_num"]) / len(total_data[i]["up_list"])
-                )
+                "{:.2f}".format(sum(total_data[i]["r_num"]) / len(total_data[i]["up_list"]))
             )
 
         # 计算抽卡类型
@@ -257,37 +253,20 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
         if gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] <= 40:
             total_data[i]["type"] = "佛系型"
         # 如果长时抽卡总数占据了总抽卡数的70%
-        elif (
-            total_data[i]["long_gacha_data"]["num"]
-            / gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]
-            >= 0.7
-        ):
+        elif total_data[i]["long_gacha_data"]["num"] / gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] >= 0.7:
             total_data[i]["type"] = "随缘型"
         # 如果短时抽卡总数占据了总抽卡数的70%
-        elif (
-            total_data[i]["short_gacha_data"]["num"]
-            / gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]
-            >= 0.7
-        ):
+        elif total_data[i]["short_gacha_data"]["num"] / gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] >= 0.7:
             total_data[i]["type"] = "规划型"
         # 如果抽卡数量远远大于标称抽卡数量
-        elif (
-            total_data[i]["all_time"] / 30000
-            <= gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]
-        ):
+        elif total_data[i]["all_time"] / 30000 <= gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]:
             # 如果长时抽卡数量大于短时抽卡数量
-            if (
-                total_data[i]["long_gacha_data"]["num"]
-                >= total_data[i]["short_gacha_data"]["num"]
-            ):
+            if total_data[i]["long_gacha_data"]["num"] >= total_data[i]["short_gacha_data"]["num"]:
                 total_data[i]["type"] = "规划型"
             else:
                 total_data[i]["type"] = "氪金型"
         # 如果抽卡数量远远小于标称抽卡数量
-        elif (
-            total_data[i]["all_time"] / 32000
-            >= gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] * 2
-        ):
+        elif total_data[i]["all_time"] / 32000 >= gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] * 2:
             total_data[i]["type"] = "仓鼠型"
 
     # 常量偏移数据
@@ -323,21 +302,13 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     for index, i in enumerate(type_list):
         title = Image.open(TEXT_PATH / "bg2.png")
         if i == "群星跃迁":
-            level = await get_level_from_list(
-                total_data[i]["avg"], [54, 61, 67, 73, 80]
-            )
+            level = await get_level_from_list(total_data[i]["avg"], [54, 61, 67, 73, 80])
         elif i == "始发跃迁":
-            level = await get_level_from_list(
-                total_data[i]["avg"], [10, 20, 30, 40, 50]
-            )
+            level = await get_level_from_list(total_data[i]["avg"], [10, 20, 30, 40, 50])
         elif i == "光锥跃迁":
-            level = await get_level_from_list(
-                total_data[i]["avg_up"], [62, 75, 88, 99, 111]
-            )
+            level = await get_level_from_list(total_data[i]["avg_up"], [62, 75, 88, 99, 111])
         else:
-            level = await get_level_from_list(
-                total_data[i]["avg_up"], [74, 87, 99, 105, 120]
-            )
+            level = await get_level_from_list(total_data[i]["avg_up"], [74, 87, 99, 105, 120])
 
         emo_pic = await random_emo_pic(level)
         emo_pic = emo_pic.resize((195, 195))
@@ -384,9 +355,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             "mm",
         )
         y_extend += (
-            (1 + ((total_data[type_list[index - 1]]["total"] - 1) // 5)) * single_y
-            if index != 0
-            else 0
+            (1 + ((total_data[type_list[index - 1]]["total"] - 1) // 5)) * single_y if index != 0 else 0
         )
         y = 350 + index * 400 + y_extend
         img.paste(title, (0, y), title)

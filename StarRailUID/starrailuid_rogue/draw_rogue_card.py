@@ -385,16 +385,12 @@ async def draw_rogue_img(
 
         floor_center_pic = Image.open(TEXT_PATH / "floor_bg_center.png")
         floor_center_pic = floor_center_pic.convert("RGBA")
-        floor_center_pic = floor_center_pic.resize(
-            (900, detail_h_list[index_floor] - 170)
-        )
+        floor_center_pic = floor_center_pic.resize((900, detail_h_list[index_floor] - 170))
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
         floor_bot_pic = Image.open(TEXT_PATH / "floor_bg_bot.png")
         floor_bot_pic = floor_bot_pic.convert("RGBA")
-        floor_pic.paste(
-            floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic
-        )
+        floor_pic.paste(floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic)
 
         floor_name = progresslist[detail.progress]
         difficulty_name = difficultylist[detail.difficulty]
@@ -653,16 +649,12 @@ async def draw_rogue_locust_img(
 
         floor_center_pic = Image.open(TEXT_PATH / "floor_bg_center.png")
         floor_center_pic = floor_center_pic.convert("RGBA")
-        floor_center_pic = floor_center_pic.resize(
-            (900, detail_h_list[index_floor] - 170)
-        )
+        floor_center_pic = floor_center_pic.resize((900, detail_h_list[index_floor] - 170))
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
         floor_bot_pic = Image.open(TEXT_PATH / "floor_bg_bot.png")
         floor_bot_pic = floor_bot_pic.convert("RGBA")
-        floor_pic.paste(
-            floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic
-        )
+        floor_pic.paste(floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic)
 
         floor_name = detail.name
         difficulty_name = difficultylist[detail.difficulty]
@@ -757,9 +749,7 @@ async def draw_rogue_locust_img(
                 sr_font_34,
                 "lm",
             )
-            floor_pic.paste(
-                content_center, (0, 370 + miracles_height + 80), content_center
-            )
+            floor_pic.paste(content_center, (0, 370 + miracles_height + 80), content_center)
             draw_height = await _draw_rogue_miracles(
                 detail.miracles,
                 floor_pic,
@@ -778,9 +768,7 @@ async def draw_rogue_locust_img(
                 sr_font_34,
                 "lm",
             )
-            floor_pic.paste(
-                content_center, (0, 370 + blocks_height + 80), content_center
-            )
+            floor_pic.paste(content_center, (0, 370 + blocks_height + 80), content_center)
             draw_height = await _draw_rogue_blocks(
                 detail.blocks,
                 floor_pic,

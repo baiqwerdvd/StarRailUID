@@ -20,9 +20,7 @@ gacha_type_meta_data = {
 }
 
 
-async def get_new_gachalog_by_link(
-    uid: str, gacha_url: str, full_data: Dict, is_force: bool
-):
+async def get_new_gachalog_by_link(uid: str, gacha_url: str, full_data: Dict, is_force: bool):
     full_data = msgspec.convert(
         full_data,
         type=Dict[str, List[SingleGachaLog]],
@@ -120,9 +118,7 @@ async def save_gachalogs(
 
     # 获取新抽卡记录
     if raw_data is None:
-        raw_data = await get_new_gachalog_by_link(
-            uid, gacha_url, gachalogs_history, is_force
-        )
+        raw_data = await get_new_gachalog_by_link(uid, gacha_url, gachalogs_history, is_force)
     else:
         new_data = {
             "始发跃迁": [],

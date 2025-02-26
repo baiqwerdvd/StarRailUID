@@ -59,9 +59,7 @@ async def all_check(
         if push_data[f"{mode}_is_push"] == "on":
             if not srconfig.get_config("CrazyNotice").data:
                 if not _check:
-                    await SrPush.update_data_by_uid(
-                        uid, bot_id, "sr", **{f"{mode}_is_push": "off"}
-                    )
+                    await SrPush.update_data_by_uid(uid, bot_id, "sr", **{f"{mode}_is_push": "off"})
             continue
 
         # 准备推送
@@ -105,9 +103,7 @@ async def all_check(
                     else:
                         group_data[gid][user_id] += notice
 
-                await SrPush.update_data_by_uid(
-                    uid, bot_id, "sr", **{f"{mode}_is_push": "on"}
-                )
+                await SrPush.update_data_by_uid(uid, bot_id, "sr", **{f"{mode}_is_push": "on"})
     return msg_dict
 
 
