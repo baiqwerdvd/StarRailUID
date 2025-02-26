@@ -1,20 +1,20 @@
 import asyncio
 
-from gsuid_core.sv import SV
+from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
 from gsuid_core.gss import gss
-from gsuid_core.models import Event
-from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
+from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
+from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
 from gsuid_core.utils.database.models import GsBind
 
-from .notice import get_notice_list
-from ..utils.error_reply import UID_HINT
-from .stamina_text import get_stamina_text
 from .draw_stamina_card import get_stamina_img
+from .notice import get_notice_list
+from .stamina_text import get_stamina_text
 from ..starrailuid_config.sr_config import srconfig
+from ..utils.error_reply import UID_HINT
 
 sv_get_stamina = SV("sr查询体力")
 sv_get_stamina_admin = SV("sr强制推送", pm=1)
@@ -43,7 +43,7 @@ async def force_notice_job(bot: Bot, ev: Event):
 async def sr_notice_job():
     StaminaCheck = srconfig.get_config("StaminaCheck").data
     if not StaminaCheck:
-        logger.trace('[sr推送检查] 暂停...')
+        logger.trace("[sr推送检查] 暂停...")
         return
 
     result = await get_notice_list()

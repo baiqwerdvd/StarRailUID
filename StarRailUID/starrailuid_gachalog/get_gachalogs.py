@@ -1,16 +1,16 @@
-import json
 import asyncio
-from pathlib import Path
-from urllib import parse
 from datetime import datetime
+import json
+from pathlib import Path
 from typing import Dict, List, Optional
+from urllib import parse
 
-import msgspec
 import aiofiles
+import msgspec
 
+from ..sruid_utils.api.mys.models import SingleGachaLog
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-from ..sruid_utils.api.mys.models import SingleGachaLog
 
 gacha_type_meta_data = {
     "群星跃迁": ["1"],
@@ -37,8 +37,8 @@ async def get_new_gachalog_by_link(
                 if "authkey" not in url_parse:
                     return {}
                 authkey = url_parse["authkey"][0]
-                authkey = parse.quote(authkey, safe='')
-                if 'gacha_id' in url_parse:
+                authkey = parse.quote(authkey, safe="")
+                if "gacha_id" in url_parse:
                     gacha_id = url_parse["gacha_id"][0]
                 else:
                     gacha_id = None
@@ -102,8 +102,7 @@ async def save_gachalogs(
     if gachalogs_path.exists():
         async with aiofiles.open(
             gachalogs_path,
-            mode='r',
-            encoding='UTF-8',
+            encoding="UTF-8",
         ) as f:
             gachalogs_history = json.loads(await f.read())
         gachalogs_history = gachalogs_history["data"]

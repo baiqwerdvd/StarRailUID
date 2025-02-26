@@ -8,7 +8,7 @@ from sqlmodel import Field
 
 
 class SrPush(Push, table=True):
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = {"extend_existing": True}
     bot_id: str = Field(title="平台")
     sr_uid: str = Field(default=None, title="星铁UID")
 

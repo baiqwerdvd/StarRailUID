@@ -1,29 +1,29 @@
-import json
 import asyncio
-from pathlib import Path
 from datetime import datetime
+import json
+from pathlib import Path
 from typing import List, Tuple, Union
 
 from PIL import Image, ImageDraw
-from gsuid_core.models import Event
 from gsuid_core.logger import logger
+from gsuid_core.models import Event
 from gsuid_core.utils.image.convert import convert_img
-from gsuid_core.utils.image.image_tools import get_color_bg, draw_pic_with_ring
+from gsuid_core.utils.image.image_tools import draw_pic_with_ring, get_color_bg
 
 from ..utils.error_reply import prefix
-from ..utils.image.image_tools import _get_event_avatar
-from ..utils.name_covert import name_to_avatar_id, name_to_weapon_id
-from ..utils.resource.RESOURCE_PATH import (
-    PLAYER_PATH,
-    WEAPON_PATH,
-    CHAR_ICON_PATH,
-)
 from ..utils.fonts.starrail_fonts import (
     sr_font_20,
     sr_font_24,
     sr_font_28,
     sr_font_38,
     sr_font_40,
+)
+from ..utils.image.image_tools import _get_event_avatar
+from ..utils.name_covert import name_to_avatar_id, name_to_weapon_id
+from ..utils.resource.RESOURCE_PATH import (
+    CHAR_ICON_PATH,
+    PLAYER_PATH,
+    WEAPON_PATH,
 )
 
 TEXT_PATH = Path(__file__).parent / "texture2d"
@@ -100,13 +100,7 @@ async def _draw_card(
         text_color = green_color
     else:
         text_color = brown_color
-    card_img_draw.text(
-        text_point,
-        f"{gacha_num}抽",
-        text_color,
-        sr_font_24,
-        "mm"
-    )
+    card_img_draw.text(text_point, f"{gacha_num}抽", text_color, sr_font_24, "mm")
     if is_up:
         logger.info(f"up: {name}")
         # card_img.paste(up_tag, (47, -2), up_tag)
@@ -186,7 +180,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
                 _fm = "%Y-%m-%d %H:%M:%S"
                 t1 = datetime.strptime(data["time"], _fm)
                 t2 = datetime.strptime(total_data[i]["time_range"], _fm)
-                total_data[i]["all_time"] = (t1-t2).total_seconds()
+                total_data[i]["all_time"] = (t1 - t2).total_seconds()
                 total_data[i]["time_range"] += "~" + data["time"]
 
             # 计算时间间隔
@@ -201,9 +195,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
                     total_data[i]["long_gacha_data"]["num"] += 1
                     total_data[i]["long_gacha_data"]["time"] += dis
             else:
-                temp_time = datetime.strptime(
-                    data["time"], "%Y-%m-%d %H:%M:%S"
-                )
+                temp_time = datetime.strptime(data["time"], "%Y-%m-%d %H:%M:%S")
 
             # 如果这是个五星
             if data["rank_type"] == "5":
@@ -392,12 +384,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             "mm",
         )
         y_extend += (
-            (
-                1
-                + (
-                    (total_data[type_list[index - 1]]["total"] - 1) // 5
-                )
-            ) * single_y
+            (1 + ((total_data[type_list[index - 1]]["total"] - 1) // 5)) * single_y
             if index != 0
             else 0
         )

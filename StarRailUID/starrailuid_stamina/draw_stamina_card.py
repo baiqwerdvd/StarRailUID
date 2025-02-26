@@ -45,7 +45,7 @@ red_color = (235, 61, 75)
 def seconds2hours(seconds: int) -> str:
     m, s = divmod(int(seconds), 60)
     h, m = divmod(m, 60)
-    return "%02d:%02d:%02d" % (h, m, s)
+    return f"{h:02d}:{m:02d}:{s:02d}"
 
 
 async def download_image(url: str) -> Image.Image:
@@ -164,9 +164,9 @@ def get_error(img: Image.Image, uid: str, daily_data: int):
 
 
 async def seconds2hours_zhcn(seconds: int) -> str:
-    m, s = divmod(int(seconds), 60)
+    m, _ = divmod(int(seconds), 60)
     h, m = divmod(m, 60)
-    return "%02d小时%02d分" % (h, m)
+    return f"{h:02d}小时{m:02d}分"
 
 
 async def draw_stamina_img(sr_uid: str) -> Image.Image:

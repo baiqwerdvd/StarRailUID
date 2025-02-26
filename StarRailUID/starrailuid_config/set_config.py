@@ -1,14 +1,13 @@
 from typing import Optional
 
-from gsuid_core.models import Event
 from gsuid_core.logger import logger
-from gsuid_core.utils.database.models import GsUser
-from gsuid_core.sv import get_plugin_available_prefix
+from gsuid_core.models import Event
 from gsuid_core.utils.database.config_switch import set_database_value
+from gsuid_core.utils.database.models import GsUser
 
+from .config_default import CONIFG_DEFAULT
 from .sr_config import srconfig
 from ..utils.database.model import SrPush
-from .config_default import CONIFG_DEFAULT
 
 PUSH_MAP = {
     "体力": "stamina",
@@ -21,7 +20,7 @@ async def set_push_value(bot_id: str, func: str, uid: str, value: int):
         status = PUSH_MAP[func]
     else:
         return "该配置项不存在!"
-    logger.info("[设置推送阈值]func: {}, value: {}".format(status, value))
+    logger.info(f"[设置推送阈值]func: {status}, value: {value}")
     if (
         await SrPush.update_data_by_uid(
             uid,
@@ -59,12 +58,10 @@ async def set_config_func(
                 bot_id,
                 "sr",
                 **{
-                    f'{PUSH_MAP[config_name.replace("推送", "")]}_push': option,
+                    f"{PUSH_MAP[config_name.replace('推送', '')]}_push": option,
                 },
             )
-            await GsUser.update_data_by_uid(
-                uid, bot_id, 'sr', sr_push_switch=option
-            )
+            await GsUser.update_data_by_uid(uid, bot_id, "sr", sr_push_switch=option)
         else:
             if await GsUser.data_exist(sr_uid=uid):
                 text = await set_database_value(
@@ -77,12 +74,11 @@ async def set_config_func(
                     option,
                 )
             else:
-                return '请先绑定Cookies！'
+                return "请先绑定Cookies！"
 
             if not text:
                 return "该配置项不存在!"
-            else:
-                return text
+            return text
 
         if option == "on":
             succeed_msg = "开启至私聊消息!"

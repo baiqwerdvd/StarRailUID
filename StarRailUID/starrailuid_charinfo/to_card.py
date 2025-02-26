@@ -33,10 +33,8 @@ async def api_to_card(uid: str) -> Union[Tuple[bytes, List[str]], bytes]:
         uid,
         save_path=PLAYER_PATH,
     )
-    if (
-        not isinstance(char_id_list, str)
-        and char_id_list == []
-        or isinstance(char_id_list, str)
+    if (not isinstance(char_id_list, str) and char_id_list == []) or isinstance(
+        char_id_list, str
     ):
         return await convert_img(pic_500)
 
@@ -63,7 +61,7 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
         return await convert_img(Image.new("RGBA", (0, 1), (255, 255, 255)))
     else:
         line1 = f"UID {uid} 刷新成功"
-    line2 = f'可以使用 {prefix}查询{char_data_list[0]["avatarName"]} 查询详情角色面板'
+    line2 = f"可以使用 {prefix}查询{char_data_list[0]['avatarName']} 查询详情角色面板"
     char_num = len(char_data_list)
     if char_num <= 4:
         based_w, based_h = 1380, 926

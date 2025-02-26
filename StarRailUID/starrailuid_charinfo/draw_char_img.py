@@ -482,8 +482,7 @@ async def draw_char_img(
                 relic_piece_new_img,
             )
             rarity_img = Image.open(
-                TEXT_PATH / f"LightCore_Rarity"
-                f"{RelicId2Rarity[str(relic.relicId)]}.png"
+                TEXT_PATH / f"LightCore_Rarity{RelicId2Rarity[str(relic.relicId)]}.png"
             ).resize((200, 48))
             relic_img.paste(rarity_img, (-10, 80), rarity_img)
             relic_img_draw = ImageDraw.Draw(relic_img)
@@ -672,7 +671,7 @@ async def draw_char_img(
             char_info.paste(damage_img, (0, 2028 + damage_num * 48), damage_img)
             char_img_draw.text(
                 (55, 2048 + damage_num * 48),
-                f'{damage_info["name"]}',
+                f"{damage_info['name']}",
                 white_color,
                 sr_font_26,
                 "lm",

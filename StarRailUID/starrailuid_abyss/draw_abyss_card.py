@@ -2,17 +2,14 @@ from pathlib import Path
 from typing import Union
 
 from PIL import Image, ImageDraw
-from gsuid_core.models import Event
 from gsuid_core.logger import logger
+from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring
 
-from ..utils.mys_api import mys_api
-from ..utils.error_reply import prefix
 from ..sruid_utils.api.mys.models import AbyssAvatar
-from ..utils.resource.get_pic_from import get_roleinfo_icon
-from ..utils.image.image_tools import elements, _get_event_avatar
+from ..utils.error_reply import prefix
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
@@ -20,6 +17,9 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_34,
     sr_font_42,
 )
+from ..utils.image.image_tools import _get_event_avatar, elements
+from ..utils.mys_api import mys_api
+from ..utils.resource.get_pic_from import get_roleinfo_icon
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 white_color = (255, 255, 255)
@@ -121,9 +121,7 @@ async def draw_abyss_img(
         return f"你还没有挑战本期深渊!\n可以使用[{prefix}上期深渊]命令查询上期~"
     # 过滤掉 is_fast (快速通关) 为 True 的项
     floor_detail = [
-        detail
-        for detail in raw_abyss_data.all_floor_detail
-        if not detail.is_fast
+        detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast
     ]
     floor_num = len(floor_detail)
 

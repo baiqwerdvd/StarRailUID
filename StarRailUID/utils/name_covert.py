@@ -2,9 +2,8 @@ from typing import Optional
 
 from starrail_damage_cal.excel.model import CharAlias
 from starrail_damage_cal.map.SR_MAP_PATH import (
-    SetId2Name,
     EquipmentID2Name,
-    EquipmentID2EnName,
+    SetId2Name,
     avatarId2Name,
     avatarId2Rarity,
 )
@@ -15,10 +14,6 @@ async def name_to_relic_set_id(name: str):
         if set_name == name:
             return SetId2Name[set_name]
     return None
-
-
-async def avatar_id_to_name(avatar_id: str) -> str:
-    return avatarId2Name[avatar_id]
 
 
 async def name_to_avatar_id(name: str) -> str:
@@ -56,27 +51,10 @@ async def alias_to_weapon_name(weapon_name: str) -> str:
     return weapon_name
 
 
-async def weapon_id_to_name(weapon_id: str) -> str:
-    return EquipmentID2Name[weapon_id]
-
-
 async def name_to_weapon_id(name: str) -> str:
     weapon_id = ""
     for i in EquipmentID2Name:
         if EquipmentID2Name[i] == name:
-            weapon_id = i
-            break
-    return weapon_id
-
-
-async def weapon_id_to_en_name(weapon_id: str) -> str:
-    return EquipmentID2EnName[weapon_id]
-
-
-async def en_name_to_weapon_id(name: str) -> str:
-    weapon_id = ""
-    for i in EquipmentID2EnName:
-        if EquipmentID2EnName[i] == name:
             weapon_id = i
             break
     return weapon_id

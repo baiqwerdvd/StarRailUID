@@ -1,18 +1,22 @@
 import asyncio
 from pathlib import Path
-from typing import Dict, List, Union, TypeVar, Optional, Generator
+from typing import Dict, Generator, List, Optional, TypeVar, Union
 
 from PIL import Image, ImageDraw
-from gsuid_core.models import Event
 from gsuid_core.logger import logger
+from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring
 
-from ..utils.mys_api import mys_api
+from ..sruid_utils.api.mys.models import (
+    AvatarDetail,
+    AvatarListItem,
+    AvatarListItemDetail,
+    RoleBasicInfo,
+    Stats,
+)
 from ..utils.fonts.first_world import fw_font_24
-from ..utils.resource.get_pic_from import get_roleinfo_icon
-from ..utils.image.image_tools import elements, _get_event_avatar
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_24,
@@ -20,13 +24,9 @@ from ..utils.fonts.starrail_fonts import (
     sr_font_30,
     sr_font_36,
 )
-from ..sruid_utils.api.mys.models import (
-    Stats,
-    AvatarDetail,
-    RoleBasicInfo,
-    AvatarListItem,
-    AvatarListItemDetail,
-)
+from ..utils.image.image_tools import _get_event_avatar, elements
+from ..utils.mys_api import mys_api
+from ..utils.resource.get_pic_from import get_roleinfo_icon
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 
@@ -65,7 +65,7 @@ T = TypeVar("T")
 
 def wrap_list(lst: List[T], n: int) -> Generator[List[T], None, None]:
     for i in range(0, len(lst), n):
-        yield lst[i : i + n]  # noqa: E203
+        yield lst[i : i + n]
 
 
 async def _draw_card_1(
@@ -88,13 +88,7 @@ async def _draw_card_1(
     bg1_draw = ImageDraw.Draw(img_bg1)
 
     # 写Nickname
-    bg1_draw.text(
-        (400, 85),
-        nickname,
-        font=sr_font_36,
-        fill=white_color,
-        anchor="mm"
-    )
+    bg1_draw.text((400, 85), nickname, font=sr_font_36, fill=white_color, anchor="mm")
     # 写UID
     bg1_draw.text(
         (400, 165),
@@ -208,10 +202,7 @@ async def _draw_card_2(
 ) -> Image.Image:
     # 角色部分 每五个一组
     lines = await asyncio.gather(
-        *[
-            _draw_line(five_avatars, equips)
-            for five_avatars in wrap_list(avatars, 5)
-        ]
+        *[_draw_line(five_avatars, equips) for five_avatars in wrap_list(avatars, 5)]
     )
     img_card_2 = Image.new("RGBA", (800, len(lines) * 200))
 
@@ -420,8 +411,8 @@ async def get_detail_card(ev: Event, sr_uid: str) -> Union[bytes, str]:
         )
 
     # 写底层文字
-    text1 = 'SR skill statistics by StarrailUID'
-    text2 = 'Code by jiluoQAQ & Power by GsCore'
+    text1 = "SR skill statistics by StarrailUID"
+    text2 = "Code by jiluoQAQ & Power by GsCore"
     char_img_draw.text(
         (525, img_height - 45),
         f"--{text1} & {text2}--",

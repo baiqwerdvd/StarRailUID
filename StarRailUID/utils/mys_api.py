@@ -181,7 +181,7 @@ class MysApi(_MysApi):
             url = self.MAPI["STAR_RAIL_GACHA_LOG_URL"]
             game_biz = "hkrpg_cn"
         data = await self._mys_request(
-            url=url + f'?authkey={authkey}',
+            url=url + f"?authkey={authkey}",
             method="GET",
             header=header,
             params={

@@ -2,12 +2,12 @@ from typing import TYPE_CHECKING
 
 from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
-from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.database.models import GsBind
+from gsuid_core.utils.error_reply import get_error
 
-from ..utils.mys_api import mys_api
 from ..utils.error_reply import UID_HINT
-from ..utils.name_covert import name_to_avatar_id, alias_to_char_name
+from ..utils.mys_api import mys_api
+from ..utils.name_covert import alias_to_char_name, name_to_avatar_id
 
 if TYPE_CHECKING:
     from gsuid_core.bot import Bot

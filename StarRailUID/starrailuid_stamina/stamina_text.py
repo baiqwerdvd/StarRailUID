@@ -2,8 +2,8 @@ from typing import List
 
 from gsuid_core.logger import logger
 
-from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
+from ..utils.mys_api import mys_api
 
 daily_im = """*数据刷新可能存在一定延迟,请以当前游戏实际数据为准
 ==============
@@ -16,7 +16,7 @@ daily_im = """*数据刷新可能存在一定延迟,请以当前游戏实际数�
 def seconds2hours(seconds: int) -> str:
     m, s = divmod(int(seconds), 60)
     h, m = divmod(m, 60)
-    return "%02d:%02d:%02d" % (h, m, s)
+    return f"{h:02d}:{m:02d}:{s:02d}"
 
 
 async def get_stamina_text(uid: str) -> str:

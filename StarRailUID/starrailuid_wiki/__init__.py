@@ -1,25 +1,25 @@
 import re
 
-from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
-from gsuid_core.models import Event
 from gsuid_core.logger import logger
+from gsuid_core.models import Event
+from gsuid_core.sv import SV
 from gsuid_core.utils.image.convert import convert_img
 
 from ..utils.name_covert import (
     alias_to_char_id,
-    name_to_avatar_id,
-    name_to_weapon_id,
     alias_to_char_name,
+    name_to_avatar_id,
     name_to_relic_set_id,
+    name_to_weapon_id,
 )
 from ..utils.resource.RESOURCE_PATH import (
-    WIKI_ROLE_PATH,
-    WIKI_RELIC_PATH,
     GUIDE_CHARACTER_PATH,
-    WIKI_LIGHT_CONE_PATH,
     GUIDE_LIGHT_CONE_PATH,
+    WIKI_LIGHT_CONE_PATH,
     WIKI_MATERIAL_FOR_ROLE,
+    WIKI_RELIC_PATH,
+    WIKI_ROLE_PATH,
 )
 
 sv_sr_wiki = SV("星铁WIKI")

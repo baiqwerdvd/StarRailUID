@@ -1,30 +1,30 @@
 import math
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 
 from PIL import Image, ImageDraw
-from gsuid_core.models import Event
 from gsuid_core.logger import logger
+from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring
 
-from ..utils.mys_api import mys_api
+from ..sruid_utils.api.mys.models import (
+    LocustBlocks,
+    RogueAvatar,
+    RogueBuffitems,
+    RogueMiracles,
+)
 from ..utils.error_reply import prefix
-from ..utils.resource.get_pic_from import get_roleinfo_icon
-from ..utils.image.image_tools import elements, _get_event_avatar
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
     sr_font_28,
     sr_font_34,
     sr_font_42,
 )
-from ..sruid_utils.api.mys.models import (
-    RogueAvatar,
-    LocustBlocks,
-    RogueMiracles,
-    RogueBuffitems,
-)
+from ..utils.image.image_tools import _get_event_avatar, elements
+from ..utils.mys_api import mys_api
+from ..utils.resource.get_pic_from import get_roleinfo_icon
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 white_color = (255, 255, 255)
@@ -479,11 +479,7 @@ async def draw_rogue_img(
                 sr_font_34,
                 "lm",
             )
-            floor_pic.paste(
-                content_center,
-                (0, 370 + buff_height + 80),
-                content_center
-            )
+            floor_pic.paste(content_center, (0, 370 + buff_height + 80), content_center)
             await _draw_rogue_miracles(
                 detail.miracles,
                 floor_pic,
