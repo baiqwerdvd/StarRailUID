@@ -5,9 +5,9 @@ from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
 from gsuid_core.utils.database.models import GsBind
 
+from ..utils.error_reply import UID_HINT
 from .draw_note_card import draw_note_img
 from .note_text import award
-from ..utils.error_reply import UID_HINT
 
 sv_get_monthly_data = SV("sr查询月历")
 

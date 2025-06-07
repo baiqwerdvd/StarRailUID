@@ -1,8 +1,9 @@
 
 from gsuid_core.logger import logger
+from gsuid_core.server import on_core_start
 
 from ..starrailuid_resource import startup
-from gsuid_core.server import on_core_start
+
 
 @on_core_start
 async def all_start():

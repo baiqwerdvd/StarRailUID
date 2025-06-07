@@ -1,12 +1,12 @@
-from PIL import Image
 from gsuid_core.bot import Bot
 from gsuid_core.help.utils import register_help
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.sv import SV
+from PIL import Image
 
-from .get_help import ICON, get_help
 from ..utils.error_reply import prefix
+from .get_help import ICON, get_help
 
 sv_sr_help = SV("sr帮助")
 

@@ -3,7 +3,7 @@
 <p align="center">
   <a href="https://github.com/qwerdvd/StarRailUID"><img src="https://s2.loli.net/2023/04/30/kvZgaVLo5fATI6h.png" width="256" height="256" alt="StarRailUID"></a>
 </p>
-<h1 align = "center">StarRailUID 1.4</h1>
+<h1 align = "center">StarRailUID 0.2.0</h1>
 <h4 align = "center">🚧支持OneBot(QQ)、QQ频道、微信、开黑啦、Telegram的全功能星铁Bot插件🚧</h4>
 <div align = "center">
         <a href="https://docs.sayu-bot.com/" target="_blank">安装文档</a> &nbsp; · &nbsp;
