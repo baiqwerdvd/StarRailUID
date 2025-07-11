@@ -4,6 +4,7 @@ OS_OLD_URL = "https://api-os-takumi.mihoyo.com"
 NEW_URL = "https://api-takumi-record.mihoyo.com"
 OS_URL = "https://sg-public-api.hoyolab.com"
 OS_INFO_URL = "https://bbs-api-os.hoyolab.com"
+GACHA_LOG_URL = "https://public-operation-hkrpg.mihoyo.com"
 
 STAR_RAIL_SIGN_INFO_URL = f"{OLD_URL}/event/luna/info"
 STAR_RAIL_SIGN_INFO_URL_OS = f"{OS_URL}/event/luna/os/info"
@@ -37,7 +38,8 @@ CHALLENGE_BOSS_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/challenge_boss" 
 ROGUE_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/rogue"  # 角色模拟宇宙信息接口
 ROGUE_LOCUST_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/rogue_locust"  # 角色寰宇蝗灾信息接口
 
-STAR_RAIL_GACHA_LOG_URL = f"https://public-operation-hkrpg.mihoyo.com/common/gacha_record/api/getGachaLog"
+STAR_RAIL_GACHA_LOG_URL = "https://public-operation-hkrpg.mihoyo.com/common/gacha_record/api/getGachaLog"
+STAR_RAIL_LDGACHA_LOG_URL = "https://public-operation-hkrpg.mihoyo.com/common/gacha_record/api/getLdGachaLog"
 STAR_RAIL_GACHA_LOG_URL_OS = f"{OS_OLD_URL}/common/gacha_record/api/getGachaLog"
 
 GET_FP_URL = "https://public-data-api.mihoyo.com/device-fp/api/getFp"

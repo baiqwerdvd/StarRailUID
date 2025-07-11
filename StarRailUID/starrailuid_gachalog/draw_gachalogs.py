@@ -45,6 +45,8 @@ CHANGE_MAP = {
     "群星跃迁": "normal",
     "角色跃迁": "char",
     "光锥跃迁": "weapon",
+    "角色联动跃迁": "char_collabo",
+    "光锥联动跃迁": "weapon_collabo",
 }
 HOMO_TAG = ["非到极致", "运气不好", "平稳保底", "小欧一把", "欧狗在此"]
 NORMAL_LIST = [
@@ -65,9 +67,9 @@ NORMAL_LIST = [
 ]
 
 UP_LIST = {
-    "刻晴": [(2021, 2, 17, 18, 0, 0), (2021, 3, 2, 15, 59, 59)],
-    "提纳里": [(2022, 8, 24, 11, 0, 0), (2022, 9, 9, 17, 59, 59)],
-    "迪希雅": [(2023, 3, 1, 11, 0, 0), (2023, 3, 21, 17, 59, 59)],
+    "希儿": [(2021, 2, 17, 18, 0, 0), (2025, 4, 9, 5, 59, 59)],
+    "刃": [(2021, 2, 17, 18, 0, 0), (2025, 4, 9, 5, 59, 59)],
+    "符玄": [(2021, 2, 17, 18, 0, 0), (2025, 4, 9, 5, 59, 59)],
 }
 
 
@@ -132,10 +134,10 @@ def check_up(name: str, _time: str) -> bool:
             s_time = datetime(*time[0])
             e_time = datetime(*time[1])
             gacha_time = datetime.strptime(_time, "%Y-%m-%d %H:%M:%S")
-            if gacha_time < s_time or gacha_time > e_time:
+            if gacha_time > e_time:
                 return False
             return True
-    return False
+    return True
 
 
 async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
@@ -147,7 +149,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     # 数据初始化
     total_data = {}
-    for i in ["群星跃迁", "始发跃迁", "角色跃迁", "光锥跃迁"]:
+    for i in ["群星跃迁", "始发跃迁", "角色跃迁", "光锥跃迁", "角色联动跃迁", "光锥联动跃迁"]:
         total_data[i] = {
             "total": 0,  # 五星总数
             "avg": 0,  # 抽卡平均数
@@ -277,6 +279,8 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     begin_y = (1 + ((total_data["始发跃迁"]["total"] - 1) // 5)) * single_y
     char_y = (1 + ((total_data["角色跃迁"]["total"] - 1) // 5)) * single_y
     weapon_y = (1 + ((total_data["光锥跃迁"]["total"] - 1) // 5)) * single_y
+    char_collab_y = (1 + ((total_data["角色联动跃迁"]["total"] - 1) // 5)) * single_y
+    weapon_collab_y = (1 + ((total_data["光锥联动跃迁"]["total"] - 1) // 5)) * single_y
 
     # 获取背景图片各项参数
     char_pic = await _get_event_avatar(ev)
@@ -286,7 +290,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     img = Abg3_img.copy()
     img = await get_color_bg(
         800,
-        1600 + 400 + normal_y + char_y + weapon_y + begin_y,
+        1600 + 400 + normal_y + char_y + weapon_y + char_collab_y + weapon_collab_y + begin_y,
     )
     gacha_title = bg1_img.copy()
     gacha_title.paste(char_pic, (297, 81), char_pic)
@@ -296,7 +300,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     # 处理title
     # {'total': 0, 'avg': 0, 'remain': 0, 'list': []}
-    type_list = ["角色跃迁", "光锥跃迁", "群星跃迁", "始发跃迁"]
+    type_list = ["角色跃迁", "光锥跃迁", "角色联动跃迁", "光锥联动跃迁", "群星跃迁", "始发跃迁"]
     y_extend = 0
     level = 3
     for index, i in enumerate(type_list):
@@ -307,8 +311,14 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             level = await get_level_from_list(total_data[i]["avg"], [10, 20, 30, 40, 50])
         elif i == "光锥跃迁":
             level = await get_level_from_list(total_data[i]["avg_up"], [62, 75, 88, 99, 111])
-        else:
+        elif i == "角色跃迁":
             level = await get_level_from_list(total_data[i]["avg_up"], [74, 87, 99, 105, 120])
+        elif i == "光锥联动跃迁":
+            level = await get_level_from_list(total_data[i]["avg_up"], [62, 75, 88, 99, 111])
+        elif i == "角色联动跃迁":
+            level = await get_level_from_list(total_data[i]["avg_up"], [74, 87, 99, 105, 120])
+        else:
+            continue
 
         emo_pic = await random_emo_pic(level)
         emo_pic = emo_pic.resize((195, 195))
@@ -360,7 +370,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
         y = 350 + index * 400 + y_extend
         img.paste(title, (0, y), title)
         tasks = []
-        for item_index, item in enumerate(total_data[i]["list"]):
+        for item_index, item in enumerate(reversed(total_data[i]["list"])):
             item_x = (item_index % 5) * 138 + 25
             item_y = (item_index // 5) * single_y + y + 355
             xy_point = (item_x, item_y)
