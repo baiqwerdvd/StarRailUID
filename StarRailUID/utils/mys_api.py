@@ -170,7 +170,10 @@ class MysApi(_MysApi):
             game_biz = "hkrpg_global"
         else:
             header = self._HEADER
-            url = self.MAPI["STAR_RAIL_GACHA_LOG_URL"]
+            if gacha_type in ["21","22"]:
+                url = self.MAPI["STAR_RAIL_LDGACHA_LOG_URL"]
+            else:
+                url = self.MAPI["STAR_RAIL_GACHA_LOG_URL"]
             game_biz = "hkrpg_cn"
         data = await self._mys_request(
             url=url + f"?authkey={authkey}",
