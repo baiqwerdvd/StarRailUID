@@ -325,7 +325,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
         title.paste(emo_pic, (500, 123), emo_pic)
         title_draw = ImageDraw.Draw(title)
         # 卡池
-        title_draw.text((110, 73), i, whole_white_color, sr_font_38, "lm")
+        title_draw.text((110, 73), i[:4], whole_white_color, sr_font_38, "lm")
         # 抽卡时间
         if total_data[i]["time_range"]:
             time_range = total_data[i]["time_range"]
