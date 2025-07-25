@@ -102,10 +102,10 @@ async def draw_char_img(char_data: MihomoCharacter, sr_uid: str, msg: str) -> Un
     char = await cal_char_info(char_data)
     damage_len = 0
     damage_list = []
-    if str(char.char_id) in skill_dict:
-        damage_data = copy.deepcopy(char_data)
-        damage_list = await cal_info(damage_data)
-        damage_len = len(damage_list)
+    # if str(char.char_id) in skill_dict:
+    #     damage_data = copy.deepcopy(char_data)
+    #     damage_list = await cal_info(damage_data)
+    #     damage_len = len(damage_list)
     bg_height = 0
     if damage_len > 0:
         bg_height = 48 * (1 + damage_len) + 48
