@@ -87,11 +87,14 @@ async def _draw_card(
     text_point = (100, 165)
     if card_type == "角色":
         _id = await name_to_avatar_id(name)
-        item_pic = Image.open(CHAR_ICON_PATH / f"{_id}.png")
+        pic_path = CHAR_ICON_PATH / f"{_id}.png"
+        if pic_path.exists():
+            item_pic = Image.open(pic_path)
+        else:
+            item_pic = Image.open(CHAR_ICON_PATH / "999.png")
         item_pic = item_pic.convert("RGBA").resize((105, 105))
     else:
         name = await name_to_weapon_id(name)
-        # _id = await weapon_id_to_en_name(name)
         item_pic = Image.open(WEAPON_PATH / f"{name}.png")
         item_pic = item_pic.convert("RGBA").resize((124, 124))
         point = (37, 24)
@@ -290,7 +293,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     img = Abg3_img.copy()
     img = await get_color_bg(
         800,
-        1600 + 400 + normal_y + char_y + weapon_y + char_collab_y + weapon_collab_y + begin_y,
+        1600 + 1200 + normal_y + char_y + weapon_y + char_collab_y + weapon_collab_y + begin_y,
     )
     gacha_title = bg1_img.copy()
     gacha_title.paste(char_pic, (297, 81), char_pic)
