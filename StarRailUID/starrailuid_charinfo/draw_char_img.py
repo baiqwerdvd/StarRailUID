@@ -353,7 +353,7 @@ async def draw_char_img(char_data: MihomoCharacter, sr_uid: str, msg: str) -> Un
     char_info.paste(skill_bg, (0, 710), skill_bg)
 
     # 武器
-    if char.equipment != {}:
+    if char.equipment != {} and char.equipment.equipmentID:
         weapon_bg = Image.open(TEXT_PATH / "weapon_bg.png")
         weapon_id = char.equipment.equipmentID
         weapon_img = Image.open(WEAPON_PATH / f"{weapon_id}.png").convert("RGBA").resize((170, 180))
