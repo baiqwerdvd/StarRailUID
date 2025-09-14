@@ -1,123 +1,76 @@
-from typing import Dict
+from typing import Dict, List, Tuple
 
-from gsuid_core.gss import gss
 from gsuid_core.logger import logger
-from gsuid_core.utils.database.models import GsUser
+from gsuid_core.subscribe import gs_subscribe
+from gsuid_core.utils.database.models import Subscribe
 
 from ..sruid_utils.api.mys.models import DailyNoteData
-from ..starrailuid_config.sr_config import srconfig
-from ..utils.database.model import SrPush
-from ..utils.error_reply import prefix
+from ..utils.error_reply import prefix as P
 from ..utils.mys_api import mys_api
 
-MR_NOTICE = f"\n可发送[{prefix}mr]或者[{prefix}每日]来查看更多信息!\n"
+MR_NOTICE = f"可发送[{P}mr]或者[{P}每日]来查看更多信息!"
 
 NOTICE = {
-    "stamina": f"你的开拓力已达提醒阈值!{MR_NOTICE}",
-    "go": f"你的派遣已全部完成!{MR_NOTICE}",
+    "stamina": f"🔔 你的开拓力已达提醒阈值!",
+    "go": f"💗 你的派遣已全部完成!",
+}
+
+NOTICE_MAP = {
+    "stamina": "开拓力",
+    "go": "派遣",
 }
 
 
-async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
-    msg_dict: Dict[str, Dict[str, Dict]] = {}
-    for _ in gss.active_bot:
-        user_list = await GsUser.get_push_user_list("sr")
-        for user in user_list:
-            if user.sr_uid is not None:
-                raw_data = await mys_api.get_sr_daily_data(user.sr_uid)
-                if isinstance(raw_data, int):
-                    logger.error(f"[sr推送提醒]获取{user.sr_uid}的数据失败!")
-                    continue
-                push_data = await SrPush.select_data_by_uid(user.sr_uid, "sr")
-                msg_dict = await all_check(
-                    user.bot_id,
-                    raw_data,
-                    push_data.__dict__,
-                    msg_dict,
-                    user.user_id,
-                    user.sr_uid,
-                )
-    return msg_dict
+async def get_notice_list():
+    datas = await gs_subscribe.get_subscribe('[星铁] 推送')
+    datas = await gs_subscribe._to_dict(datas)
+
+    stamina_datas = await gs_subscribe.get_subscribe('[星铁] 体力')
+    stamina_datas = await gs_subscribe._to_dict(stamina_datas)
+
+    go_datas = await gs_subscribe.get_subscribe('[星铁] 派遣')
+    go_datas = await gs_subscribe._to_dict(go_datas)
+
+    for uid in datas:
+        if uid:
+            raw_data = await mys_api.get_sr_daily_data(uid)
+            if isinstance(raw_data, int):
+                logger.error(f"[星铁推送提醒] 获取{uid}的数据失败!")
+                continue
+
+            for mode in NOTICE:
+                _datas: Dict[str, List[Subscribe]] = locals()[f'{mode}_datas']
+                if uid in _datas:
+                    _data_list = _datas[uid]
+                    for _data in _data_list:
+                        if _data.extra_message:
+                            res = await check(
+                                mode,
+                                raw_data,
+                                int(_data.extra_message),
+                            )
+                            if res[0]:
+                                mlist = [
+                                    f'🚨 星铁推送提醒 - UID{uid}',
+                                    NOTICE[mode],
+                                    f'当前{NOTICE_MAP[mode]}值为: {res[1]}',
+                                    f'你设置的阈值为: {_data.extra_message}',
+                                    MR_NOTICE,
+                                ]
+                                await _data.send('\n'.join(mlist))
 
 
-async def all_check(
-    bot_id: str,
-    raw_data: DailyNoteData,
-    push_data: Dict,
-    msg_dict: Dict[str, Dict[str, Dict]],
-    user_id: str,
-    uid: str,
-) -> Dict[str, Dict[str, Dict]]:
-    for mode in NOTICE.keys():
-        _check = await check(
-            mode,
-            raw_data,
-            push_data.get(f"{mode}_value", 0),
-        )
-
-        # 检查条件
-        if push_data[f"{mode}_is_push"] == "on":
-            if not srconfig.get_config("CrazyNotice").data:
-                if not _check:
-                    await SrPush.update_data_by_uid(uid, bot_id, "sr", **{f"{mode}_is_push": "off"})
-            continue
-
-        # 准备推送
-        if _check:
-            if push_data[f"{mode}_push"] == "off":
-                pass
-            else:
-                notice = NOTICE[mode]
-                if isinstance(_check, int):
-                    notice += f"(当前值: {_check})"
-
-                direct_data = None
-                group_data = None
-
-                # 初始化
-                if bot_id not in msg_dict:
-                    msg_dict[bot_id] = {"direct": {}, "group": {}}
-                    direct_data = msg_dict[bot_id]["direct"]
-                    group_data = msg_dict[bot_id]["group"]
-
-                if direct_data is None or group_data is None:
-                    logger.error("[sr推送提醒]初始化失败!")
-                    continue
-
-                # on 推送到私聊
-                if push_data[f"{mode}_push"] == "on":
-                    # 添加私聊信息
-                    if user_id not in direct_data:
-                        direct_data[user_id] = notice
-                    else:
-                        direct_data[user_id] += notice
-                # 群号推送到群聊
-                else:
-                    # 初始化
-                    gid = push_data[f"{mode}_push"]
-                    if gid not in group_data:
-                        group_data[gid] = {}
-
-                    if user_id not in group_data[gid]:
-                        group_data[gid][user_id] = notice
-                    else:
-                        group_data[gid][user_id] += notice
-
-                await SrPush.update_data_by_uid(uid, bot_id, "sr", **{f"{mode}_is_push": "on"})
-    return msg_dict
-
-
-async def check(mode: str, data: DailyNoteData, limit: int) -> bool:
+async def check(mode: str, data: DailyNoteData, limit: int) -> Tuple[bool, int]:
     if mode == "stamina":
         if data.current_stamina >= limit:
-            return True
+            return True, data.current_stamina
         if data.current_stamina >= data.max_stamina:
-            return True
-        return False
+            return True, data.current_stamina
+        return False, data.current_stamina
     if mode == "go":
         count = 0
         for i in data.expeditions:
             if i.status == "Ongoing":
                 count += 1
-        return count == 0
-    return False
+        return count == 0, count
+    return False, 0
