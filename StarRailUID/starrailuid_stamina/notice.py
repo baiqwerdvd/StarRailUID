@@ -68,8 +68,7 @@ async def all_check(
                 pass
             else:
                 notice = NOTICE[mode]
-                if isinstance(_check, int):
-                    notice += f"(当前值: {_check})"
+                notice += f"(当前值: {raw_data.current_stamina})"
 
                 direct_data = None
                 group_data = None
