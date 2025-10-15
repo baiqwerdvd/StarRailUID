@@ -300,24 +300,6 @@ class AbyssBossData(Struct):
     max_floor_id: int
 
 
-class AbyssPeakData(Struct):
-    challenge_peak_records: List[AbyssPeakRecord]
-    has_more_boss_record: bool
-    challenge_peak_best_record_brief: AbyssPeakBestRecord
-
-
-class AbyssPeakRecord(Struct):
-    mob_records: List[AbyssPeakMobRecord]
-    boss_info: AbyssPeakBossInfo
-    mob_infos: List[AbyssPeakMobInfo]
-    has_challenge_record: bool
-    battle_num: int
-    boss_stars: int
-    group: AbyssPeakGroupInfo
-    mob_stars: int
-    boss_record: Dict
-
-
 class AbyssPeakMobRecord(Struct):
     maze_id: int
     has_challenge_record: bool
@@ -351,6 +333,18 @@ class AbyssPeakGroupInfo(Struct):
     group_id: int
 
 
+class AbyssPeakRecord(Struct):
+    mob_records: List[AbyssPeakMobRecord]
+    boss_info: AbyssPeakBossInfo
+    mob_infos: List[AbyssPeakMobInfo]
+    has_challenge_record: bool
+    battle_num: int
+    boss_stars: int
+    group: AbyssPeakGroupInfo
+    mob_stars: int
+    boss_record: Dict
+
+
 class AbyssPeakBossRecord(Struct):
     challenge_time: AbyssTime
     maze_id: int
@@ -378,6 +372,12 @@ class AbyssPeakBestRecord(Struct):
     boss_stars: int
     challenge_peak_rank_icon_type: str
     challenge_peak_rank_icon: str
+
+
+class AbyssPeakData(Struct):
+    challenge_peak_records: List[AbyssPeakRecord]
+    has_more_boss_record: bool
+    challenge_peak_best_record_brief: AbyssPeakBestRecord
 
 
 ################
