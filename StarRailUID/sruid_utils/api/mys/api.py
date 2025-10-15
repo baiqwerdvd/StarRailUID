@@ -34,7 +34,8 @@ CHALLENGE_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/challenge"  # 忘却�
 CHALLENGE_INFO_URL_OS = f"{OS_INFO_URL}/game_record/hkrpg/api/challenge"  # OS忘却之庭
 CHALLENGE_STORY_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/challenge_story"  # 虚构叙事
 CHALLENGE_BOSS_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/challenge_boss"  # 末日幻影
-
+CHALLENGE_PEAK_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/challenge_peak"  # 异相仲裁
+ 
 ROGUE_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/rogue"  # 角色模拟宇宙信息接口
 ROGUE_LOCUST_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/rogue_locust"  # 角色寰宇蝗灾信息接口
 
