@@ -28,7 +28,7 @@ async def draw_abyss_img(
     uid: str,
     schedule_type: str = "1",
 ) -> Union[bytes, str]:
-    raw_abyss_data = await mys_api.get_abyss_abyss_info(uid, schedule_type)
+    raw_abyss_data = await mys_api.get_abyss_peak_info(uid, schedule_type)
     if isinstance(raw_abyss_data, int):
         return get_error(raw_abyss_data)
 
