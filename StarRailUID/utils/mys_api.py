@@ -29,6 +29,7 @@ from ..sruid_utils.api.mys.models import (
     WidgetStamina,
     AbyssStoryData,
     RogueLocustData,
+    AbyssPeakData,
 )
 
 RECOGNIZE_SERVER = {
@@ -444,6 +445,50 @@ class MysApi(_MysApi):
             )
         if isinstance(data, Dict):
             data = msgspec.convert(data["data"], type=AbyssBossData)
+        return data
+
+    async def get_abyss_peak_info(
+        self,
+        uid: str,
+        schedule_type="1",
+        ck: Optional[str] = None,
+    ) -> Union[AbyssPeakData, int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0])
+        if self.check_os(uid, game_name="sr"):
+            HEADER = copy.deepcopy(self._HEADER_OS)
+            ck = await self.get_sr_ck(uid, "OWNER")
+            if ck is None:
+                return -51
+            HEADER["Cookie"] = ck
+            HEADER["DS"] = generate_os_ds()
+            header = HEADER
+            data = await self.simple_sr_req(
+                "CHALLENGE_PEAK_INFO_URL",
+                uid,
+                params={
+                    "need_all": "true",
+                    "role_id": uid,
+                    "schedule_type": schedule_type,
+                    "server": server_id,
+                },
+                header=header,
+            )
+        else:
+            data = await self.simple_sr_req(
+                "CHALLENGE_PEAK_INFO_URL",
+                uid,
+                params={
+                    "isPrev": "true",
+                    "need_all": "true",
+                    "role_id": uid,
+                    "schedule_type": schedule_type,
+                    "server": server_id,
+                },
+                cookie=ck,
+                header=self._HEADER,
+            )
+        if isinstance(data, Dict):
+            data = msgspec.convert(data["data"], type=AbyssPeakData)
         return data
 
     async def get_rogue_info(
