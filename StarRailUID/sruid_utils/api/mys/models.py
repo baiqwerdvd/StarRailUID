@@ -331,18 +331,14 @@ class AbyssPeakGroupInfo(Struct):
     end_time: AbyssTime
     status: str
     group_id: int
+    game_version: str
 
 
-class AbyssPeakRecord(Struct):
-    mob_records: List[AbyssPeakMobRecord]
-    boss_info: AbyssPeakBossInfo
-    mob_infos: List[AbyssPeakMobInfo]
-    has_challenge_record: bool
-    battle_num: int
-    boss_stars: int
-    group: AbyssPeakGroupInfo
-    mob_stars: int
-    boss_record: Dict
+class AbyssPeakBuff(Struct):
+    desc_mi18n: str
+    id: int
+    name_mi18n: str
+    icon: str
 
 
 class AbyssPeakBossRecord(Struct):
@@ -355,15 +351,20 @@ class AbyssPeakBossRecord(Struct):
     star_num: int
     challenge_peak_rank_icon_type: str
     challenge_peak_rank_icon: str
-    buff: Dict
+    buff: AbyssPeakBuff
     finish_color_medal: bool
 
 
-class AbyssPeakBuff(Struct):
-    desc_mi18n: str
-    id: int
-    name_mi18n: str
-    icon: str
+class AbyssPeakRecord(Struct):
+    mob_records: List[AbyssPeakMobRecord]
+    boss_info: AbyssPeakBossInfo
+    mob_infos: List[AbyssPeakMobInfo]
+    has_challenge_record: bool
+    battle_num: int
+    boss_stars: int
+    group: AbyssPeakGroupInfo
+    mob_stars: int
+    boss_record: AbyssPeakBossRecord
 
 
 class AbyssPeakBestRecord(Struct):
