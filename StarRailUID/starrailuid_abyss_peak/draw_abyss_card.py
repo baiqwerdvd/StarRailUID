@@ -22,7 +22,7 @@ from ..utils.fonts.starrail_fonts import (
 )
 from ..utils.image.image_tools import _get_event_avatar, elements
 from ..utils.mys_api import mys_api
-from ..utils.resource.get_pic_from import get_roleinfo_icon
+from ..utils.resource.get_pic_from import get_roleinfo_icon, get_abyss_peak_img
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 white_color = (255, 255, 255)
@@ -45,6 +45,7 @@ char_bg_4 = Image.open(TEXT_PATH / "char4_bg.png").convert("RGBA")
 char_bg_5 = Image.open(TEXT_PATH / "char5_bg.png").convert("RGBA")
 level_cover = Image.open(TEXT_PATH / "level_cover.png").convert("RGBA")
 rank_bg = Image.open(TEXT_PATH / "rank_bg.png").convert("RGBA")
+boss_img_info = {104: {"scale": 0.6, "pos": (682, 29)}}
 
 
 async def _draw_char(char: AbyssAvatar) -> Image.Image:
@@ -80,9 +81,9 @@ async def _draw_chars(chars: list[AbyssAvatar]) -> Image.Image:
 async def _draw_king_record_card(boss_info, boss_record) -> Image.Image:
     king = king_card.copy()
     king_draw = ImageDraw.Draw(king)
-    # boss = Image.open(TEXT_PATH / "boss1.png").convert("RGBA")
-    # boss = boss.resize((int(boss.width * boss_img_info[104]["scale"]), int(boss.height * boss_img_info[104]["scale"])))
-    # king.paste(boss, boss_img_info[104]["pos"], mask=boss)
+    boss = await get_abyss_peak_img(f"{boss_info.maze_id}.png", boss_info.icon)
+    boss = boss.resize((int(boss.width * boss_img_info[104]["scale"]), int(boss.height * boss_img_info[104]["scale"])))
+    king.paste(boss, boss_img_info[104]["pos"], mask=boss)
     king_draw.text((140, 67), boss_info.name_mi18n, white_color, sr_font_34, "lm")
     king_draw.text((270, 137), str(boss_record.round_num), gold_color, sr_font_28, "rm")
     for i in range(3):
@@ -93,6 +94,8 @@ async def _draw_king_record_card(boss_info, boss_record) -> Image.Image:
     chars_bg = await _draw_chars(boss_record.avatars)
     king.paste(chars_bg, (105, 170), chars_bg)
     king_draw.text((180, 408), f"裁决现象: {boss_record.buff.name_mi18n}", white_color, sr_font_28, "lm")
+    buff_img = (await get_abyss_peak_img(f"{boss_record.buff.id}.png", boss_record.buff.icon)).resize((50, 50))
+    king.paste(buff_img, (120, 380), mask=buff_img)
     return king
 
 
@@ -114,6 +117,8 @@ async def _draw_knight_record_card(mob_info, mob_record) -> Image.Image:
     chars_bg = await _draw_chars(mob_record.avatars)
     bg.paste(chars_bg, (24, 60), chars_bg)
     bg_draw.text((625, 260), f"{mob_record.challenge_time.year}.{mob_record.challenge_time.month:02d}.{mob_record.challenge_time.day:02d} {mob_record.challenge_time.hour:02d}:{mob_record.challenge_time.minute:02d}", white_color, sr_font_22, "lm")
+    mob_img = (await get_abyss_peak_img(f"{mob_info.maze_id}.png", mob_info.monster_icon)).resize((100, 100))
+    bg.paste(mob_img, (700, 93), mask=mob_img)
     return bg
 
 
@@ -163,6 +168,8 @@ async def draw_abyss_img(
     img_draw.text((220, 500), f"x {challenge_breif.mob_stars}", white_color, sr_font_28, "lm")
     img_draw.text((328, 453), challenge_records.group.name_mi18n, white_color, sr_font_34, "lm")
     img_draw.text((470, 503), str(challenge_breif.total_battle_num), white_color, sr_font_30, "lm")
+    rank_icon = (await get_abyss_peak_img(f"{challenge_breif.challenge_peak_rank_icon_type}.png", challenge_breif.challenge_peak_rank_icon)).resize((80, 80))
+    img.paste(rank_icon, (68, 438), rank_icon)
     
     img.paste(banner, (-50, 580), banner)
     img_draw.text((450, 615), "王棋战绩", white_color, sr_font_34, "mm")
