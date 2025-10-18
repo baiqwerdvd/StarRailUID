@@ -80,6 +80,14 @@
         "need_admin": false
       },
       {
+        "name": "异相仲裁",
+        "desc": "查询星铁异相仲裁信息",
+        "eg": "仲裁123456789",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "签到",
         "desc": "米游社签到",
         "eg": "签到",
