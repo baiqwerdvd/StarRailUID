@@ -141,7 +141,7 @@ async def draw_abyss_img(
 
     # 获取查询者数据
     logger.debug(raw_abyss_data)
-    if not raw_abyss_data.has_more_boss_record:
+    if not len(raw_abyss_data.challenge_peak_records):
         return f"你还没有挑战本期异相仲裁!\n可以使用[{prefix}上期异相仲裁]命令查询上期~"
     
     challenge_records = raw_abyss_data.challenge_peak_records[0]
