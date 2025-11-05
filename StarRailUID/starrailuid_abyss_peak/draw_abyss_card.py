@@ -85,17 +85,22 @@ async def _draw_king_record_card(boss_info, boss_record) -> Image.Image:
     boss = boss.resize((int(boss.width * boss_img_info[104]["scale"]), int(boss.height * boss_img_info[104]["scale"])))
     king.paste(boss, boss_img_info[104]["pos"], mask=boss)
     king_draw.text((140, 67), boss_info.name_mi18n, white_color, sr_font_34, "lm")
-    king_draw.text((270, 137), str(boss_record.round_num), gold_color, sr_font_28, "rm")
-    for i in range(3):
-        if i < boss_record.star_num:
-            king.paste(star1, (295 + i * 40, 120), star1)
-        else:
-            king.paste(star1e, (295 + i * 40, 120), star1e)
-    chars_bg = await _draw_chars(boss_record.avatars)
-    king.paste(chars_bg, (105, 170), chars_bg)
-    king_draw.text((180, 408), f"裁决现象: {boss_record.buff.name_mi18n}", white_color, sr_font_28, "lm")
-    buff_img = (await get_abyss_peak_img(f"{boss_record.buff.id}.png", boss_record.buff.icon)).resize((50, 50))
-    king.paste(buff_img, (120, 380), mask=buff_img)
+    if not boss_record:
+        king_draw.text((180, 408), "暂无挑战记录", white_color, sr_font_28, "lm")
+        king_draw.text((270, 137), "0", gold_color, sr_font_28, "rm")
+        king_draw.text((400, 250), "暂 无 数 据", white_color, sr_font_42, "mm")
+    else:
+        king_draw.text((270, 137), str(boss_record.round_num), gold_color, sr_font_28, "rm")
+        for i in range(3):
+            if i < boss_record.star_num:
+                king.paste(star1, (295 + i * 40, 120), star1)
+            else:
+                king.paste(star1e, (295 + i * 40, 120), star1e)
+        chars_bg = await _draw_chars(boss_record.avatars)
+        king.paste(chars_bg, (105, 170), chars_bg)
+        king_draw.text((180, 408), f"裁决现象: {boss_record.buff.name_mi18n}", white_color, sr_font_28, "lm")
+        buff_img = (await get_abyss_peak_img(f"{boss_record.buff.id}.png", boss_record.buff.icon)).resize((50, 50))
+        king.paste(buff_img, (120, 380), mask=buff_img)
     return king
 
 
@@ -103,7 +108,14 @@ async def _draw_knight_record_card(mob_info, mob_record) -> Image.Image:
     bg = knight_card_fg.copy()
     bg_draw = ImageDraw.Draw(bg)
     bg_draw.text((60, 30), mob_info.name, white_color, sr_font_30, "lm")
-    bg_draw.text((460, 30), "已通关", gold_color, sr_font_22, "lm")
+    chars_bg = await _draw_chars(mob_record.avatars)
+    bg.paste(chars_bg, (24, 60), chars_bg)
+    if mob_record.has_challenge_record:
+        bg_draw.text((460, 30), "已通关", gold_color, sr_font_22, "lm")
+        bg_draw.text((625, 260), f"{mob_record.challenge_time.year}.{mob_record.challenge_time.month:02d}.{mob_record.challenge_time.day:02d} {mob_record.challenge_time.hour:02d}:{mob_record.challenge_time.minute:02d}", white_color, sr_font_22, "lm")
+    else:
+        bg_draw.text((460, 30), "未挑战", gold_color, sr_font_22, "lm")
+        bg_draw.text((300, 150), "暂 无 数 据", white_color, sr_font_42, "mm")
     for i in range(3):
         if i < mob_record.star_num:
             bg.paste(star2, (560 + i * 40, 16), star2)
@@ -114,9 +126,6 @@ async def _draw_knight_record_card(mob_info, mob_record) -> Image.Image:
     bg.paste(mons_bg, (680, 70), mons_bg)
     bg.paste(monster_card, (680, 70), monster_card)
     bg_draw.text((757, 215), mob_info.name, white_color, sr_font_22, "mm")
-    chars_bg = await _draw_chars(mob_record.avatars)
-    bg.paste(chars_bg, (24, 60), chars_bg)
-    bg_draw.text((625, 260), f"{mob_record.challenge_time.year}.{mob_record.challenge_time.month:02d}.{mob_record.challenge_time.day:02d} {mob_record.challenge_time.hour:02d}:{mob_record.challenge_time.minute:02d}", white_color, sr_font_22, "lm")
     mob_img = (await get_abyss_peak_img(f"{mob_info.maze_id}.png", mob_info.monster_icon)).resize((100, 100))
     bg.paste(mob_img, (700, 93), mask=mob_img)
     return bg
