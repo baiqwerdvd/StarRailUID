@@ -141,11 +141,12 @@ async def draw_abyss_img(
 
     # 获取查询者数据
     logger.debug(raw_abyss_data)
-    if not len(raw_abyss_data.challenge_peak_records):
-        return f"你还没有挑战本期异相仲裁!\n可以使用[{prefix}上期异相仲裁]命令查询上期~"
     
-    challenge_records = raw_abyss_data.challenge_peak_records[0]
-    challenge_breif = raw_abyss_data.challenge_peak_best_record_brief
+    challenge_records = raw_abyss_data.challenge_peak_records[0] if schedule_type == "1" else raw_abyss_data.challenge_peak_records[1]
+    
+    
+    if not challenge_records.has_challenge_record:
+        return f"你还没有挑战本期异相仲裁!\n可以使用[{prefix}上期异相仲裁]命令查询上期~"
         
     img = img_bg.copy()
     
@@ -164,12 +165,14 @@ async def draw_abyss_img(
     
     # 统计信息
     img.paste(bar, (0, 390), bar)
-    img_draw.text((220, 450), f"x {challenge_breif.boss_stars}", white_color, sr_font_28, "lm")
-    img_draw.text((220, 500), f"x {challenge_breif.mob_stars}", white_color, sr_font_28, "lm")
+    img_draw.text((220, 450), f"x {challenge_records.boss_stars}", white_color, sr_font_28, "lm")
+    img_draw.text((220, 500), f"x {challenge_records.mob_stars}", white_color, sr_font_28, "lm")
     img_draw.text((328, 453), challenge_records.group.name_mi18n, white_color, sr_font_34, "lm")
-    img_draw.text((470, 503), str(challenge_breif.total_battle_num), white_color, sr_font_30, "lm")
-    rank_icon = (await get_abyss_peak_img(f"{challenge_breif.challenge_peak_rank_icon_type}.png", challenge_breif.challenge_peak_rank_icon)).resize((80, 80))
-    img.paste(rank_icon, (68, 438), rank_icon)
+    img_draw.text((470, 503), str(challenge_records.battle_num), white_color, sr_font_30, "lm")
+    if schedule_type == "1":
+        challenge_breif = raw_abyss_data.challenge_peak_best_record_brief
+        rank_icon = (await get_abyss_peak_img(f"{challenge_breif.challenge_peak_rank_icon_type}.png", challenge_breif.challenge_peak_rank_icon)).resize((80, 80))
+        img.paste(rank_icon, (68, 438), rank_icon)
     
     img.paste(banner, (-50, 580), banner)
     img_draw.text((450, 615), "王棋战绩", white_color, sr_font_34, "mm")

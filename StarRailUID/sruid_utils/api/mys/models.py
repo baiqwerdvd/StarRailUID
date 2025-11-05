@@ -364,7 +364,7 @@ class AbyssPeakRecord(Struct):
     boss_stars: int
     group: AbyssPeakGroupInfo
     mob_stars: int
-    boss_record: AbyssPeakBossRecord
+    boss_record: Union[AbyssPeakBossRecord, None]
 
 
 class AbyssPeakBestRecord(Struct):
@@ -378,7 +378,7 @@ class AbyssPeakBestRecord(Struct):
 class AbyssPeakData(Struct):
     challenge_peak_records: List[AbyssPeakRecord]
     has_more_boss_record: bool
-    challenge_peak_best_record_brief: AbyssPeakBestRecord
+    challenge_peak_best_record_brief: Union[AbyssPeakBestRecord, None]
 
 
 ################
