@@ -21,6 +21,18 @@ async def send_download_resource_msg(bot: Bot, ev: Event):
     await bot.send("尝试更新光追评价")
     im = await update_light_cone_ranks()
     await bot.send(im)
+    try:
+        import importlib
+        import starrail_damage_cal.map.SR_MAP_PATH
+        import starrail_damage_cal.excel.model
+    
+        importlib.reload(starrail_damage_cal.map.SR_MAP_PATH)
+        importlib.reload(starrail_damage_cal.excel.model)
+    
+        await bot.send("✅ 数据模块已重新加载")
+    except Exception:
+        logger.exception("重载数据时出错")
+        await bot.send("⚠️ 重载数据可能发生异常，建议重新启动以重载数据")
     
 
 

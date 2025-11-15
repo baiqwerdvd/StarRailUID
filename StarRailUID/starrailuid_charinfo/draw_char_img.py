@@ -10,11 +10,8 @@ from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
 from starrail_damage_cal.cal_damage import cal_char_info, cal_info
-from starrail_damage_cal.excel.model import AvatarRelicScore
-from starrail_damage_cal.map.SR_MAP_PATH import (
-    RelicId2Rarity,
-    avatarId2Name,
-)
+from starrail_damage_cal.excel import model as srdcmodel
+from starrail_damage_cal.map import SR_MAP_PATH
 from starrail_damage_cal.model import MihomoCharacter
 from starrail_damage_cal.to_data import api_to_dict
 
@@ -437,7 +434,7 @@ async def draw_char_img(char_data: MihomoCharacter, sr_uid: str, msg: str) -> Un
         relic_score = 0
 
         for relic in char.char_relic:
-            rarity = RelicId2Rarity[str(relic.relicId)]
+            rarity = SR_MAP_PATH.RelicId2Rarity[str(relic.relicId)]
             relic_img = Image.open(TEXT_PATH / f"yq_bg{rarity}.png")
             if str(relic.SetId)[0] == "3":
                 relic_piece_img = Image.open(RELIC_PATH / f"{relic.SetId}_{relic.Type - 5}.png")
@@ -452,7 +449,7 @@ async def draw_char_img(char_data: MihomoCharacter, sr_uid: str, msg: str) -> Un
                 relic_piece_new_img,
             )
             rarity_img = Image.open(
-                TEXT_PATH / f"LightCore_Rarity{RelicId2Rarity[str(relic.relicId)]}.png"
+                TEXT_PATH / f"LightCore_Rarity{SR_MAP_PATH.RelicId2Rarity[str(relic.relicId)]}.png"
             ).resize((200, 48))
             relic_img.paste(rarity_img, (-10, 80), rarity_img)
             relic_img_draw = ImageDraw.Draw(relic_img)
@@ -736,7 +733,7 @@ async def get_char_data(uid: str, char_name: str, enable_self: bool = True) -> U
         if isinstance(char_id_list, str):
             return char_id_list
         for char in char_id_list:
-            charname = avatarId2Name[str(char)]
+            charname = SR_MAP_PATH.avatarId2Name[str(char)]
             charname_list.append(charname)
         if str(char_name) in charname_list:
             if char_path.exists():
@@ -755,7 +752,7 @@ async def get_relic_score(
 ) -> float:
     relic_score = 0
     weight_dict = {}
-    for item in AvatarRelicScore:
+    for item in srdcmodel.AvatarRelicScore:
         if item.role == char_name:
             weight_dict = item
     if isinstance(weight_dict, dict):

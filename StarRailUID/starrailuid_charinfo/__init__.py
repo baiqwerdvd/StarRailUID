@@ -11,7 +11,7 @@ from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
 from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.image.convert import convert_img
-from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
+from starrail_damage_cal.map import SR_MAP_PATH
 
 from .get_char_img import draw_char_info_img
 from .to_card import api_to_card
@@ -95,8 +95,8 @@ async def send_card_info(bot: Bot, ev: Event):
     if isinstance(im, Tuple):
         buttons = [
             Button(
-                f"✅查询{avatarId2Name[str(avatarid)]}",
-                f"sr查询{avatarId2Name[str(avatarid)]}",
+                f"✅查询{SR_MAP_PATH.avatarId2Name[str(avatarid)]}",
+                f"sr查询{SR_MAP_PATH.avatarId2Name[str(avatarid)]}",
             )
             for avatarid in im[1]
         ]

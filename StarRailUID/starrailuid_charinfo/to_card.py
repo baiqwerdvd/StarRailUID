@@ -5,7 +5,7 @@ from typing import Dict, List, Tuple, Union
 from PIL import Image, ImageDraw
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import crop_center_img
-from starrail_damage_cal.map.SR_MAP_PATH import avatarId2Name
+from starrail_damage_cal.map import SR_MAP_PATH
 from starrail_damage_cal.to_data import api_to_dict
 
 from ..utils.error_reply import prefix
@@ -46,7 +46,7 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
         char_list.remove(1102)
         char_list.append(1102)
     for char in char_list:
-        avatarName = avatarId2Name[str(char)]
+        avatarName = SR_MAP_PATH.avatarId2Name[str(char)]
         char_data_list.append(
             {
                 "avatarName": avatarName,

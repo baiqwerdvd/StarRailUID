@@ -2,24 +2,8 @@ import re
 from typing import List, Optional, Tuple, Union, cast
 
 from gsuid_core.logger import logger
-from starrail_damage_cal.excel.model import (
-    AvatarPromotionConfig,
-    EquipmentPromotionConfig,
-)
-from starrail_damage_cal.map.SR_MAP_PATH import (
-    AvatarRankSkillUp,
-    EquipmentID2Name,
-    EquipmentID2Rarity,
-    Property2Name,
-    avatarId2DamageType,
-    avatarId2EnName,
-    avatarId2Name,
-    avatarId2Rarity,
-    rankId2Name,
-    skillId2AttackType,
-    skillId2Effect,
-    skillId2Name,
-)
+from starrail_damage_cal.excel import model as srdcmodel
+from starrail_damage_cal.map import SR_MAP_PATH
 from starrail_damage_cal.model import (
     AttributeBounsStatusAdd,
     AvatarBaseAttributes,
@@ -235,7 +219,7 @@ async def get_char_data(uid: str, char_name: str, enable_self: bool = True) -> U
     char_id_list, chars = await api_to_dict(uid, save_path=PLAYER_PATH)
     charname_list = []
     for char in char_id_list:
-        charname = avatarId2Name[str(char)]
+        charname = SR_MAP_PATH.avatarId2Name[str(char)]
         charname_list.append(charname)
     if char_name in charname_list:
         return chars[char_id_list[charname_list.index(char_name)]]
@@ -289,15 +273,15 @@ async def make_new_charinfo(
         char_id = await name_to_avatar_id(fake_name)
     char_data.avatarId = int(char_id)
     char_data.avatarName = fake_name
-    char_data.avatarElement = avatarId2DamageType[str(char_data.avatarId)]
-    char_data.avatarRarity = str(avatarId2Rarity[str(char_data.avatarId)])
+    char_data.avatarElement = SR_MAP_PATH.avatarId2DamageType[str(char_data.avatarId)]
+    char_data.avatarRarity = str(SR_MAP_PATH.avatarId2Rarity[str(char_data.avatarId)])
     char_data.avatarPromotion = 6
     char_data.avatarLevel = 80
     char_data.avatarSkill = await get_skill_list(char_data.avatarId)
     char_data.avatarExtraAbility = await get_extra_list(char_data.avatarId)
     char_data.avatarAttributeBonus = await get_attribute_list(char_data.avatarId)
     char_data.RelicInfo = []
-    char_data.avatarEnName = avatarId2EnName[str(char_data.avatarId)]
+    char_data.avatarEnName = SR_MAP_PATH.avatarId2EnName[str(char_data.avatarId)]
     char_data.rank = 0
     char_data.rankList = []
     char_data.baseAttributes = await get_baseAttributes(char_data.avatarId)
@@ -318,7 +302,7 @@ async def get_baseAttributes(
         BaseAggro=0,
     )
     avatar_promotion_base = None
-    for avatar in AvatarPromotionConfig:
+    for avatar in srdcmodel.AvatarPromotionConfig:
         if avatar.AvatarID == str(char_id) and avatar.Promotion == 6:
             avatar_promotion_base = avatar
             break
@@ -367,7 +351,7 @@ async def get_attribute_list(
         )
         for property_ in status_add:
             attribute_bonus_temp.statusAdd.property_ = property_.type
-            attribute_bonus_temp.statusAdd.name = Property2Name[property_.type]
+            attribute_bonus_temp.statusAdd.name = SR_MAP_PATH.Property2Name[property_.type]
             attribute_bonus_temp.statusAdd.value = property_.value
             attribute_list.append(attribute_bonus_temp)
     return attribute_list
@@ -401,9 +385,9 @@ async def get_skill_list(
             skillLevel=0,
         )
         skill_temp.skillId = char_id * 100 + skillid
-        skill_temp.skillName = skillId2Name[str(skill_temp.skillId)]
-        skill_temp.skillEffect = skillId2Effect[str(skill_temp.skillId)]
-        skill_temp.skillAttackType = skillId2AttackType[str(skill_temp.skillId)]
+        skill_temp.skillName = SR_MAP_PATH.skillId2Name[str(skill_temp.skillId)]
+        skill_temp.skillEffect = SR_MAP_PATH.skillId2Effect[str(skill_temp.skillId)]
+        skill_temp.skillAttackType = SR_MAP_PATH.skillId2AttackType[str(skill_temp.skillId)]
         skilllevel = 10
         if skillid == 1:
             skilllevel = 6
@@ -426,7 +410,7 @@ def get_rank_list(
         )
         rank_id = int(str(char_id) + "0" + str(index + 1))
         rankTemp.rankId = rank_id
-        rankTemp.rankName = rankId2Name[str(rank_id)]
+        rankTemp.rankName = SR_MAP_PATH.rankId2Name[str(rank_id)]
         rank_temp.append(rankTemp)
     return rank_temp
 
@@ -446,7 +430,7 @@ async def get_char(
         if char_data.rankList:
             for rank_item in char_data.rankList:
                 rank_id = rank_item.rankId
-                level_up_skill = AvatarRankSkillUp[str(rank_id)]
+                level_up_skill = SR_MAP_PATH.AvatarRankSkillUp[str(rank_id)]
                 if level_up_skill:
                     for item in level_up_skill:
                         skill_id = item.id
@@ -481,15 +465,15 @@ async def get_char(
             baseAttributes=EquipmentBaseAttributes(hp=0, attack=0, defence=0),
         )
         equipment_info.equipmentID = int(equipmentid)
-        equipment_info.equipmentName = EquipmentID2Name[str(equipmentid)]
+        equipment_info.equipmentName = SR_MAP_PATH.EquipmentID2Name[str(equipmentid)]
 
         equipment_info.equipmentLevel = 80
         equipment_info.equipmentPromotion = 6
         equipment_info.equipmentRank = weapon_affix if weapon_affix else 1
-        equipment_info.equipmentRarity = EquipmentID2Rarity[str(equipmentid)]
+        equipment_info.equipmentRarity = SR_MAP_PATH.EquipmentID2Rarity[str(equipmentid)]
 
         equipment_promotion_base = None
-        for equipment in EquipmentPromotionConfig:
+        for equipment in srdcmodel.EquipmentPromotionConfig:
             if equipment.EquipmentID == str(equipmentid) and equipment.Promotion == 6:
                 equipment_promotion_base = equipment
                 break
