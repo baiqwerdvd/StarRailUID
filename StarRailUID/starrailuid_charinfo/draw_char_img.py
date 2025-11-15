@@ -3,7 +3,7 @@ import json
 import math
 from pathlib import Path
 import textwrap
-from typing import Dict, Union
+from typing import Dict, Union, Tuple
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
@@ -501,34 +501,43 @@ async def draw_char_img(char_data: MihomoCharacter, sr_uid: str, msg: str) -> Un
                 anchor="mm",
             )
 
-            single_relic_score = 0
-            main_value_score = await get_relic_score(
-                relic.MainAffix.Property,
-                main_value,
-                char.char_name,
-                True,
-                relic.Type,
+            # 使用新的SRS系统计算遗器评分
+            score_info = await calculate_single_relic_score_srs(
+                relic, 
+                str(char.char_id),
+                use_srs=True
             )
-            single_relic_score += main_value_score
-            for index, i in enumerate(relic.SubAffixList):
-                subName = i.Name
-                subCnt = i.Cnt
-                subValue = i.Value
-                subProperty = i.Property
-
-                tmp_score = await get_relic_score(subProperty, subValue, char.char_name, False, relic.Type)
-                single_relic_score += tmp_score
-
+            single_relic_score = score_info["total_score"]
+            
+            # 获取角色权重配置，用于判断副词条颜色
+            char_id_str = str(char.char_id)
+            weight_config = None
+            if char_id_str in srdcmodel.StarRailRelicScores:
+                weight_config = srdcmodel.StarRailRelicScores[char_id_str]
+            
+            # 绘制副词条和颜色
+            for index, sub_affix in enumerate(relic.SubAffixList):
+                subName = sub_affix.Name
+                subCnt = sub_affix.Cnt
+                subValue = sub_affix.Value
+                subProperty = sub_affix.Property
+                
                 if subName in ["攻击力", "生命值", "防御力", "速度"]:
                     subValueStr = f"{subValue:.1f}"
                 else:
                     subValueStr = f"{subValue * 100:.1f}" + "%"
+                
                 subNameStr = subName.replace("百分比", "").replace("元素", "")
-                # 副词条文字颜色
-                if tmp_score == 0:
-                    relic_color = (150, 150, 150)
+                
+                # 根据权重判断颜色：权重 >= 0.5 显示白色，否则灰色
+                relic_color = (255, 255, 255)
+                if weight_config:
+                    sub_weight = getattr(weight_config.weight, subProperty, 0.5)
+                    if sub_weight < 0.5:
+                        relic_color = (150, 150, 150)
                 else:
-                    relic_color = (255, 255, 255)
+                    # 如果没有权重配置，副词条全灰
+                    relic_color = (150, 150, 150)
 
                 relic_img_draw.text(
                     (47, 237 + index * 47),
@@ -551,6 +560,7 @@ async def draw_char_img(char_data: MihomoCharacter, sr_uid: str, msg: str) -> Un
                     sr_font_26,
                     anchor="rm",
                 )
+            
             relic_img_draw.text(
                 (210, 195),
                 f"{int(single_relic_score)}分",
@@ -561,19 +571,22 @@ async def draw_char_img(char_data: MihomoCharacter, sr_uid: str, msg: str) -> Un
 
             char_info.paste(relic_img, RELIC_POS[str(relic.Type)], relic_img)
             relic_score += single_relic_score
-        if relic_score > 210:
+        # SRS系统下的评级标准（基于6个遗器的总分）
+        # 新系统使用 SRS-M 算法，总分范围 0-600（每个遗器 0-100）
+        # 评级标准（参考旧系统但调整为新分数范围）：
+        if relic_score > 540:  # 平均每个遗器 > 90 分
             relic_value_level = Image.open(TEXT_PATH / "CommonIconSSS.png")
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 190:
+        elif relic_score > 480:  # 平均每个遗器 > 80 分
             relic_value_level = Image.open(TEXT_PATH / "CommonIconSS.png")
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 160:
+        elif relic_score > 390:  # 平均每个遗器 > 65 分
             relic_value_level = Image.open(TEXT_PATH / "CommonIconS.png")
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 130:
+        elif relic_score > 300:  # 平均每个遗器 > 50 分
             relic_value_level = Image.open(TEXT_PATH / "CommonIconA.png")
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
-        elif relic_score > 80:
+        elif relic_score > 180:  # 平均每个遗器 > 30 分
             relic_value_level = Image.open(TEXT_PATH / "CommonIconB.png")
             char_info.paste(relic_value_level, (825, 963), relic_value_level)
         elif relic_score > 0:
@@ -813,3 +826,156 @@ async def get_relic_score(
             add_value = subValue * 1.49 * weight_dict.StatusResistanceBase * 100
             relic_score += add_value
     return relic_score
+
+
+async def get_relic_score_srs(
+    relic,
+    char_id: str,
+) -> Tuple[float, float, float]:
+    """
+    新的 SRS 评分系统
+    :param relic: 遗器对象（包含 SubAffixList，每个元素有 Property, Cnt 等字段）
+    :param char_id: 角色ID（用于查询权重配置）
+    :return: (main_score_normalized, sub_score_normalized, total_score_srs_m)
+    """
+    # 获取角色权重配置
+    if char_id not in srdcmodel.StarRailRelicScores:
+        return 0.0, 0.0, 0.0
+    
+    config = srdcmodel.StarRailRelicScores[char_id]
+    relic_type_str = str(relic.Type)
+    
+    # ===== 1. 主词条评分 =====
+    main_affix_property = relic.MainAffix.Property
+    
+    # 从 config.main 中获取该位置的主词条配置
+    main_config_for_pos = config.main.get(relic_type_str)
+    if not main_config_for_pos:
+        # 如果该位置没有配置，返回0
+        return 0.0, 0.0, 0.0
+    
+    # 获取主词条的权重（从 SingleStarRailRelicMain 中获取属性值）
+    main_affix_weight = getattr(main_config_for_pos, main_affix_property, None)
+    if main_affix_weight is None:
+        main_affix_weight = 0.5  # 默认权重
+    
+    main_level = min(relic.Level, 15)  # 0-15（官方数据是 0-20，但SRS规范使用 0-15）
+    main_score_raw = (main_level + 1) / 16 * main_affix_weight
+    
+    # ===== 2. 副词条评分 =====
+    sub_score_raw = 0.0
+    for sub_affix in relic.SubAffixList:
+        # 根据 cnt 计算基础值次数和提升值次数
+        # cnt=1: 仅有默认值，base_count=1, boost_count=0
+        # cnt=2: 1次提升，base_count=1, boost_count=1
+        # cnt=3: 2次提升，base_count=1, boost_count=2
+        base_count = 1
+        boost_count = sub_affix.Cnt - 1
+        
+        # 获取该属性的权重（从 SingleStarRailRelicWeight 中获取）
+        sub_property = sub_affix.Property
+        weight = getattr(config.weight, sub_property, 0.5)
+        
+        # SRS公式：原始分数 = 基础值次数 + 提升值次数 × 0.1
+        single_sub_score = base_count + boost_count * 0.1
+        sub_score_raw += single_sub_score * weight
+    
+    # ===== 3. 归一化 =====
+    max_sub_score = config.max_value  # 从配置中获取理论最高分
+    main_score_normalized = main_score_raw  # 主词条已经通过公式归一化到 [0, 1]
+    sub_score_normalized = min(sub_score_raw / max_sub_score, 1.0) if max_sub_score > 0 else 0.0
+    
+    # ===== 4. SRS-N（50-50权重合并） =====
+    srs_n = main_score_normalized * 0.5 + sub_score_normalized * 0.5
+    
+    # ===== 5. SRS-M（开平方根） =====
+    srs_m = math.sqrt(max(srs_n, 0.0))  # 防止负数
+    
+    return main_score_normalized, sub_score_normalized, srs_m
+
+
+async def calculate_single_relic_score_srs(
+    relic,
+    char_id: str,
+    use_srs: bool = True,
+) -> Dict[str, any]:
+    """
+    计算单个遗器的完整评分信息（SRS系统）
+    集中处理遗器评分的所有逻辑，返回绘图需要的所有数据
+    
+    :param relic: 遗器对象
+    :param char_id: 角色ID（字符串）
+    :param use_srs: 是否使用新的SRS系统（默认True），False时使用旧系统
+    :return: 包含评分和绘图信息的字典
+    """
+    result = {
+        "total_score": 0.0,
+        "srs_m": 0.0,
+        "main_score": 0.0,
+        "sub_score": 0.0,
+        "sub_details": [],
+    }
+    
+    if use_srs:
+        # 使用新的SRS系统
+        main_normalized, sub_normalized, srs_m = await get_relic_score_srs(relic, char_id)
+        result["total_score"] = srs_m * 100  # 转换为0-100分
+        result["srs_m"] = srs_m
+        result["main_score"] = main_normalized
+        result["sub_score"] = sub_normalized
+    else:
+        # 使用旧系统（兼容原有代码）
+        result["total_score"] = 0.0
+        main_value_score = await get_relic_score(
+            relic.MainAffix.Property,
+            relic.MainAffix.Value,
+            None,  # 在这里不需要char_name，因为SRS已经用char_id了
+            True,
+            relic.Type,
+        )
+        result["total_score"] += main_value_score
+        
+        for sub_affix in relic.SubAffixList:
+            tmp_score = await get_relic_score(
+                sub_affix.Property,
+                sub_affix.Value,
+                None,
+                False,
+                relic.Type,
+            )
+            result["total_score"] += tmp_score
+            result["sub_details"].append({
+                "property": sub_affix.Property,
+                "cnt": sub_affix.Cnt,
+                "score": tmp_score,
+            })
+    
+    # 为所有子词条添加绘图信息（无论哪个系统都需要）
+    for index, sub_affix in enumerate(relic.SubAffixList):
+        sub_name = sub_affix.Name
+        if sub_name in ["攻击力", "生命值", "防御力", "速度"]:
+            sub_value_str = f"{sub_affix.Value:.1f}"
+        else:
+            sub_value_str = f"{sub_affix.Value * 100:.1f}%"
+        
+        sub_name_str = sub_name.replace("百分比", "").replace("元素", "")
+        
+        # 根据评分判断颜色
+        if use_srs:
+            # SRS系统下，所有有权重的属性都显示白色
+            item_score = getattr(sub_affix, "score", 1)
+            is_valuable = True
+        else:
+            # 旧系统下，根据original score判断
+            item_score = result["sub_details"][index]["score"] if index < len(result["sub_details"]) else 0
+            is_valuable = item_score > 0
+        
+        result["sub_details"].append({
+            "index": index,
+            "name": sub_name_str,
+            "cnt": sub_affix.Cnt,
+            "value": sub_value_str,
+            "is_valuable": is_valuable,
+        })
+    
+    return result
