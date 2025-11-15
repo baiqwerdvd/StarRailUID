@@ -4,6 +4,8 @@ from gsuid_core.models import Event
 from gsuid_core.sv import SV
 
 from ..utils.resource.download_all_file import check_use
+from ..utils.excel.read_excel import update_light_cone_ranks
+from starrail_damage_cal.update import update_resource
 
 sv_sr_download_config = SV("sr下载资源", pm=1)
 
@@ -13,6 +15,13 @@ async def send_download_resource_msg(bot: Bot, ev: Event):
     await bot.send("sr正在开始下载~可能需要较久的时间!")
     im = await check_use()
     await bot.send(im)
+    await bot.send("尝试更新数据文件")
+    im = await update_resource()
+    await bot.send(im)
+    await bot.send("尝试更新光追评价")
+    im = await update_light_cone_ranks()
+    await bot.send(im)
+    
 
 
 async def startup():
