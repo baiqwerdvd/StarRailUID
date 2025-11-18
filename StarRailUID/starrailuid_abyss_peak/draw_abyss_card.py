@@ -112,7 +112,10 @@ async def _draw_knight_record_card(mob_info, mob_record) -> Image.Image:
     bg.paste(chars_bg, (24, 60), chars_bg)
     if mob_record.has_challenge_record:
         bg_draw.text((460, 30), "已通关", gold_color, sr_font_22, "lm")
-        bg_draw.text((625, 260), f"{mob_record.challenge_time.year}.{mob_record.challenge_time.month:02d}.{mob_record.challenge_time.day:02d} {mob_record.challenge_time.hour:02d}:{mob_record.challenge_time.minute:02d}", white_color, sr_font_22, "lm")
+        if mob_record.is_fast:
+            bg_draw.text((300, 150), "快 速 通 关", white_color, sr_font_42, "mm")
+        else:
+            bg_draw.text((625, 260), f"{mob_record.challenge_time.year}.{mob_record.challenge_time.month:02d}.{mob_record.challenge_time.day:02d} {mob_record.challenge_time.hour:02d}:{mob_record.challenge_time.minute:02d}", white_color, sr_font_22, "lm")
     else:
         bg_draw.text((460, 30), "未挑战", gold_color, sr_font_22, "lm")
         bg_draw.text((300, 150), "暂 无 数 据", white_color, sr_font_42, "mm")
