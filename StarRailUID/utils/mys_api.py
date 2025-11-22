@@ -1,35 +1,36 @@
 import copy
 import time
-from typing import Dict, Union, Literal, Optional
+from typing import Dict, Literal, Optional, Union
+from venv import logger
 
 import msgspec
-from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.tools import (
-    mys_version,
-    get_ds_token,
     generate_os_ds,
+    get_ds_token,
     get_web_ds_token,
+    mys_version,
 )
+from gsuid_core.utils.api.mys_api import _MysApi
 
 from ..sruid_utils.api.mys.api import _API
 from ..sruid_utils.api.mys.models import (
-    MysSign,
+    AbyssBossData,
+    AbyssData,
+    AbyssPeakData,
+    AbyssStoryData,
+    AvatarDetail,
+    AvatarInfo,
+    DailyNoteData,
     GachaLog,
+    MonthlyAward,
+    MysSign,
+    RogueData,
+    RogueLocustData,
+    RoleBasicInfo,
+    RoleIndex,
     SignInfo,
     SignList,
-    AbyssData,
-    RogueData,
-    RoleIndex,
-    AvatarInfo,
-    AvatarDetail,
-    MonthlyAward,
-    AbyssBossData,
-    DailyNoteData,
-    RoleBasicInfo,
     WidgetStamina,
-    AbyssStoryData,
-    RogueLocustData,
-    AbyssPeakData,
 )
 
 RECOGNIZE_SERVER = {
@@ -47,7 +48,9 @@ class MysApi(_MysApi):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    async def get_sr_ck(self, uid: str, mode: Literal["OWNER", "RANDOM"] = "RANDOM") -> Optional[str]:
+    async def get_sr_ck(
+        self, uid: str, mode: Literal["OWNER", "RANDOM"] = "RANDOM"
+    ) -> Optional[str]:
         return await self.get_ck(uid, mode, "sr")
 
     async def simple_sr_req(
@@ -86,11 +89,15 @@ class MysApi(_MysApi):
                 header=header,
             )
         else:
-            data = await self.simple_sr_req("STAR_RAIL_NOTE_URL", uid, header=self._HEADER)
+            data = await self.simple_sr_req(
+                "STAR_RAIL_NOTE_URL", uid, header=self._HEADER
+            )
         if isinstance(data, Dict):
             # workaround for mistake params in hoyolab
             if data["data"]["accepted_epedition_num"]:
-                data["data"]["accepted_expedition_num"] = data["data"]["accepted_epedition_num"]
+                data["data"]["accepted_expedition_num"] = data["data"][
+                    "accepted_epedition_num"
+                ]
             data = msgspec.convert(data["data"], type=DailyNoteData)
         return data
 
@@ -142,7 +149,9 @@ class MysApi(_MysApi):
                 header=header,
             )
         else:
-            data = await self.simple_sr_req("STAR_RAIL_INDEX_URL", uid, header=self._HEADER)
+            data = await self.simple_sr_req(
+                "STAR_RAIL_INDEX_URL", uid, header=self._HEADER
+            )
         if isinstance(data, Dict):
             data = msgspec.convert(data["data"], type=RoleIndex)
         return data
@@ -171,7 +180,7 @@ class MysApi(_MysApi):
             game_biz = "hkrpg_global"
         else:
             header = self._HEADER
-            if gacha_type in ["21","22"]:
+            if gacha_type in ["21", "22"]:
                 url = self.MAPI["STAR_RAIL_LDGACHA_LOG_URL"]
             else:
                 url = self.MAPI["STAR_RAIL_GACHA_LOG_URL"]
@@ -536,7 +545,9 @@ class MysApi(_MysApi):
             data = msgspec.convert(data["data"], type=RogueLocustData)
         return data
 
-    async def sr_mys_sign(self, uid, header=None, server_id="cn_gf01") -> Union[MysSign, int]:
+    async def sr_mys_sign(
+        self, uid, header=None, server_id="cn_gf01"
+    ) -> Union[MysSign, int]:
         if header is None:
             header = {}
         ck = await self.get_sr_ck(uid, "OWNER")
@@ -614,9 +625,61 @@ class MysApi(_MysApi):
         self,
         sr_uid: str,
     ) -> Union[RoleBasicInfo, int]:
-        data = await self.simple_sr_req("STAR_RAIL_ROLE_BASIC_INFO_URL", sr_uid, header=self._HEADER)
+        data = await self.simple_sr_req(
+            "STAR_RAIL_ROLE_BASIC_INFO_URL", sr_uid, header=self._HEADER
+        )
         if isinstance(data, Dict):
             data = msgspec.convert(data["data"], type=RoleBasicInfo)
+        return data
+
+    async def get_sr_act_id(self) -> str | int:
+        data = await self._mys_request(
+            url=_API["STAR_RAIL_ACT_ID_LIST_URL"],
+            method="GET",
+            params={"offset": 0, "size": 20, "uid": 80823548},
+        )
+        logger.debug(f"获取活动ID列表返回数据: {data}")
+        if isinstance(data, dict):
+            import re
+
+            for p in data.get("data", {}).get("list", []):
+                post = p.get("post", {}).get("post")
+                if not post:
+                    continue
+                content = post.get("structured_content", "")
+                m = re.search(
+                    r"https://webstatic\.mihoyo\.com/bbs/event/live/index\.html\?act_id=([a-zA-Z0-9]+)",
+                    content,
+                )
+                if m:
+                    act_id = m.group(1)
+                    return act_id
+        return data
+
+    async def get_sr_code_ver(self, act_id: str) -> str | int:
+        data = await self._mys_request(
+            url=_API["STAR_RAIL_LIVE_INDEX_URL"],
+            method="GET",
+            header={"x-rpc-act_id": act_id},
+        )
+        logger.debug(f"获取兑换码版本返回数据: {data}")
+        if isinstance(data, dict):
+            live_data = data.get("data", {}).get("live", {})
+            code_ver = live_data.get("code_ver")
+            return code_ver
+        return data
+
+    async def get_sr_exchange_code(self, code_ver: str) -> list | int:
+        now = int(time.time())
+        data = await self._mys_request(
+            url=_API["STAR_RAIL_EXCHANGE_CODE_URL"],
+            method="GET",
+            params={"version": code_ver, "time": now},
+        )
+        logger.debug(f"获取兑换码返回数据: {data}")
+        if isinstance(data, dict):
+            code_list = data.get("data", {}).get("code_list", [])
+            return code_list
         return data
 
 
