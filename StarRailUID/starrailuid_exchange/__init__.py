@@ -22,6 +22,9 @@ async def send_monthly_data(bot: Bot, ev: Event):
         return
     code = await mys_api.get_sr_exchange_code(code_ver)
     logger.debug(f"兑换码获取结果: {code}")
+    if str(code) == "-500012":
+        await bot.send("本期直播活动已结束，请等待下一次直播")
+        return
     if not isinstance(code, list):
         await bot.send("获取兑换码失败，请稍后再试")
         return
