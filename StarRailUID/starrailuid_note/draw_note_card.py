@@ -1,12 +1,12 @@
-from datetime import datetime
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Union
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from msgspec import json as msgjson
+from PIL import Image, ImageDraw
 
 from ..sruid_utils.api.mys.models import MonthlyAward
 from ..utils.error_reply import get_error
@@ -61,7 +61,9 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         return get_error(data)
 
     # 保存数据
-    with Path.open(path / f"monthly_{current_year_mon}.json", "w", encoding="utf-8") as f:
+    with Path.open(
+        path / f"monthly_{current_year_mon}.json", "w", encoding="utf-8"
+    ) as f:
         save_json_data = msgjson.format(msgjson.encode(data), indent=4)
         save_data = json.dumps(
             {
@@ -83,7 +85,9 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
     if last_monthly_path.exists():
         with Path.open(last_monthly_path, encoding="utf-8") as f:
             last_monthly_data = json.load(f)
-            last_monthly_data = msgjson.decode(last_monthly_data["data"], type=MonthlyAward)
+            last_monthly_data = msgjson.decode(
+                last_monthly_data["data"], type=MonthlyAward
+            )
     else:
         add_month = ""
         if int(last_month) < 10:
@@ -93,7 +97,9 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         if isinstance(last_monthly_data, int):
             return get_error(last_monthly_data)
         # 保存上月数据
-        with Path.open(path / f"monthly_{last_year_mon}.json", "w", encoding="utf-8") as f:
+        with Path.open(
+            path / f"monthly_{last_year_mon}.json", "w", encoding="utf-8"
+        ) as f:
             save_json_data = msgjson.format(msgjson.encode(last_monthly_data), indent=4)
             save_data = json.dumps(
                 {

@@ -22,13 +22,13 @@ NOTICE_MAP = {
 
 
 async def get_notice_list():
-    datas = await gs_subscribe.get_subscribe('[星铁] 推送')
+    datas = await gs_subscribe.get_subscribe("[星铁] 推送")
     datas = await gs_subscribe._to_dict(datas)
 
-    stamina_datas = await gs_subscribe.get_subscribe('[星铁] 体力')
+    stamina_datas = await gs_subscribe.get_subscribe("[星铁] 体力")
     stamina_datas = await gs_subscribe._to_dict(stamina_datas)
 
-    go_datas = await gs_subscribe.get_subscribe('[星铁] 派遣')
+    go_datas = await gs_subscribe.get_subscribe("[星铁] 派遣")
     go_datas = await gs_subscribe._to_dict(go_datas)
 
     for uid in datas:
@@ -39,7 +39,7 @@ async def get_notice_list():
                 continue
 
             for mode in NOTICE:
-                _datas: Dict[str, List[Subscribe]] = locals()[f'{mode}_datas']
+                _datas: Dict[str, List[Subscribe]] = locals()[f"{mode}_datas"]
                 if uid in _datas:
                     _data_list = _datas[uid]
                     for _data in _data_list:
@@ -51,13 +51,13 @@ async def get_notice_list():
                             )
                             if res[0]:
                                 mlist = [
-                                    f'🚨 星铁推送提醒 - UID{uid}',
+                                    f"🚨 星铁推送提醒 - UID{uid}",
                                     NOTICE[mode],
-                                    f'当前{NOTICE_MAP[mode]}值为: {res[1]}',
-                                    f'你设置的阈值为: {_data.extra_message}',
+                                    f"当前{NOTICE_MAP[mode]}值为: {res[1]}",
+                                    f"你设置的阈值为: {_data.extra_message}",
                                     MR_NOTICE,
                                 ]
-                                await _data.send('\n'.join(mlist))
+                                await _data.send("\n".join(mlist))
 
 
 async def check(mode: str, data: DailyNoteData, limit: int) -> Tuple[bool, int]:

@@ -40,7 +40,16 @@ async def award(uid) -> str:
     lastmonth_rails_pass = data.month_data.last_rails_pass
     group_str = ""
     for i in data.month_data.group_by:
-        group_str = group_str + i.action_name + ":" + str(i.num) + "(" + str(i.percent) + "%)" + "\n"
+        group_str = (
+            group_str
+            + i.action_name
+            + ":"
+            + str(i.num)
+            + "("
+            + str(i.percent)
+            + "%)"
+            + "\n"
+        )
 
     return month_im.format(
         uid,

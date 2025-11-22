@@ -14,14 +14,7 @@ sv_abyss_boss = SV("sr查询异相仲裁")
 
 
 @sv_abyss_boss.on_command(
-    (
-        "查询异相仲裁",
-        "查询上期异相仲裁",
-        "上期仲裁",
-        "异相仲裁",
-        "仲裁",
-        "yxzc"
-    ),
+    ("查询异相仲裁", "查询上期异相仲裁", "上期仲裁", "异相仲裁", "仲裁", "yxzc"),
     block=True,
 )
 async def send_srabyss_info(bot: Bot, ev: Event):

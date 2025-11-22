@@ -4,8 +4,8 @@ from gsuid_core.models import Event
 from gsuid_core.sv import SV
 from gsuid_core.utils.database.models import GsBind
 
-from .draw_user_card import get_user_card
 from ..utils.message import send_diff_msg
+from .draw_user_card import get_user_card
 
 sv_user_config = SV("sr用户管理", pm=2)
 sv_user_info = SV("sr用户信息")
@@ -44,7 +44,9 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
         return await bot.send("你输入了错误的格式!")
 
     if "绑定" in ev.command:
-        data = await GsBind.insert_uid(qid, ev.bot_id, sr_uid, ev.group_id, 9, game_name="sr")
+        data = await GsBind.insert_uid(
+            qid, ev.bot_id, sr_uid, ev.group_id, 9, game_name="sr"
+        )
         return await send_diff_msg(
             bot,
             data,

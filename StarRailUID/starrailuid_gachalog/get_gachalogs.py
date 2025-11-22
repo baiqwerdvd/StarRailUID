@@ -1,6 +1,6 @@
 import asyncio
-from datetime import datetime
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
 from urllib import parse
@@ -22,7 +22,9 @@ gacha_type_meta_data = {
 }
 
 
-async def get_new_gachalog_by_link(uid: str, gacha_url: str, full_data: Dict, is_force: bool):
+async def get_new_gachalog_by_link(
+    uid: str, gacha_url: str, full_data: Dict, is_force: bool
+):
     full_data = msgspec.convert(
         full_data,
         type=Dict[str, List[SingleGachaLog]],
@@ -32,7 +34,6 @@ async def get_new_gachalog_by_link(uid: str, gacha_url: str, full_data: Dict, is
         for gacha_type in gacha_type_meta_data[gacha_name]:
             end_id = "0"
             for page in range(1, 999):
-                
                 url = parse.urlparse(gacha_url)
                 url_parse = parse.parse_qs(url.query)
                 if "authkey" not in url_parse:
@@ -135,7 +136,9 @@ async def save_gachalogs(
 
     # 获取新抽卡记录
     if raw_data is None:
-        raw_data = await get_new_gachalog_by_link(uid, gacha_url, gachalogs_history, is_force)
+        raw_data = await get_new_gachalog_by_link(
+            uid, gacha_url, gachalogs_history, is_force
+        )
     else:
         new_data = {
             "始发跃迁": [],
@@ -190,8 +193,17 @@ async def save_gachalogs(
     char_add = result["char_gacha_num"] - old_char_gacha_num
     weapon_add = result["weapon_gacha_num"] - old_weapon_gacha_num
     char_collabo_add = result["char_collabo_gacha_num"] - old_char_collabo_gacha_num
-    weapon_collabo_add = result["weapon_collabo_gacha_num"] - old_weapon_collabo_gacha_num
-    all_add = normal_add + char_add + weapon_add + begin_gacha_add + char_collabo_add + weapon_collabo_add
+    weapon_collabo_add = (
+        result["weapon_collabo_gacha_num"] - old_weapon_collabo_gacha_num
+    )
+    all_add = (
+        normal_add
+        + char_add
+        + weapon_add
+        + begin_gacha_add
+        + char_collabo_add
+        + weapon_collabo_add
+    )
 
     # 保存文件
     result = msgspec.to_builtins(result)

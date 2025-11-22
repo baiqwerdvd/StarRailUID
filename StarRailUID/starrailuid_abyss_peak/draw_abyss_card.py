@@ -2,12 +2,12 @@ from pathlib import Path
 from typing import Union
 
 import msgspec
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring
+from PIL import Image, ImageDraw
 
 from ..sruid_utils.api.mys.models import AbyssAvatar, AbyssPeakData
 from ..utils.error_reply import prefix
@@ -22,7 +22,7 @@ from ..utils.fonts.starrail_fonts import (
 )
 from ..utils.image.image_tools import _get_event_avatar, elements
 from ..utils.mys_api import mys_api
-from ..utils.resource.get_pic_from import get_roleinfo_icon, get_abyss_peak_img
+from ..utils.resource.get_pic_from import get_abyss_peak_img, get_roleinfo_icon
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 white_color = (255, 255, 255)
@@ -82,7 +82,12 @@ async def _draw_king_record_card(boss_info, boss_record) -> Image.Image:
     king = king_card.copy()
     king_draw = ImageDraw.Draw(king)
     boss = await get_abyss_peak_img(f"{boss_info.maze_id}.png", boss_info.icon)
-    boss = boss.resize((int(boss.width * boss_img_info[104]["scale"]), int(boss.height * boss_img_info[104]["scale"])))
+    boss = boss.resize(
+        (
+            int(boss.width * boss_img_info[104]["scale"]),
+            int(boss.height * boss_img_info[104]["scale"]),
+        )
+    )
     king.paste(boss, boss_img_info[104]["pos"], mask=boss)
     king_draw.text((140, 67), boss_info.name_mi18n, white_color, sr_font_34, "lm")
     if not boss_record:
@@ -90,7 +95,9 @@ async def _draw_king_record_card(boss_info, boss_record) -> Image.Image:
         king_draw.text((270, 137), "0", gold_color, sr_font_28, "rm")
         king_draw.text((400, 250), "暂 无 数 据", white_color, sr_font_42, "mm")
     else:
-        king_draw.text((270, 137), str(boss_record.round_num), gold_color, sr_font_28, "rm")
+        king_draw.text(
+            (270, 137), str(boss_record.round_num), gold_color, sr_font_28, "rm"
+        )
         for i in range(3):
             if i < boss_record.star_num:
                 king.paste(star1, (295 + i * 40, 120), star1)
@@ -98,8 +105,18 @@ async def _draw_king_record_card(boss_info, boss_record) -> Image.Image:
                 king.paste(star1e, (295 + i * 40, 120), star1e)
         chars_bg = await _draw_chars(boss_record.avatars)
         king.paste(chars_bg, (105, 170), chars_bg)
-        king_draw.text((180, 408), f"裁决现象: {boss_record.buff.name_mi18n}", white_color, sr_font_28, "lm")
-        buff_img = (await get_abyss_peak_img(f"{boss_record.buff.id}.png", boss_record.buff.icon)).resize((50, 50))
+        king_draw.text(
+            (180, 408),
+            f"裁决现象: {boss_record.buff.name_mi18n}",
+            white_color,
+            sr_font_28,
+            "lm",
+        )
+        buff_img = (
+            await get_abyss_peak_img(
+                f"{boss_record.buff.id}.png", boss_record.buff.icon
+            )
+        ).resize((50, 50))
         king.paste(buff_img, (120, 380), mask=buff_img)
     return king
 
@@ -115,7 +132,13 @@ async def _draw_knight_record_card(mob_info, mob_record) -> Image.Image:
         if mob_record.is_fast:
             bg_draw.text((300, 150), "快 速 通 关", white_color, sr_font_42, "mm")
         else:
-            bg_draw.text((625, 260), f"{mob_record.challenge_time.year}.{mob_record.challenge_time.month:02d}.{mob_record.challenge_time.day:02d} {mob_record.challenge_time.hour:02d}:{mob_record.challenge_time.minute:02d}", white_color, sr_font_22, "lm")
+            bg_draw.text(
+                (625, 260),
+                f"{mob_record.challenge_time.year}.{mob_record.challenge_time.month:02d}.{mob_record.challenge_time.day:02d} {mob_record.challenge_time.hour:02d}:{mob_record.challenge_time.minute:02d}",
+                white_color,
+                sr_font_22,
+                "lm",
+            )
     else:
         bg_draw.text((460, 30), "未挑战", gold_color, sr_font_22, "lm")
         bg_draw.text((300, 150), "暂 无 数 据", white_color, sr_font_42, "mm")
@@ -129,7 +152,9 @@ async def _draw_knight_record_card(mob_info, mob_record) -> Image.Image:
     bg.paste(mons_bg, (680, 70), mons_bg)
     bg.paste(monster_card, (680, 70), monster_card)
     bg_draw.text((757, 215), mob_info.name, white_color, sr_font_22, "mm")
-    mob_img = (await get_abyss_peak_img(f"{mob_info.maze_id}.png", mob_info.monster_icon)).resize((100, 100))
+    mob_img = (
+        await get_abyss_peak_img(f"{mob_info.maze_id}.png", mob_info.monster_icon)
+    ).resize((100, 100))
     bg.paste(mob_img, (700, 93), mask=mob_img)
     return bg
 
@@ -153,49 +178,75 @@ async def draw_abyss_img(
 
     # 获取查询者数据
     logger.debug(raw_abyss_data)
-    
-    challenge_records = raw_abyss_data.challenge_peak_records[0] if schedule_type == "1" else raw_abyss_data.challenge_peak_records[1]
-    
-    
+
+    challenge_records = (
+        raw_abyss_data.challenge_peak_records[0]
+        if schedule_type == "1"
+        else raw_abyss_data.challenge_peak_records[1]
+    )
+
     if not challenge_records.has_challenge_record:
         return f"你还没有挑战本期异相仲裁!\n可以使用[{prefix}上期异相仲裁]命令查询上期~"
-        
+
     img = img_bg.copy()
-    
+
     # 获取头像
     char_pic = await _get_event_avatar(ev)
     char_pic = await draw_pic_with_ring(char_pic, 100, None, False)
-    
+
     img.paste(char_pic, (80, 220), char_pic)
     img.paste(title_bg, (0, 0), title_bg)
     img.paste(title_fg, (0, 0), title_fg)
-    
+
     img_draw = ImageDraw.Draw(img)
     img_draw.text((237, 250), "开拓者", white_color, sr_font_40, "lm")
     img_draw.text((237, 300), f"UID{uid}", white_color, sr_font_28, "lm")
-    img_draw.text((745, 307), f"v{challenge_records.group.game_version}", white_color, sr_font_32, "lm")
-    
+    img_draw.text(
+        (745, 307),
+        f"v{challenge_records.group.game_version}",
+        white_color,
+        sr_font_32,
+        "lm",
+    )
+
     # 统计信息
     img.paste(bar, (0, 390), bar)
-    img_draw.text((220, 450), f"x {challenge_records.boss_stars}", white_color, sr_font_28, "lm")
-    img_draw.text((220, 500), f"x {challenge_records.mob_stars}", white_color, sr_font_28, "lm")
-    img_draw.text((328, 453), challenge_records.group.name_mi18n, white_color, sr_font_34, "lm")
-    img_draw.text((470, 503), str(challenge_records.battle_num), white_color, sr_font_30, "lm")
+    img_draw.text(
+        (220, 450), f"x {challenge_records.boss_stars}", white_color, sr_font_28, "lm"
+    )
+    img_draw.text(
+        (220, 500), f"x {challenge_records.mob_stars}", white_color, sr_font_28, "lm"
+    )
+    img_draw.text(
+        (328, 453), challenge_records.group.name_mi18n, white_color, sr_font_34, "lm"
+    )
+    img_draw.text(
+        (470, 503), str(challenge_records.battle_num), white_color, sr_font_30, "lm"
+    )
     if schedule_type == "1":
         challenge_breif = raw_abyss_data.challenge_peak_best_record_brief
-        rank_icon = (await get_abyss_peak_img(f"{challenge_breif.challenge_peak_rank_icon_type}.png", challenge_breif.challenge_peak_rank_icon)).resize((80, 80))
+        rank_icon = (
+            await get_abyss_peak_img(
+                f"{challenge_breif.challenge_peak_rank_icon_type}.png",
+                challenge_breif.challenge_peak_rank_icon,
+            )
+        ).resize((80, 80))
         img.paste(rank_icon, (68, 438), rank_icon)
-    
+
     img.paste(banner, (-50, 580), banner)
     img_draw.text((450, 615), "王棋战绩", white_color, sr_font_34, "mm")
-    king_record = await _draw_king_record_card(challenge_records.boss_info, challenge_records.boss_record)
+    king_record = await _draw_king_record_card(
+        challenge_records.boss_info, challenge_records.boss_record
+    )
     img.paste(king_record, (-45, 650), king_record)
 
     img.paste(banner, (-50, 1135), banner)
     img_draw.text((450, 1170), "骑士战绩", white_color, sr_font_34, "mm")
-    knight_record = await _draw_knight_records_card(challenge_records.mob_infos, challenge_records.mob_records)
+    knight_record = await _draw_knight_records_card(
+        challenge_records.mob_infos, challenge_records.mob_records
+    )
     img.paste(knight_record, (-45, 1190), knight_record)
-    
+
     res = await convert_img(img)
     logger.info("[查询异相仲裁信息]绘图已完成,等待发送!")
     return res

@@ -17,7 +17,6 @@ from starrail_damage_cal.model import (
 )
 from starrail_damage_cal.to_data import api_to_dict, characterSkillTree
 
-from .draw_char_img import draw_char_img
 from ..utils.error_reply import CHAR_HINT
 from ..utils.name_covert import (
     alias_to_char_name,
@@ -26,6 +25,7 @@ from ..utils.name_covert import (
     name_to_weapon_id,
 )
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from .draw_char_img import draw_char_img
 
 WEAPON_TO_INT = {
     "一": 1,
@@ -210,7 +210,9 @@ async def get_fake_char_data(
     return char_data
 
 
-async def get_char_data(uid: str, char_name: str, enable_self: bool = True) -> Union[MihomoCharacter, str]:
+async def get_char_data(
+    uid: str, char_name: str, enable_self: bool = True
+) -> Union[MihomoCharacter, str]:
     if "开拓者" in str(char_name):
         char_name = "开拓者"
     char_id = await name_to_avatar_id(char_name)
@@ -313,14 +315,19 @@ async def get_baseAttributes(
 
     # 攻击力
     base_attributes.attack = (
-        avatar_promotion_base.AttackBase.Value + avatar_promotion_base.AttackAdd.Value * (80 - 1)
+        avatar_promotion_base.AttackBase.Value
+        + avatar_promotion_base.AttackAdd.Value * (80 - 1)
     )
     # 防御力
     base_attributes.defence = (
-        avatar_promotion_base.DefenceBase.Value + avatar_promotion_base.DefenceAdd.Value * (80 - 1)
+        avatar_promotion_base.DefenceBase.Value
+        + avatar_promotion_base.DefenceAdd.Value * (80 - 1)
     )
     # 血量
-    base_attributes.hp = avatar_promotion_base.HPBase.Value + avatar_promotion_base.HPAdd.Value * (80 - 1)
+    base_attributes.hp = (
+        avatar_promotion_base.HPBase.Value
+        + avatar_promotion_base.HPAdd.Value * (80 - 1)
+    )
     # 速度
     base_attributes.speed = avatar_promotion_base.SpeedBase.Value
     # 暴击率
@@ -351,7 +358,9 @@ async def get_attribute_list(
         )
         for property_ in status_add:
             attribute_bonus_temp.statusAdd.property_ = property_.type
-            attribute_bonus_temp.statusAdd.name = SR_MAP_PATH.Property2Name[property_.type]
+            attribute_bonus_temp.statusAdd.name = SR_MAP_PATH.Property2Name[
+                property_.type
+            ]
             attribute_bonus_temp.statusAdd.value = property_.value
             attribute_list.append(attribute_bonus_temp)
     return attribute_list
@@ -387,7 +396,9 @@ async def get_skill_list(
         skill_temp.skillId = char_id * 100 + skillid
         skill_temp.skillName = SR_MAP_PATH.skillId2Name[str(skill_temp.skillId)]
         skill_temp.skillEffect = SR_MAP_PATH.skillId2Effect[str(skill_temp.skillId)]
-        skill_temp.skillAttackType = SR_MAP_PATH.skillId2AttackType[str(skill_temp.skillId)]
+        skill_temp.skillAttackType = SR_MAP_PATH.skillId2AttackType[
+            str(skill_temp.skillId)
+        ]
         skilllevel = 10
         if skillid == 1:
             skilllevel = 6
@@ -444,7 +455,8 @@ async def get_char(
                                     skilllevel_max = 12
                                 skilllevel = min(
                                     skilllevel_max,
-                                    char_data.avatarSkill[index].skillLevel + skill_up_num,
+                                    char_data.avatarSkill[index].skillLevel
+                                    + skill_up_num,
                                 )
                                 char_data.avatarSkill[index].skillLevel = skilllevel
                                 break
@@ -470,7 +482,9 @@ async def get_char(
         equipment_info.equipmentLevel = 80
         equipment_info.equipmentPromotion = 6
         equipment_info.equipmentRank = weapon_affix if weapon_affix else 1
-        equipment_info.equipmentRarity = SR_MAP_PATH.EquipmentID2Rarity[str(equipmentid)]
+        equipment_info.equipmentRarity = SR_MAP_PATH.EquipmentID2Rarity[
+            str(equipmentid)
+        ]
 
         equipment_promotion_base = None
         for equipment in srdcmodel.EquipmentPromotionConfig:
@@ -483,7 +497,8 @@ async def get_char(
 
         # 生命值
         equipment_info.baseAttributes.hp = (
-            equipment_promotion_base.BaseHP.Value + equipment_promotion_base.BaseHPAdd.Value * (80 - 1)
+            equipment_promotion_base.BaseHP.Value
+            + equipment_promotion_base.BaseHPAdd.Value * (80 - 1)
         )
         # 攻击力
         equipment_info.baseAttributes.attack = (

@@ -1,1 +1,1 @@
-from .main import all_start as AST # noqa: F401
+from .main import all_start as AST  # noqa: F401

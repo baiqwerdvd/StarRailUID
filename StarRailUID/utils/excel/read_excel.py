@@ -1,5 +1,8 @@
-import json, aiohttp, hashlib
+import hashlib
+import json
 from pathlib import Path
+
+import aiohttp
 
 EXCEL = Path(__file__).parent
 LIGHT_CONE_FILE = EXCEL / "light_cone_ranks.json"
@@ -8,13 +11,18 @@ LIGHT_CONE_FILE = EXCEL / "light_cone_ranks.json"
 with LIGHT_CONE_FILE.open(encoding="utf8") as f:
     light_cone_ranks = json.load(f)
 
+
 async def update_light_cone_ranks():
     global light_cone_ranks  # 允许修改模块级变量
     base = "https://starrail.wget.es"
     async with aiohttp.ClientSession() as s:
         v = await (await s.get(f"{base}/version.json")).json()
         remote_sha = v["files"]["light_cone_ranks.json"]["sha256"]
-        local_sha = hashlib.sha256(LIGHT_CONE_FILE.read_bytes()).hexdigest() if LIGHT_CONE_FILE.exists() else None
+        local_sha = (
+            hashlib.sha256(LIGHT_CONE_FILE.read_bytes()).hexdigest()
+            if LIGHT_CONE_FILE.exists()
+            else None
+        )
 
         if local_sha != remote_sha:
             ver = v["version"]

@@ -2,9 +2,9 @@ from io import BytesIO
 from pathlib import Path
 from typing import TypeVar
 
-from PIL import Image
 from gsuid_core.data_store import get_res_path
 from httpx import AsyncClient
+from PIL import Image
 
 T = TypeVar("T")
 

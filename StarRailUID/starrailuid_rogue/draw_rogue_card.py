@@ -2,12 +2,12 @@ import math
 from pathlib import Path
 from typing import List, Optional, Union
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring
+from PIL import Image, ImageDraw
 
 from ..sruid_utils.api.mys.models import (
     LocustBlocks,
@@ -16,12 +16,7 @@ from ..sruid_utils.api.mys.models import (
     RogueMiracles,
 )
 from ..utils.error_reply import prefix
-from ..utils.fonts.starrail_fonts import (
-    sr_font_22,
-    sr_font_28,
-    sr_font_34,
-    sr_font_42,
-)
+from ..utils.fonts.starrail_fonts import sr_font_22, sr_font_28, sr_font_34, sr_font_42
 from ..utils.image.image_tools import _get_event_avatar, elements
 from ..utils.mys_api import mys_api
 from ..utils.resource.get_pic_from import get_roleinfo_icon
@@ -385,12 +380,16 @@ async def draw_rogue_img(
 
         floor_center_pic = Image.open(TEXT_PATH / "floor_bg_center.png")
         floor_center_pic = floor_center_pic.convert("RGBA")
-        floor_center_pic = floor_center_pic.resize((900, detail_h_list[index_floor] - 170))
+        floor_center_pic = floor_center_pic.resize(
+            (900, detail_h_list[index_floor] - 170)
+        )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
         floor_bot_pic = Image.open(TEXT_PATH / "floor_bg_bot.png")
         floor_bot_pic = floor_bot_pic.convert("RGBA")
-        floor_pic.paste(floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic)
+        floor_pic.paste(
+            floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic
+        )
 
         floor_name = progresslist[detail.progress]
         difficulty_name = difficultylist[detail.difficulty]
@@ -649,12 +648,16 @@ async def draw_rogue_locust_img(
 
         floor_center_pic = Image.open(TEXT_PATH / "floor_bg_center.png")
         floor_center_pic = floor_center_pic.convert("RGBA")
-        floor_center_pic = floor_center_pic.resize((900, detail_h_list[index_floor] - 170))
+        floor_center_pic = floor_center_pic.resize(
+            (900, detail_h_list[index_floor] - 170)
+        )
         floor_pic.paste(floor_center_pic, (0, 100), floor_center_pic)
 
         floor_bot_pic = Image.open(TEXT_PATH / "floor_bg_bot.png")
         floor_bot_pic = floor_bot_pic.convert("RGBA")
-        floor_pic.paste(floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic)
+        floor_pic.paste(
+            floor_bot_pic, (0, detail_h_list[index_floor] - 70), floor_bot_pic
+        )
 
         floor_name = detail.name
         difficulty_name = difficultylist[detail.difficulty]
@@ -749,7 +752,9 @@ async def draw_rogue_locust_img(
                 sr_font_34,
                 "lm",
             )
-            floor_pic.paste(content_center, (0, 370 + miracles_height + 80), content_center)
+            floor_pic.paste(
+                content_center, (0, 370 + miracles_height + 80), content_center
+            )
             draw_height = await _draw_rogue_miracles(
                 detail.miracles,
                 floor_pic,
@@ -768,7 +773,9 @@ async def draw_rogue_locust_img(
                 sr_font_34,
                 "lm",
             )
-            floor_pic.paste(content_center, (0, 370 + blocks_height + 80), content_center)
+            floor_pic.paste(
+                content_center, (0, 370 + blocks_height + 80), content_center
+            )
             draw_height = await _draw_rogue_blocks(
                 detail.blocks,
                 floor_pic,

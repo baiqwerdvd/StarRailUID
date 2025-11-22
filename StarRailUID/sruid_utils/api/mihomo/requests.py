@@ -3,9 +3,9 @@ from pathlib import Path
 from httpx import AsyncClient
 from msgspec import convert
 
-from .models import MihomoData
-from ..utils import _HEADER
 from ....utils.resource.RESOURCE_PATH import PLAYER_PATH
+from ..utils import _HEADER
+from .models import MihomoData
 
 
 async def get_char_card_info(uid: str) -> MihomoData:

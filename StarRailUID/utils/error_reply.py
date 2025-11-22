@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-from gsuid_core.utils.error_reply import ERROR_CODE
 from gsuid_core.sv import get_plugin_available_prefix
+from gsuid_core.utils.error_reply import ERROR_CODE
 
 prefix = get_plugin_available_prefix("StarRailUID")
 

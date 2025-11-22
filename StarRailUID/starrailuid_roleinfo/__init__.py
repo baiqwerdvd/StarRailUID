@@ -7,8 +7,8 @@ from gsuid_core.sv import SV
 from gsuid_core.utils.database.api import get_uid
 from gsuid_core.utils.database.models import GsBind
 
-from .draw_roleinfo_card import get_detail_img, get_role_img
 from ..utils.error_reply import UID_HINT
+from .draw_roleinfo_card import get_detail_img, get_role_img
 
 sv_get_info = SV("sr查询信息")
 

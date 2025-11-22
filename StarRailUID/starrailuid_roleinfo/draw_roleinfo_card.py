@@ -2,12 +2,12 @@ import asyncio
 from pathlib import Path
 from typing import Dict, Generator, List, Optional, TypeVar, Union
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring
+from PIL import Image, ImageDraw
 
 from ..sruid_utils.api.mys.models import (
     AvatarDetail,
@@ -68,7 +68,9 @@ def wrap_list(lst: List[T], n: int) -> Generator[List[T], None, None]:
         yield lst[i : i + n]
 
 
-async def _draw_card_1(ev: Event, sr_uid: str, role_basic_info: RoleBasicInfo, stats: Stats) -> Image.Image:
+async def _draw_card_1(
+    ev: Event, sr_uid: str, role_basic_info: RoleBasicInfo, stats: Stats
+) -> Image.Image:
     # 名称
     nickname = role_basic_info.nickname
 
@@ -129,7 +131,9 @@ async def _draw_card_1(ev: Event, sr_uid: str, role_basic_info: RoleBasicInfo, s
         fill=white_color,
         anchor="mm",
     )  # 战利品开启
-    bg1_draw.text((666, 590), str(level), font=sr_font_36, fill=white_color, anchor="mm")  # 开拓等级
+    bg1_draw.text(
+        (666, 590), str(level), font=sr_font_36, fill=white_color, anchor="mm"
+    )  # 开拓等级
 
     # 画忘却之庭
     bg1_draw.text(
@@ -143,7 +147,9 @@ async def _draw_card_1(ev: Event, sr_uid: str, role_basic_info: RoleBasicInfo, s
     return img_bg1
 
 
-async def _draw_avatar_card(avatar: AvatarListItem, equips: Dict[int, Optional[str]]) -> Image.Image:
+async def _draw_avatar_card(
+    avatar: AvatarListItem, equips: Dict[int, Optional[str]]
+) -> Image.Image:
     char_bg = (char_bg_4 if avatar.rarity == 4 else char_bg_5).copy()
     char_draw = ImageDraw.Draw(char_bg)
     char_icon = (await get_roleinfo_icon(avatar.icon)).resize((110, 120))
@@ -177,7 +183,9 @@ async def _draw_avatar_card(avatar: AvatarListItem, equips: Dict[int, Optional[s
     return char_bg
 
 
-async def _draw_line(avatars: List[AvatarListItem], equips: Dict[int, Optional[str]]) -> Image.Image:
+async def _draw_line(
+    avatars: List[AvatarListItem], equips: Dict[int, Optional[str]]
+) -> Image.Image:
     line = bg2.copy()
     x = 70
     char_bgs: List[Image.Image] = await asyncio.gather(
@@ -189,7 +197,9 @@ async def _draw_line(avatars: List[AvatarListItem], equips: Dict[int, Optional[s
     return line
 
 
-async def _draw_card_2(avatars: List[AvatarListItem], equips: Dict[int, Optional[str]]) -> Image.Image:
+async def _draw_card_2(
+    avatars: List[AvatarListItem], equips: Dict[int, Optional[str]]
+) -> Image.Image:
     # 角色部分 每五个一组
     lines = await asyncio.gather(
         *[_draw_line(five_avatars, equips) for five_avatars in wrap_list(avatars, 5)]

@@ -1,12 +1,12 @@
 from pathlib import Path
 from typing import Union
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring
+from PIL import Image, ImageDraw
 
 from ..sruid_utils.api.mys.models import AbyssAvatar
 from ..utils.error_reply import prefix
@@ -120,7 +120,9 @@ async def draw_abyss_img(
     if raw_abyss_data.max_floor == "":
         return f"你还没有挑战本期深渊!\n可以使用[{prefix}上期深渊]命令查询上期~"
     # 过滤掉 is_fast (快速通关) 为 True 的项
-    floor_detail = [detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast]
+    floor_detail = [
+        detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast
+    ]
     floor_num = len(floor_detail)
 
     # 获取背景图片各项参数

@@ -1,14 +1,14 @@
 import asyncio
-from datetime import datetime
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import List, Tuple, Union
 
-from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_pic_with_ring, get_color_bg
+from PIL import Image, ImageDraw
 
 from ..utils.error_reply import prefix
 from ..utils.fonts.starrail_fonts import (
@@ -20,11 +20,7 @@ from ..utils.fonts.starrail_fonts import (
 )
 from ..utils.image.image_tools import _get_event_avatar
 from ..utils.name_covert import name_to_avatar_id, name_to_weapon_id
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_ICON_PATH,
-    PLAYER_PATH,
-    WEAPON_PATH,
-)
+from ..utils.resource.RESOURCE_PATH import CHAR_ICON_PATH, PLAYER_PATH, WEAPON_PATH
 
 TEXT_PATH = Path(__file__).parent / "texture2d"
 EMO_PATH = Path(__file__).parent / "texture2d" / "emo"
@@ -243,14 +239,18 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             total_data[i]["avg"] = 0
         else:
             total_data[i]["avg"] = float(
-                "{:.2f}".format(sum(total_data[i]["r_num"]) / len(total_data[i]["r_num"]))
+                "{:.2f}".format(
+                    sum(total_data[i]["r_num"]) / len(total_data[i]["r_num"])
+                )
             )
         # 计算平均up数量
         if len(total_data[i]["up_list"]) == 0:
             total_data[i]["avg_up"] = 0
         else:
             total_data[i]["avg_up"] = float(
-                "{:.2f}".format(sum(total_data[i]["r_num"]) / len(total_data[i]["up_list"]))
+                "{:.2f}".format(
+                    sum(total_data[i]["r_num"]) / len(total_data[i]["up_list"])
+                )
             )
 
         # 计算抽卡类型
@@ -258,20 +258,37 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
         if gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] <= 40:
             total_data[i]["type"] = "佛系型"
         # 如果长时抽卡总数占据了总抽卡数的70%
-        elif total_data[i]["long_gacha_data"]["num"] / gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] >= 0.7:
+        elif (
+            total_data[i]["long_gacha_data"]["num"]
+            / gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]
+            >= 0.7
+        ):
             total_data[i]["type"] = "随缘型"
         # 如果短时抽卡总数占据了总抽卡数的70%
-        elif total_data[i]["short_gacha_data"]["num"] / gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] >= 0.7:
+        elif (
+            total_data[i]["short_gacha_data"]["num"]
+            / gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]
+            >= 0.7
+        ):
             total_data[i]["type"] = "规划型"
         # 如果抽卡数量远远大于标称抽卡数量
-        elif total_data[i]["all_time"] / 30000 <= gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]:
+        elif (
+            total_data[i]["all_time"] / 30000
+            <= gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]
+        ):
             # 如果长时抽卡数量大于短时抽卡数量
-            if total_data[i]["long_gacha_data"]["num"] >= total_data[i]["short_gacha_data"]["num"]:
+            if (
+                total_data[i]["long_gacha_data"]["num"]
+                >= total_data[i]["short_gacha_data"]["num"]
+            ):
                 total_data[i]["type"] = "规划型"
             else:
                 total_data[i]["type"] = "氪金型"
         # 如果抽卡数量远远小于标称抽卡数量
-        elif total_data[i]["all_time"] / 32000 >= gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] * 2:
+        elif (
+            total_data[i]["all_time"] / 32000
+            >= gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] * 2
+        ):
             total_data[i]["type"] = "仓鼠型"
 
     # 常量偏移数据
@@ -293,7 +310,14 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     img = Abg3_img.copy()
     img = await get_color_bg(
         800,
-        1600 + 1200 + normal_y + char_y + weapon_y + char_collab_y + weapon_collab_y + begin_y,
+        1600
+        + 1200
+        + normal_y
+        + char_y
+        + weapon_y
+        + char_collab_y
+        + weapon_collab_y
+        + begin_y,
     )
     gacha_title = bg1_img.copy()
     gacha_title.paste(char_pic, (297, 81), char_pic)
@@ -309,17 +333,29 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     for index, i in enumerate(type_list):
         title = Image.open(TEXT_PATH / "bg2.png")
         if i == "群星跃迁":
-            level = await get_level_from_list(total_data[i]["avg"], [54, 61, 67, 73, 80])
+            level = await get_level_from_list(
+                total_data[i]["avg"], [54, 61, 67, 73, 80]
+            )
         elif i == "始发跃迁":
-            level = await get_level_from_list(total_data[i]["avg"], [10, 20, 30, 40, 50])
+            level = await get_level_from_list(
+                total_data[i]["avg"], [10, 20, 30, 40, 50]
+            )
         elif i == "光锥跃迁":
-            level = await get_level_from_list(total_data[i]["avg_up"], [62, 75, 88, 99, 111])
+            level = await get_level_from_list(
+                total_data[i]["avg_up"], [62, 75, 88, 99, 111]
+            )
         elif i == "角色跃迁":
-            level = await get_level_from_list(total_data[i]["avg_up"], [74, 87, 99, 105, 120])
+            level = await get_level_from_list(
+                total_data[i]["avg_up"], [74, 87, 99, 105, 120]
+            )
         elif i == "光锥联动跃迁":
-            level = await get_level_from_list(total_data[i]["avg_up"], [62, 75, 88, 99, 111])
+            level = await get_level_from_list(
+                total_data[i]["avg_up"], [62, 75, 88, 99, 111]
+            )
         elif i == "角色联动跃迁":
-            level = await get_level_from_list(total_data[i]["avg_up"], [74, 87, 99, 105, 120])
+            level = await get_level_from_list(
+                total_data[i]["avg_up"], [74, 87, 99, 105, 120]
+            )
         else:
             continue
 
@@ -368,7 +404,9 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             "mm",
         )
         y_extend += (
-            (1 + ((total_data[type_list[index - 1]]["total"] - 1) // 5)) * single_y if index != 0 else 0
+            (1 + ((total_data[type_list[index - 1]]["total"] - 1) // 5)) * single_y
+            if index != 0
+            else 0
         )
         y = 350 + index * 400 + y_extend
         img.paste(title, (0, y), title)

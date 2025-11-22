@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import Union
 
-from PIL import Image
 from gsuid_core.models import Event
 from gsuid_core.utils.image.image_tools import CustomizeImage, get_event_avatar
+from PIL import Image
 
 from ..resource.RESOURCE_PATH import CHAR_ICON_PATH, CU_BG_PATH
 
@@ -15,9 +15,15 @@ NATURE_ICON_PATH = Path(__file__).parent / "icon_nature"
 elements = {
     "ice": Image.open(NATURE_ICON_PATH / "IconNatureColorIce.png").convert("RGBA"),
     "fire": Image.open(NATURE_ICON_PATH / "IconNatureColorFire.png").convert("RGBA"),
-    "imaginary": Image.open(NATURE_ICON_PATH / "IconNatureColorImaginary.png").convert("RGBA"),
-    "quantum": Image.open(NATURE_ICON_PATH / "IconNatureColorQuantum.png").convert("RGBA"),
-    "lightning": Image.open(NATURE_ICON_PATH / "IconNatureColorThunder.png").convert("RGBA"),
+    "imaginary": Image.open(NATURE_ICON_PATH / "IconNatureColorImaginary.png").convert(
+        "RGBA"
+    ),
+    "quantum": Image.open(NATURE_ICON_PATH / "IconNatureColorQuantum.png").convert(
+        "RGBA"
+    ),
+    "lightning": Image.open(NATURE_ICON_PATH / "IconNatureColorThunder.png").convert(
+        "RGBA"
+    ),
     "wind": Image.open(NATURE_ICON_PATH / "IconNatureColorWind.png").convert("RGBA"),
     "physical": Image.open(NATURE_ICON_PATH / "IconNaturePhysical.png").convert("RGBA"),
 }

@@ -27,22 +27,22 @@ async def send_daily_info(bot: Bot, ev: Event):
     im = await get_stamina_text(uid)
     await bot.send(im)
 
+
 @sv_get_stamina_admin.on_fullmatch("强制推送体力提醒")
 async def force_notice_job(bot: Bot, ev: Event):
-    await bot.send('🔨 [原神服务]\n🌱 开始执行强制推送体力提醒!')
+    await bot.send("🔨 [原神服务]\n🌱 开始执行强制推送体力提醒!")
     await sr_notice_job(True)
-    await bot.send('🔨 [原神服务]\n✅ 强制推送体力提醒执行完成!')
+    await bot.send("🔨 [原神服务]\n✅ 强制推送体力提醒执行完成!")
 
 
-@scheduler.scheduled_job('cron', minute='*/30')
+@scheduler.scheduled_job("cron", minute="*/30")
 async def sr_notice_job(force: bool = False):
     StaminaCheck = srconfig.get_config("StaminaCheck").data
     if StaminaCheck or force:
         await get_notice_list()
         logger.info("[星铁服务] [推送检查] 完成!")
     else:
-        logger.info('🔨 [原神服务]\n❌ 未开启推送检查功能!')
-
+        logger.info("🔨 [原神服务]\n❌ 未开启推送检查功能!")
 
 
 @sv_get_stamina.on_fullmatch(

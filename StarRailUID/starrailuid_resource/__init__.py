@@ -2,10 +2,10 @@ from gsuid_core.bot import Bot
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.sv import SV
-
-from ..utils.resource.download_all_file import check_use
-from ..utils.excel.read_excel import update_light_cone_ranks
 from starrail_damage_cal.update import update_resource
+
+from ..utils.excel.read_excel import update_light_cone_ranks
+from ..utils.resource.download_all_file import check_use
 
 sv_sr_download_config = SV("sr下载资源", pm=1)
 
@@ -23,17 +23,17 @@ async def send_download_resource_msg(bot: Bot, ev: Event):
     await bot.send(im)
     try:
         import importlib
-        import starrail_damage_cal.map.SR_MAP_PATH
+
         import starrail_damage_cal.excel.model
-    
+        import starrail_damage_cal.map.SR_MAP_PATH
+
         importlib.reload(starrail_damage_cal.map.SR_MAP_PATH)
         importlib.reload(starrail_damage_cal.excel.model)
-    
+
         await bot.send("✅ 数据模块已重新加载")
     except Exception:
         logger.exception("重载数据时出错")
         await bot.send("⚠️ 重载数据可能发生异常，建议重新启动以重载数据")
-    
 
 
 async def startup():
