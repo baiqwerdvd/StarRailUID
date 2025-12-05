@@ -149,12 +149,26 @@ async def save_gachalogs(
             "光锥联动跃迁": [],
         }
         if gachalogs_history:
-            for i in ["始发跃迁", "群星跃迁", "角色跃迁", "光锥跃迁", "角色联动跃迁", "光锥联动跃迁"]:
+            for i in [
+                "始发跃迁",
+                "群星跃迁",
+                "角色跃迁",
+                "光锥跃迁",
+                "角色联动跃迁",
+                "光锥联动跃迁",
+            ]:
                 for item in raw_data[i]:
                     if item not in gachalogs_history[i] and item not in new_data[i]:
                         new_data[i].append(item)
             raw_data = new_data
-            for i in ["始发跃迁", "群星跃迁", "角色跃迁", "光锥跃迁", "角色联动跃迁", "光锥联动跃迁"]:
+            for i in [
+                "始发跃迁",
+                "群星跃迁",
+                "角色跃迁",
+                "光锥跃迁",
+                "角色联动跃迁",
+                "光锥联动跃迁",
+            ]:
                 raw_data[i].extend(gachalogs_history[i])
 
     if raw_data == {} or not raw_data:
@@ -168,7 +182,14 @@ async def save_gachalogs(
         "角色联动跃迁": [],
         "光锥联动跃迁": [],
     }
-    for i in ["始发跃迁", "群星跃迁", "角色跃迁", "光锥跃迁", "角色联动跃迁", "光锥联动跃迁"]:
+    for i in [
+        "始发跃迁",
+        "群星跃迁",
+        "角色跃迁",
+        "光锥跃迁",
+        "角色联动跃迁",
+        "光锥联动跃迁",
+    ]:
         for item in raw_data[i]:
             if item not in temp_data[i]:
                 temp_data[i].append(item)

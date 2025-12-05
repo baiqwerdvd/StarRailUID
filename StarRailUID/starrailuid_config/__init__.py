@@ -37,14 +37,18 @@ async def send_config_ev(bot: Bot, ev: Event):
     value = value[0] if value else None
 
     if value is None:
-        return await bot.send(f"🔨 [星铁服务]\n❌ 请输入正确的阈值数字...\n🚩 例如: {P}设置体力阈值200")
+        return await bot.send(
+            f"🔨 [星铁服务]\n❌ 请输入正确的阈值数字...\n🚩 例如: {P}设置体力阈值200"
+        )
 
     logger.info(f"[设置阈值信息] func: {config_name}, value: {value}")
 
     if config_name not in PRIV_MAP or (
         config_name in PRIV_MAP and PRIV_MAP[config_name] is None
     ):
-        return await bot.send(f"🔨 [星铁服务]\n❌ 请输入正确的功能名称...\n🚩 例如: {P}设置体力阈值200")
+        return await bot.send(
+            f"🔨 [星铁服务]\n❌ 请输入正确的功能名称...\n🚩 例如: {P}设置体力阈值200"
+        )
 
     datas = await gs_subscribe.get_subscribe(
         f"[星铁] {config_name}",
@@ -80,7 +84,9 @@ async def open_switch_func(bot: Bot, ev: Event):
         config_name = config_name.replace("推送", "")
 
     if config_name not in PRIV_MAP:
-        return await bot.send(f"🔨 [星铁服务]\n❌ 请输入正确的功能名称...\n🚩 例如: {P}开启自动签到")
+        return await bot.send(
+            f"🔨 [星铁服务]\n❌ 请输入正确的功能名称...\n🚩 例如: {P}开启自动签到"
+        )
 
     logger.info(f"[星铁服务] [{user_id}]尝试[{ev.command[2:]}]了[{ev.text}]功能")
 

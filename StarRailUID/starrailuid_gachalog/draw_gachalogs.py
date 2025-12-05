@@ -148,7 +148,14 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     # 数据初始化
     total_data = {}
-    for i in ["群星跃迁", "始发跃迁", "角色跃迁", "光锥跃迁", "角色联动跃迁", "光锥联动跃迁"]:
+    for i in [
+        "群星跃迁",
+        "始发跃迁",
+        "角色跃迁",
+        "光锥跃迁",
+        "角色联动跃迁",
+        "光锥联动跃迁",
+    ]:
         total_data[i] = {
             "total": 0,  # 五星总数
             "avg": 0,  # 抽卡平均数
@@ -327,7 +334,14 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     # 处理title
     # {'total': 0, 'avg': 0, 'remain': 0, 'list': []}
-    type_list = ["角色跃迁", "光锥跃迁", "角色联动跃迁", "光锥联动跃迁", "群星跃迁", "始发跃迁"]
+    type_list = [
+        "角色跃迁",
+        "光锥跃迁",
+        "角色联动跃迁",
+        "光锥联动跃迁",
+        "群星跃迁",
+        "始发跃迁",
+    ]
     y_extend = 0
     level = 3
     for index, i in enumerate(type_list):

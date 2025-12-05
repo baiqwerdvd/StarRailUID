@@ -1,6 +1,9 @@
+import re
+
 from gsuid_core.bot import Bot
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
+from gsuid_core.segment import MessageSegment
 from gsuid_core.sv import SV
 
 from ..utils.mys_api import mys_api
@@ -20,7 +23,7 @@ async def send_monthly_data(bot: Bot, ev: Event):
     if not isinstance(code_ver, str):
         await bot.send("获取兑换码版本失败，请稍后再试")
         return
-    code = await mys_api.get_sr_exchange_code(code_ver)
+    code = await mys_api.get_sr_exchange_code(code_ver, act_id)
     logger.debug(f"兑换码获取结果: {code}")
     if str(code) == "-500012":
         await bot.send("本期直播活动已结束，请等待下一次直播")
@@ -28,5 +31,11 @@ async def send_monthly_data(bot: Bot, ev: Event):
     if not isinstance(code, list):
         await bot.send("获取兑换码失败，请稍后再试")
         return
-    await bot.send(code)
+    msg = ["崩坏：星穹铁道直播兑换码"]
+    for item in code:
+        clean_text = re.sub(r"<[^>]+>", "", item["title"])
+        clean_text = clean_text.replace("，", " ")
+        msg.append(clean_text)
+        msg.append(item["code"])
+    await bot.send(MessageSegment.node(msg))
     return

@@ -17,7 +17,9 @@ STAR_RAIL_SIGN_EXTRA_REWARD_URL = f"{OLD_URL}/event/luna/extra_reward"
 STAR_RAIL_SIGN_URL = f"{OLD_URL}/event/luna/sign"
 STAR_RAIL_SIGN_URL_OS = f"{OS_URL}/event/luna/os/sign"
 STAR_RAIL_MONTH_INFO_URL = f"{OLD_URL}/event/srledger/month_info"  # 开拓阅历接口
-STAR_RAIL_MONTH_DETAIL_URL = f"{OLD_URL}/event/srledger/month_detail"  # 开拓阅历详情接口
+STAR_RAIL_MONTH_DETAIL_URL = (
+    f"{OLD_URL}/event/srledger/month_detail"  # 开拓阅历详情接口
+)
 
 STAR_RAIL_NOTE_URL = f"{NEW_URL}/game_record/app/hkrpg/api/note"  # 实时便签接口
 STAR_RAIL_NOTE_URL_OS = f"{OS_INFO_URL}/game_record/hkrpg/api/note"  # OS实时便签接口
@@ -45,8 +47,12 @@ CHALLENGE_INFO_URL_OS = f"{OS_INFO_URL}/game_record/hkrpg/api/challenge"  # OS�
 CHALLENGE_STORY_INFO_URL = (
     f"{NEW_URL}/game_record/app/hkrpg/api/challenge_story"  # 虚构叙事
 )
-CHALLENGE_BOSS_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/challenge_boss"  # 末日幻影
-CHALLENGE_PEAK_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/challenge_peak"  # 异相仲裁
+CHALLENGE_BOSS_INFO_URL = (
+    f"{NEW_URL}/game_record/app/hkrpg/api/challenge_boss"  # 末日幻影
+)
+CHALLENGE_PEAK_INFO_URL = (
+    f"{NEW_URL}/game_record/app/hkrpg/api/challenge_peak"  # 异相仲裁
+)
 
 ROGUE_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/rogue"  # 角色模拟宇宙信息接口
 ROGUE_LOCUST_INFO_URL = (

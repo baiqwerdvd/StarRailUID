@@ -669,12 +669,13 @@ class MysApi(_MysApi):
             return code_ver
         return data
 
-    async def get_sr_exchange_code(self, code_ver: str) -> list | int:
+    async def get_sr_exchange_code(self, code_ver: str, act_id: str) -> list | int:
         now = int(time.time())
         data = await self._mys_request(
             url=_API["STAR_RAIL_EXCHANGE_CODE_URL"],
             method="GET",
             params={"version": code_ver, "time": now},
+            header={"x-rpc-act_id": act_id},
         )
         logger.debug(f"获取兑换码返回数据: {data}")
         if isinstance(data, dict):
