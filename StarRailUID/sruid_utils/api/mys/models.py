@@ -231,6 +231,65 @@ class RogueLocustData(Struct):
     detail: LocustRecord
 
 
+class GridFightDivision(Struct):
+    name_with_num: str
+    icon: str
+    level: int
+    name: str
+    is_promotion: bool
+    icon_with_bg: str
+
+
+class GridFightBrief(Struct):
+    has_played: bool
+    trait_progress: Union[int, None] = None
+    division: Union[GridFightDivision, None] = None
+    weekly_score_cur: int = 0
+    weekly_score_max: int = 18000
+    unlocked: Union[bool, None] = None
+    quest_cur: int = 0
+    handbook_progress: int = 0
+    season_level: int = 0
+    quest_max: int = 0
+
+
+class GridFightDataBrief(Struct):
+    archive_rank: str
+    division: GridFightDivision
+    total_coin: int
+    archive_time: str
+    archive_time_ts: int
+    remain_hp: int
+    lineup_coin: int
+
+
+class GridFightRoleItem(Struct):
+    name: str
+    pos: int
+    star: int
+    avatar_id: int
+    role_type: str
+    is_trail: bool
+    rarity: int
+    equip_list: Union[List, None] = None
+
+
+class GridFightLineupItem(Struct):
+    front_roles: List[GridFightRoleItem]
+    back_roles: List[GridFightRoleItem]
+
+
+class GridFightData(Struct):
+    archive_type: str
+    brief: GridFightDataBrief
+    lineup: GridFightLineupItem
+
+
+class GridFightCurrency(Struct):
+    grid_fight_brief: GridFightBrief
+    grid_fight_archive_list: Union[List[GridFightData], None] = None
+
+
 ################
 #   深渊相关   #
 ################

@@ -58,6 +58,9 @@ ROGUE_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/rogue"  # 角色模拟宇
 ROGUE_LOCUST_INFO_URL = (
     f"{NEW_URL}/game_record/app/hkrpg/api/rogue_locust"  # 角色寰宇蝗灾信息接口
 )
+GRID_FIGHT_INFO_URL = (
+    f"{NEW_URL}/game_record/app/hkrpg/api/grid_fight"  # 货币战争信息接口
+)
 
 STAR_RAIL_GACHA_LOG_URL = (
     "https://public-operation-hkrpg.mihoyo.com/common/gacha_record/api/getGachaLog"

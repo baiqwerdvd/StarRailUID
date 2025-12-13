@@ -22,6 +22,7 @@ from ..sruid_utils.api.mys.models import (
     AvatarInfo,
     DailyNoteData,
     GachaLog,
+    GridFightCurrency,
     MonthlyAward,
     MysSign,
     RogueData,
@@ -681,6 +682,23 @@ class MysApi(_MysApi):
         if isinstance(data, dict):
             code_list = data.get("data", {}).get("code_list", [])
             return code_list
+        return data
+
+    async def get_sr_grid_fight_info(self, uid: str) -> Union[Dict, int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0])
+        ck = await self.get_sr_ck(sr_uid, "OWNER")
+        data = await self.simple_sr_req(
+            "GRID_FIGHT_INFO_URL",
+            uid,
+            params={
+                "role_id": uid,
+                "server": server_id,
+            },
+            header=self._HEADER,
+            cookie=ck,
+        )
+        if isinstance(data, Dict):
+            data = msgspec.convert(data["data"], type=GridFightCurrency)
         return data
 
 
