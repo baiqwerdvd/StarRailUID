@@ -276,7 +276,7 @@ class GridFightRoleItem(Struct):
     star: str
     avatar_id: str
     role_type: str
-    is_trail: bool
+    is_trial: bool
     rarity: str
     equip_list: Union[List[GridFightEquipItem], None] = None
 
