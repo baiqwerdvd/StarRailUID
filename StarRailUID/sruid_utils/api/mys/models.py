@@ -234,7 +234,7 @@ class RogueLocustData(Struct):
 class GridFightDivision(Struct):
     name_with_num: str
     icon: str
-    level: int
+    level: str
     name: str
     is_promotion: bool
     icon_with_bg: str
