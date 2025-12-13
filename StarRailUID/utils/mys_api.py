@@ -686,7 +686,7 @@ class MysApi(_MysApi):
 
     async def get_sr_grid_fight_info(self, uid: str) -> Union[Dict, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
-        ck = await self.get_sr_ck(sr_uid, "OWNER")
+        ck = await self.get_sr_ck(uid, "OWNER")
         data = await self.simple_sr_req(
             "GRID_FIGHT_INFO_URL",
             uid,

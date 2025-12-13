@@ -24,6 +24,10 @@ from ..utils.image.image_tools import _get_event_avatar, elements
 from ..utils.mys_api import mys_api
 
 
+TEXT_PATH = Path(__file__).parent / "texture2D"
+img_bg = Image.open(TEXT_PATH / "bg.jpg")
+
+
 async def draw_grid_img(
     ev: Event,
     uid: str,
@@ -38,4 +42,11 @@ async def draw_grid_img(
     if not raw_grid_data.grid_fight_brief.has_played:
         return f"还没玩过呢~别查！"
 
-    return "施工中"
+    img = img_bg.copy()
+    char_pic = await _get_event_avatar(ev)
+    char_pic = await draw_pic_with_ring(char_pic, 100, None, False)
+    img.paste(char_pic, (80, 220), char_pic)
+
+    res = await convert_img(img)
+
+    return res
