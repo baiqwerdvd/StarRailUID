@@ -242,36 +242,43 @@ class GridFightDivision(Struct):
 
 class GridFightBrief(Struct):
     has_played: bool
-    trait_progress: Union[int, None] = None
-    division: Union[GridFightDivision, None] = None
-    weekly_score_cur: int = 0
-    weekly_score_max: int = 18000
+    season_level: str
+    weekly_score_cur: str
+    weekly_score_max: str
+    quest_cur: str
+    handbook_progress: str
+    quest_max: str
     unlocked: Union[bool, None] = None
-    quest_cur: int = 0
-    handbook_progress: int = 0
-    season_level: int = 0
-    quest_max: int = 0
+    trait_progress: Union[str, None] = None
+    division: Union[GridFightDivision, None] = None
 
 
 class GridFightDataBrief(Struct):
     archive_rank: str
     division: GridFightDivision
-    total_coin: int
+    total_coin: str
     archive_time: str
-    archive_time_ts: int
-    remain_hp: int
-    lineup_coin: int
+    archive_time_ts: str
+    remain_hp: str
+    lineup_coin: str
+
+
+class GridFightEquipItem(Struct):
+    equip_id: str
+    icon: str
+    name: str
+    category: str
 
 
 class GridFightRoleItem(Struct):
     name: str
-    pos: int
-    star: int
-    avatar_id: int
+    pos: str
+    star: str
+    avatar_id: str
     role_type: str
     is_trail: bool
-    rarity: int
-    equip_list: Union[List, None] = None
+    rarity: str
+    equip_list: Union[List[GridFightEquipItem], None] = None
 
 
 class GridFightLineupItem(Struct):
