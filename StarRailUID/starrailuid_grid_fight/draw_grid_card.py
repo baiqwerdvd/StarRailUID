@@ -24,7 +24,7 @@ from ..utils.image.image_tools import _get_event_avatar, elements
 from ..utils.mys_api import mys_api
 
 
-def draw_grid_img(
+async def draw_grid_img(
     ev: Event,
     uid: str,
 ):
