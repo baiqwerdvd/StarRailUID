@@ -47,11 +47,11 @@ class Challenge(Struct):
 
 
 class PlayerSpaceInfo(Struct):
-    challengeInfo: Challenge
     maxRogueChallengeScore: int
     equipmentCount: int
     avatarCount: int
     achievementCount: int
+    challengeInfo: Union[Challenge, None] = None
 
 
 class PlayerDetailInfo(Struct):
