@@ -95,7 +95,7 @@ class MysApi(_MysApi):
             )
         if isinstance(data, Dict):
             # workaround for mistake params in hoyolab
-            if data["data"]["accepted_epedition_num"]:
+            if data["data"].get("accepted_epedition_num") is not None:
                 data["data"]["accepted_expedition_num"] = data["data"][
                     "accepted_epedition_num"
                 ]
