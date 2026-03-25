@@ -611,6 +611,41 @@ class RoleIndex(Struct):
 ################
 
 
+class MysAvatarProperty(Struct):
+    property_type: int
+    base: str
+    add: str
+    final: str
+
+
+class MysRelicProperty(Struct):
+    property_type: int
+    value: str
+    times: int
+    is_preview: bool = False
+
+
+class MysRelicMainProperty(Struct):
+    property_type: int
+    value: str
+    times: int
+    is_preview: bool = False
+
+
+class MysAvatarSkill(Struct):
+    point_id: int
+    point_type: int
+    item_url: str
+    level: int
+    is_activated: bool
+    is_rank_work: bool
+    pre_point: int
+    anchor: str
+    remake: str
+    skill_stages: Any = None
+    special_point_type: str = ""
+
+
 class Equip(Struct):
     id: int
     level: int
@@ -618,6 +653,7 @@ class Equip(Struct):
     name: str
     desc: str
     icon: str
+    rarity: int
 
 
 class RelicsItem(Struct):
@@ -628,6 +664,18 @@ class RelicsItem(Struct):
     desc: str
     icon: str
     rarity: int
+
+
+class MysRelicItem(Struct):
+    id: int
+    level: int
+    pos: int
+    name: str
+    desc: str
+    icon: str
+    rarity: int
+    main_property: MysRelicMainProperty
+    properties: List[MysRelicProperty]
 
 
 class RanksItem(Struct):
@@ -647,14 +695,26 @@ class AvatarListItemDetail(Struct):
     icon: str
     rarity: int
     rank: int
-    image: str
-    equip: Union[Equip, None]
-    relics: List[RelicsItem]
-    ornaments: List
-    ranks: List[RanksItem]
+    image: str = ""
+    equip: Union[Equip, None] = None
+    relics: List[MysRelicItem] = []
+    ornaments: List[MysRelicItem] = []
+    ranks: List[RanksItem] = []
+    properties: List[MysAvatarProperty] = []
+    skills: List[MysAvatarSkill] = []
+    base_type: int = 0
+    element_id: int = 0
+    figure_path: str = ""
+    cur_enhanced_id: int = 0
+    special_skills: List = []
+    avatar_ld_type: str = ""
+    servant_detail: Any = None
 
 
 class AvatarInfo(Struct):
     avatar_list: List[AvatarListItemDetail]
-    equip_wiki: Dict[str, str]
-    relic_wiki: Dict
+    equip_wiki: Dict[str, str] = {}
+    relic_wiki: Dict = {}
+    property_info: Dict = {}
+    recommend_property: Dict = {}
+    relic_properties: List = []

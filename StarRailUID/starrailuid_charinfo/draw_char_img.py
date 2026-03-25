@@ -94,7 +94,7 @@ RELIC_CNT = {
 
 
 async def draw_char_img(
-    char_data: MihomoCharacter, sr_uid: str, msg: str
+    char_data: MihomoCharacter, sr_uid: str, msg: str, source: str = "auto"
 ) -> Union[bytes, str]:
     if isinstance(char_data, str):
         return char_data
@@ -119,11 +119,7 @@ async def draw_char_img(
     # 放角色立绘
     char_info = bg_img.copy()
     char_info = char_info.resize((1050, 2050 + bg_height))
-    char_img = (
-        Image.open(CHAR_PORTRAIT_PATH / f"{char.char_id}.png")
-        .resize((1050, 1050))
-        .convert("RGBA")
-    )
+    char_img = Image.open(CHAR_PORTRAIT_PATH / f"{char.char_id}.png").resize((1050, 1050)).convert("RGBA")
     char_info.paste(char_img, (-220, -130), char_img)
 
     # 放属性图标
@@ -149,17 +145,13 @@ async def draw_char_img(
     )
 
     # 放星级
-    rarity_img = Image.open(
-        TEXT_PATH / f"LightCore_Rarity{char.char_rarity}.png"
-    ).resize((306, 72))
+    rarity_img = Image.open(TEXT_PATH / f"LightCore_Rarity{char.char_rarity}.png").resize((306, 72))
     char_info.paste(rarity_img, (490, 189), rarity_img)
 
     # 放命座
     rank_img = Image.open(TEXT_PATH / "ImgNewBg.png")
     rank_img_draw = ImageDraw.Draw(rank_img)
-    rank_img_draw.text(
-        (70, 44), f"{NUM_MAP[char.char_rank]}命", white_color, sr_font_28, "mm"
-    )
+    rank_img_draw.text((70, 44), f"{NUM_MAP[char.char_rank]}命", white_color, sr_font_28, "mm")
     char_info.paste(rank_img, (722, 181), rank_img)
 
     # 放uid
@@ -195,8 +187,7 @@ async def draw_char_img(
     # 攻击力
     attack = int(char.base_attributes.attack)
     add_attack = int(
-        char.add_attr.get("AttackDelta", 0)
-        + attack * char.add_attr.get("AttackAddedRatio", 0)
+        char.add_attr.get("AttackDelta", 0) + attack * char.add_attr.get("AttackAddedRatio", 0)
     )
     attr_bg_draw.text(
         (413, 31 + 48),
@@ -215,8 +206,7 @@ async def draw_char_img(
     # 防御力
     defence = int(char.base_attributes.defence)
     add_defence = int(
-        char.add_attr.get("DefenceDelta", 0)
-        + defence * char.add_attr.get("DefenceAddedRatio", 0)
+        char.add_attr.get("DefenceDelta", 0) + defence * char.add_attr.get("DefenceAddedRatio", 0)
     )
     attr_bg_draw.text(
         (413, 31 + 48 * 2),
@@ -234,10 +224,7 @@ async def draw_char_img(
     )
     # 速度
     speed = int(char.base_attributes.speed)
-    add_speed = int(
-        char.add_attr.get("SpeedDelta", 0)
-        + speed * char.add_attr.get("SpeedAddedRatio", 0)
-    )
+    add_speed = int(char.add_attr.get("SpeedDelta", 0) + speed * char.add_attr.get("SpeedAddedRatio", 0))
     attr_bg_draw.text(
         (413, 31 + 48 * 3),
         f"{speed + add_speed}",
@@ -321,11 +308,7 @@ async def draw_char_img(
                 .resize((50, 50))
                 .convert("RGBA")
             )
-            rank_img.putalpha(
-                rank_img.getchannel("A").point(
-                    lambda x: round(x * 0.45) if x > 0 else 0
-                )
-            )
+            rank_img.putalpha(rank_img.getchannel("A").point(lambda x: round(x * 0.45) if x > 0 else 0))
             rank_no_bg.paste(rank_img, (19, 19), rank_img)
             char_info.paste(rank_no_bg, (20 + rank * 80, 630), rank_no_bg)
 
@@ -336,10 +319,7 @@ async def draw_char_img(
         skill_attr_img = Image.open(TEXT_PATH / f"skill_attr{i + 1}.png")
         skill_panel_img = Image.open(TEXT_PATH / "skill_panel.png")
         skill_img = (
-            Image.open(
-                SKILL_PATH
-                / f"{char.char_id}_{skill_type_map[skill.skillAttackType][1]}.png"
-            )
+            Image.open(SKILL_PATH / f"{char.char_id}_{skill_type_map[skill.skillAttackType][1]}.png")
             .convert("RGBA")
             .resize((55, 55))
         )
@@ -375,11 +355,7 @@ async def draw_char_img(
     if char.equipment != {} and char.equipment.equipmentID:
         weapon_bg = Image.open(TEXT_PATH / "weapon_bg.png")
         weapon_id = char.equipment.equipmentID
-        weapon_img = (
-            Image.open(WEAPON_PATH / f"{weapon_id}.png")
-            .convert("RGBA")
-            .resize((170, 180))
-        )
+        weapon_img = Image.open(WEAPON_PATH / f"{weapon_id}.png").convert("RGBA").resize((170, 180))
         weapon_bg.paste(weapon_img, (20, 90), weapon_img)
         weapon_bg_draw = ImageDraw.Draw(weapon_bg)
         weapon_bg_draw.text(
@@ -408,9 +384,9 @@ async def draw_char_img(
         )
         weapon_bg.paste(rank_img, (weapon_name_len + 330, 2), rank_img)
 
-        rarity_img = Image.open(
-            TEXT_PATH / f"LightCore_Rarity{char.equipment.equipmentRarity}.png"
-        ).resize((306, 72))
+        rarity_img = Image.open(TEXT_PATH / f"LightCore_Rarity{char.equipment.equipmentRarity}.png").resize(
+            (306, 72)
+        )
         weapon_bg.paste(rarity_img, (223, 55), rarity_img)
         weapon_bg_draw.text(
             (498, 90),
@@ -463,24 +439,19 @@ async def draw_char_img(
             rarity = SR_MAP_PATH.RelicId2Rarity[str(relic.relicId)]
             relic_img = Image.open(TEXT_PATH / f"yq_bg{rarity}.png")
             if str(relic.SetId)[0] == "3":
-                relic_piece_img = Image.open(
-                    RELIC_PATH / f"{relic.SetId}_{relic.Type - 5}.png"
-                )
+                relic_piece_img = Image.open(RELIC_PATH / f"{relic.SetId}_{relic.Type - 5}.png")
             else:
-                relic_piece_img = Image.open(
-                    RELIC_PATH / f"{relic.SetId}_{relic.Type - 1}.png"
-                )
-            relic_piece_new_img = relic_piece_img.resize(
-                (105, 105), Image.Resampling.LANCZOS
-            ).convert("RGBA")
+                relic_piece_img = Image.open(RELIC_PATH / f"{relic.SetId}_{relic.Type - 1}.png")
+            relic_piece_new_img = relic_piece_img.resize((105, 105), Image.Resampling.LANCZOS).convert(
+                "RGBA"
+            )
             relic_img.paste(
                 relic_piece_new_img,
                 (200, 90),
                 relic_piece_new_img,
             )
             rarity_img = Image.open(
-                TEXT_PATH
-                / f"LightCore_Rarity{SR_MAP_PATH.RelicId2Rarity[str(relic.relicId)]}.png"
+                TEXT_PATH / f"LightCore_Rarity{SR_MAP_PATH.RelicId2Rarity[str(relic.relicId)]}.png"
             ).resize((200, 48))
             relic_img.paste(rarity_img, (-10, 80), rarity_img)
             relic_img_draw = ImageDraw.Draw(relic_img)
@@ -507,9 +478,7 @@ async def draw_char_img(
                 mainValueStr = str(math.floor(main_value * 1000) / 10) + "%"
 
             mainNameNew = (
-                main_name.replace("百分比", "")
-                .replace("伤害加成", "伤加成")
-                .replace("属性伤害", "伤害")
+                main_name.replace("百分比", "").replace("伤害加成", "伤加成").replace("属性伤害", "伤害")
             )
 
             relic_img_draw.text(
@@ -535,9 +504,7 @@ async def draw_char_img(
             )
 
             # 使用新的SRS系统计算遗器评分
-            score_info = await calculate_single_relic_score_srs(
-                relic, str(char.char_id), use_srs=True
-            )
+            score_info = await calculate_single_relic_score_srs(relic, str(char.char_id), use_srs=True)
             single_relic_score = score_info["total_score"]
 
             # 获取角色权重配置，用于判断副词条颜色
@@ -740,9 +707,13 @@ async def draw_char_img(
             current_h += 35
 
     # 写底层文字
+    if source == "mys":
+        watermark = "--Created by qwerdvd-Designed By Wuyi-Data from MiYouShe--"
+    else:
+        watermark = "--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--"
     char_img_draw.text(
         (525, 2022 + bg_height),
-        "--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--",
+        watermark,
         (255, 255, 255),
         fw_font_28,
         "mm",
@@ -754,9 +725,7 @@ async def draw_char_img(
     return res
 
 
-async def get_char_data(
-    uid: str, char_name: str, enable_self: bool = True
-) -> Union[Dict, str]:
+async def get_char_data(uid: str, char_name: str, enable_self: bool = True) -> Union[Dict, str]:
     player_path = PLAYER_PATH / str(uid)
     SELF_PATH = player_path / "SELF"
     if "开拓者" in str(char_name):
@@ -916,9 +885,7 @@ async def get_relic_score_srs(
     # ===== 3. 归一化 =====
     max_sub_score = config.max_value  # 从配置中获取理论最高分
     main_score_normalized = main_score_raw  # 主词条已经通过公式归一化到 [0, 1]
-    sub_score_normalized = (
-        min(sub_score_raw / max_sub_score, 1.0) if max_sub_score > 0 else 0.0
-    )
+    sub_score_normalized = min(sub_score_raw / max_sub_score, 1.0) if max_sub_score > 0 else 0.0
 
     # ===== 4. SRS-N（50-50权重合并） =====
     srs_n = main_score_normalized * 0.5 + sub_score_normalized * 0.5
@@ -953,9 +920,7 @@ async def calculate_single_relic_score_srs(
 
     if use_srs:
         # 使用新的SRS系统
-        main_normalized, sub_normalized, srs_m = await get_relic_score_srs(
-            relic, char_id
-        )
+        main_normalized, sub_normalized, srs_m = await get_relic_score_srs(relic, char_id)
         result["total_score"] = srs_m * 100  # 转换为0-100分
         result["srs_m"] = srs_m
         result["main_score"] = main_normalized
@@ -1006,11 +971,7 @@ async def calculate_single_relic_score_srs(
             is_valuable = True
         else:
             # 旧系统下，根据original score判断
-            item_score = (
-                result["sub_details"][index]["score"]
-                if index < len(result["sub_details"])
-                else 0
-            )
+            item_score = result["sub_details"][index]["score"] if index < len(result["sub_details"]) else 0
             is_valuable = item_score > 0
 
         result["sub_details"].append(

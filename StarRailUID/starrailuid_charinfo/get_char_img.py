@@ -15,7 +15,7 @@ from starrail_damage_cal.model import (
     MihomoCharacter,
     RankData,
 )
-from starrail_damage_cal.to_data import api_to_dict, characterSkillTree
+from starrail_damage_cal.to_data import characterSkillTree
 
 from ..utils.error_reply import CHAR_HINT
 from ..utils.name_covert import (
@@ -24,8 +24,8 @@ from ..utils.name_covert import (
     name_to_avatar_id,
     name_to_weapon_id,
 )
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from .draw_char_img import draw_char_img
+from .panel_data import fetch_panel_data
 
 WEAPON_TO_INT = {
     "一": 1,
@@ -66,20 +66,21 @@ async def draw_char_info_img(raw_mes: str, sr_uid: str):
     if isinstance(_args[0], str):
         return _args[0]
 
-    char = await get_char(*_args)
+    char_data, weapon, weapon_affix, talent_num, actual_source = _args
+    char = await get_char(char_data, weapon, weapon_affix, talent_num)
 
     if isinstance(char, str):
         logger.info("[sr查询角色] 绘图失败, 替换的武器不正确!")
         return char
 
-    im = await draw_char_img(char, sr_uid, raw_mes)
+    im = await draw_char_img(char, sr_uid, raw_mes, source=actual_source)
     logger.info("[查询角色] 绘图完成,等待发送...")
     return im
 
 
 async def get_char_args(
     msg: str, uid: str
-) -> Union[Tuple[MihomoCharacter, Optional[str], Optional[int], Optional[int]], str]:
+) -> Union[Tuple[MihomoCharacter, Optional[str], Optional[int], Optional[int], str], str]:
     # 可能进来的值
     # 六命希儿带于夜色中换1000xxxx4青雀遗器换1000xxxx6希儿头换银狼手
     # 六命希儿带于夜色中换1000xxxx6希儿头
@@ -87,6 +88,7 @@ async def get_char_args(
     fake_name = ""
     talent_num = None
     char_data = {}
+    actual_source = "mihomo"
     weapon, weapon_affix = None, None
 
     msg = msg.replace("带", "换").replace("拿", "换").replace("圣遗物", "遗器")
@@ -102,11 +104,16 @@ async def get_char_args(
             fake_name, talent_num = await get_fake_char_str(part)
             # 判断是否开启fake_char
             if "遗器" in msg:
-                char_data = await get_char_data(uid, fake_name)
-                if isinstance(char_data, str):
+                char_result = await get_char_data_with_source(uid, fake_name)
+                if isinstance(char_result, str):
                     char_data = await make_new_charinfo(uid, fake_name)
+                else:
+                    char_data, actual_source = char_result
             else:
-                char_data = await get_char_data(uid, fake_name)
+                char_result = await get_char_data_with_source(uid, fake_name)
+                if isinstance(char_result, str):
+                    return char_result
+                char_data, actual_source = char_result
 
             if isinstance(char_data, str):
                 return char_data
@@ -143,12 +150,13 @@ async def get_char_args(
                 weapon, weapon_affix = await get_fake_weapon_str(part)
 
     return cast(
-        Tuple[MihomoCharacter, Optional[str], Optional[int], Optional[int]],
+        Tuple[MihomoCharacter, Optional[str], Optional[int], Optional[int], str],
         (
             char_data,
             weapon,
             weapon_affix,
             talent_num,
+            actual_source,
         ),
     )
 
@@ -210,21 +218,31 @@ async def get_fake_char_data(
     return char_data
 
 
-async def get_char_data(
+async def get_char_data(uid: str, char_name: str, enable_self: bool = True) -> Union[MihomoCharacter, str]:
+    result = await get_char_data_with_source(uid, char_name, enable_self)
+    if isinstance(result, str):
+        return result
+    return result[0]
+
+
+async def get_char_data_with_source(
     uid: str, char_name: str, enable_self: bool = True
-) -> Union[MihomoCharacter, str]:
+) -> Union[Tuple[MihomoCharacter, str], str]:
     if "开拓者" in str(char_name):
         char_name = "开拓者"
     char_id = await name_to_avatar_id(char_name)
     if char_id == "":
         char_name = await alias_to_char_name(char_name)
-    char_id_list, chars = await api_to_dict(uid, save_path=PLAYER_PATH)
+
+    _ = enable_self
+    char_id_list, chars, actual_source = await fetch_panel_data(uid)
+
     charname_list = []
     for char in char_id_list:
         charname = SR_MAP_PATH.avatarId2Name[str(char)]
         charname_list.append(charname)
     if char_name in charname_list:
-        return chars[char_id_list[charname_list.index(char_name)]]
+        return chars[char_id_list[charname_list.index(char_name)]], actual_source
     return CHAR_HINT.format(char_name, char_name)
 
 
@@ -315,19 +333,14 @@ async def get_baseAttributes(
 
     # 攻击力
     base_attributes.attack = (
-        avatar_promotion_base.AttackBase.Value
-        + avatar_promotion_base.AttackAdd.Value * (80 - 1)
+        avatar_promotion_base.AttackBase.Value + avatar_promotion_base.AttackAdd.Value * (80 - 1)
     )
     # 防御力
     base_attributes.defence = (
-        avatar_promotion_base.DefenceBase.Value
-        + avatar_promotion_base.DefenceAdd.Value * (80 - 1)
+        avatar_promotion_base.DefenceBase.Value + avatar_promotion_base.DefenceAdd.Value * (80 - 1)
     )
     # 血量
-    base_attributes.hp = (
-        avatar_promotion_base.HPBase.Value
-        + avatar_promotion_base.HPAdd.Value * (80 - 1)
-    )
+    base_attributes.hp = avatar_promotion_base.HPBase.Value + avatar_promotion_base.HPAdd.Value * (80 - 1)
     # 速度
     base_attributes.speed = avatar_promotion_base.SpeedBase.Value
     # 暴击率
@@ -358,9 +371,7 @@ async def get_attribute_list(
         )
         for property_ in status_add:
             attribute_bonus_temp.statusAdd.property_ = property_.type
-            attribute_bonus_temp.statusAdd.name = SR_MAP_PATH.Property2Name[
-                property_.type
-            ]
+            attribute_bonus_temp.statusAdd.name = SR_MAP_PATH.Property2Name[property_.type]
             attribute_bonus_temp.statusAdd.value = property_.value
             attribute_list.append(attribute_bonus_temp)
     return attribute_list
@@ -396,9 +407,7 @@ async def get_skill_list(
         skill_temp.skillId = char_id * 100 + skillid
         skill_temp.skillName = SR_MAP_PATH.skillId2Name[str(skill_temp.skillId)]
         skill_temp.skillEffect = SR_MAP_PATH.skillId2Effect[str(skill_temp.skillId)]
-        skill_temp.skillAttackType = SR_MAP_PATH.skillId2AttackType[
-            str(skill_temp.skillId)
-        ]
+        skill_temp.skillAttackType = SR_MAP_PATH.skillId2AttackType[str(skill_temp.skillId)]
         skilllevel = 10
         if skillid == 1:
             skilllevel = 6
@@ -455,8 +464,7 @@ async def get_char(
                                     skilllevel_max = 12
                                 skilllevel = min(
                                     skilllevel_max,
-                                    char_data.avatarSkill[index].skillLevel
-                                    + skill_up_num,
+                                    char_data.avatarSkill[index].skillLevel + skill_up_num,
                                 )
                                 char_data.avatarSkill[index].skillLevel = skilllevel
                                 break
@@ -482,9 +490,7 @@ async def get_char(
         equipment_info.equipmentLevel = 80
         equipment_info.equipmentPromotion = 6
         equipment_info.equipmentRank = weapon_affix if weapon_affix else 1
-        equipment_info.equipmentRarity = SR_MAP_PATH.EquipmentID2Rarity[
-            str(equipmentid)
-        ]
+        equipment_info.equipmentRarity = SR_MAP_PATH.EquipmentID2Rarity[str(equipmentid)]
 
         equipment_promotion_base = None
         for equipment in srdcmodel.EquipmentPromotionConfig:
@@ -497,8 +503,7 @@ async def get_char(
 
         # 生命值
         equipment_info.baseAttributes.hp = (
-            equipment_promotion_base.BaseHP.Value
-            + equipment_promotion_base.BaseHPAdd.Value * (80 - 1)
+            equipment_promotion_base.BaseHP.Value + equipment_promotion_base.BaseHPAdd.Value * (80 - 1)
         )
         # 攻击力
         equipment_info.baseAttributes.attack = (

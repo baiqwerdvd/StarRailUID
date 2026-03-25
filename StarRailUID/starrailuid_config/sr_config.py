@@ -8,3 +8,10 @@ srconfig = StringConfig(
     CONFIG_PATH,
     CONIFG_DEFAULT,
 )
+
+
+def get_panel_source() -> str:
+    source = str(srconfig.get_config("PanelSource").data).strip().lower()
+    if source == "mihomo":
+        return "mihomo"
+    return "auto"

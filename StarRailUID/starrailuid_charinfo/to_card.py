@@ -6,13 +6,13 @@ from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import crop_center_img
 from PIL import Image, ImageDraw
 from starrail_damage_cal.map import SR_MAP_PATH
-from starrail_damage_cal.to_data import api_to_dict
 
 from ..utils.error_reply import prefix
 from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
 from ..utils.name_covert import avatar_id_to_char_star
-from ..utils.resource.RESOURCE_PATH import CHAR_PREVIEW_PATH, PLAYER_PATH
+from ..utils.resource.RESOURCE_PATH import CHAR_PREVIEW_PATH
+from .panel_data import fetch_panel_data
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
@@ -29,20 +29,16 @@ pic_500 = Image.open(TEXT_PATH / "500.png")
 
 
 async def api_to_card(uid: str) -> Union[Tuple[bytes, List[str]], bytes]:
-    char_id_list, _ = await api_to_dict(
-        uid,
-        save_path=PLAYER_PATH,
-    )
-    if (not isinstance(char_id_list, str) and char_id_list == []) or isinstance(
-        char_id_list, str
-    ):
+    char_id_list, _, source = await fetch_panel_data(uid)
+
+    if char_id_list == []:
         return await convert_img(pic_500)
 
-    img = await draw_enka_card(uid=uid, char_list=char_id_list, showfrom=1)
+    img = await draw_enka_card(uid=uid, char_list=char_id_list, showfrom=1, source=source)
     return img, char_id_list
 
 
-async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
+async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0, source: str = "auto"):
     char_data_list = []
     if 1102 in char_list:
         char_list.remove(1102)
@@ -77,9 +73,13 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0):
     img_draw = ImageDraw.Draw(img, "RGBA")
 
     # 写底层文字
+    if source == "mys":
+        card_watermark = "--Created by qwerdvd-Designed By Wuyi-Data from MiYouShe--"
+    else:
+        card_watermark = "--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--"
     img_draw.text(
         (690, based_h - 26),
-        "--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--",
+        card_watermark,
         (22, 22, 22),
         fw_font_28,
         "mm",
@@ -115,11 +115,7 @@ async def draw_mihomo_char(index: int, img: Image.Image, char_data: Dict):
     char_star = await avatar_id_to_char_star(str(char_id))
     char_card = Image.open(TEXT_PATH / f"char{char_star}_bg.png")
     char_temp = Image.new("RGBA", (300, 650))
-    char_img = (
-        Image.open(str(CHAR_PREVIEW_PATH / f"{char_id}.png"))
-        .convert("RGBA")
-        .resize((449, 615))
-    )
+    char_img = Image.open(str(CHAR_PREVIEW_PATH / f"{char_id}.png")).convert("RGBA").resize((449, 615))
     if char_name == "希儿":
         char_img = char_img.resize((449, 650))
         char_img = char_img.crop((135, 0, 379, 457))
@@ -147,9 +143,7 @@ async def draw_enka_char(index: int, img: Image.Image, char_data: Dict):
     char_card = Image.open(TEXT_PATH / f"ring_{char_star}.png")
     _path = CHAR_PREVIEW_PATH / f"{char_id}.png"
     char_img = Image.open(_path).convert("RGBA")
-    char_img = char_img.resize(
-        (int(char_img.size[0] * 0.76), int(char_img.size[1] * 0.76))
-    )
+    char_img = char_img.resize((int(char_img.size[0] * 0.76), int(char_img.size[1] * 0.76)))
 
     char_temp = Image.new("RGBA", (300, 400))
     card_temp = Image.new("RGBA", (300, 400))

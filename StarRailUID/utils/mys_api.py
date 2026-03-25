@@ -1,6 +1,6 @@
 import copy
 import time
-from typing import Dict, Literal, Optional, Union
+from typing import Dict, Literal, Optional, Tuple, Union
 from venv import logger
 
 import msgspec
@@ -49,9 +49,7 @@ class MysApi(_MysApi):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    async def get_sr_ck(
-        self, uid: str, mode: Literal["OWNER", "RANDOM"] = "RANDOM"
-    ) -> Optional[str]:
+    async def get_sr_ck(self, uid: str, mode: Literal["OWNER", "RANDOM"] = "RANDOM") -> Optional[str]:
         return await self.get_ck(uid, mode, "sr")
 
     async def simple_sr_req(
@@ -90,15 +88,11 @@ class MysApi(_MysApi):
                 header=header,
             )
         else:
-            data = await self.simple_sr_req(
-                "STAR_RAIL_NOTE_URL", uid, header=self._HEADER
-            )
+            data = await self.simple_sr_req("STAR_RAIL_NOTE_URL", uid, header=self._HEADER)
         if isinstance(data, Dict):
             # workaround for mistake params in hoyolab
             if data["data"].get("accepted_epedition_num") is not None:
-                data["data"]["accepted_expedition_num"] = data["data"][
-                    "accepted_epedition_num"
-                ]
+                data["data"]["accepted_expedition_num"] = data["data"]["accepted_epedition_num"]
             data = msgspec.convert(data["data"], type=DailyNoteData)
         return data
 
@@ -150,9 +144,7 @@ class MysApi(_MysApi):
                 header=header,
             )
         else:
-            data = await self.simple_sr_req(
-                "STAR_RAIL_INDEX_URL", uid, header=self._HEADER
-            )
+            data = await self.simple_sr_req("STAR_RAIL_INDEX_URL", uid, header=self._HEADER)
         if isinstance(data, Dict):
             data = msgspec.convert(data["data"], type=RoleIndex)
         return data
@@ -234,20 +226,38 @@ class MysApi(_MysApi):
                 header=header,
             )
         else:
+            params = {
+                "need_wiki": "true" if need_wiki else "false",
+                "role_id": uid,
+                "server": RECOGNIZE_SERVER.get(str(uid)[0], "prod_gf_cn"),
+            }
+            if avatar_id:  # Only include id param if specific avatar requested
+                params["id"] = avatar_id
             data = await self.simple_sr_req(
                 "STAR_RAIL_AVATAR_INFO_URL",
                 uid,
-                params={
-                    "id": avatar_id,
-                    "need_wiki": "true" if need_wiki else "false",
-                    "role_id": uid,
-                    "server": RECOGNIZE_SERVER.get(str(uid)[0], "prod_gf_cn"),
-                },
+                params=params,
                 header=self._HEADER,
             )
         if isinstance(data, Dict):
             data = msgspec.convert(data["data"], type=AvatarInfo)
         return data
+
+    async def get_avatar_panel_info(self, uid: str) -> Union[Tuple[str, AvatarInfo], int]:
+        """Get full avatar panel data from MiYouShe for all characters.
+
+        Returns (nickname, avatar_info) tuple or an error code int.
+        """
+        basic_info = await self.get_role_basic_info(uid)
+        if isinstance(basic_info, int):
+            return basic_info
+        nickname = basic_info.nickname
+
+        avatar_info = await self.get_avatar_info(uid, avatar_id=0, need_wiki=True)
+        if isinstance(avatar_info, int):
+            return avatar_info
+
+        return (nickname, avatar_info)
 
     async def get_avatar_detail(self, uid: str, avatarid: str):
         data = await self.simple_sr_req(
@@ -546,9 +556,7 @@ class MysApi(_MysApi):
             data = msgspec.convert(data["data"], type=RogueLocustData)
         return data
 
-    async def sr_mys_sign(
-        self, uid, header=None, server_id="cn_gf01"
-    ) -> Union[MysSign, int]:
+    async def sr_mys_sign(self, uid, header=None, server_id="cn_gf01") -> Union[MysSign, int]:
         if header is None:
             header = {}
         ck = await self.get_sr_ck(uid, "OWNER")
@@ -626,9 +634,7 @@ class MysApi(_MysApi):
         self,
         sr_uid: str,
     ) -> Union[RoleBasicInfo, int]:
-        data = await self.simple_sr_req(
-            "STAR_RAIL_ROLE_BASIC_INFO_URL", sr_uid, header=self._HEADER
-        )
+        data = await self.simple_sr_req("STAR_RAIL_ROLE_BASIC_INFO_URL", sr_uid, header=self._HEADER)
         if isinstance(data, Dict):
             data = msgspec.convert(data["data"], type=RoleBasicInfo)
         return data

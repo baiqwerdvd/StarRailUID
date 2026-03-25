@@ -13,14 +13,24 @@ from gsuid_core.utils.image.convert import convert_img
 from PIL import Image
 from starrail_damage_cal.map import SR_MAP_PATH
 
+from ..starrailuid_config.sr_config import get_panel_source
 from ..utils.error_reply import UID_HINT
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH
 from .get_char_img import draw_char_info_img
+from .panel_data import PANEL_SOURCE_CONFIG_KEY, PANEL_SOURCE_HINT
 from .to_card import api_to_card
 
 sv_char_info_config = SV("sr面板设置", pm=2)
 sv_get_char_info = SV("sr面板查询", priority=10)
 sv_get_sr_original_pic = SV("sr查看面板原图", priority=5)
+
+_SOURCE_MAP = {
+    "米游社": "auto",
+    "mys": "auto",
+    "mihomo": "mihomo",
+    "自动": "auto",
+    "auto": "auto",
+}
 
 
 @sv_get_char_info.on_prefix("查询")
@@ -102,3 +112,18 @@ async def send_card_info(bot: Bot, ev: Event):
         ]
         return await bot.send_option(im[0], buttons)
     return await bot.send(im)
+
+
+@sv_char_info_config.on_command(("数据源",))
+async def set_panel_source(bot: Bot, ev: Event):
+    """Explain the global panel source config."""
+    source = ev.text.strip()
+    current_source = get_panel_source()
+    if source and source not in _SOURCE_MAP:
+        return await bot.send(PANEL_SOURCE_HINT)
+    if source:
+        return await bot.send(
+            f"面板数据源已改为全局配置, 请在插件配置项 {PANEL_SOURCE_CONFIG_KEY} 中设置为: "
+            f"{_SOURCE_MAP[source]}\n当前值: {current_source}"
+        )
+    return await bot.send(f"当前全局面板数据源: {current_source}\n{PANEL_SOURCE_HINT}")
