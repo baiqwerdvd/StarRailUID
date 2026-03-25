@@ -56,8 +56,8 @@ order-by-type = true
 relative-imports-order = "closest-to-furthest"
 
 [[tool.pdm.source]]
-name = "USTC"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
+name = "PyPI"
+url = "https://pypi.org/simple"
 verify_ssl = true
 
 [project]
@@ -72,12 +72,12 @@ dependencies = [
   "msgspec>=0.18.6",
   "httpx>=0.27.2",
   "pillow>=10.4.0",
-  "starrail-damage-cal>=4.1.0",
+  "starrail-damage-cal>=4.1.1",
 ]
 requires-python = ">=3.10.0,<4.0"
 readme = "README.md"
 license = { text = "GPL-3.0-or-later" }
-gscore_auto_update_dep = ["starrail-damage-cal>=4.1.0"]
+gscore_auto_update_dep = ["starrail-damage-cal>=4.1.1"]
 
 
 [tool.pdm.dev-dependencies]
