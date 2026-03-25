@@ -1,4 +1,6 @@
 from gsuid_core.logger import logger
+from starrail_damage_cal.map import SR_MAP_PATH
+from starrail_damage_cal.mihomo.requests import get_char_card_info
 from starrail_damage_cal.model import MihomoCharacter
 from starrail_damage_cal.to_data import api_to_dict, mys_to_dict
 
@@ -22,16 +24,61 @@ async def fetch_panel_data(
             result = await mys_api.get_avatar_panel_info(uid)
             if not isinstance(result, int):
                 nick_name, avatar_info = result
-                char_id_list, chars = await mys_to_dict(
-                    uid,
-                    nick_name,
+                avatar_list = _filter_supported_avatars(
                     avatar_info.avatar_list,
-                    save_path=PLAYER_PATH,
+                    uid,
+                    "米游社",
+                    "id",
                 )
-                return char_id_list, chars, "mys"
-            logger.warning(f"[sr面板] UID{uid} 米游社面板获取失败, 回退至 mihomo, code={result}")
+                if not avatar_list:
+                    logger.warning(f"[sr面板] UID{uid} 米游社面板中无可用角色, 回退至 mihomo")
+                else:
+                    char_id_list, chars = await mys_to_dict(
+                        uid,
+                        nick_name,
+                        avatar_list,
+                        save_path=PLAYER_PATH,
+                    )
+                    return char_id_list, chars, "mys"
+            else:
+                logger.warning(f"[sr面板] UID{uid} 米游社面板获取失败, 回退至 mihomo, code={result}")
         except Exception as exc:
             logger.warning(f"[sr面板] UID{uid} 米游社面板获取异常, 回退至 mihomo, error={exc}")
 
-    char_id_list, chars = await api_to_dict(uid, save_path=PLAYER_PATH)
+    mihomo_raw = await get_char_card_info(uid)
+    mihomo_raw.detailInfo.avatarDetailList = _filter_supported_avatars(
+        mihomo_raw.detailInfo.avatarDetailList,
+        uid,
+        "mihomo",
+        "avatarId",
+    )
+    mihomo_raw.detailInfo.assistAvatarList = _filter_supported_avatars(
+        mihomo_raw.detailInfo.assistAvatarList,
+        uid,
+        "mihomo",
+        "avatarId",
+    )
+    if not mihomo_raw.detailInfo.avatarDetailList and not mihomo_raw.detailInfo.assistAvatarList:
+        return [], {}, "mihomo"
+    char_id_list, chars = await api_to_dict(uid, mihomo_raw=mihomo_raw, save_path=PLAYER_PATH)
     return char_id_list, chars, "mihomo"
+
+
+def _filter_supported_avatars(avatars: object, uid: str, source: str, id_attr: str) -> list:
+    if not avatars:
+        return []
+
+    supported = []
+    skipped = []
+    for avatar in avatars:
+        avatar_id = getattr(avatar, id_attr, None)
+        if str(avatar_id) in SR_MAP_PATH.avatarId2Name:
+            supported.append(avatar)
+        else:
+            skipped.append(str(avatar_id))
+
+    if skipped:
+        skipped_ids = ", ".join(skipped)
+        logger.warning(f"[sr面板] UID{uid} {source} 返回了未收录角色ID, 已跳过: {skipped_ids}")
+
+    return supported

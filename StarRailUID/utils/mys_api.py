@@ -1,6 +1,6 @@
 import copy
 import time
-from typing import Dict, Literal, Optional, Tuple, Union
+from typing import Any, Dict, Literal, Optional, Tuple, Union
 from venv import logger
 
 import msgspec
@@ -43,6 +43,53 @@ RECOGNIZE_SERVER = {
     "8": "prod_official_asia",
     "9": "prod_official_cht",
 }
+
+_MYS_INT_KEYS = {
+    "id",
+    "level",
+    "rank",
+    "rarity",
+    "pos",
+    "property_type",
+    "times",
+    "point_id",
+    "point_type",
+    "pre_point",
+    "base_type",
+    "element_id",
+    "cur_enhanced_id",
+}
+_MYS_BOOL_KEYS = {
+    "is_preview",
+    "is_activated",
+    "is_rank_work",
+    "is_unlocked",
+}
+
+
+def _normalize_mys_scalar(key: str, value: Any) -> Any:
+    if key in _MYS_INT_KEYS and isinstance(value, str):
+        stripped = value.strip()
+        if stripped.lstrip("-").isdigit():
+            return int(stripped)
+    if key in _MYS_BOOL_KEYS and isinstance(value, str):
+        stripped = value.strip().lower()
+        if stripped == "true":
+            return True
+        if stripped == "false":
+            return False
+    return value
+
+
+def _normalize_mys_avatar_payload(data: Any) -> Any:
+    if isinstance(data, list):
+        return [_normalize_mys_avatar_payload(item) for item in data]
+    if isinstance(data, dict):
+        return {
+            key: _normalize_mys_avatar_payload(_normalize_mys_scalar(key, value))
+            for key, value in data.items()
+        }
+    return data
 
 
 class MysApi(_MysApi):
@@ -240,7 +287,8 @@ class MysApi(_MysApi):
                 header=self._HEADER,
             )
         if isinstance(data, Dict):
-            data = msgspec.convert(data["data"], type=AvatarInfo)
+            normalized_data = _normalize_mys_avatar_payload(data["data"])
+            data = msgspec.convert(normalized_data, type=AvatarInfo)
         return data
 
     async def get_avatar_panel_info(self, uid: str) -> Union[Tuple[str, AvatarInfo], int]:
