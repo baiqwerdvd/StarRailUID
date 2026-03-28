@@ -1,5 +1,4 @@
 import asyncio
-import importlib
 import json
 from pathlib import Path
 from typing import Awaitable, Callable, Optional
@@ -8,6 +7,7 @@ from gsuid_core.bot import Bot
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.sv import SV
+import starrail_damage_cal.data_paths as srdc_data_paths
 import starrail_damage_cal.excel.model
 import starrail_damage_cal.map.SR_MAP_PATH
 import starrail_damage_cal.update as srdc_update
@@ -21,25 +21,29 @@ _RESOURCE_SYNC_LOCK = asyncio.Lock()
 
 
 def _get_data_file_path(file_name: str) -> Path:
-    if file_name.endswith("_mapping.json"):
-        return srdc_update.MAP_DATA_DIR / file_name
-    return srdc_update.EXCEL_DIR / file_name
+    relative_path = srdc_update.managed_relative_path(file_name)
+    return srdc_data_paths.resolve_data_path(relative_path)
+
+
+def _get_version_file_path() -> Path:
+    return srdc_data_paths.resolve_version_file()
 
 
 def _get_invalid_data_files() -> list[str]:
-    if not srdc_update.LOCAL_VERSION_FILE.exists():
-        return [str(srdc_update.LOCAL_VERSION_FILE.name)]
+    version_file = _get_version_file_path()
+    if not version_file.exists():
+        return [version_file.name]
 
     try:
-        version_data = json.loads(srdc_update.LOCAL_VERSION_FILE.read_text(encoding="utf-8"))
+        version_data = json.loads(version_file.read_text(encoding="utf-8"))
     except Exception:
         logger.exception("读取星铁数据版本文件失败")
-        return [str(srdc_update.LOCAL_VERSION_FILE.name)]
+        return [version_file.name]
 
     invalid_files: list[str] = []
     files = version_data.get("files", {})
     for file_name in version_data.get("file_names", []):
-        if file_name == "light_cone_ranks.json":
+        if file_name in srdc_update.SKIPPED_FILES:
             continue
 
         file_info = files.get(file_name, {})
@@ -61,7 +65,7 @@ def _get_invalid_data_files() -> list[str]:
 
 def _invalidate_data_version_file() -> None:
     try:
-        srdc_update.LOCAL_VERSION_FILE.unlink(missing_ok=True)
+        srdc_data_paths.runtime_path("version.json").unlink(missing_ok=True)
     except Exception:
         logger.exception("清理星铁数据版本文件失败")
 
@@ -95,12 +99,11 @@ async def _sync_data_files() -> tuple[str, bool]:
 
 async def _reload_data_modules() -> str:
     try:
-        importlib.reload(starrail_damage_cal.map.SR_MAP_PATH)
-        importlib.reload(starrail_damage_cal.excel.model)
+        srdc_update.refresh_loaded_data()
     except Exception:
-        logger.exception("重载数据时出错")
-        return "⚠️ 重载数据可能发生异常，建议重新启动以重载数据"
-    return "✅ 数据模块已重新加载"
+        logger.exception("刷新数据时出错")
+        return "⚠️ 数据刷新可能发生异常，建议重新启动以重载数据"
+    return "✅ 数据模块已刷新"
 
 
 async def sync_all_resources(
