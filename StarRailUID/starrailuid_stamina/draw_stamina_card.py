@@ -1,13 +1,12 @@
 import asyncio
 from io import BytesIO
 from pathlib import Path
-from typing import Optional
 
+from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.database.models import GsBind, GsUser
 from gsuid_core.utils.image.convert import convert_img
 from httpx import AsyncClient
-from PIL import Image, ImageDraw
 
 from ..sruid_utils.api.mys.models import Expedition
 from ..starrailuid_config.sr_config import srconfig
@@ -21,8 +20,6 @@ from ..utils.fonts.starrail_fonts import (
 )
 from ..utils.image.image_tools import get_simple_bg
 from ..utils.mys_api import mys_api
-
-use_widget = srconfig.get_config("WidgetResin").data
 
 TEXT_PATH = Path(__file__).parent / "texture2D"
 
@@ -49,17 +46,22 @@ def seconds2hours(seconds: int) -> str:
 
 
 async def download_image(url: str) -> Image.Image:
-    async with AsyncClient() as session:
+    async with AsyncClient(timeout=30, follow_redirects=True) as session:
         response = await session.get(url)
-        img_data = response.read()
+        response.raise_for_status()
+        img_data = response.content
         return Image.open(BytesIO(img_data))
+
+
+def _should_use_widget(sr_uid: str) -> bool:
+    return bool(srconfig.get_config("WidgetResin").data) and int(sr_uid[0]) <= 5
 
 
 async def _draw_task_img(
     img: Image.Image,
     img_draw: ImageDraw.ImageDraw,
     index: int,
-    char: Optional[Expedition],
+    char: Expedition | None,
 ):
     if char is not None:
         expedition_name = char.name
@@ -121,9 +123,7 @@ async def get_stamina_img(bot_id: str, user_id: str):
             return "请先绑定一个可用CK & UID再来查询哦~"
         # 开始绘图任务
         task = []
-        img = Image.new(
-            "RGBA", (based_w * len(useable_uid_list), based_h), (0, 0, 0, 0)
-        )
+        img = Image.new("RGBA", (based_w * len(useable_uid_list), based_h), (0, 0, 0, 0))
         for uid_index, uid in enumerate(useable_uid_list):
             task.append(_draw_all_stamina_img(img, uid, uid_index))
         await asyncio.gather(*task)
@@ -174,7 +174,7 @@ async def draw_stamina_img(sr_uid: str) -> Image.Image:
     img.paste(white_overlay, (0, 0), white_overlay)
 
     # 获取数据
-    if use_widget and int(str(sr_uid)[0]) <= 5:
+    if _should_use_widget(sr_uid):
         _daily_data = await mys_api.get_widget_stamina_data(sr_uid)
         if isinstance(_daily_data, int):
             return get_error(img, sr_uid, _daily_data)

@@ -28,6 +28,21 @@
 > 
 > ✨如果需要添加其他星铁相关功能欢迎在issues中提出✨
 
+## 丨依赖安装
+
+当前统一基线为 `Python 3.11+`。仓库默认使用 `uv` 开发，同时补充提供 `uv.lock`、`pdm.lock`、`poetry.lock` 和 `requirements.txt` 供不同工具链使用。
+
+- `uv` 开发环境: `uv sync --group dev`
+- `uv` 运行环境: `uv sync`
+- `pdm` 开发环境: `pdm sync -G dev`
+- `pdm` 运行环境: `pdm sync`
+- `poetry` 开发环境: `poetry install --with dev`
+- `poetry` 运行环境: `poetry install --only main`
+- `pip` 运行环境: `pip install -r requirements.txt`
+
+说明:
+`requirements.txt` 由 `uv.lock` 导出，`pdm.lock` 与 `poetry.lock` 为兼容不同用户习惯而保留。若使用 Poetry，请优先使用 `Poetry 2.x`。
+
 ## 丨功能
 
 <details><summary>sr每日 - 命令: srmr</summary><p>

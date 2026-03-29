@@ -1,13 +1,13 @@
 [tool.ruff]
 line-length = 108
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = [
   "E",
   "W", # pycodestyle
   "F", # pyflakes
-  # "I",        # isort
+  "I", # isort
   "RUF", # ruff
   "TRY", # tryceratops
   "UP",
@@ -55,11 +55,6 @@ combine-as-imports = true
 order-by-type = true
 relative-imports-order = "closest-to-furthest"
 
-[[tool.pdm.source]]
-name = "PyPI"
-url = "https://pypi.org/simple"
-verify_ssl = true
-
 [project]
 name = "StarRailUID"
 version = "0.1.0"
@@ -74,15 +69,15 @@ dependencies = [
   "pillow>=10.4.0",
   "starrail-damage-cal>=4.1.2",
 ]
-requires-python = ">=3.10.0,<4.0"
+requires-python = ">=3.11,<4.0"
 readme = "README.md"
-license = { text = "GPL-3.0-or-later" }
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
 gscore_auto_update_dep = ["starrail-damage-cal>=4.1.2"]
 
-
-[tool.pdm.dev-dependencies]
-dev = ["ruff>=0.6.5", "pre-commit>=3.8.0"]
+[dependency-groups]
+dev = ["pre-commit>=4.5.1,<5", "ruff>=0.15.8,<1"]
 
 [build-system]
-requires = ["pdm-backend"]
+requires = ["pdm-backend>=2.4.7,<3"]
 build-backend = "pdm.backend"
