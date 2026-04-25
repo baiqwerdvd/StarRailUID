@@ -2,6 +2,7 @@ import re
 from typing import List, Optional, Tuple, Union, cast
 
 from gsuid_core.logger import logger
+from msgspec import json as msgjson
 from starrail_damage_cal.excel import model as srdcmodel
 from starrail_damage_cal.map import SR_MAP_PATH
 from starrail_damage_cal.model import (
@@ -24,8 +25,8 @@ from ..utils.name_covert import (
     name_to_avatar_id,
     name_to_weapon_id,
 )
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from .draw_char_img import draw_char_img
-from .panel_data import fetch_panel_data
 
 WEAPON_TO_INT = {
     "一": 1,
@@ -233,17 +234,32 @@ async def get_char_data_with_source(
     char_id = await name_to_avatar_id(char_name)
     if char_id == "":
         char_name = await alias_to_char_name(char_name)
+    if char_name is False:
+        return "请输入正确的角色名"
 
-    _ = enable_self
-    char_id_list, chars, actual_source = await fetch_panel_data(uid)
-
-    charname_list = []
-    for char in char_id_list:
-        charname = SR_MAP_PATH.avatarId2Name[str(char)]
-        charname_list.append(charname)
-    if char_name in charname_list:
-        return chars[char_id_list[charname_list.index(char_name)]], actual_source
+    char_data = _load_cached_char_data(uid, str(char_name), enable_self)
+    if char_data is not None:
+        return char_data, "mihomo"
     return CHAR_HINT.format(char_name, char_name)
+
+
+def _load_cached_char_data(uid: str, char_name: str, enable_self: bool) -> Optional[MihomoCharacter]:
+    player_path = PLAYER_PATH / str(uid)
+    char_path = player_path / f"{char_name}.json"
+    char_self_path = player_path / "SELF" / f"{char_name}.json"
+
+    if char_path.exists():
+        path = char_path
+    elif enable_self and char_self_path.exists():
+        path = char_self_path
+    else:
+        return None
+
+    try:
+        return msgjson.decode(path.read_bytes(), type=MihomoCharacter)
+    except Exception as exc:
+        logger.warning(f"[sr面板] UID{uid} 本地角色缓存读取失败: {path}, error={exc}")
+        return None
 
 
 async def make_new_charinfo(
