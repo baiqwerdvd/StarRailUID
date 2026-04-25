@@ -19,7 +19,7 @@ async def send_role_info(bot: Bot, ev: Event):
     if name:
         return None
 
-    uid = await get_uid(bot, ev, GsBind, "sr")
+    uid = await get_uid(bot, ev, GsBind, "sr", pattern=r"\d{9}")
     if uid is None:
         return await bot.send(UID_HINT)
 
@@ -34,7 +34,7 @@ async def send_detail_info(bot: Bot, ev: Event):
     name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text))
     if name:
         return None
-    uid, user_id = await get_uid(bot, ev, GsBind, "sr", True)
+    uid, user_id = await get_uid(bot, ev, GsBind, "sr", True, pattern=r"\d{9}")
     if uid is None:
         return await bot.send(UID_HINT)
 

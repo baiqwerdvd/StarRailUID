@@ -16,7 +16,7 @@ sv_get_gachalog_by_link = SV("sr导入抽卡链接", area="DIRECT")
 @sv_gacha_log.on_fullmatch(("抽卡记录", "抽卡纪录"))
 async def send_gacha_log_card_info(bot: Bot, ev: Event):
     logger.info("开始执行[sr抽卡记录]")
-    uid, user_id = await get_uid(bot, ev, GsBind, "sr", True)
+    uid, user_id = await get_uid(bot, ev, GsBind, "sr", True, pattern=r"\d{9}")
     if uid is None:
         return await bot.send(UID_HINT)
     im = await draw_gachalogs_img(uid, ev)
@@ -27,7 +27,7 @@ async def send_gacha_log_card_info(bot: Bot, ev: Event):
 @sv_get_gachalog_by_link.on_command(("导入抽卡链接", "导入抽卡记录", "导入抽卡连接"))
 async def get_gachalog_by_link(bot: Bot, ev: Event):
     logger.info("开始执行[sr导入抽卡链接]")
-    uid = await get_uid(bot, ev, GsBind, "sr", False, None)
+    uid = await get_uid(bot, ev, GsBind, "sr", False, None, pattern=r"\d{9}")
     if uid is None:
         return await bot.send(UID_HINT)
     gacha_url = ev.text.strip()

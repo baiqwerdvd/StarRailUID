@@ -34,7 +34,7 @@ async def send_srabyss_info(bot: Bot, ev: Event):
         return None
 
     logger.info("开始执行[sr查询模拟宇宙信息]")
-    uid, user_id = await get_uid(bot, ev, GsBind, "sr", True)
+    uid, user_id = await get_uid(bot, ev, GsBind, "sr", True, pattern=r"\d{9}")
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info(f"[sr查询模拟宇宙信息]uid: {uid}")
@@ -81,7 +81,7 @@ async def send_srabyss_locust_info(bot: Bot, ev: Event):
         return None
 
     logger.info("开始执行[sr查询寰宇蝗灾信息]")
-    uid, user_id = await get_uid(bot, ev, GsBind, "sr", True)
+    uid, user_id = await get_uid(bot, ev, GsBind, "sr", True, pattern=r"\d{9}")
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info(f"[sr查询寰宇蝗灾信息]uid: {uid}")

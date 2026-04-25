@@ -27,7 +27,7 @@ async def send_char_calc_info(bot: "Bot", ev: "Event"):
         fake_name = result_fake_name
         char_id = await name_to_avatar_id(fake_name)
 
-    uid = await get_uid(bot, ev, GsBind, "sr")
+    uid = await get_uid(bot, ev, GsBind, "sr", pattern=r"\d{9}")
 
     if uid is None:
         return await bot.send(UID_HINT)

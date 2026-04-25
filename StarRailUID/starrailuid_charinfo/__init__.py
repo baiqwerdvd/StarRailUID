@@ -83,9 +83,9 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
     logger.info("开始执行[查询角色面板]")
     # 获取uid
     if "换" in msg or "拿" in msg or "带" in msg:
-        uid = await get_uid(bot, ev, GsBind, "sr", False)
+        uid = await get_uid(bot, ev, GsBind, "sr", False, pattern=r"\d{9}")
     else:
-        uid = await get_uid(bot, ev, GsBind, "sr")
+        uid = await get_uid(bot, ev, GsBind, "sr", pattern=r"\d{9}")
         msg = " ".join(re.findall("[\u4e00-\u9fa5]+", text))
     if uid is None:
         return await bot.send(UID_HINT)
@@ -96,7 +96,7 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
 
 @sv_get_char_info.on_command(("强制刷新", "刷新面板"))
 async def send_card_info(bot: Bot, ev: Event):
-    uid = await get_uid(bot, ev, GsBind, "sr")
+    uid = await get_uid(bot, ev, GsBind, "sr", pattern=r"\d{9}")
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info(f"[sr强制刷新]uid: {uid}")

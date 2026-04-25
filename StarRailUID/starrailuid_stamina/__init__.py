@@ -19,7 +19,7 @@ sv_get_stamina_admin = SV("sr强制推送", pm=1)
 @sv_get_stamina.on_fullmatch("当前状态")
 async def send_daily_info(bot: Bot, ev: Event):
     logger.info("开始执行[sr每日信息文字版]")
-    uid = await get_uid(bot, ev, GsBind, "sr")
+    uid = await get_uid(bot, ev, GsBind, "sr", pattern=r"\d{9}")
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info(f"[sr每日信息文字版]UID: {uid}")
