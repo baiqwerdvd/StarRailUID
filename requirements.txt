@@ -13,6 +13,6 @@ msgspec==0.20.0
 multidict==6.7.1
 pillow==12.1.1
 propcache==0.4.1
-starrail-damage-cal==4.1.2
+starrail-damage-cal==4.2.0
 typing-extensions==4.15.0 ; python_full_version < '3.13'
 yarl==1.23.0

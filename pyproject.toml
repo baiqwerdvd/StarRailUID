@@ -67,13 +67,13 @@ dependencies = [
   "msgspec>=0.18.6",
   "httpx>=0.27.2",
   "pillow>=10.4.0",
-  "starrail-damage-cal>=4.1.2",
+  "starrail-damage-cal>=4.2.0",
 ]
 requires-python = ">=3.11,<4.0"
 readme = "README.md"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
-gscore_auto_update_dep = ["starrail-damage-cal>=4.1.2"]
+gscore_auto_update_dep = ["starrail-damage-cal>=4.2.0"]
 
 [dependency-groups]
 dev = ["pre-commit>=4.5.1,<5", "ruff>=0.15.8,<1"]
