@@ -278,8 +278,8 @@ class MysApi(_MysApi):
                 "role_id": uid,
                 "server": RECOGNIZE_SERVER.get(str(uid)[0], "prod_gf_cn"),
             }
-            if avatar_id:  # Only include id param if specific avatar requested
-                params["id"] = avatar_id
+            # if avatar_id:  # Only include id param if specific avatar requested
+                # params["id"] = avatar_id
             data = await self.simple_sr_req(
                 "STAR_RAIL_AVATAR_INFO_URL",
                 uid,
