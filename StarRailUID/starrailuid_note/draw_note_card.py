@@ -13,6 +13,7 @@ from ..utils.error_reply import get_error
 from ..utils.fonts.starrail_fonts import sr_font_20, sr_font_28, sr_font_34
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from .pie_chart import draw_monthly_pie
 
 TEXT_PATH = Path(__file__).parent / "texture2d"
 
@@ -24,23 +25,6 @@ second_color = (67, 61, 56)
 second_color2 = (98, 98, 98)
 black_color = (54, 54, 54)
 white_color = (213, 213, 213)
-
-COLOR_MAP = {
-    "每日活跃": (248, 227, 157),
-    "活动奖励": (99, 231, 176),
-    "冒险奖励": (114, 205, 251),
-    "模拟宇宙奖励": (160, 149, 248),
-    "忘却之庭奖励": (221, 119, 250),
-    "邮件奖励": (244, 110, 104),
-    "其他": (255, 242, 200),
-    "Daily Activity": (248, 227, 157),
-    "Events": (99, 231, 176),
-    "Adventure": (114, 205, 251),
-    "moni": (160, 149, 248),
-    "Spiral Abyss": (221, 119, 250),
-    "Quests": (244, 110, 104),
-    "Other": (255, 242, 200),
-}
 
 
 async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
@@ -229,55 +213,13 @@ async def draw_note_img(sr_uid: str) -> Union[bytes, str]:
         fill=black_color,
         anchor="lm",
     )
-    xy = ((0, 0), (2100, 2100))
-    temp = -90
-    if not data.month_data.group_by:
-        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
-        pie_image_draw = ImageDraw.Draw(pie_image)
-        pie_image_draw.ellipse(xy, fill=(128, 128, 128))
-    else:
-        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
-        pie_image_draw = ImageDraw.Draw(pie_image)
-        for _index, i in enumerate(data.month_data.group_by):
-            pie_image_draw.pieslice(
-                xy,
-                temp,
-                temp + (i.percent / 100) * 360,
-                COLOR_MAP[i.action_name],
-            )
-            temp = temp + (i.percent / 100) * 360
-    # 绘制蒙版圆形
-    new_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
-    pie_image_draw.ellipse((150, 150, 1950, 1950), fill=(255, 255, 255, 0))
-
-    position = (1050, 1050)
-    pie_image.paste(new_image, position, mask=new_image)
-    result_pie = pie_image.resize((210, 210))
+    result_pie = draw_monthly_pie(data.month_data.group_by)
     img.paste(result_pie, (138, 618), result_pie)
 
     if last_monthly_data:
-        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
-        pie_image_draw = ImageDraw.Draw(pie_image)
-        for _index, i in enumerate(last_monthly_data.month_data.group_by):
-            pie_image_draw.pieslice(
-                xy,
-                temp,
-                temp + (i.percent / 100) * 360,
-                COLOR_MAP[i.action_name],
-            )
-            temp = temp + (i.percent / 100) * 360
+        result_pie = draw_monthly_pie(last_monthly_data.month_data.group_by)
     else:
-        pie_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
-        pie_image_draw = ImageDraw.Draw(pie_image)
-        pie_image_draw.ellipse(xy, fill=(128, 128, 128))
-
-    # 绘制蒙版圆形
-    new_image = Image.new("RGBA", (2100, 2100), color=(255, 255, 255, 0))
-    pie_image_draw.ellipse((150, 150, 1950, 1950), fill=(255, 255, 255, 0))
-
-    position = (1050, 1050)
-    pie_image.paste(new_image, position, mask=new_image)
-    result_pie = pie_image.resize((210, 210))
+        result_pie = draw_monthly_pie([])
     img.paste(result_pie, (138, 618 + 350), result_pie)
 
     img = await convert_img(img)
