@@ -612,6 +612,30 @@ class MysApi(_MysApi):
             data = msgspec.convert(data["data"], type=RogueLocustData)
         return data
 
+    async def get_rogue_tourn_info(self, uid: str) -> Union[Dict, int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0])
+        ck = await self.get_sr_ck(uid, "OWNER")
+        if ck is None:
+            return -51
+        if self.check_os(uid, game_name="sr"):
+            header = copy.deepcopy(self._HEADER_OS)
+            header["Cookie"] = ck
+            header["DS"] = generate_os_ds()
+        else:
+            header = copy.deepcopy(self._HEADER)
+            header["Cookie"] = ck
+        await self.add_sr_device_headers(header, uid)
+        data = await self.simple_sr_req(
+            "ROGUE_TOURN_INFO_URL",
+            uid,
+            params={"role_id": uid, "server": server_id},
+            header=header,
+            cookie=ck,
+        )
+        if isinstance(data, Dict):
+            return data["data"]
+        return data
+
     async def sr_mys_sign(self, uid, header=None, server_id="cn_gf01") -> Union[MysSign, int]:
         if header is None:
             header = {}

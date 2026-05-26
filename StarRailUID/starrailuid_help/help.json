@@ -134,6 +134,14 @@
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "差分宇宙",
+        "desc": "查询差分宇宙及演算战绩",
+        "eg": "差分宇宙",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },
