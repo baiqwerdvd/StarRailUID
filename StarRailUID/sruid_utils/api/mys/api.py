@@ -58,6 +58,10 @@ ROGUE_INFO_URL = f"{NEW_URL}/game_record/app/hkrpg/api/rogue"  # 角色模拟宇
 ROGUE_LOCUST_INFO_URL = (
     f"{NEW_URL}/game_record/app/hkrpg/api/rogue_locust"  # 角色寰宇蝗灾信息接口
 )
+ROGUE_TOURN_INFO_URL = (
+    f"{NEW_URL}/game_record/app/hkrpg/api/rogue_tourn"  # 差分宇宙信息接口
+)
+ROGUE_TOURN_INFO_URL_OS = f"{OS_INFO_URL}/game_record/hkrpg/api/rogue_tourn"
 GRID_FIGHT_INFO_URL = (
     f"{NEW_URL}/game_record/app/hkrpg/api/grid_fight"  # 货币战争信息接口
 )

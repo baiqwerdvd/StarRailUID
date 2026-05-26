@@ -99,6 +99,14 @@ class MysApi(_MysApi):
     async def get_sr_ck(self, uid: str, mode: Literal["OWNER", "RANDOM"] = "RANDOM") -> Optional[str]:
         return await self.get_ck(uid, mode, "sr")
 
+    async def add_sr_device_headers(self, header: Dict, uid: str) -> None:
+        device_id = await self.get_user_device_id(uid, "sr")
+        if device_id:
+            header["x-rpc-device_id"] = device_id
+        fp = await self.get_user_fp(uid, "sr")
+        if fp:
+            header["x-rpc-device_fp"] = fp
+
     async def simple_sr_req(
         self,
         URL: str,
@@ -604,6 +612,30 @@ class MysApi(_MysApi):
             data = msgspec.convert(data["data"], type=RogueLocustData)
         return data
 
+    async def get_rogue_tourn_info(self, uid: str) -> Union[Dict, int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0])
+        ck = await self.get_sr_ck(uid, "OWNER")
+        if ck is None:
+            return -51
+        if self.check_os(uid, game_name="sr"):
+            header = copy.deepcopy(self._HEADER_OS)
+            header["Cookie"] = ck
+            header["DS"] = generate_os_ds()
+        else:
+            header = copy.deepcopy(self._HEADER)
+            header["Cookie"] = ck
+        await self.add_sr_device_headers(header, uid)
+        data = await self.simple_sr_req(
+            "ROGUE_TOURN_INFO_URL",
+            uid,
+            params={"role_id": uid, "server": server_id},
+            header=header,
+            cookie=ck,
+        )
+        if isinstance(data, Dict):
+            return data["data"]
+        return data
+
     async def sr_mys_sign(self, uid, header=None, server_id="cn_gf01") -> Union[MysSign, int]:
         if header is None:
             header = {}
@@ -657,6 +689,7 @@ class MysApi(_MysApi):
             HEADER = copy.deepcopy(self._HEADER)
             HEADER["Cookie"] = ck
             HEADER["DS"] = get_web_ds_token(True)
+            await self.add_sr_device_headers(HEADER, str(sr_uid))
             data = await self._mys_request(
                 url=_API["STAR_RAIL_MONTH_INFO_URL"],
                 method="GET",
@@ -667,6 +700,7 @@ class MysApi(_MysApi):
             HEADER = copy.deepcopy(self._HEADER_OS)
             HEADER["Cookie"] = ck
             HEADER["DS"] = generate_os_ds()
+            await self.add_sr_device_headers(HEADER, str(sr_uid))
             data = await self._mys_request(
                 url=_API["STAR_RAIL_MONTH_INFO_URL"],
                 method="GET",
