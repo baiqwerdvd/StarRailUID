@@ -99,6 +99,14 @@ class MysApi(_MysApi):
     async def get_sr_ck(self, uid: str, mode: Literal["OWNER", "RANDOM"] = "RANDOM") -> Optional[str]:
         return await self.get_ck(uid, mode, "sr")
 
+    async def add_sr_device_headers(self, header: Dict, uid: str) -> None:
+        device_id = await self.get_user_device_id(uid, "sr")
+        if device_id:
+            header["x-rpc-device_id"] = device_id
+        fp = await self.get_user_fp(uid, "sr")
+        if fp:
+            header["x-rpc-device_fp"] = fp
+
     async def simple_sr_req(
         self,
         URL: str,
@@ -657,6 +665,7 @@ class MysApi(_MysApi):
             HEADER = copy.deepcopy(self._HEADER)
             HEADER["Cookie"] = ck
             HEADER["DS"] = get_web_ds_token(True)
+            await self.add_sr_device_headers(HEADER, str(sr_uid))
             data = await self._mys_request(
                 url=_API["STAR_RAIL_MONTH_INFO_URL"],
                 method="GET",
@@ -667,6 +676,7 @@ class MysApi(_MysApi):
             HEADER = copy.deepcopy(self._HEADER_OS)
             HEADER["Cookie"] = ck
             HEADER["DS"] = generate_os_ds()
+            await self.add_sr_device_headers(HEADER, str(sr_uid))
             data = await self._mys_request(
                 url=_API["STAR_RAIL_MONTH_INFO_URL"],
                 method="GET",
