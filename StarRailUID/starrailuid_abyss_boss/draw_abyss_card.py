@@ -196,7 +196,7 @@ async def draw_abyss_img(
     for index_floor, level in enumerate(floor_detail):
         floor_pic = extend_floor_pic(Image.open(TEXT_PATH / "floor_bg.png"), level)
         level_star = int(level.star_num)
-        floor_name = level.name
+        floor_name = level.name.replace("模式", "")
         sum_score = calc_sum_score(level)
         for index_part, (node_num, node) in enumerate(get_floor_nodes(level)):
             time_array = node.challenge_time

@@ -55,7 +55,5 @@ def calc_sum_score(level: AbyssFloorDetail) -> Optional[int]:
 
 
 def format_star_text(star_num: int, max_star: int, extra_star_num: int = 0) -> str:
-    text = f"{star_num}/{max_star}"
-    if extra_star_num > 0:
-        text += f" 星启{extra_star_num}"
-    return text
+    # TODO: 星启模式特殊star显示
+    return f"{star_num + extra_star_num} / {max_star}"
