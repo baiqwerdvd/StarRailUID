@@ -9,6 +9,15 @@ from gsuid_core.utils.image.image_tools import draw_pic_with_ring
 from PIL import Image, ImageDraw
 
 from ..sruid_utils.api.mys.models import AbyssAvatar
+from ..utils.abyss_common import (
+    calc_sum_score,
+    extend_floor_pic,
+    floor_height,
+    format_star_text,
+    get_floor_nodes,
+    is_fast_floor,
+    NODE_PART_HEIGHT,
+)
 from ..utils.error_reply import prefix
 from ..utils.fonts.starrail_fonts import (
     sr_font_22,
@@ -71,7 +80,7 @@ async def _draw_abyss_card(
     )
     floor_pic.paste(
         char_bg,
-        (75 + 185 * index_char, 130 + index_part * 219),
+        (75 + 185 * index_char, 130 + index_part * NODE_PART_HEIGHT),
         char_bg,
     )
 
@@ -80,7 +89,7 @@ async def _draw_floor_card(
     level_star: int,
     floor_pic: Image.Image,
     img: Image.Image,
-    index_floor: int,
+    y_offset: int,
     floor_name: str,
     sum_score: Union[int, None],
 ):
@@ -108,7 +117,7 @@ async def _draw_floor_card(
             fill="#fec86f",
             anchor="rm",
         )
-    img.paste(floor_pic, (0, 657 + index_floor * 570), floor_pic)
+    img.paste(floor_pic, (0, y_offset), floor_pic)
 
 
 async def draw_abyss_img(
@@ -125,13 +134,13 @@ async def draw_abyss_img(
         return f"你还没有挑战本期末日幻影!\n可以使用[{prefix}上期末日幻影]命令查询上期~"
     # 过滤掉 is_fast (快速通关) 为 True 的项
     floor_detail = [
-        detail for detail in raw_abyss_data.all_floor_detail if not detail.is_fast
+        detail for detail in raw_abyss_data.all_floor_detail if not is_fast_floor(detail)
     ]
     floor_num = len(floor_detail)
 
     # 获取背景图片各项参数
     based_w = 900
-    based_h = 657 + 570 * floor_num
+    based_h = 657 + sum(floor_height(detail) for detail in floor_detail)
     img = img_bg.copy()
     img = img.crop((0, 0, based_w, based_h))
     abyss_title = Image.open(TEXT_PATH / "head.png")
@@ -173,64 +182,54 @@ async def draw_abyss_img(
 
     img_draw.text(
         (695, 590),
-        f"{raw_abyss_data.star_num}/12",
+        format_star_text(
+            raw_abyss_data.star_num,
+            12,
+            raw_abyss_data.extra_star_num,
+        ),
         white_color,
         sr_font_42,
         "lm",
     )
 
+    y_offset = 657
     for index_floor, level in enumerate(floor_detail):
-        floor_pic = Image.open(TEXT_PATH / "floor_bg.png")
+        floor_pic = extend_floor_pic(Image.open(TEXT_PATH / "floor_bg.png"), level)
         level_star = int(level.star_num)
         floor_name = level.name
-        node_1 = level.node_1
-        node_2 = level.node_2
-        if node_1.score and node_2.score:
-            sum_score = int(node_1.score) + int(node_2.score)
-        else:
-            sum_score = None
-        for index_part in [0, 1]:
-            node_num = index_part + 1
-            if node_num == 1:
-                time_array = node_1.challenge_time
-                score = node_1.score
-            else:
-                time_array = node_2.challenge_time
-                score = node_2.score
+        sum_score = calc_sum_score(level)
+        for index_part, (node_num, node) in enumerate(get_floor_nodes(level)):
+            time_array = node.challenge_time
+            score = node.score
             assert time_array is not None
             time_str = f"{time_array.year}-{time_array.month}"
             time_str = f"{time_str}-{time_array.day}"
             time_str = f"{time_str} {time_array.hour}:{time_array.minute}:00"
             floor_pic_draw = ImageDraw.Draw(floor_pic)
             floor_pic_draw.text(
-                (112, 120 + index_part * 219),
+                (112, 120 + index_part * NODE_PART_HEIGHT),
                 f"节点{node_num}",
                 white_color,
                 sr_font_30,
                 "lm",
             )
             floor_pic_draw.text(
-                (201, 120 + index_part * 219),
+                (201, 120 + index_part * NODE_PART_HEIGHT),
                 f"{time_str}",
                 gray_color,
                 sr_font_22,
                 "lm",
             )
-            # 分数todo
             if score:
                 floor_pic_draw.text(
-                    (800, 120 + index_part * 219),
+                    (800, 120 + index_part * NODE_PART_HEIGHT),
                     f"{score}",
                     "#fec86f",
                     sr_font_30,
                     "rm",
                 )
-            if node_num == 1:
-                avatars_array = node_1
-            else:
-                avatars_array = node_2
 
-            for index_char, char in enumerate(avatars_array.avatars):
+            for index_char, char in enumerate(node.avatars):
                 await _draw_abyss_card(
                     char,
                     floor_pic,
@@ -241,10 +240,11 @@ async def draw_abyss_img(
             level_star,
             floor_pic,
             img,
-            index_floor,
+            y_offset,
             floor_name,
             sum_score,
         )
+        y_offset += floor_height(level)
 
     res = await convert_img(img)
     logger.info("[查询末日幻影信息]绘图已完成,等待发送!")

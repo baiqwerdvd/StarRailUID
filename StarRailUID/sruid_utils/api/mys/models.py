@@ -330,6 +330,7 @@ class AbyssFloorDetail(Struct):
     star_num: Union[int, str]
     node_1: AbyssNodeDetail
     node_2: AbyssNodeDetail
+    node_3: Optional[AbyssNodeDetail] = None
     round_num: Optional[int] = None
     is_fast: Optional[bool] = False
 
@@ -344,6 +345,7 @@ class AbyssData(Struct):
     has_data: bool
     all_floor_detail: List[AbyssFloorDetail]
     max_floor_detail: Union[bool, None] = None
+    extra_star_num: int = 0
 
 
 class AbyssStoryData(Struct):
@@ -354,6 +356,7 @@ class AbyssStoryData(Struct):
     has_data: bool
     all_floor_detail: List[AbyssFloorDetail]
     max_floor_id: int
+    extra_star_num: int = 0
 
 
 class AbyssBossData(Struct):
@@ -364,6 +367,7 @@ class AbyssBossData(Struct):
     has_data: bool
     all_floor_detail: List[AbyssFloorDetail]
     max_floor_id: int
+    extra_star_num: int = 0
 
 
 class AbyssPeakMobRecord(Struct):
