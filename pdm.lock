@@ -4,8 +4,8 @@
 [metadata]
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
-lock_version = "4.5.0"
-content_hash = "sha256:2184e2335e9d81ea8c91464bb73ddb80a163b67e3359155977c50dfe6ca569fe"
+lock_version = "4.5.1"
+content_hash = "sha256:676506274a95f0a4e765b508f08ca5774956353a041343b9672e8bb8c2f9c3a9"
 
 [[metadata.targets]]
 requires_python = "~=3.11"
@@ -886,7 +886,7 @@ files = [
 
 [[package]]
 name = "starrail-damage-cal"
-version = "4.2.0"
+version = "4.2.1"
 requires_python = ">=3.11"
 summary = "For StarRail Role Damage Cal"
 groups = ["default"]
@@ -896,8 +896,8 @@ dependencies = [
     "msgspec<1,>=0.20.0",
 ]
 files = [
-    {file = "starrail_damage_cal-4.2.0-py3-none-any.whl", hash = "sha256:7cb61ad6225b74e53942a7da9bbc6b49df2c1eee1cd18eca5d21ad0c6f78931b"},
-    {file = "starrail_damage_cal-4.2.0.tar.gz", hash = "sha256:334920e3723d9e7d61c1814e9f4f2757e53d7418a6e9dc31c7c54edfb77cfb8c"},
+    {file = "starrail_damage_cal-4.2.1-py3-none-any.whl", hash = "sha256:1e7e8ac33304b998ff9d2c285042fc2508953d2402c8e4d1feea7bbd33ce07a8"},
+    {file = "starrail_damage_cal-4.2.1.tar.gz", hash = "sha256:56ebd908ab9e4e221b908c77c623e64c21852dd6871f385f2d159c3a60df854e"},
 ]
 
 [[package]]
