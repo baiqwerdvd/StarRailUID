@@ -2,17 +2,18 @@ import asyncio
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
+from PIL import Image, ImageDraw
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import crop_center_img
-from PIL import Image, ImageDraw
 from starrail_damage_cal.map import SR_MAP_PATH
 
+from .panel_cache import panel_watermark
+from .panel_data import fetch_panel_data
 from ..utils.error_reply import prefix
 from ..utils.fonts.first_world import fw_font_28
 from ..utils.fonts.starrail_fonts import sr_font_24, sr_font_30, sr_font_58
 from ..utils.name_covert import avatar_id_to_char_star
 from ..utils.resource.RESOURCE_PATH import CHAR_PREVIEW_PATH
-from .panel_data import fetch_panel_data
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
@@ -73,10 +74,7 @@ async def draw_enka_card(uid: str, char_list: List, showfrom: int = 0, source: s
     img_draw = ImageDraw.Draw(img, "RGBA")
 
     # 写底层文字
-    if source == "mys":
-        card_watermark = "--Created by qwerdvd-Designed By Wuyi-Data from MiYouShe--"
-    else:
-        card_watermark = "--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--"
+    card_watermark = panel_watermark(source)
     img_draw.text(
         (690, based_h - 26),
         card_watermark,

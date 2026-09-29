@@ -18,6 +18,7 @@ from starrail_damage_cal.model import (
 )
 from starrail_damage_cal.to_data import characterSkillTree
 
+from .draw_char_img import draw_char_img
 from ..utils.error_reply import CHAR_HINT
 from ..utils.name_covert import (
     alias_to_char_name,
@@ -26,7 +27,6 @@ from ..utils.name_covert import (
     name_to_weapon_id,
 )
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-from .draw_char_img import draw_char_img
 
 WEAPON_TO_INT = {
     "一": 1,
@@ -89,7 +89,7 @@ async def get_char_args(
     fake_name = ""
     talent_num = None
     char_data = {}
-    actual_source = "mihomo"
+    actual_source = "cache"
     weapon, weapon_affix = None, None
 
     msg = msg.replace("带", "换").replace("拿", "换").replace("圣遗物", "遗器")
@@ -108,6 +108,7 @@ async def get_char_args(
                 char_result = await get_char_data_with_source(uid, fake_name)
                 if isinstance(char_result, str):
                     char_data = await make_new_charinfo(uid, fake_name)
+                    actual_source = "simulated"
                 else:
                     char_data, actual_source = char_result
             else:
@@ -149,6 +150,9 @@ async def get_char_args(
                     break
             else:
                 weapon, weapon_affix = await get_fake_weapon_str(part)
+
+    if len(msg_list) > 1 or talent_num is not None:
+        actual_source = "simulated"
 
     return cast(
         Tuple[MihomoCharacter, Optional[str], Optional[int], Optional[int], str],
@@ -239,7 +243,7 @@ async def get_char_data_with_source(
 
     char_data = _load_cached_char_data(uid, str(char_name), enable_self)
     if char_data is not None:
-        return char_data, "mihomo"
+        return char_data
 
     # 缓存未命中，尝试从API实时拉取展柜数据后再查
     logger.info(f"[sr查询] {char_name} 缓存未命中，尝试从API获取数据...")
@@ -251,11 +255,13 @@ async def get_char_data_with_source(
 
     char_data = _load_cached_char_data(uid, str(char_name), enable_self)
     if char_data is not None:
-        return char_data, "mihomo"
+        return char_data
     return CHAR_HINT.format(char_name, char_name)
 
 
-def _load_cached_char_data(uid: str, char_name: str, enable_self: bool) -> Optional[MihomoCharacter]:
+def _load_cached_char_data(
+    uid: str, char_name: str, enable_self: bool
+) -> Optional[Tuple[MihomoCharacter, str]]:
     player_path = PLAYER_PATH / str(uid)
     char_path = player_path / f"{char_name}.json"
     char_self_path = player_path / "SELF" / f"{char_name}.json"
@@ -268,7 +274,14 @@ def _load_cached_char_data(uid: str, char_name: str, enable_self: bool) -> Optio
         return None
 
     try:
-        return msgjson.decode(path.read_bytes(), type=MihomoCharacter)
+        raw = path.read_bytes()
+        char_data = msgjson.decode(raw, type=MihomoCharacter)
+        source = msgjson.decode(raw).get("source", "cache")
+        if path == char_self_path:
+            source = "self"
+        elif source not in ("mys", "mihomo"):
+            source = "cache"
+        return char_data, source
     except Exception as exc:
         logger.warning(f"[sr面板] UID{uid} 本地角色缓存读取失败: {path}, error={exc}")
         return None
@@ -312,6 +325,7 @@ async def make_new_charinfo(
         ),
         rank=0,
         rankList=[],
+        enhancedId=0,
     )
     char_data.uid = uid
     char_data.nickName = "test"

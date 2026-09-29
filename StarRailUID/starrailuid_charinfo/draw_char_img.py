@@ -1,20 +1,21 @@
 import copy
 import json
 import math
-import textwrap
 from pathlib import Path
+import textwrap
 from typing import Dict, Tuple, Union
 
+from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import draw_text_by_line
-from PIL import Image, ImageDraw
 from starrail_damage_cal.cal_damage import cal_char_info, cal_info
 from starrail_damage_cal.excel import model as srdcmodel
 from starrail_damage_cal.map import SR_MAP_PATH
 from starrail_damage_cal.model import MihomoCharacter
 from starrail_damage_cal.to_data import api_to_dict
 
+from .panel_cache import panel_updated_at, panel_watermark
 from ..utils.error_reply import CHAR_HINT
 from ..utils.excel.read_excel import light_cone_ranks
 from ..utils.fonts.first_world import fw_font_28
@@ -98,6 +99,9 @@ async def draw_char_img(
 ) -> Union[bytes, str]:
     if isinstance(char_data, str):
         return char_data
+    if source == "auto":
+        source = getattr(char_data, "source", "") or "cache"
+    updated_at = panel_updated_at(char_data, sr_uid, source)
     char = await cal_char_info(char_data)
     damage_len = 0
     damage_list = []
@@ -118,7 +122,7 @@ async def draw_char_img(
         bg_height = bg_height + msg_h
     # 放角色立绘
     char_info = bg_img.copy()
-    char_info = char_info.resize((1050, 2050 + bg_height))
+    char_info = char_info.resize((1050, 2050 + bg_height + (30 if updated_at else 0)))
     char_img = Image.open(CHAR_PORTRAIT_PATH / f"{char.char_id}.png").resize((1050, 1050)).convert("RGBA")
     char_info.paste(char_img, (-220, -130), char_img)
 
@@ -707,10 +711,7 @@ async def draw_char_img(
             current_h += 35
 
     # 写底层文字
-    if source == "mys":
-        watermark = "--Created by qwerdvd-Designed By Wuyi-Data from MiYouShe--"
-    else:
-        watermark = "--Created by qwerdvd-Designed By Wuyi-Thank for mihomo.me--"
+    watermark = panel_watermark(source)
     char_img_draw.text(
         (525, 2022 + bg_height),
         watermark,
@@ -718,6 +719,14 @@ async def draw_char_img(
         fw_font_28,
         "mm",
     )
+    if updated_at:
+        char_img_draw.text(
+            (525, 2052 + bg_height),
+            f"面板更新: {updated_at}",
+            (180, 180, 180),
+            sr_font_18,
+            "mm",
+        )
 
     # 发送图片
     res = await convert_img(char_info)

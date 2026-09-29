@@ -1,0 +1,30 @@
+name: Core checks
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked
+      - run: uv run --locked python -m unittest discover -s tests -v
+      - run: uv run --locked python scripts/check_dependency_sync.py
+      - name: Check pip export matches the runtime lock
+        run: |
+          uv export --frozen --no-dev --no-emit-project --no-hashes --no-header --no-annotate --output-file /tmp/sr-requirements.txt
+          diff -u requirements.txt /tmp/sr-requirements.txt
+      - run: uv run --locked ruff check tests scripts
+      - run: uv run --locked ruff format --check tests scripts

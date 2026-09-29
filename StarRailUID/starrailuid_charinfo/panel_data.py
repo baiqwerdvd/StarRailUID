@@ -4,6 +4,7 @@ from starrail_damage_cal.mihomo.requests import get_char_card_info
 from starrail_damage_cal.model import MihomoCharacter
 from starrail_damage_cal.to_data import api_to_dict, mys_to_dict
 
+from .panel_cache import save_panel_metadata
 from ..starrailuid_config.sr_config import get_panel_source
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
@@ -39,6 +40,7 @@ async def fetch_panel_data(
                         avatar_list,
                         save_path=PLAYER_PATH,
                     )
+                    save_panel_metadata(uid, chars, "mys")
                     return char_id_list, chars, "mys"
             else:
                 logger.warning(f"[sr面板] UID{uid} 米游社面板获取失败, 回退至 mihomo, code={result}")
@@ -61,6 +63,7 @@ async def fetch_panel_data(
     if not mihomo_raw.detailInfo.avatarDetailList and not mihomo_raw.detailInfo.assistAvatarList:
         return [], {}, "mihomo"
     char_id_list, chars = await api_to_dict(uid, mihomo_raw=mihomo_raw, save_path=PLAYER_PATH)
+    save_panel_metadata(uid, chars, "mihomo")
     return char_id_list, chars, "mihomo"
 
 

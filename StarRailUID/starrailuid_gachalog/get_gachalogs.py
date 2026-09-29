@@ -1,13 +1,12 @@
 import asyncio
-import json
 from datetime import datetime
-from pathlib import Path
-from typing import Dict, List, Optional
+import json
 from urllib import parse
 
 import aiofiles
 import msgspec
 
+from .storage import refresh_lock, write_json_atomic
 from ..sruid_utils.api.mys.models import SingleGachaLog
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
@@ -22,12 +21,10 @@ gacha_type_meta_data = {
 }
 
 
-async def get_new_gachalog_by_link(
-    uid: str, gacha_url: str, full_data: Dict, is_force: bool
-):
+async def get_new_gachalog_by_link(uid: str, gacha_url: str, full_data: dict, is_force: bool):
     full_data = msgspec.convert(
         full_data,
-        type=Dict[str, List[SingleGachaLog]],
+        type=dict[str, list[SingleGachaLog]],
     )
     temp = []
     for gacha_name in gacha_type_meta_data:
@@ -76,7 +73,17 @@ async def get_new_gachalog_by_link(
 async def save_gachalogs(
     uid: str,
     gacha_url: str,
-    raw_data: Optional[Dict] = None,
+    raw_data: dict | None = None,
+    is_force: bool = False,
+) -> str:
+    async with refresh_lock(uid):
+        return await _save_gachalogs(uid, gacha_url, raw_data, is_force)
+
+
+async def _save_gachalogs(
+    uid: str,
+    gacha_url: str,
+    raw_data: dict | None = None,
     is_force: bool = False,
 ) -> str:
     path = PLAYER_PATH / str(uid)
@@ -136,9 +143,7 @@ async def save_gachalogs(
 
     # 获取新抽卡记录
     if raw_data is None:
-        raw_data = await get_new_gachalog_by_link(
-            uid, gacha_url, gachalogs_history, is_force
-        )
+        raw_data = await get_new_gachalog_by_link(uid, gacha_url, gachalogs_history, is_force)
     else:
         new_data = {
             "始发跃迁": [],
@@ -205,7 +210,7 @@ async def save_gachalogs(
     result["weapon_collabo_gacha_num"] = len(raw_data["光锥联动跃迁"])
     for i in ["群星跃迁", "角色跃迁", "光锥跃迁", "角色联动跃迁", "光锥联动跃迁"]:
         if len(raw_data[i]) > 1:
-            raw_data[i].sort(key=lambda x: (-int(x.id)))
+            raw_data[i].sort(key=lambda x: -int(x.id))
     result["data"] = raw_data
 
     # 计算数据
@@ -214,22 +219,12 @@ async def save_gachalogs(
     char_add = result["char_gacha_num"] - old_char_gacha_num
     weapon_add = result["weapon_gacha_num"] - old_weapon_gacha_num
     char_collabo_add = result["char_collabo_gacha_num"] - old_char_collabo_gacha_num
-    weapon_collabo_add = (
-        result["weapon_collabo_gacha_num"] - old_weapon_collabo_gacha_num
-    )
-    all_add = (
-        normal_add
-        + char_add
-        + weapon_add
-        + begin_gacha_add
-        + char_collabo_add
-        + weapon_collabo_add
-    )
+    weapon_collabo_add = result["weapon_collabo_gacha_num"] - old_weapon_collabo_gacha_num
+    all_add = normal_add + char_add + weapon_add + begin_gacha_add + char_collabo_add + weapon_collabo_add
 
     # 保存文件
     result = msgspec.to_builtins(result)
-    with Path.open(gachalogs_path, "w", encoding="UTF-8") as file:
-        json.dump(result, file, indent=2, ensure_ascii=False)
+    write_json_atomic(gachalogs_path, result)
 
     # 回复文字
     if all_add == 0:

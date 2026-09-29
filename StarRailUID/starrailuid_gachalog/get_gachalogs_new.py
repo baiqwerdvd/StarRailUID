@@ -9,6 +9,7 @@ from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.database.models import GsUser
 
+from .storage import refresh_lock, write_json_atomic
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 
@@ -66,6 +67,7 @@ class GachaLogsData(TypedDict):
     char_collabo_gacha_num: int
     weapon_collabo_gacha_num: int
     pity_counts: dict[str, int]
+    pool_data_time: dict[str, str]
     data: dict[str, list[SingleGachaRecord]]
 
 
@@ -87,9 +89,10 @@ async def _fetch_pool_records(
     gacha_type_id: str,
     is_force: bool = False,
     latest_id: str | None = None,
-) -> tuple[list[SingleGachaRecord], int]:
+) -> tuple[list[SingleGachaRecord], int] | None:
     records: list[SingleGachaRecord] = []
-    pity_count = 0
+    pity_count: int | None = None
+    saw_records = False
     next_max_id: str | None = None
     version_id: str | None = None
     has_more = True
@@ -106,9 +109,12 @@ async def _fetch_pool_records(
         )
         if not isinstance(res, dict) or res.get("retcode") != 0:
             logger.warning(f"[测试抽卡记录] 获取 {gacha_type_code} 失败: {res}")
-            break
+            return None
 
-        data = res.get("data", {})
+        data = res.get("data")
+        if not isinstance(data, dict) or not isinstance(data.get("list"), list):
+            logger.warning(f"[测试抽卡记录] {gacha_type_code} 返回数据格式错误")
+            return None
         has_more = data.get("has_more", False)
         next_max_id = data.get("next_max_id")
         version_id = data.get("version_id")
@@ -120,9 +126,12 @@ async def _fetch_pool_records(
                 pity_count = item["gacha_count"]
                 continue
 
+            saw_records = True
+            if stop_pagination:
+                continue
             if not is_force and latest_id and int(item_id_str) <= int(latest_id):
                 stop_pagination = True
-                break
+                continue
 
             item_info = item["item"]
             if item_info is None:
@@ -148,14 +157,30 @@ async def _fetch_pool_records(
             }
             records.append(record)
 
-        if not next_max_id:
+        if stop_pagination or not has_more:
             break
+        if not next_max_id:
+            logger.warning(f"[测试抽卡记录] {gacha_type_code} 分页游标缺失")
+            return None
         await asyncio.sleep(0.3)
 
-    return records, pity_count
+    if pity_count is None and saw_records:
+        logger.warning(f"[测试抽卡记录] {gacha_type_code} 保底数据缺失")
+        return None
+    return records, pity_count if pity_count is not None else 0
 
 
 async def save_gachalogs_new(
+    uid: str,
+    bot: Bot,
+    ev: Event,
+    is_force: bool = False,
+) -> str:
+    async with refresh_lock(uid):
+        return await _save_gachalogs_new(uid, bot, ev, is_force)
+
+
+async def _save_gachalogs_new(
     uid: str,
     bot: Bot,
     ev: Event,
@@ -178,35 +203,59 @@ async def save_gachalogs_new(
 
     # 读取旧记录, 隔离保存至 gacha_logs_wx.json
     history_data: dict[str, list[SingleGachaRecord]] = {k: [] for k in POOL_MAP}
-    old_counts: dict[str, int] = dict.fromkeys(POOL_MAP, 0)
     pity_counts: dict[str, int] = {}
+    pool_data_time: dict[str, str] = {}
 
     if gachalogs_wx_path.exists():
         try:
             async with aiofiles.open(gachalogs_wx_path, encoding="UTF-8") as f:
                 content = await f.read()
                 raw_json = json.loads(content)
-                if isinstance(raw_json, dict) and "data" in raw_json:
-                    for k in POOL_MAP:
-                        history_data[k] = raw_json["data"].get(k, [])
-                        old_counts[k] = len(history_data[k])
-        except Exception as e:
+            if not isinstance(raw_json, dict) or not isinstance(raw_json.get("data"), dict):
+                raise TypeError("抽卡记录 data 必须为对象")  # noqa: TRY301
+            for k in POOL_MAP:
+                records = raw_json["data"].get(k, [])
+                if not isinstance(records, list) or any(
+                    not isinstance(record, dict) or not isinstance(record.get("id"), str)
+                    for record in records
+                ):
+                    raise ValueError(f"{k} 历史记录格式错误")  # noqa: TRY301
+                history_data[k] = records
+            pity_counts = raw_json.get("pity_counts", {})
+            if not isinstance(pity_counts, dict):
+                raise TypeError("pity_counts 必须为对象")  # noqa: TRY301
+            old_pool_times = raw_json.get("pool_data_time", {})
+            if not isinstance(old_pool_times, dict):
+                raise TypeError("pool_data_time 必须为对象")  # noqa: TRY301
+            pool_data_time = {k: old_pool_times.get(k, raw_json.get("data_time", "")) for k in POOL_MAP}
+        except (OSError, ValueError, TypeError) as e:
             logger.warning(f"[测试抽卡记录] 读取旧数据失败: {e}")
+            return f"UID{uid} 更新失败: 旧抽卡记录无法读取, 请检查 gacha_logs_wx.json!"
 
     new_added: dict[str, int] = dict.fromkeys(POOL_MAP, 0)
+    failed_pools: list[str] = []
 
     for pool_name, (gacha_code, gacha_id) in POOL_MAP.items():
         latest_id = history_data[pool_name][0]["id"] if history_data[pool_name] else None
-        fetched_records, pity = await _fetch_pool_records(
-            uid=uid,
-            cookie=auth_cookie,
-            device_id=device_id,
-            gacha_type_code=gacha_code,
-            gacha_type_id=gacha_id,
-            is_force=is_force,
-            latest_id=latest_id,
-        )
+        try:
+            fetched = await _fetch_pool_records(
+                uid=uid,
+                cookie=auth_cookie,
+                device_id=device_id,
+                gacha_type_code=gacha_code,
+                gacha_type_id=gacha_id,
+                is_force=is_force,
+                latest_id=latest_id,
+            )
+        except Exception:
+            logger.exception(f"[测试抽卡记录] 获取 {pool_name} 失败")
+            fetched = None
+        if fetched is None:
+            failed_pools.append(pool_name)
+            continue
+        fetched_records, pity = fetched
         pity_counts[pool_name] = pity
+        pool_data_time[pool_name] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         existing_ids = {r["id"] for r in history_data[pool_name]}
         fresh_records = [r for r in fetched_records if r["id"] not in existing_ids]
@@ -216,6 +265,9 @@ async def save_gachalogs_new(
         combined.sort(key=lambda r: -int(r["id"]) if r["id"].isdigit() else 0)
         history_data[pool_name] = combined
         await asyncio.sleep(0.3)
+
+    if len(failed_pools) == len(POOL_MAP):
+        return f"UID{uid} [sr]抽卡记录更新失败, 已保留旧数据, 请稍后重试!"
 
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     result: GachaLogsData = {
@@ -228,13 +280,19 @@ async def save_gachalogs_new(
         "char_collabo_gacha_num": len(history_data["角色联动跃迁"]),
         "weapon_collabo_gacha_num": len(history_data["光锥联动跃迁"]),
         "pity_counts": pity_counts,
+        "pool_data_time": pool_data_time,
         "data": history_data,
     }
 
-    async with aiofiles.open(gachalogs_wx_path, "w", encoding="UTF-8") as f:
-        await f.write(json.dumps(result, indent=2, ensure_ascii=False))
+    write_json_atomic(gachalogs_wx_path, result)
 
     total_added = sum(new_added.values())
+
+    if failed_pools:
+        return (
+            f"UID{uid} [sr]抽卡记录部分更新, 新增五星记录 {total_added} 条。\n"
+            f"获取失败: {'、'.join(failed_pools)}, 已保留对应旧记录和保底数据, 请稍后重试!"
+        )
 
     if total_added == 0:
         return f"UID{uid} [sr]抽卡记录更新完毕, 无新增五星记录!"
