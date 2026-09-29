@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import tempfile
 import unittest
 
@@ -16,7 +17,7 @@ class DependencySyncTests(unittest.TestCase):
                 (root / name).write_bytes((ROOT / name).read_bytes())
             path = root / "requirements.txt"
             path.write_text(
-                path.read_text().replace("starrail-damage-cal==4.2.1", "starrail-damage-cal==0.0.0")
+                re.sub(r"starrail-damage-cal==[^\s;]+", "starrail-damage-cal==0.0.0", path.read_text())
             )
             errors = check_dependency_sync(root)
             self.assertTrue(any("starrail-damage-cal: requirements.txt=0.0.0" in error for error in errors))

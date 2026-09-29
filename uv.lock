@@ -824,16 +824,16 @@ wheels = [
 
 [[package]]
 name = "starrail-damage-cal"
-version = "4.2.1"
+version = "4.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
     { name = "httpx" },
     { name = "msgspec" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ec/d6/37c73a59b2ec3be1112dca7133e12cee3f7642ddfaec47f67d2f65888dc3/starrail_damage_cal-4.2.1.tar.gz", hash = "sha256:56ebd908ab9e4e221b908c77c623e64c21852dd6871f385f2d159c3a60df854e", size = 287123, upload-time = "2026-04-25T16:24:11.463Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b4/42/baf9aa4091af8aabc81a5fa43c9c6b1a794ab8e008d1e80bb14e775cfc95/starrail_damage_cal-4.6.0.tar.gz", hash = "sha256:7f76422f8038762ff7c777097444e2799a1cde982d05305155cf94e95ba15e3d", size = 305149, upload-time = "2026-09-29T06:57:15.511Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/56/e1/6f20c39b25dd1ad5459b98aada2c7a962405a533ce49dc57b0b00282d106/starrail_damage_cal-4.2.1-py3-none-any.whl", hash = "sha256:1e7e8ac33304b998ff9d2c285042fc2508953d2402c8e4d1feea7bbd33ce07a8", size = 322756, upload-time = "2026-04-25T16:24:10.028Z" },
+    { url = "https://files.pythonhosted.org/packages/6b/7e/f28d070b208af60f59175487ed2877755a11a63d24b688c034f62fd73a2b/starrail_damage_cal-4.6.0-py3-none-any.whl", hash = "sha256:936b1188fe2e915b5264049103b7df7a349391ee8ef12dad16145e6325ea0c13", size = 342550, upload-time = "2026-09-29T06:57:14.204Z" },
 ]
 
 [[package]]
@@ -858,7 +858,7 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.27.2" },
     { name = "msgspec", specifier = ">=0.18.6" },
     { name = "pillow", specifier = ">=10.4.0" },
-    { name = "starrail-damage-cal", specifier = ">=4.2.1" },
+    { name = "starrail-damage-cal", specifier = ">=4.6.0" },
 ]
 
 [package.metadata.requires-dev]

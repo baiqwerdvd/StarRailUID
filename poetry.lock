@@ -1122,14 +1122,14 @@ files = [
 
 [[package]]
 name = "starrail-damage-cal"
-version = "4.2.1"
+version = "4.6.0"
 description = "For StarRail Role Damage Cal"
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "starrail_damage_cal-4.2.1-py3-none-any.whl", hash = "sha256:1e7e8ac33304b998ff9d2c285042fc2508953d2402c8e4d1feea7bbd33ce07a8"},
-    {file = "starrail_damage_cal-4.2.1.tar.gz", hash = "sha256:56ebd908ab9e4e221b908c77c623e64c21852dd6871f385f2d159c3a60df854e"},
+    {file = "starrail_damage_cal-4.6.0-py3-none-any.whl", hash = "sha256:936b1188fe2e915b5264049103b7df7a349391ee8ef12dad16145e6325ea0c13"},
+    {file = "starrail_damage_cal-4.6.0.tar.gz", hash = "sha256:7f76422f8038762ff7c777097444e2799a1cde982d05305155cf94e95ba15e3d"},
 ]
 
 [package.dependencies]
@@ -1314,4 +1314,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "448486f0f9963c144883ff2d8f89030d0280b3b24124f24ca0402f9281617e7d"
+content-hash = "35e7e0a88a30a41af60e46968b22717729c1f0a6dbf04783724b3e125c540e9c"
